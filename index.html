@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>어나더에덴 캐릭터 가이드</title>
+<style>
+  :root {
+    --bg: #0f0e14;
+    --panel: #1a1822;
+    --panel-2: #25222f;
+    --line: #34303f;
+    --text: #e8e6ef;
+    --muted: #8b8595;
+    --gold: #d4ae5b;
+    --gold-dim: #8b7437;
+    --accent: #b69b6e;
+    --red: #c66062;
+    --green: #6c9e6e;
+    --blue: #6c8ec1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', -apple-system, sans-serif; line-height: 1.5; }
+  body { min-height: 100vh; }
+
+  header { position: sticky; top: 0; z-index: 100; background: rgba(15,14,20,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); padding: 14px 24px; }
+  .header-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; max-width: 1600px; margin: 0 auto; }
+  .title { font-family: 'Noto Serif KR', serif; font-size: 20px; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; flex-shrink: 0; }
+  .title small { display: block; font-size: 11px; color: var(--muted); font-weight: 400; letter-spacing: 0; }
+  .stats { color: var(--muted); font-size: 12px; margin-left: auto; }
+  .stats b { color: var(--gold); font-weight: 600; }
+  #search { flex: 1; min-width: 200px; max-width: 400px; background: var(--panel-2); border: 1px solid var(--line); color: var(--text); padding: 8px 12px; border-radius: 6px; font-size: 14px; }
+  #search:focus { outline: none; border-color: var(--gold-dim); }
+
+  .filters { padding: 12px 24px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .filter-row { display: flex; gap: 24px; flex-wrap: wrap; max-width: 1600px; margin: 0 auto; }
+  .filter-group { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .filter-label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-right: 4px; }
+  .chip { padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; font-size: 12px; cursor: pointer; user-select: none; color: var(--muted); transition: all 0.12s; }
+  .chip:hover { border-color: var(--gold-dim); color: var(--text); }
+  .chip.active { background: var(--gold); border-color: var(--gold); color: #2a2317; font-weight: 600; }
+
+  .container { max-width: 1600px; margin: 0 auto; padding: 16px 24px 60px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px; cursor: pointer; transition: transform 0.12s, border-color 0.12s; display: flex; gap: 12px; align-items: flex-start; position: relative; }
+  .card:hover { transform: translateY(-2px); border-color: var(--gold-dim); }
+  .card.stub { opacity: 0.55; }
+  .card.stub:hover { opacity: 0.8; }
+  .card .icon { width: 56px; height: 56px; flex-shrink: 0; background: var(--panel-2); border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .card .icon img { width: 100%; height: 100%; object-fit: cover; }
+  .card .icon-fallback { color: var(--muted); font-size: 10px; }
+  .card .body { flex: 1; min-width: 0; }
+  .card .nameKo { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card .nameSub { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+  .card .badges { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+  .badge { font-size: 10px; padding: 2px 6px; border-radius: 3px; background: var(--panel-2); color: var(--muted); border: 1px solid var(--line); }
+  .badge.sa { background: rgba(212,174,91,0.15); color: var(--gold); border-color: var(--gold-dim); }
+  .badge.style-AS { background: rgba(108,158,193,0.15); color: var(--blue); border-color: #3a4d6b; }
+  .badge.style-ES { background: rgba(108,158,110,0.15); color: var(--green); border-color: #3a5c3c; }
+  .badge.style-Alter, .badge.style-Alter-AS { background: rgba(198,96,98,0.15); color: var(--red); border-color: #6b3a3c; }
+  .conf-indicator { position: absolute; top: 6px; right: 6px; font-size: 9px; color: var(--muted); }
+  .conf-indicator.high { color: var(--green); }
+  .conf-indicator.mid { color: var(--gold-dim); }
+
+  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; overflow-y: auto; padding: 40px 16px; }
+  .modal.open { display: block; }
+  .modal-body { max-width: 900px; margin: 0 auto; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 32px; position: relative; }
+  .modal-close { position: absolute; top: 12px; right: 14px; background: none; border: none; color: var(--muted); font-size: 28px; cursor: pointer; line-height: 1; }
+  .modal-close:hover { color: var(--text); }
+  .modal-header { display: flex; gap: 20px; align-items: center; margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .modal-header .icon-lg { width: 80px; height: 80px; border-radius: 8px; overflow: hidden; background: var(--panel-2); flex-shrink: 0; }
+  .modal-header .icon-lg img { width: 100%; height: 100%; object-fit: cover; }
+  .modal-header h2 { font-family: 'Noto Serif KR', serif; font-size: 26px; color: var(--gold); margin: 0; }
+  .modal-header .name-meta { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .modal-header .meta-badges { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .section { margin-bottom: 28px; }
+  .section h3 { font-family: 'Noto Serif KR', serif; font-size: 16px; color: var(--gold); margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  .section h4 { font-size: 13px; color: var(--accent); margin: 14px 0 8px; }
+  .section .text-block, .section p { font-size: 13px; line-height: 1.7; color: var(--text); white-space: pre-wrap; word-break: keep-all; }
+  .section .text-block { background: var(--panel-2); border-left: 3px solid var(--gold-dim); padding: 12px 16px; border-radius: 0 6px 6px 0; }
+
+  .skill-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .skill-table th, .skill-table td { padding: 6px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .skill-table th { color: var(--muted); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .skill-table td { color: var(--text); }
+  .skill-table tr:hover { background: var(--panel-2); }
+
+  .sources { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); margin-top: 16px; }
+  .sources a { color: var(--muted); font-size: 12px; text-decoration: none; padding: 4px 10px; border: 1px solid var(--line); border-radius: 4px; }
+  .sources a:hover { color: var(--gold); border-color: var(--gold-dim); }
+
+  .empty-state { text-align: center; padding: 80px 20px; color: var(--muted); }
+  .stub-notice { background: var(--panel-2); border: 1px dashed var(--line); border-radius: 8px; padding: 20px; color: var(--muted); text-align: center; font-size: 13px; margin: 20px 0; }
+  .stub-notice b { color: var(--accent); }
+  .stub-notice a { color: var(--gold); text-decoration: none; }
+  .loading { padding: 40px; text-align: center; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <div class="title">어나더에덴<small>Character Database</small></div>
+    <input id="search" type="text" placeholder="캐릭명 검색 (한/영/일)…">
+    <div class="stats" id="stats">로딩 중…</div>
+  </div>
+</header>
+
+<div class="filters">
+  <div class="filter-row" id="filter-row"></div>
+</div>
+
+<div class="container">
+  <div id="grid" class="grid"><div class="loading">데이터 로딩 중…</div></div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-body" id="modal-body"></div>
+</div>
+
+<template id="card-tpl">
+  <div class="card">
+    <div class="icon"></div>
+    <div class="body">
+      <div class="nameKo"></div>
+      <div class="nameSub"></div>
+      <div class="badges"></div>
+    </div>
+    <div class="conf-indicator"></div>
+  </div>
+</template>
+
+<script>
+const STATE = {
+  all: [],
+  filters: { element: "", weapon: "", style: "", sa: false, hasFull: false },
+  search: "",
+};
+
+const ELEM_KO = {fire:"불",water:"물",earth:"땅",wind:"바람",thunder:"뇌",shade:"그림자",crystal:"결정","null":"무"};
+const WEAP_KO = {sword:"검",katana:"도",axe:"도끼",lance:"창",bow:"활",fist:"권갑",staff:"지팡이",hammer:"망치"};
+
+// 스킬표 일본어 헤더 → 한국어
+const SKILL_HEADER_KO = {
+  "ランク": "랭크", "スキル名": "스킬명", "属性": "속성", "MP": "MP",
+  "威力(実質倍率)": "위력", "威力": "위력", "特記事項": "비고", "効果": "효과",
+};
+// 스킬표 속성 셀 일본어 → 한국어 (단일 한자 약식)
+const ELEM_CELL_KO = {
+  "火": "불", "水": "물", "地": "땅", "風": "바람", "雷": "뇌",
+  "闇": "그림자", "陰": "그림자", "結晶": "결정", "晶": "결정", "無": "무",
+};
+
+const FILTER_DEFS = [
+  { label: "속성", key: "element", values: [["", "전체"], ["fire","불"], ["water","물"], ["earth","땅"], ["wind","바람"], ["thunder","뇌"], ["shade","그림자"], ["crystal","결정"], ["null","무"]] },
+  { label: "무기", key: "weapon",  values: [["", "전체"], ["sword","검"], ["katana","도"], ["axe","도끼"], ["lance","창"], ["bow","활"], ["fist","권갑"], ["staff","지팡이"], ["hammer","망치"]] },
+  { label: "스타일", key: "style", values: [["", "전체"], ["NS","NS"], ["AS","AS"], ["ES","ES"], ["Alter","Alter"]] },
+];
+
+// ─────────────────────────────────────
+// 안전한 DOM 헬퍼 (textContent 기반)
+// ─────────────────────────────────────
+function el(tag, opts = {}) {
+  const e = document.createElement(tag);
+  if (opts.class) e.className = opts.class;
+  if (opts.text != null) e.textContent = opts.text;
+  if (opts.attrs) for (const k in opts.attrs) e.setAttribute(k, opts.attrs[k]);
+  if (opts.dataset) for (const k in opts.dataset) e.dataset[k] = opts.dataset[k];
+  if (opts.children) for (const c of opts.children) if (c) e.appendChild(c);
+  if (opts.style) e.style.cssText = opts.style;
+  return e;
+}
+function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+function badgeEl(text, extraClass = "") {
+  return el("span", { class: "badge " + extraClass, text });
+}
+
+// ─────────────────────────────────────
+// Init & data load
+// ─────────────────────────────────────
+async function init() {
+  buildFilters();
+  try {
+    const res = await fetch('data/index.json');
+    const data = await res.json();
+    STATE.all = data.characters;
+    const stats = document.getElementById('stats');
+    clear(stats);
+    stats.append("총 ", strong(data.meta.total), "명 · 매핑 ", strong(data.meta.with_mapping), " · 상세 ", strong(data.meta.with_full));
+    render();
+  } catch (e) {
+    const grid = document.getElementById('grid');
+    clear(grid);
+    grid.appendChild(el("div", { class: "empty-state", text: "데이터 로드 실패: " + e.message }));
+  }
+}
+function strong(t) { return el("b", { text: t }); }
+
+function buildFilters() {
+  const row = document.getElementById('filter-row');
+  for (const def of FILTER_DEFS) {
+    const group = el("div", { class: "filter-group" });
+    group.appendChild(el("span", { class: "filter-label", text: def.label }));
+    for (const [val, label] of def.values) {
+      const chip = el("span", {
+        class: "chip" + (val === "" ? " active" : ""),
+        text: label,
+        dataset: { filter: def.key, value: val }
+      });
+      chip.addEventListener('click', () => onChipClick(chip, def.key, val, false));
+      group.appendChild(chip);
+    }
+    row.appendChild(group);
+  }
+  // 토글 필터
+  const toggleGroup = el("div", { class: "filter-group" });
+  toggleGroup.appendChild(el("span", { class: "filter-label", text: "기타" }));
+  for (const [key, label] of [["sa", "SA 보유"], ["hasFull", "상세 정보 있음"]]) {
+    const chip = el("span", { class: "chip", text: label, dataset: { filter: key } });
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('active');
+      STATE.filters[key] = chip.classList.contains('active');
+      render();
+    });
+    toggleGroup.appendChild(chip);
+  }
+  row.appendChild(toggleGroup);
+}
+
+function onChipClick(chip, key, val, toggle) {
+  document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(x => x.classList.remove('active'));
+  chip.classList.add('active');
+  STATE.filters[key] = val;
+  render();
+}
+
+// ─────────────────────────────────────
+// Filter & render
+// ─────────────────────────────────────
+function applyFilters() {
+  let list = STATE.all;
+  const f = STATE.filters;
+  if (f.element) list = list.filter(c => c.element === f.element);
+  if (f.weapon)  list = list.filter(c => c.weapon === f.weapon);
+  if (f.style)   list = list.filter(c => c.style === f.style || (f.style === "Alter" && c.style?.startsWith("Alter")));
+  if (f.sa)      list = list.filter(c => c.sa);
+  if (f.hasFull) list = list.filter(c => c.has_full);
+  if (STATE.search) {
+    const q = STATE.search.toLowerCase();
+    list = list.filter(c =>
+      (c.nameKo || "").toLowerCase().includes(q) ||
+      (c.nameEn || "").toLowerCase().includes(q) ||
+      (c.name_jp || "").toLowerCase().includes(q)
+    );
+  }
+  return list;
+}
+
+function render() {
+  const list = applyFilters();
+  const grid = document.getElementById('grid');
+  clear(grid);
+  if (!list.length) {
+    grid.appendChild(el("div", { class: "empty-state", text: "필터 조건에 맞는 캐릭이 없습니다." }));
+    return;
+  }
+  const frag = document.createDocumentFragment();
+  for (const c of list) frag.appendChild(buildCard(c));
+  grid.appendChild(frag);
+}
+
+function buildCard(c) {
+  const tpl = document.getElementById('card-tpl');
+  const node = tpl.content.firstElementChild.cloneNode(true);
+  node.dataset.id = c.id;
+  if (!c.has_full) node.classList.add('stub');
+  if (c.style && c.style !== 'NS') node.classList.add('style-' + c.style.replace(/\s/g, '-'));
+
+  // icon
+  const iconBox = node.querySelector('.icon');
+  if (c.icon) {
+    const img = el("img", { attrs: { src: "images/icons/" + c.icon, alt: "", loading: "lazy" } });
+    iconBox.appendChild(img);
+  } else {
+    iconBox.appendChild(el("span", { class: "icon-fallback", text: c.id.slice(0, 3) }));
+  }
+
+  // names
+  node.querySelector('.nameKo').textContent = c.nameKo || "";
+  const sub = node.querySelector('.nameSub');
+  sub.textContent = (c.nameEn || "") + " · " + (c.name_jp || "—");
+
+  // badges
+  const badges = node.querySelector('.badges');
+  if (ELEM_KO[c.element]) badges.appendChild(badgeEl(ELEM_KO[c.element]));
+  if (WEAP_KO[c.weapon]) badges.appendChild(badgeEl(WEAP_KO[c.weapon]));
+  if (c.style && c.style !== 'NS') badges.appendChild(badgeEl(c.style, "style-" + c.style.replace(/\s/g, '-')));
+  if (c.sa) badges.appendChild(badgeEl("SA", "sa"));
+
+  // confidence
+  const conf = c.confidence || 0;
+  const ind = node.querySelector('.conf-indicator');
+  if (conf >= 0.9) { ind.classList.add('high'); ind.textContent = '✓'; }
+  else if (conf >= 0.7) { ind.classList.add('mid'); ind.textContent = '~'; }
+  else if (conf > 0) ind.textContent = '?';
+  ind.title = `매핑 신뢰도 ${conf}`;
+
+  node.addEventListener('click', () => openModal(c.id));
+  return node;
+}
+
+// ─────────────────────────────────────
+// Modal
+// ─────────────────────────────────────
+async function openModal(id) {
+  const modal = document.getElementById('modal');
+  const body = document.getElementById('modal-body');
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  clear(body);
+  body.appendChild(closeBtn());
+
+  const c = STATE.all.find(x => x.id === id);
+  if (!c) { body.appendChild(el("div", { class: "empty-state", text: "캐릭을 찾을 수 없습니다." })); return; }
+
+  body.appendChild(buildModalHeader(c));
+
+  if (!c.has_full) {
+    body.appendChild(buildStubNotice(c));
+    return;
+  }
+
+  const loader = el("div", { class: "loading", text: "로딩 중…" });
+  body.appendChild(loader);
+  try {
+    const res = await fetch(`data/full/${c.id}.json`);
+    const full = await res.json();
+    loader.remove();
+    appendModalContent(body, full);
+  } catch (e) {
+    loader.remove();
+    body.appendChild(el("div", { class: "empty-state", text: "상세 데이터 로드 실패: " + e.message }));
+  }
+}
+
+function closeBtn() {
+  const b = el("button", { class: "modal-close", text: "×" });
+  b.addEventListener('click', closeModal);
+  return b;
+}
+
+function buildModalHeader(c) {
+  const iconBox = el("div", { class: "icon-lg" });
+  if (c.icon) iconBox.appendChild(el("img", { attrs: { src: "images/icons/" + c.icon, alt: "" } }));
+
+  const badges = el("div", { class: "meta-badges" });
+  if (ELEM_KO[c.element]) badges.appendChild(badgeEl(ELEM_KO[c.element]));
+  if (WEAP_KO[c.weapon]) badges.appendChild(badgeEl(WEAP_KO[c.weapon]));
+  if (c.style && c.style !== 'NS') badges.appendChild(badgeEl(c.style, "style-" + c.style.replace(/\s/g, '-')));
+  if (c.sa) badges.appendChild(badgeEl("SA", "sa"));
+  badges.appendChild(badgeEl("★" + c.rarity));
+  if (c.date) badges.appendChild(badgeEl(c.date));
+
+  const info = el("div", {
+    children: [
+      el("h2", { text: c.nameKo || "" }),
+      el("div", { class: "name-meta", text: (c.nameEn || "") + " · " + (c.name_jp || "—") }),
+      badges,
+    ]
+  });
+  return el("div", { class: "modal-header", children: [iconBox, info] });
+}
+
+function buildStubNotice(c) {
+  const notice = el("div", { class: "stub-notice" });
+  notice.appendChild(el("b", { text: "상세 정보 수집 미완" }));
+  notice.appendChild(el("br"));
+  notice.appendChild(document.createTextNode("이 캐릭은 자동 매핑이 완료되지 않아 풀데이터가 없습니다."));
+  notice.appendChild(el("br"));
+  notice.appendChild(el("small", {
+    text: `한국명: ${c.nameKo} · 영문: ${c.nameEn} · 매핑 confidence: ${c.confidence}`,
+    style: "display:block;margin-top:8px"
+  }));
+  if (c.urls && c.urls.namu) {
+    const link = el("a", { text: "namu.wiki 에서 보기 →", attrs: { href: c.urls.namu, target: "_blank" }, style: "margin-top:10px;display:inline-block" });
+    notice.appendChild(link);
+  }
+  return notice;
+}
+
+function appendModalContent(body, full) {
+  const gi = full.game_info || {};
+  const nw = full.namu || {};
+  const gis = gi.sections || {};
+  const nws = nw.sections || {};
+  let appendedAny = false;
+
+  // GI 운용법
+  if (gis['性能評価・簡易紹介']) { body.appendChild(buildTextSection("운용법 (game-info 일본)", gis['性能評価・簡易紹介'])); appendedAny = true; }
+
+  // NAMU 평가
+  const proNS = findPrefix(nws, '5.1.1');
+  const proAS = findPrefix(nws, '5.1.2');
+  const conNS = findPrefix(nws, '5.2.1');
+  const conAS = findPrefix(nws, '5.2.2');
+  if (proNS || proAS || conNS || conAS) {
+    const sec = el("div", { class: "section", children: [el("h3", { text: "평가 (namu 한국)" })] });
+    if (proNS) { sec.appendChild(el("h4", { text: "장점 (노멀)" })); sec.appendChild(el("p", { text: proNS })); }
+    if (proAS) { sec.appendChild(el("h4", { text: "장점 (어나더)" })); sec.appendChild(el("p", { text: proAS })); }
+    if (conNS) { sec.appendChild(el("h4", { text: "단점 (노멀)" })); sec.appendChild(el("p", { text: conNS })); }
+    if (conAS) { sec.appendChild(el("h4", { text: "단점 (어나더)" })); sec.appendChild(el("p", { text: conAS })); }
+    body.appendChild(sec); appendedAny = true;
+  }
+
+  // GI 스킬 표
+  if (gi.skills_raw && gi.skills_raw.length > 1) {
+    body.appendChild(buildSkillTable(gi.skills_raw));
+    appendedAny = true;
+  }
+
+  // GI 추천 장비
+  if (gis['おすすめ装備']) { body.appendChild(buildTextSection("추천 장비/그라스타", gis['おすすめ装備'])); appendedAny = true; }
+  if (gis['相性の良いキャラ']) { body.appendChild(buildTextSection("상성 좋은 캐릭", gis['相性の良いキャラ'])); appendedAny = true; }
+
+  // NAMU 작중행적
+  const arc1 = findPrefix(nws, '3.1');
+  const arc15 = findPrefix(nws, '3.2');
+  const arc2 = findPrefix(nws, '3.3');
+  if (arc1 || arc15 || arc2) {
+    const sec = el("div", { class: "section", children: [el("h3", { text: "작중행적 (스포 주의)" })] });
+    if (arc1) { sec.appendChild(el("h4", { text: "제1부" })); sec.appendChild(el("p", { text: arc1 })); }
+    if (arc15) { sec.appendChild(el("h4", { text: "제1.5부" })); sec.appendChild(el("p", { text: arc15 })); }
+    if (arc2) { sec.appendChild(el("h4", { text: "제2부" })); sec.appendChild(el("p", { text: arc2 })); }
+    body.appendChild(sec); appendedAny = true;
+  }
+
+  // 소스 링크
+  const sources = el("div", { class: "sources" });
+  if (gi.url) sources.appendChild(el("a", { text: "game-info.wiki ↗", attrs: { href: gi.url, target: "_blank" } }));
+  if (nw.url) sources.appendChild(el("a", { text: "namu.wiki ↗", attrs: { href: nw.url, target: "_blank" } }));
+  body.appendChild(sources);
+
+  if (!appendedAny) {
+    body.appendChild(el("div", { class: "stub-notice", text: "추출된 본문이 거의 없습니다. 원본 페이지를 직접 확인해 주세요." }));
+  }
+}
+
+function buildTextSection(title, text) {
+  return el("div", {
+    class: "section",
+    children: [
+      el("h3", { text: title }),
+      el("div", { class: "text-block", text }),
+    ]
+  });
+}
+
+function buildSkillTable(rows) {
+  const sec = el("div", { class: "section", children: [el("h3", { text: `스킬 (${rows.length - 1}행)` })] });
+  const tbl = el("table", { class: "skill-table" });
+  const thead = el("thead");
+  const trHead = el("tr");
+  const header = rows[0];
+  // 헤더 한국어 변환
+  for (const h of header) trHead.appendChild(el("th", { text: SKILL_HEADER_KO[h] || h }));
+  thead.appendChild(trHead);
+  tbl.appendChild(thead);
+  // 속성/MP 컬럼 인덱스 (속성 셀 한국어 변환용)
+  const idxElem = header.indexOf("属性");
+  const tbody = el("tbody");
+  for (const row of rows.slice(1)) {
+    const tr = el("tr");
+    for (let i = 0; i < row.length; i++) {
+      let val = row[i];
+      if (i === idxElem && ELEM_CELL_KO[val]) val = ELEM_CELL_KO[val];
+      tr.appendChild(el("td", { text: val }));
+    }
+    tbody.appendChild(tr);
+  }
+  tbl.appendChild(tbody);
+  sec.appendChild(tbl);
+  return sec;
+}
+
+function findPrefix(sections, prefix) {
+  for (const k in sections) if (k.startsWith(prefix)) return sections[k];
+  return "";
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// 검색
+document.getElementById('search').addEventListener('input', e => {
+  STATE.search = e.target.value.trim();
+  render();
+});
+// 모달 닫기 (배경/ESC)
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target.id === 'modal') closeModal();
+});
+window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+init();
+</script>
+
+</body>
+</html>

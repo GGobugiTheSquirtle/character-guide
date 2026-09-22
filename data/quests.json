@@ -1,0 +1,1776 @@
+{
+ "meta": {
+  "generated": "2026-09-22 22:31",
+  "source": "https://altema.jp/anaden/gaidennkaikou",
+  "scraped": "2026-09-22 22:26",
+  "quests": 56,
+  "untranslated": [],
+  "cond_types": {
+   "quest": 25,
+   "main_story": 52,
+   "chara_quest": 12,
+   "party_member": 3,
+   "sub_quest": 2,
+   "none": 2,
+   "party": 2
+  },
+  "note": "解禁条件 = altema 일람의 開始条件. 한글 퀘스트명은 Ding-checklist 정본(ding) 기준, 미확인은 일본어 원문 노출"
+ },
+ "quests": [
+  {
+   "slug": "rakuyounooka",
+   "category_jp": "群像",
+   "category": "군상",
+   "title_jp": "落陽の墟と輝きの守手",
+   "title": "낙일의 폐허와 광휘의 수호자",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "quest",
+     "quest_jp": "閉ざされた箱庭と蒼穹の叛逆者",
+     "quest": "닫힌 정원과 창궁의 반역자",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「닫힌 정원과 창궁의 반역자」 클리어"
+    }
+   ],
+   "cond_raw": "「閉ざされた箱庭と蒼穹の叛逆者」 クリア",
+   "url": "https://altema.jp/anaden/rakuyounooka",
+   "recruits": []
+  },
+  {
+   "slug": "rinnenokama",
+   "category_jp": "群像",
+   "category": "군상",
+   "title_jp": "輪廻の鎌と紅蓮の徒花",
+   "title": "윤회의 낫과 홍련의 도화",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 44,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제44장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第44章」クリア",
+   "url": "https://altema.jp/anaden/rinnenokama",
+   "recruits": []
+  },
+  {
+   "slug": "shouseinoono",
+   "category_jp": "群像",
+   "category": "군상",
+   "title_jp": "将星の斧と鎧える羊",
+   "title": "장성의 도끼와 갑주의 양",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제13장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー13章」クリア",
+   "url": "https://altema.jp/anaden/shouseinoono",
+   "recruits": []
+  },
+  {
+   "slug": "gunnzou",
+   "category_jp": "群像",
+   "category": "군상",
+   "title_jp": "遠き日の英雄と誓いの銘",
+   "title": "지난날의 영웅과 맹세의 각명",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 25,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제25장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第25章」クリア",
+   "url": "https://altema.jp/anaden/gunnzou",
+   "recruits": []
+  },
+  {
+   "slug": "ihou",
+   "category_jp": "断章",
+   "category": "단장",
+   "title_jp": "異邦の空と自由への箱舟",
+   "title": "이국의 하늘과 자유를 향한 방주",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 20,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제20장 클리어"
+    },
+    {
+     "type": "chara_quest",
+     "chara_jp": "シエル",
+     "chara": "시엘",
+     "level": 2,
+     "stage": "",
+     "text": "「시엘」 캐릭터 퀘스트 2 클리어"
+    },
+    {
+     "type": "party_member",
+     "chara_jp": "シエル",
+     "chara": "시엘",
+     "stage": "",
+     "text": "「시엘」 영입 완료"
+    }
+   ],
+   "cond_raw": "「メインストーリー第20章」クリア 仲間に「シエル」加入済み 「シエル」のキャラクエスト2クリア",
+   "url": "https://altema.jp/anaden/ihou",
+   "recruits": []
+  },
+  {
+   "slug": "tiisanaouzyo",
+   "category_jp": "断章",
+   "category": "단장",
+   "title_jp": "小さな王女の小さな大冒険",
+   "title": "작은 왕녀의 작은 대모험",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제13장 클리어"
+    },
+    {
+     "type": "chara_quest",
+     "chara_jp": "ミーユ",
+     "chara": "미유",
+     "level": 2,
+     "stage": "",
+     "text": "「미유」 캐릭터 퀘스트 2 클리어"
+    },
+    {
+     "type": "party_member",
+     "chara_jp": "ミーユ",
+     "chara": "미유",
+     "stage": "",
+     "text": "「미유」 영입 완료"
+    }
+   ],
+   "cond_raw": "「メインストーリー第13章」クリア 仲間に「ミーユ」加入済み 「ミーユ」のキャラクエ2クリア",
+   "url": "https://altema.jp/anaden/tiisanaouzyo",
+   "recruits": []
+  },
+  {
+   "slug": "kennouta",
+   "category_jp": "外典",
+   "category": "외경",
+   "title_jp": "剣の唄と失楽の翼",
+   "title": "검의 노래와 실락의 날개",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 25,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제25장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第25章」クリア",
+   "url": "https://altema.jp/anaden/kennouta",
+   "recruits": []
+  },
+  {
+   "slug": "yatiyonotoga",
+   "category_jp": "外典",
+   "category": "외경",
+   "title_jp": "八千夜の咎とまつろわぬ刃",
+   "title": "만고의 죄와 불복의 칼날",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 55,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제55장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第55章」クリア",
+   "url": "https://altema.jp/anaden/yatiyonotoga",
+   "recruits": [
+    {
+     "id": "senya",
+     "name": "센야",
+     "step": "제1화"
+    },
+    {
+     "id": "senya_as",
+     "name": "센야 AS",
+     "step": "제7화"
+    }
+   ]
+  },
+  {
+   "slug": "reityounokotowari",
+   "category_jp": "外典",
+   "category": "외경",
+   "title_jp": "霊長の理と枢機の天秤",
+   "title": "영장의 이치와 추기의 천칭",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 25,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제25장 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "絶対零度の鎖",
+     "quest": "IDA 스쿨편Ⅰ — 절대영도의 사슬",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「IDA 스쿨편Ⅰ — 절대영도의 사슬」 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第25章」クリア 「絶対零度の鎖」クリア",
+   "url": "https://altema.jp/anaden/reityounokotowari",
+   "recruits": [
+    {
+     "id": "mayu",
+     "name": "마유",
+     "step": "클리어"
+    }
+   ]
+  },
+  {
+   "slug": "boukyonotamasii",
+   "category_jp": "外史",
+   "category": "외사",
+   "title_jp": "望郷の魂と逆星の旅人",
+   "title": "망향의 혼과 역성의 나그네",
+   "title_src": "est",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제13장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第13章」クリア",
+   "url": "https://altema.jp/anaden/boukyonotamasii",
+   "recruits": [
+    {
+     "id": "ruvi",
+     "name": "루비",
+     "step": "프롤로그"
+    }
+   ]
+  },
+  {
+   "slug": "samayoerusyouzyo",
+   "category_jp": "外史",
+   "category": "외사",
+   "title_jp": "彷徨える少女と久遠の渦",
+   "title": "방황하는 소녀와 영겁의 소용돌이",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 22,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제22장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第22章」クリア",
+   "url": "https://altema.jp/anaden/samayoerusyouzyo",
+   "recruits": []
+  },
+  {
+   "slug": "zetaireido-6164",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "絶対零度の鎖IDAスクール編Ⅰ",
+   "title": "IDA 스쿨편Ⅰ — 절대영도의 사슬",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제13장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第13章」クリア",
+   "url": "https://altema.jp/anaden/zetaireido-6164",
+   "recruits": []
+  },
+  {
+   "slug": "kotyo",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "胡蝶の街と天の揺り籠",
+   "title": "IDA 스쿨편Ⅱ — 나비의 도시와 하늘의 요람",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제13장 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "絶対零度の鎖",
+     "quest": "IDA 스쿨편Ⅰ — 절대영도의 사슬",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「IDA 스쿨편Ⅰ — 절대영도의 사슬」 클리어"
+    }
+   ],
+   "cond_raw": "「絶対零度の鎖」クリア 「メインストーリー第13章」クリア",
+   "url": "https://altema.jp/anaden/kotyo",
+   "recruits": []
+  },
+  {
+   "slug": "ida3koryaku",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "導きの果実と電影の迷い子",
+   "title": "IDA 스쿨편Ⅲ — 인도하는 과실과 화면 속 미아",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 44,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제44장 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "胡蝶の町と天の揺り籠",
+     "quest": "IDA 스쿨편Ⅱ — 나비의 도시와 하늘의 요람",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「IDA 스쿨편Ⅱ — 나비의 도시와 하늘의 요람」 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第44章」クリア 「胡蝶の町と天の揺り籠」クリア",
+   "url": "https://altema.jp/anaden/ida3koryaku",
+   "recruits": [
+    {
+     "id": "mana",
+     "name": "마나",
+     "step": "제4화"
+    }
+   ]
+  },
+  {
+   "slug": "rasennokioku",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "螺旋の記憶と原初の旋律",
+   "title": "나선의 기억과 원초의 선율",
+   "title_src": "ding",
+   "sub_jp": "魔獣の章 二律背反",
+   "sub": "나선의 기억과 원초의 선율 Ⅰ — 마수의 장: 이율배반",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 44,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제44장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第44章」クリア",
+   "url": "https://altema.jp/anaden/rasennokioku",
+   "recruits": []
+  },
+  {
+   "slug": "kouheisekai",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "螺旋の記憶と原初の旋律",
+   "title": "나선의 기억과 원초의 선율",
+   "title_src": "ding",
+   "sub_jp": "人類の章 公平世界",
+   "sub": "나선의 기억과 원초의 선율 Ⅱ — 인류의 장: 공평한 세상",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 74,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제74장 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "魔獣の章 二律背反",
+     "quest": "나선의 기억과 원초의 선율 Ⅰ — 마수의 장: 이율배반",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「나선의 기억과 원초의 선율 Ⅰ — 마수의 장: 이율배반」 클리어"
+    }
+   ],
+   "cond_raw": "「魔獣の章 二律背反」クリア 「メインストーリー第74章」クリア",
+   "url": "https://altema.jp/anaden/kouheisekai",
+   "recruits": []
+  },
+  {
+   "slug": "kofukushugi",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "螺旋の記憶と原初の旋律",
+   "title": "나선의 기억과 원초의 선율",
+   "title_src": "ding",
+   "sub_jp": "亜人の章 幸福主義",
+   "sub": "나선의 기억과 원초의 선율 Ⅲ — 아인의 장: 행복주의",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 74,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제74장 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "亜人の章 幸福主義",
+     "quest": "나선의 기억과 원초의 선율 Ⅲ — 아인의 장: 행복주의",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「나선의 기억과 원초의 선율 Ⅲ — 아인의 장: 행복주의」 클리어"
+    }
+   ],
+   "cond_raw": "「亜人の章 幸福主義」クリア 「メインストーリー第74章」クリア",
+   "url": "https://altema.jp/anaden/kofukushugi",
+   "recruits": []
+  },
+  {
+   "slug": "sinkanonigenri",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "螺旋の記憶と原初の旋律",
+   "title": "나선의 기억과 원초의 선율",
+   "title_src": "ding",
+   "sub_jp": "螺旋の章 進化の二原理",
+   "sub": "나선의 기억과 원초의 선율 Ⅳ — 나선의 장: 진화의 두 원칙",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 95,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제95장 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "亜人の章 幸福主義",
+     "quest": "나선의 기억과 원초의 선율 Ⅲ — 아인의 장: 행복주의",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「나선의 기억과 원초의 선율 Ⅲ — 아인의 장: 행복주의」 클리어"
+    }
+   ],
+   "cond_raw": "「亜人の章 幸福主義」クリア 「メインストーリー第95章」クリア",
+   "url": "https://altema.jp/anaden/sinkanonigenri",
+   "recruits": []
+  },
+  {
+   "slug": "tozasaretahakoniwa",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "閉ざされた箱庭と蒼穹の叛逆者",
+   "title": "닫힌 정원과 창궁의 반역자",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 44,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제44장 클리어"
+    },
+    {
+     "type": "chara_quest",
+     "chara_jp": "リィカ",
+     "chara": "리이카",
+     "level": 2,
+     "stage": "",
+     "text": "「리이카」 캐릭터 퀘스트 2 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第44章」クリア 「リィカ」のキャラクエ2クリア",
+   "url": "https://altema.jp/anaden/tozasaretahakoniwa",
+   "recruits": []
+  },
+  {
+   "slug": "hutarinokisiinorinomaken-3508",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "ふたりの騎士と祈りの魔剣",
+   "title": "두 명의 기사와 기원의 마검",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제13장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第13章」クリア",
+   "url": "https://altema.jp/anaden/hutarinokisiinorinomaken-3508",
+   "recruits": [
+    {
+     "id": "deirdre",
+     "name": "디아드라",
+     "step": "클리어"
+    }
+   ]
+  },
+  {
+   "slug": "mikannoseimei",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "未完の生命と瑕疵の楽土",
+   "title": "미완의 생명과 하자의 낙토",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 65,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제65장 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "閉ざされた箱庭と蒼穹の叛逆者",
+     "quest": "닫힌 정원과 창궁의 반역자",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「닫힌 정원과 창궁의 반역자」 클리어"
+    }
+   ],
+   "cond_raw": "「閉ざされた箱庭と蒼穹の叛逆者」クリア 「メインストーリー第65章」クリア (※第2話以降)",
+   "url": "https://altema.jp/anaden/mikannoseimei",
+   "recruits": []
+  },
+  {
+   "slug": "byakuyanotojiito",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "彷徨える少女と白夜の綴糸",
+   "title": "방황하는 소녀와 백야의 고리",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "quest",
+     "quest_jp": "彷徨える少女と久遠の渦",
+     "quest": "방황하는 소녀와 영겁의 소용돌이",
+     "quest_src": "ding",
+     "step": "6화",
+     "stage": "",
+     "text": "「방황하는 소녀와 영겁의 소용돌이」 6화 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "追憶・歴史の果て",
+     "quest": "추억 · 역사의 끝",
+     "quest_src": "est",
+     "step": "",
+     "stage": "",
+     "text": "「추억 · 역사의 끝」 클리어"
+    }
+   ],
+   "cond_raw": "「彷徨える少女と久遠の渦」6話クリア 「追憶・歴史の果て」クリア",
+   "url": "https://altema.jp/anaden/byakuyanotojiito",
+   "recruits": []
+  },
+  {
+   "slug": "garyunosima",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "臥竜の島と絶崖の紋",
+   "title": "벌룡 공주 기담 Ⅰ — 와룡의 섬과 절벽의 문양",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제13장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第13章」クリア",
+   "url": "https://altema.jp/anaden/garyunosima",
+   "recruits": [
+    {
+     "id": "wryz",
+     "name": "류제",
+     "step": "제1화"
+    }
+   ]
+  },
+  {
+   "slug": "reirounoko",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "天命の道と玲瓏の仔",
+   "title": "벌룡 공주 기담 Ⅱ — 천명의 길과 영롱한 아이",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "quest",
+     "quest_jp": "臥竜の島と絶崖の紋",
+     "quest": "벌룡 공주 기담 Ⅰ — 와룡의 섬과 절벽의 문양",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「벌룡 공주 기담 Ⅰ — 와룡의 섬과 절벽의 문양」 클리어"
+    }
+   ],
+   "cond_raw": "「臥竜の島と絶崖の紋」クリア",
+   "url": "https://altema.jp/anaden/reirounoko",
+   "recruits": []
+  },
+  {
+   "slug": "kontonnosiniki",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "混沌の神域と英傑の詩",
+   "title": "벌룡 공주 기담 Ⅲ — 혼돈의 신역과 영걸의 시",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 44,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제44장 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "天命の道と玲瓏の仔",
+     "quest": "벌룡 공주 기담 Ⅱ — 천명의 길과 영롱한 아이",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「벌룡 공주 기담 Ⅱ — 천명의 길과 영롱한 아이」 클리어"
+    },
+    {
+     "type": "sub_quest",
+     "quest_jp": "火竜の魂",
+     "quest": "화룡의 혼",
+     "quest_src": "est",
+     "step": "",
+     "stage": "",
+     "text": "서브 퀘스트 「화룡의 혼」 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第44章」クリア 「天命の道と玲瓏の仔」クリア サブクエスト「火竜の魂」クリア",
+   "url": "https://altema.jp/anaden/kontonnosiniki",
+   "recruits": []
+  },
+  {
+   "slug": "wadatsuminoshinen",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "三千界の匣わだつみの深淵",
+   "title": "삼천 세계의 상자, 해신의 심연",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "quest",
+     "quest_jp": "剣の唄と失楽の翼",
+     "quest": "검의 노래와 실락의 날개",
+     "quest_src": "ding",
+     "step": "최종화",
+     "stage": "",
+     "text": "「검의 노래와 실락의 날개」 최종화 클리어"
+    }
+   ],
+   "cond_raw": "「剣の唄と失楽の翼」最終話クリア",
+   "url": "https://altema.jp/anaden/wadatsuminoshinen",
+   "recruits": []
+  },
+  {
+   "slug": "tokinotanko",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "時の炭鉱と夢を視る郷",
+   "title": "시간의 탄광과 꿈꾸는 마을",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 21,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제21장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第21章」クリア",
+   "url": "https://altema.jp/anaden/tokinotanko",
+   "recruits": []
+  },
+  {
+   "slug": "hajimarinokishi",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "はじまりの騎士と祈りの魔剣",
+   "title": "시작의 기사와 기원의 마검",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 22,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제22장 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "ふたりの騎士と祈りの魔剣",
+     "quest": "두 명의 기사와 기원의 마검",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「두 명의 기사와 기원의 마검」 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第22章」クリア 「ふたりの騎士と祈りの魔剣」クリア",
+   "url": "https://altema.jp/anaden/hajimarinokishi",
+   "recruits": []
+  },
+  {
+   "slug": "ginnohutyouka",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "失われた正典と銀の不凋花",
+   "title": "잃어버린 경전과 시들지 않는 은꽃",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제13장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第13章」クリア",
+   "url": "https://altema.jp/anaden/ginnohutyouka",
+   "recruits": []
+  },
+  {
+   "slug": "tengai",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "天蓋の塔と幽冥の魔女",
+   "title": "천개의 탑과 저승의 마녀",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 1,
+     "unit": "部",
+     "stage": "",
+     "text": "메인 스토리 제1부 클리어"
+    },
+    {
+     "type": "chara_quest",
+     "chara_jp": "サイラス",
+     "chara": "사이러스 (협주)",
+     "level": 2,
+     "stage": "",
+     "text": "「사이러스 (협주)」 캐릭터 퀘스트 2 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第1部」クリア 「サイラス」のキャラクエ2クリア",
+   "url": "https://altema.jp/anaden/tengai",
+   "recruits": []
+  },
+  {
+   "slug": "wadatumi",
+   "category_jp": "外伝",
+   "category": "외전",
+   "title_jp": "千年の匣わだつみの神殿",
+   "title": "천년의 상자, 해신의 신전",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 11,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제11장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー11章」クリア",
+   "url": "https://altema.jp/anaden/wadatumi",
+   "recruits": []
+  },
+  {
+   "slug": "kotyouafuta",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "胡蝶の街と天の揺り籠AfterIncidents",
+   "title": "IDA 스쿨편Ⅱ — 나비의 도시와 하늘의 요람 After Incidents",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제13장 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "胡蝶の街と天の揺り籠",
+     "quest": "IDA 스쿨편Ⅱ — 나비의 도시와 하늘의 요람",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「IDA 스쿨편Ⅱ — 나비의 도시와 하늘의 요람」 클리어"
+    }
+   ],
+   "cond_raw": "外伝「胡蝶の街と天の揺り籠」クリア 「メインストーリー第13章」クリア",
+   "url": "https://altema.jp/anaden/kotyouafuta",
+   "recruits": []
+  },
+  {
+   "slug": "gariyu",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "ガリユ編",
+   "title": "가리유 편",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "none",
+     "text": "해금 조건 없음"
+    }
+   ],
+   "cond_raw": "開始条件なし",
+   "url": "https://altema.jp/anaden/gariyu",
+   "recruits": []
+  },
+  {
+   "slug": "gariyukaigan",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "開眼ガリユ編",
+   "title": "개안 가리유 편",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 44,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제44장 클리어"
+    },
+    {
+     "type": "chara_quest",
+     "chara_jp": "ガリユ",
+     "chara": "가리유",
+     "level": 3,
+     "stage": "",
+     "text": "「가리유」 캐릭터 퀘스트 3 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第44章」クリア 「ガリユ」のキャラクエ3クリア",
+   "url": "https://altema.jp/anaden/gariyukaigan",
+   "recruits": []
+  },
+  {
+   "slug": "tozasaretaoneother",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "閉ざされた箱庭と蒼穹の叛逆者OneOtherOrdeal",
+   "title": "닫힌 정원과 창궁의 반역자 — One Other Ordeal",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 44,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제44장 클리어"
+    },
+    {
+     "type": "chara_quest",
+     "chara_jp": "リィカ",
+     "chara": "리이카",
+     "level": 2,
+     "stage": "",
+     "text": "「리이카」 캐릭터 퀘스트 2 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "閉ざされた箱庭と蒼穹の叛逆",
+     "quest": "닫힌 정원과 창궁의 반역자",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「닫힌 정원과 창궁의 반역자」 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第44章」クリア「閉ざされた箱庭と蒼穹の叛逆」クリア「リィカ」のキャラクエ2クリア",
+   "url": "https://altema.jp/anaden/tozasaretaoneother",
+   "recruits": []
+  },
+  {
+   "slug": "kaigen2",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "リヴァイア編",
+   "title": "레비아 편",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 66,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제66장 클리어"
+    },
+    {
+     "type": "chara_quest",
+     "chara_jp": "リヴァイア",
+     "chara": "레비아",
+     "level": 2,
+     "stage": "",
+     "text": "「레비아」 캐릭터 퀘스트 2 클리어"
+    }
+   ],
+   "cond_raw": "「リヴァイア」のキャラクエ2クリア 「メインストーリー第66章」クリア",
+   "url": "https://altema.jp/anaden/kaigen2",
+   "recruits": []
+  },
+  {
+   "slug": "aisubekiorokasayo",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "愛すべき愚かさよThe Guardian of Curiosity",
+   "title": "미워할 수 없는 어리석음 — The Guardian of Curiosity",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 18,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제18장 클리어"
+    },
+    {
+     "type": "chara_quest",
+     "chara_jp": "ノノルド",
+     "chara": "노놀드",
+     "level": 2,
+     "stage": "",
+     "text": "「노놀드」 캐릭터 퀘스트 2 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "絶対零度の鎖",
+     "quest": "IDA 스쿨편Ⅰ — 절대영도의 사슬",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「IDA 스쿨편Ⅰ — 절대영도의 사슬」 클리어"
+    }
+   ],
+   "cond_raw": "メインストーリー第18章クリア 「ノノルド」のキャラクエ2クリア 「絶対零度の鎖」クリア",
+   "url": "https://altema.jp/anaden/aisubekiorokasayo",
+   "recruits": []
+  },
+  {
+   "slug": "edgeofthevortex",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "彷徨える少女と白夜の綴糸Edge of the Vortex",
+   "title": "방황하는 소녀와 백야의 고리 — Edge of the Vortex",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "party_member",
+     "chara_jp": "ノクシス",
+     "chara": "녹시스",
+     "stage": "",
+     "text": "녹시스 영입 완료"
+    },
+    {
+     "type": "sub_quest",
+     "quest_jp": "ブラックバード",
+     "quest": "블랙버드",
+     "quest_src": "est",
+     "step": "",
+     "stage": "",
+     "text": "서브 퀘스트 「블랙버드」 클리어"
+    }
+   ],
+   "cond_raw": "ノクシスが加入 サブクエ「ブラックバード」クリア └外伝「彷徨える少女と白夜の綴糸」",
+   "url": "https://altema.jp/anaden/edgeofthevortex",
+   "recruits": []
+  },
+  {
+   "slug": "meiyaku",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "復活の魔獣王いにしえの冥約",
+   "title": "부활의 마수왕 — 태고의 맹약",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 44,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제44장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第44章」クリア",
+   "url": "https://altema.jp/anaden/meiyaku",
+   "recruits": []
+  },
+  {
+   "slug": "kaigensyerinu",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "シェリーヌ編",
+   "title": "셀리느 편",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "chara_quest",
+     "chara_jp": "シェリーヌ",
+     "chara": "셀리느",
+     "level": 3,
+     "stage": "",
+     "text": "「셀리느」 캐릭터 퀘스트 3 클리어"
+    },
+    {
+     "type": "party",
+     "chara_jp": "シェリーヌ(NS)",
+     "chara": "셀리느 (NS)",
+     "stage": "",
+     "text": "파티에 셀리느 (NS) 편성"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "霊長の理と枢機の天秤",
+     "quest": "영장의 이치와 추기의 천칭",
+     "quest_src": "ding",
+     "step": "2화",
+     "stage": "",
+     "text": "「영장의 이치와 추기의 천칭」 2화 클리어"
+    }
+   ],
+   "cond_raw": "「シェリーヌ」のキャラクエ3クリア 「霊長の理と枢機の天秤」2話クリア パーティにシェリーヌ(NS)を編成",
+   "url": "https://altema.jp/anaden/kaigensyerinu",
+   "recruits": []
+  },
+  {
+   "slug": "syerinu",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "シェリーヌ編",
+   "title": "셀리느 편",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제13장 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "絶対零度の鎖",
+     "quest": "IDA 스쿨편Ⅰ — 절대영도의 사슬",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「IDA 스쿨편Ⅰ — 절대영도의 사슬」 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第13章」クリア 外伝「絶対零度の鎖」クリア",
+   "url": "https://altema.jp/anaden/syerinu",
+   "recruits": []
+  },
+  {
+   "slug": "kaigenazami",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "アザミ編",
+   "title": "아자미 편",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 52,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제52장 클리어"
+    },
+    {
+     "type": "chara_quest",
+     "chara_jp": "アザミ",
+     "chara": "아자미",
+     "level": 3,
+     "stage": "",
+     "text": "「아자미」 캐릭터 퀘스트 3 클리어"
+    },
+    {
+     "type": "party",
+     "chara_jp": "アザミ(NS)",
+     "chara": "아자미 (NS)",
+     "stage": "",
+     "text": "파티에 아자미 (NS) 편성"
+    }
+   ],
+   "cond_raw": "「アザミ」のキャラクエ3クリア 「メインストーリー第52章」クリア パーティにアザミ(NS)を編成",
+   "url": "https://altema.jp/anaden/kaigenazami",
+   "recruits": []
+  },
+  {
+   "slug": "kaikouazami-5408",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "アザミ編",
+   "title": "아자미 편",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "none",
+     "text": "해금 조건 없음"
+    }
+   ],
+   "cond_raw": "開始条件なし",
+   "url": "https://altema.jp/anaden/kaikouazami-5408",
+   "recruits": []
+  },
+  {
+   "slug": "windliberator",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "霊長の理と枢機の天秤wind liberator",
+   "title": "영장의 이치와 추기의 천칭 — wind liberator",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "chara_quest",
+     "chara_jp": "セヴェン",
+     "chara": "세빈",
+     "level": 2,
+     "stage": "",
+     "text": "「세빈」 캐릭터 퀘스트 2 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "霊長の理と枢機の天秤",
+     "quest": "영장의 이치와 추기의 천칭",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「영장의 이치와 추기의 천칭」 클리어"
+    }
+   ],
+   "cond_raw": "「セヴェン」のキャラクエ2クリア 「霊長の理と枢機の天秤」クリア",
+   "url": "https://altema.jp/anaden/windliberator",
+   "recruits": []
+  },
+  {
+   "slug": "jewelinshade",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "JewelinShade",
+   "title": "잃어버린 경전과 시들지 않는 은꽃 — Jewel in Shade",
+   "title_src": "ding",
+   "sub_jp": "失われた正典と銀の不凋花",
+   "sub": "잃어버린 경전과 시들지 않는 은꽃",
+   "conditions": [
+    {
+     "type": "quest",
+     "quest_jp": "胡蝶の街と天の揺り籠",
+     "quest": "IDA 스쿨편Ⅱ — 나비의 도시와 하늘의 요람",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「IDA 스쿨편Ⅱ — 나비의 도시와 하늘의 요람」 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "失われた正典と銀の不凋花",
+     "quest": "잃어버린 경전과 시들지 않는 은꽃",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「잃어버린 경전과 시들지 않는 은꽃」 클리어"
+    }
+   ],
+   "cond_raw": "「胡蝶の街と天の揺り籠」クリア 「失われた正典と銀の不凋花」クリア",
+   "url": "https://altema.jp/anaden/jewelinshade",
+   "recruits": []
+  },
+  {
+   "slug": "tengaimasho",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "天蓋の塔と幽冥の魔女",
+   "title": "천개의 탑과 저승의 마녀",
+   "title_src": "ding",
+   "sub_jp": "蘇る魔性翻る剣先",
+   "sub": "되살아난 마성, 나부끼는 칼날",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 32,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제32장 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "天蓋の塔と幽冥の魔女",
+     "quest": "천개의 탑과 저승의 마녀",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「천개의 탑과 저승의 마녀」 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第32章」クリア 「天蓋の塔と幽冥の魔女」クリア",
+   "url": "https://altema.jp/anaden/tengaimasho",
+   "recruits": []
+  },
+  {
+   "slug": "wingedprayer",
+   "category_jp": "邂逅",
+   "category": "해후",
+   "title_jp": "プライ星5クラス解放",
+   "title": "프라이 ☆5 클래스 해방",
+   "title_src": "est",
+   "sub_jp": "剣の唄と失楽の翼the winged prayer",
+   "sub": "검의 노래와 실락의 날개 — The Winged Prayer",
+   "conditions": [
+    {
+     "type": "chara_quest",
+     "chara_jp": "プライ",
+     "chara": "프라이",
+     "level": 2,
+     "stage": "",
+     "text": "「프라이」 캐릭터 퀘스트 2 클리어"
+    },
+    {
+     "type": "quest",
+     "quest_jp": "剣の唄と失楽の翼",
+     "quest": "검의 노래와 실락의 날개",
+     "quest_src": "ding",
+     "step": "최종화",
+     "stage": "",
+     "text": "「검의 노래와 실락의 날개」 최종화 클리어"
+    }
+   ],
+   "cond_raw": "「剣の唄と失楽の翼」最終話クリア 「プライ」のキャラクエ2クリア",
+   "url": "https://altema.jp/anaden/wingedprayer",
+   "recruits": []
+  },
+  {
+   "slug": "complexdream",
+   "category_jp": "協奏",
+   "category": "협주",
+   "title_jp": "COMPLEX DREAM",
+   "title": "COMPLEX DREAM",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "프롤로그",
+     "text": "메인 스토리 제13장 클리어"
+    }
+   ],
+   "cond_raw": "【プロローグ】 「メインストーリー第13章」クリア",
+   "url": "https://altema.jp/anaden/complexdream",
+   "recruits": [
+    {
+     "id": "glenn",
+     "name": "글렌",
+     "step": ""
+    },
+    {
+     "id": "kid",
+     "name": "키드",
+     "step": "클리어"
+    },
+    {
+     "id": "serge",
+     "name": "세르주",
+     "step": "제1화"
+    },
+    {
+     "id": "starky",
+     "name": "별이",
+     "step": "클리어"
+    }
+   ]
+  },
+  {
+   "slug": "ffcollabo",
+   "category_jp": "協奏",
+   "category": "협주",
+   "title_jp": "Memories of Another Sky",
+   "title": "Memories of Another Sky",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "",
+     "text": "메인 스토리 제13장 클리어"
+    }
+   ],
+   "cond_raw": "「メインストーリー第13章」クリア",
+   "url": "https://altema.jp/anaden/ffcollabo",
+   "recruits": [
+    {
+     "id": "garnet",
+     "name": "가넷",
+     "step": "제1화"
+    },
+    {
+     "id": "steiner",
+     "name": "슈타이너",
+     "step": "제1화"
+    },
+    {
+     "id": "vivi",
+     "name": "비비",
+     "step": "제1화"
+    },
+    {
+     "id": "zidane",
+     "name": "지단",
+     "step": "제1화"
+    }
+   ]
+  },
+  {
+   "slug": "anotherbout",
+   "category_jp": "協奏",
+   "category": "협주",
+   "title_jp": "THE KING OF FIGHTERS ANOTHER BOUT",
+   "title": "THE KING OF FIGHTERS ANOTHER BOUT",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 6,
+     "unit": "章",
+     "stage": "프롤로그",
+     "text": "메인 스토리 제6장 클리어"
+    },
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "퀘스트 본편",
+     "text": "메인 스토리 제13장 클리어"
+    }
+   ],
+   "cond_raw": "【プロローグ】 「メインストーリー第6章」クリア 【クエスト本編】 「メインストーリー第13章」クリア",
+   "url": "https://altema.jp/anaden/anotherbout",
+   "recruits": [
+    {
+     "id": "kula",
+     "name": "쿨라",
+     "step": "제1화"
+    },
+    {
+     "id": "kyo",
+     "name": "쿄",
+     "step": "제1화"
+    },
+    {
+     "id": "mai",
+     "name": "마이",
+     "step": "제1화"
+    },
+    {
+     "id": "terry",
+     "name": "테리",
+     "step": "제1화"
+    }
+   ]
+  },
+  {
+   "slug": "talescollabo",
+   "category_jp": "協奏",
+   "category": "협주",
+   "title_jp": "光陰の尾四天の星々",
+   "title": "광음의 꼬리, 사천의 별들 — 테일즈 오브 크로노그래피아",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 2,
+     "unit": "章",
+     "stage": "프롤로그",
+     "text": "메인 스토리 제2장 클리어"
+    },
+    {
+     "type": "main_story",
+     "chapter": 3,
+     "unit": "章",
+     "stage": "프롤로그",
+     "text": "메인 스토리 제3장 클리어"
+    },
+    {
+     "type": "main_story",
+     "chapter": 9,
+     "unit": "章",
+     "stage": "프롤로그",
+     "text": "메인 스토리 제9장 클리어"
+    },
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "프롤로그",
+     "text": "메인 스토리 제13장 클리어"
+    },
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "퀘스트 본편",
+     "text": "메인 스토리 제13장 클리어"
+    }
+   ],
+   "cond_raw": "【プロローグ】 クレス編：メインストーリー2章 ベルベット編：メインストーリー3章 ミラ編：メインストーリー9章 ユーリ編：メインストーリー13章 【クエスト本編】 メインストーリー13章クリア",
+   "url": "https://altema.jp/anaden/talescollabo",
+   "recruits": []
+  },
+  {
+   "slug": "talescollabo2",
+   "category_jp": "協奏",
+   "category": "협주",
+   "title_jp": "救世の神子と黎明の大樹",
+   "title": "구세의 신관과 여명의 거목",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 6,
+     "unit": "章",
+     "stage": "프롤로그",
+     "text": "메인 스토리 제6장 클리어"
+    },
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "퀘스트 본편",
+     "text": "메인 스토리 제13장 클리어"
+    }
+   ],
+   "cond_raw": "【プロローグ】 「メインストーリー第6章」クリア 【クエスト本編】 「メインストーリー第13章」クリア",
+   "url": "https://altema.jp/anaden/talescollabo2",
+   "recruits": [
+    {
+     "id": "alphen",
+     "name": "알펜",
+     "step": "제2화"
+    },
+    {
+     "id": "colette",
+     "name": "콜레트",
+     "step": "제2화"
+    },
+    {
+     "id": "lloyd",
+     "name": "로이드",
+     "step": "제2화"
+    },
+    {
+     "id": "shionne",
+     "name": "시온 (협주)",
+     "step": "제2화"
+    }
+   ]
+  },
+  {
+   "slug": "persona5collabo2",
+   "category_jp": "協奏",
+   "category": "협주",
+   "title_jp": "双魂の絆と虚ろの傀儡子",
+   "title": "두 영혼의 인연과 공허의 괴뢰사",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "quest",
+     "quest_jp": "双魂の絆と虚ろの傀儡子",
+     "quest": "두 영혼의 인연과 공허의 괴뢰사",
+     "quest_src": "ding",
+     "step": "",
+     "stage": "",
+     "text": "「두 영혼의 인연과 공허의 괴뢰사」 클리어"
+    }
+   ],
+   "cond_raw": "「双魂の絆と虚ろの傀儡子」クリア",
+   "url": "https://altema.jp/anaden/persona5collabo2",
+   "recruits": [
+    {
+     "id": "morgana",
+     "name": "모르가나",
+     "step": "제1화"
+    }
+   ]
+  },
+  {
+   "slug": "persona5collabo",
+   "category_jp": "協奏",
+   "category": "협주",
+   "title_jp": "双魂の絆と虚ろの傀儡子",
+   "title": "두 영혼의 인연과 공허의 괴뢰사",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 2,
+     "unit": "章",
+     "stage": "프롤로그",
+     "text": "메인 스토리 제2장 클리어"
+    },
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "본편",
+     "text": "메인 스토리 제13장 클리어"
+    }
+   ],
+   "cond_raw": "【プロローグ】 「メインストーリー第2章」クリア 【本編】 プロローグクリア +「メインストーリー第13章」クリア",
+   "url": "https://altema.jp/anaden/persona5collabo",
+   "recruits": [
+    {
+     "id": "morgana",
+     "name": "모르가나",
+     "step": "제1화"
+    }
+   ]
+  },
+  {
+   "slug": "saihatenotoriko",
+   "category_jp": "協奏",
+   "category": "협주",
+   "title_jp": "最果ての虜と導きの八重奏",
+   "title": "땅끝의 포로와 인도의 팔중주",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "프롤로그",
+     "text": "메인 스토리 제13장 클리어"
+    }
+   ],
+   "cond_raw": "【プロローグ】 「メインストーリー第13章」クリア",
+   "url": "https://altema.jp/anaden/saihatenotoriko",
+   "recruits": [
+    {
+     "id": "cyrus_albright",
+     "name": "사이러스 (협주)",
+     "step": ""
+    },
+    {
+     "id": "partitio",
+     "name": "파르티티오",
+     "step": ""
+    },
+    {
+     "id": "tithi",
+     "name": "티티",
+     "step": ""
+    }
+   ]
+  },
+  {
+   "slug": "harukanarueichi",
+   "category_jp": "協奏",
+   "category": "협주",
+   "title_jp": "悠かなる叡知と秘密の孤城",
+   "title": "아득한 예지와 비밀의 외딴 성",
+   "title_src": "ding",
+   "sub_jp": "",
+   "sub": "",
+   "conditions": [
+    {
+     "type": "main_story",
+     "chapter": 2,
+     "unit": "章",
+     "stage": "프롤로그",
+     "text": "메인 스토리 제2장 클리어"
+    },
+    {
+     "type": "main_story",
+     "chapter": 13,
+     "unit": "章",
+     "stage": "퀘스트 본편",
+     "text": "메인 스토리 제13장 클리어"
+    }
+   ],
+   "cond_raw": "【プロローグ】 「メインストーリー第2章」クリア 【クエスト本編】 「メインストーリー第13章」クリア",
+   "url": "https://altema.jp/anaden/harukanarueichi",
+   "recruits": [
+    {
+     "id": "empel",
+     "name": "엠펠",
+     "step": "클리어"
+    },
+    {
+     "id": "klaudia",
+     "name": "클라우디아",
+     "step": "클리어"
+    },
+    {
+     "id": "ryza",
+     "name": "라이자",
+     "step": "클리어"
+    }
+   ]
+  }
+ ]
+}

@@ -129,6 +129,25 @@
   .note-bar { font-size: 12px; color: var(--muted); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; line-height: 1.7; }
   .note-bar b { color: var(--accent); }
 
+  .quest-cat { font-family: 'Noto Serif KR', serif; font-size: 15px; color: var(--gold); margin: 22px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  .quest-cat span { color: var(--muted); font-size: 11px; font-family: 'Noto Sans KR', sans-serif; margin-left: 8px; }
+  .quest-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+  .quest-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+  .quest-card h4 { font-size: 14px; color: var(--text); font-weight: 600; line-height: 1.45; }
+  .quest-card .qsub { font-size: 11.5px; color: var(--accent); margin-top: 3px; }
+  .quest-card .qjp { font-size: 10.5px; color: var(--muted); margin-top: 3px; }
+  .cond-list { list-style: none; margin-top: 10px; padding-top: 9px; border-top: 1px solid var(--line); }
+  .cond-list li { font-size: 12.5px; color: var(--text); padding: 3px 0 3px 15px; position: relative; line-height: 1.6; }
+  .cond-list li::before { content: "▸"; position: absolute; left: 0; color: var(--gold-dim); }
+  .cond-list li.t-main::before { color: var(--blue); }
+  .cond-list li.t-chara_quest::before, .cond-list li.t-party::before, .cond-list li.t-party_member::before { color: var(--green); }
+  .cond-list li .stage { color: var(--muted); font-size: 10.5px; margin-left: 5px; }
+  .quest-recruits { margin-top: 10px; padding-top: 9px; border-top: 1px dashed var(--line); font-size: 12px; color: var(--muted); display: flex; gap: 6px; flex-wrap: wrap; align-items: baseline; }
+  .quest-recruits .who { color: var(--green); cursor: pointer; border-bottom: 1px dotted var(--green); }
+  .quest-recruits .who:hover { color: var(--gold); border-color: var(--gold); }
+  .unlock-box { margin-top: 10px; padding-top: 9px; border-top: 1px dashed var(--line); }
+  .unlock-box .cap { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; margin-bottom: 4px; }
+
   .empty-state { text-align: center; padding: 80px 20px; color: var(--muted); }
   .stub-notice { background: var(--panel-2); border: 1px dashed var(--line); border-radius: 8px; padding: 20px; color: var(--muted); text-align: center; font-size: 13px; margin: 20px 0; }
   .stub-notice b { color: var(--accent); }
@@ -153,6 +172,7 @@
 
 <div class="container">
   <div id="grid" class="grid"><div class="loading">데이터 로딩 중…</div></div>
+  <div id="quest-view" hidden></div>
   <div id="dungeon-view" hidden></div>
 </div>
 
@@ -181,7 +201,9 @@ const STATE = {
   recruit: {},        // id → { recruit, books, … }
   dungeons: {},       // 던전 한글명 → { name_jp, src, drops[] }
   recruitMeta: {},
-  view: "chars",      // chars | dungeons
+  quests: [],         // 퀘스트 해금 조건 (altema)
+  questByJp: {},      // 일본어 원제 → 퀘스트 (영입 조건과 연결)
+  view: "chars",      // chars | dungeons | quests
 };
 
 const ELEM_KO = {fire:"불",water:"물",earth:"땅",wind:"바람",thunder:"뇌",shade:"그림자",crystal:"결정","null":"무"};
@@ -230,9 +252,10 @@ async function init() {
   buildFilters();
   buildViewToggle();
   try {
-    const [res, resR] = await Promise.all([
+    const [res, resR, resQ] = await Promise.all([
       fetch('data/index.json'),
       fetch('data/recruit.json').catch(() => null),
+      fetch('data/quests.json').catch(() => null),
     ]);
     const data = await res.json();
     STATE.all = data.characters;
@@ -241,6 +264,13 @@ async function init() {
       STATE.recruit = rec.characters || {};
       STATE.dungeons = rec.dungeon_index || {};
       STATE.recruitMeta = rec.meta || {};
+    }
+    if (resQ && resQ.ok) {
+      const qd = await resQ.json();
+      STATE.quests = qd.quests || [];
+      for (const q of STATE.quests) {
+        if (q.title_jp) STATE.questByJp[q.title_jp] = q;
+      }
     }
     const stats = document.getElementById('stats');
     clear(stats);
@@ -325,7 +355,7 @@ function applyFilters() {
 function buildViewToggle() {
   const wrap = document.getElementById('view-toggle');
   if (!wrap) return;
-  for (const [key, label] of [["chars", "캐릭터"], ["dungeons", "조건템 던전"]]) {
+  for (const [key, label] of [["chars", "캐릭터"], ["quests", "퀘스트 해금"], ["dungeons", "조건템 던전"]]) {
     const b = el("button", { class: "view-btn" + (STATE.view === key ? " active" : ""), text: label });
     b.addEventListener('click', () => {
       STATE.view = key;
@@ -365,6 +395,16 @@ function buildRecruitSection(id) {
     if (r.note) box.appendChild(kvLine("비고", r.note));
   }
   if (r.related_styles?.length) box.appendChild(kvLine("다른 스타일", r.related_styles.join(", ")));
+
+  // 그 퀘스트 자체의 해금 조건 (altema) — 영입까지의 전체 경로를 한 곳에서
+  const q = r.quest_jp ? STATE.questByJp[r.quest_jp] : null;
+  if (q?.conditions?.length) {
+    const unlock = el("div", { class: "unlock-box" });
+    unlock.appendChild(el("div", { class: "cap", text: "이 퀘스트가 열리는 조건" }));
+    unlock.appendChild(condListEl(q.conditions));
+    box.appendChild(unlock);
+  }
+
   if (r.raw) box.appendChild(el("div", { class: "recruit-raw", text: "원문: " + r.raw }));
 
   return el("div", { class: "section", children: [el("h3", { text: "영입 조건" }), box] });
@@ -418,6 +458,68 @@ function buildBooksSection(id) {
   return el("div", { class: "section", children: [el("h3", { text: "☆5 각성 재료 (조건템)" }), tbl] });
 }
 
+function condListEl(conditions) {
+  const ul = el("ul", { class: "cond-list" });
+  for (const c of conditions || []) {
+    const li = el("li", { class: "t-" + (c.type === "main_story" ? "main" : c.type) });
+    li.appendChild(el("span", { text: c.text }));
+    if (c.stage) li.appendChild(el("span", { class: "stage", text: "(" + c.stage + ")" }));
+    ul.appendChild(li);
+  }
+  return ul;
+}
+
+function renderQuests() {
+  const host = document.getElementById('quest-view');
+  clear(host);
+  if (!STATE.quests.length) {
+    host.appendChild(el("div", { class: "empty-state", text: "퀘스트 데이터가 없습니다. data/quests.json 을 확인하세요." }));
+    return;
+  }
+
+  host.appendChild(el("div", {
+    class: "note-bar",
+    children: [
+      el("b", { text: "해금 조건 = 퀘스트가 열리는 선행 조건. " }),
+      el("span", { text: "출처 altema.jp(일본). 한글 퀘스트명은 국내 체크리스트 정본 기준이며, 일본 서버 기준 조건이라 한섭 진행도와 어긋날 수 있습니다." }),
+    ]
+  }));
+
+  const byCat = {};
+  for (const q of STATE.quests) (byCat[q.category] || (byCat[q.category] = [])).push(q);
+
+  for (const [cat, list] of Object.entries(byCat)) {
+    const h = el("div", { class: "quest-cat", text: cat });
+    h.appendChild(el("span", { text: list.length + "개" }));
+    host.appendChild(h);
+
+    const grid = el("div", { class: "quest-grid" });
+    for (const q of list) {
+      const card = el("div", { class: "quest-card" });
+      const title = el("h4", { text: q.title });
+      const mk = srcMark(q.title_src);
+      if (mk) title.appendChild(mk);
+      card.appendChild(title);
+      if (q.sub) card.appendChild(el("div", { class: "qsub", text: q.sub }));
+      if (q.title_jp && q.title_jp !== q.title) card.appendChild(el("div", { class: "qjp", text: q.title_jp }));
+      card.appendChild(condListEl(q.conditions));
+
+      if (q.recruits?.length) {
+        const box = el("div", { class: "quest-recruits" });
+        box.appendChild(el("span", { text: "영입:" }));
+        for (const r of q.recruits) {
+          const a = el("span", { class: "who", text: r.name + (r.step ? ` (${r.step})` : "") });
+          a.addEventListener('click', () => openModal(r.id));
+          box.appendChild(a);
+        }
+        card.appendChild(box);
+      }
+      grid.appendChild(card);
+    }
+    host.appendChild(grid);
+  }
+}
+
 function renderDungeons() {
   const host = document.getElementById('dungeon-view');
   clear(host);
@@ -465,17 +567,14 @@ function renderDungeons() {
 function render() {
   const grid = document.getElementById('grid');
   const dview = document.getElementById('dungeon-view');
+  const qview = document.getElementById('quest-view');
   const filters = document.getElementById('filters');
-  if (STATE.view === "dungeons") {
-    grid.hidden = true;
-    dview.hidden = false;
-    filters.hidden = true;
-    renderDungeons();
-    return;
-  }
-  grid.hidden = false;
-  dview.hidden = true;
-  filters.hidden = false;
+  grid.hidden = STATE.view !== "chars";
+  qview.hidden = STATE.view !== "quests";
+  dview.hidden = STATE.view !== "dungeons";
+  filters.hidden = STATE.view !== "chars";
+  if (STATE.view === "quests") { renderQuests(); return; }
+  if (STATE.view === "dungeons") { renderDungeons(); return; }
 
   const list = applyFilters();
   clear(grid);

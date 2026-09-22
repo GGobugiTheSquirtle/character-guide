@@ -20,6 +20,7 @@
     --blue: #6c8ec1;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
   html, body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', -apple-system, sans-serif; line-height: 1.5; }
   body { min-height: 100vh; }
 
@@ -90,6 +91,44 @@
   .sources a { color: var(--muted); font-size: 12px; text-decoration: none; padding: 4px 10px; border: 1px solid var(--line); border-radius: 4px; }
   .sources a:hover { color: var(--gold); border-color: var(--gold-dim); }
 
+  /* 영입 조건 · 조건템 (2026-09-22) */
+  .view-toggle { display: flex; gap: 6px; }
+  .view-btn { padding: 5px 12px; border: 1px solid var(--line); background: var(--panel-2); color: var(--muted); border-radius: 6px; font-size: 12px; cursor: pointer; font-family: inherit; }
+  .view-btn:hover { border-color: var(--gold-dim); color: var(--text); }
+  .view-btn.active { background: var(--gold); border-color: var(--gold); color: #2a2317; font-weight: 600; }
+
+  .badge.free { background: rgba(108,158,110,0.18); color: var(--green); border-color: #3a5c3c; }
+
+  .recruit-box { background: var(--panel-2); border-left: 3px solid var(--green); border-radius: 0 6px 6px 0; padding: 12px 16px; font-size: 13px; line-height: 1.8; }
+  .recruit-box.gacha { border-left-color: var(--gold-dim); }
+  .recruit-line { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .recruit-line .k { color: var(--muted); font-size: 11px; min-width: 56px; letter-spacing: 0.5px; }
+  .recruit-line .v { color: var(--text); flex: 1; min-width: 0; }
+  .recruit-raw { color: var(--muted); font-size: 11px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); word-break: break-all; }
+
+  .book-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .book-table th, .book-table td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .book-table th { color: var(--muted); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .book-table .rank { color: var(--gold); white-space: nowrap; }
+  .book-table .qty { color: var(--accent); white-space: nowrap; text-align: right; }
+  .book-table .jp { color: var(--muted); font-size: 11px; display: block; margin-top: 2px; }
+  .book-table tr:hover { background: var(--panel-2); }
+
+  .est-mark { font-size: 9px; color: var(--muted); border: 1px solid var(--line); border-radius: 3px; padding: 1px 4px; margin-left: 6px; vertical-align: middle; }
+  .est-mark.est { color: var(--red); border-color: #6b3a3c; }
+
+  .dungeon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+  .dungeon-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+  .dungeon-card h3 { font-family: 'Noto Serif KR', serif; font-size: 15px; color: var(--gold); margin-bottom: 2px; }
+  .dungeon-card .sub { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+  .dungeon-card ul { list-style: none; }
+  .dungeon-card li { font-size: 12.5px; padding: 5px 0; border-top: 1px solid var(--line); display: flex; gap: 8px; align-items: baseline; cursor: pointer; }
+  .dungeon-card li:hover .who { color: var(--gold); }
+  .dungeon-card li .who { color: var(--text); flex-shrink: 0; }
+  .dungeon-card li .what { color: var(--muted); font-size: 11px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .note-bar { font-size: 12px; color: var(--muted); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; line-height: 1.7; }
+  .note-bar b { color: var(--accent); }
+
   .empty-state { text-align: center; padding: 80px 20px; color: var(--muted); }
   .stub-notice { background: var(--panel-2); border: 1px dashed var(--line); border-radius: 8px; padding: 20px; color: var(--muted); text-align: center; font-size: 13px; margin: 20px 0; }
   .stub-notice b { color: var(--accent); }
@@ -103,16 +142,18 @@
   <div class="header-row">
     <div class="title">어나더에덴<small>Character Database</small></div>
     <input id="search" type="text" placeholder="캐릭명 검색 (한/영/일)…">
+    <div class="view-toggle" id="view-toggle"></div>
     <div class="stats" id="stats">로딩 중…</div>
   </div>
 </header>
 
-<div class="filters">
+<div class="filters" id="filters">
   <div class="filter-row" id="filter-row"></div>
 </div>
 
 <div class="container">
   <div id="grid" class="grid"><div class="loading">데이터 로딩 중…</div></div>
+  <div id="dungeon-view" hidden></div>
 </div>
 
 <div class="modal" id="modal">
@@ -134,8 +175,13 @@
 <script>
 const STATE = {
   all: [],
-  filters: { element: "", weapon: "", style: "", sa: false, hasFull: false },
+  filters: { element: "", weapon: "", style: "", sa: false, hasFull: false, recruit: "" },
   search: "",
+  // 영입 조건 · 조건템 (2026-09-22)
+  recruit: {},        // id → { recruit, books, … }
+  dungeons: {},       // 던전 한글명 → { name_jp, src, drops[] }
+  recruitMeta: {},
+  view: "chars",      // chars | dungeons
 };
 
 const ELEM_KO = {fire:"불",water:"물",earth:"땅",wind:"바람",thunder:"뇌",shade:"그림자",crystal:"결정","null":"무"};
@@ -156,6 +202,7 @@ const FILTER_DEFS = [
   { label: "속성", key: "element", values: [["", "전체"], ["fire","불"], ["water","물"], ["earth","땅"], ["wind","바람"], ["thunder","뇌"], ["shade","그림자"], ["crystal","결정"], ["null","무"]] },
   { label: "무기", key: "weapon",  values: [["", "전체"], ["sword","검"], ["katana","도"], ["axe","도끼"], ["lance","창"], ["bow","활"], ["fist","권갑"], ["staff","지팡이"], ["hammer","망치"]] },
   { label: "스타일", key: "style", values: [["", "전체"], ["NS","NS"], ["AS","AS"], ["ES","ES"], ["Alter","Alter"]] },
+  { label: "영입", key: "recruit", values: [["", "전체"], ["free","무료"], ["gacha","가챠"], ["books","조건템 있음"]] },
 ];
 
 // ─────────────────────────────────────
@@ -181,10 +228,20 @@ function badgeEl(text, extraClass = "") {
 // ─────────────────────────────────────
 async function init() {
   buildFilters();
+  buildViewToggle();
   try {
-    const res = await fetch('data/index.json');
+    const [res, resR] = await Promise.all([
+      fetch('data/index.json'),
+      fetch('data/recruit.json').catch(() => null),
+    ]);
     const data = await res.json();
     STATE.all = data.characters;
+    if (resR && resR.ok) {
+      const rec = await resR.json();
+      STATE.recruit = rec.characters || {};
+      STATE.dungeons = rec.dungeon_index || {};
+      STATE.recruitMeta = rec.meta || {};
+    }
     const stats = document.getElementById('stats');
     clear(stats);
     stats.append("총 ", strong(data.meta.total), "명 · 매핑 ", strong(data.meta.with_mapping), " · 상세 ", strong(data.meta.with_full));
@@ -246,6 +303,11 @@ function applyFilters() {
   if (f.style)   list = list.filter(c => c.style === f.style || (f.style === "Alter" && c.style?.startsWith("Alter")));
   if (f.sa)      list = list.filter(c => c.sa);
   if (f.hasFull) list = list.filter(c => c.has_full);
+  if (f.recruit === "books") {
+    list = list.filter(c => (STATE.recruit[c.id]?.books || []).length > 0);
+  } else if (f.recruit) {
+    list = list.filter(c => STATE.recruit[c.id]?.recruit?.kind === f.recruit);
+  }
   if (STATE.search) {
     const q = STATE.search.toLowerCase();
     list = list.filter(c =>
@@ -257,9 +319,165 @@ function applyFilters() {
   return list;
 }
 
+// ─────────────────────────────────────
+// 영입 조건 · 조건템 (2026-09-22)
+// ─────────────────────────────────────
+function buildViewToggle() {
+  const wrap = document.getElementById('view-toggle');
+  if (!wrap) return;
+  for (const [key, label] of [["chars", "캐릭터"], ["dungeons", "조건템 던전"]]) {
+    const b = el("button", { class: "view-btn" + (STATE.view === key ? " active" : ""), text: label });
+    b.addEventListener('click', () => {
+      STATE.view = key;
+      wrap.querySelectorAll('.view-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      render();
+    });
+    wrap.appendChild(b);
+  }
+}
+
+// 표기 신뢰도 마크 — est(추정)만 눈에 띄게
+function srcMark(src) {
+  if (!src || src === "ding" || src === "local") return null;
+  return el("span", { class: "est-mark est", text: "추정", attrs: { title: "한섭 실표기 미확인 — 일본어 원문 병기 참고" } });
+}
+
+function kvLine(k, v, mark) {
+  const val = el("span", { class: "v", text: v });
+  if (mark) val.appendChild(mark);
+  return el("div", { class: "recruit-line", children: [el("span", { class: "k", text: k }), val] });
+}
+
+function buildRecruitSection(id) {
+  const data = STATE.recruit[id];
+  const r = data?.recruit;
+  if (!r) return null;
+
+  const box = el("div", { class: "recruit-box" + (r.kind === "gacha" ? " gacha" : "") });
+  box.appendChild(kvLine("경로", r.kind_ko || r.kind));
+
+  if (r.kind === "free") {
+    if (r.category) box.appendChild(kvLine("분류", r.category));
+    const quest = r.quest || r.quest_jp;
+    if (quest) box.appendChild(kvLine("퀘스트", quest, r.quest ? srcMark(r.quest_src) : null));
+    if (r.step) box.appendChild(kvLine("시점", r.step));
+    if (r.note) box.appendChild(kvLine("비고", r.note));
+  }
+  if (r.related_styles?.length) box.appendChild(kvLine("다른 스타일", r.related_styles.join(", ")));
+  if (r.raw) box.appendChild(el("div", { class: "recruit-raw", text: "원문: " + r.raw }));
+
+  return el("div", { class: "section", children: [el("h3", { text: "영입 조건" }), box] });
+}
+
+function buildBooksSection(id) {
+  const data = STATE.recruit[id];
+  if (!data) return null;
+  if (!data.books?.length) {
+    if (!data.books_none) return null;
+    return el("div", {
+      class: "section",
+      children: [el("h3", { text: "☆5 각성 재료 (조건템)" }),
+                 el("div", { class: "recruit-box", text: "필요 서물 없음" })]
+    });
+  }
+
+  const tbl = el("table", { class: "book-table" });
+  const thead = el("thead");
+  const trh = el("tr");
+  for (const h of ["등급", "필요 서물", "수량", "획득처"]) trh.appendChild(el("th", { text: h }));
+  thead.appendChild(trh);
+  tbl.appendChild(thead);
+
+  const tb = el("tbody");
+  for (const b of data.books) {
+    const tr = el("tr");
+    tr.appendChild(el("td", { class: "rank", text: b.rank || "—" }));
+
+    const nameTd = el("td");
+    nameTd.appendChild(el("span", { text: b.name || b.name_jp }));
+    if (b.name && b.name !== b.name_jp) nameTd.appendChild(el("span", { class: "jp", text: b.name_jp }));
+    tr.appendChild(nameTd);
+
+    tr.appendChild(el("td", { class: "qty", text: "×" + (b.qty || 1) }));
+
+    const srcTd = el("td");
+    if (b.source) {
+      srcTd.appendChild(el("span", { text: b.source }));
+      const mk = srcMark(b.source_src);
+      if (mk) srcTd.appendChild(mk);
+      if (b.source_jp) srcTd.appendChild(el("span", { class: "jp", text: b.source_jp }));
+    } else {
+      srcTd.appendChild(el("span", { class: "jp", text: "획득처 정보 없음" }));
+    }
+    tr.appendChild(srcTd);
+    tb.appendChild(tr);
+  }
+  tbl.appendChild(tb);
+
+  return el("div", { class: "section", children: [el("h3", { text: "☆5 각성 재료 (조건템)" }), tbl] });
+}
+
+function renderDungeons() {
+  const host = document.getElementById('dungeon-view');
+  clear(host);
+
+  const entries = Object.entries(STATE.dungeons || {});
+  if (!entries.length) {
+    host.appendChild(el("div", { class: "empty-state", text: "조건템 데이터가 없습니다. data/recruit.json 을 확인하세요." }));
+    return;
+  }
+
+  host.appendChild(el("div", {
+    class: "note-bar",
+    children: [
+      el("b", { text: "조건템 = ☆5 각성(CC/SC)에 필요한 서물. " }),
+      el("span", { text: "던전을 눌러 해당 던전에서 서물이 나오는 캐릭터를 확인합니다. 특정 던전이 명시되지 않은 '각종 VH 어나더 던전' 류는 여기 집계되지 않습니다." }),
+    ]
+  }));
+
+  const grid = el("div", { class: "dungeon-grid" });
+  for (const [ko, d] of entries) {
+    const card = el("div", { class: "dungeon-card" });
+    const h = el("h3", { text: ko });
+    const mk = srcMark(d.src);
+    if (mk) h.appendChild(mk);
+    card.appendChild(h);
+    card.appendChild(el("div", { class: "sub", text: `${d.name_jp} · ${d.drops.length}명분` }));
+
+    const ul = el("ul");
+    for (const drop of d.drops) {
+      const li = el("li", {
+        children: [
+          el("span", { class: "who", text: drop.char }),
+          el("span", { class: "what", text: `${drop.book_jp} ×${drop.qty}` }),
+        ]
+      });
+      li.addEventListener('click', () => openModal(drop.id));
+      ul.appendChild(li);
+    }
+    card.appendChild(ul);
+    grid.appendChild(card);
+  }
+  host.appendChild(grid);
+}
+
 function render() {
-  const list = applyFilters();
   const grid = document.getElementById('grid');
+  const dview = document.getElementById('dungeon-view');
+  const filters = document.getElementById('filters');
+  if (STATE.view === "dungeons") {
+    grid.hidden = true;
+    dview.hidden = false;
+    filters.hidden = true;
+    renderDungeons();
+    return;
+  }
+  grid.hidden = false;
+  dview.hidden = true;
+  filters.hidden = false;
+
+  const list = applyFilters();
   clear(grid);
   if (!list.length) {
     grid.appendChild(el("div", { class: "empty-state", text: "필터 조건에 맞는 캐릭이 없습니다." }));
@@ -297,6 +515,7 @@ function buildCard(c) {
   if (WEAP_KO[c.weapon]) badges.appendChild(badgeEl(WEAP_KO[c.weapon]));
   if (c.style && c.style !== 'NS') badges.appendChild(badgeEl(c.style, "style-" + c.style.replace(/\s/g, '-')));
   if (c.sa) badges.appendChild(badgeEl("SA", "sa"));
+  if (STATE.recruit[c.id]?.recruit?.kind === "free") badges.appendChild(badgeEl("무료", "free"));
 
   // confidence
   const conf = c.confidence || 0;
@@ -325,6 +544,12 @@ async function openModal(id) {
   if (!c) { body.appendChild(el("div", { class: "empty-state", text: "캐릭을 찾을 수 없습니다." })); return; }
 
   body.appendChild(buildModalHeader(c));
+
+  // 영입 조건 · 조건템 — 상세본 유무와 무관하게 먼저 (2026-09-22)
+  const recSec = buildRecruitSection(id);
+  if (recSec) body.appendChild(recSec);
+  const bookSec = buildBooksSection(id);
+  if (bookSec) body.appendChild(bookSec);
 
   if (!c.has_full) {
     body.appendChild(buildStubNotice(c));

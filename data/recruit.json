@@ -1,0 +1,6971 @@
+{
+ "meta": {
+  "generated": "2026-09-22 22:11",
+  "source": "game-info.wiki 캐릭터 페이지 basic_info_raw (2026-05 수집분)",
+  "terms": "recruit_terms.json",
+  "grade_legend": {
+   "ding": "Ding-checklist 한글 정본 일치",
+   "local": "워크스페이스 코퍼스에서 한섭 실표기 확인",
+   "est": "추정 — 한섭 실표기 미확인"
+  },
+  "counts": {
+   "full": 264,
+   "recruit": 249,
+   "books": 222,
+   "none": 6
+  },
+  "chars": 249,
+  "dungeons": 17
+ },
+ "characters": {
+  "aisha": {
+   "name": "아이샤",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 キャラクエ「理の外を覗く時」クリアで加入",
+    "related_styles": [],
+    "category_jp": "キャラクエ",
+    "category": "캐릭터 퀘스트",
+    "quest_jp": "理の外を覗く時",
+    "quest": "이치 밖을 엿볼 때",
+    "quest_src": "est",
+    "step": "클리어",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "akane_as": {
+   "name": "아카네 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "아카네"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ミカハヤヒの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "aldo": {
+   "name": "알도",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 ゲーム開始時から所持",
+    "related_styles": [
+     "알도 AS"
+    ],
+    "category_jp": "",
+    "category": "시작 시 소지",
+    "quest_jp": "",
+    "quest": "",
+    "quest_src": "",
+    "step": "",
+    "note": "게임 시작 시부터 보유"
+   },
+   "books": [
+    {
+     "rank": "☆4",
+     "name_jp": "ソードマスターの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "",
+     "source": "",
+     "source_src": "",
+     "dungeons_jp": []
+    },
+    {
+     "rank": "☆5",
+     "name_jp": "ドラゴンベアラーの詩篇",
+     "name": null,
+     "qty": 5,
+     "source_jp": "蛇肝 ダマク(VH)でドロップ ノポウ・ロイヤルカンパニーで交換 (ツブラの珠150個)",
+     "source": "뱀의 간 다마크(VH)에서 드랍 / 노포우 로열 컴퍼니에서 교환 / (쓰부라의 보석 150개)",
+     "source_src": "est",
+     "dungeons_jp": [
+      "蛇肝 ダマク"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "aldo_as": {
+   "name": "알도 AS",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 メインストーリー第121章クリアで入手",
+    "related_styles": [
+     "알도"
+    ],
+    "category_jp": "メインストーリー",
+    "category": "메인 스토리",
+    "quest_jp": "",
+    "quest": "",
+    "quest_src": "",
+    "step": "제121장",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "alma": {
+   "name": "알마",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "알마 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "キトリニタスの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "人喰い沼(VH)でドロップ",
+     "source": "식인 늪(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "人喰い沼"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "alma_as": {
+   "name": "알마 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "알마"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "エポックメーカーの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "alphen": {
+   "name": "알펜",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「救世の神子と黎明の大樹」第2話で加入",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "救世の神子と黎明の大樹",
+    "quest": "구세의 신관과 여명의 거목",
+    "quest_src": "ding",
+    "step": "제2화",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "炎の剣の史籍",
+     "name": null,
+     "qty": 1,
+     "source_jp": "Raptor Alphen撃破で入手",
+     "source": "Raptor Alphen 격파로 입수",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "altena": {
+   "name": "알테나",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 メインストーリー第60章クリアで入手",
+    "related_styles": [],
+    "category_jp": "メインストーリー",
+    "category": "메인 스토리",
+    "quest_jp": "",
+    "quest": "",
+    "quest_src": "",
+    "step": "제60장",
+    "note": ""
+   },
+   "books": [],
+   "books_none": true
+  },
+  "anabel": {
+   "name": "아나벨",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "아나벨 AS",
+     "아나벨 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "聖騎士の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ミグランス城(VH)でドロップ",
+     "source": "미글랜스 성(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ミグランス城"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "anabel_as": {
+   "name": "아나벨 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "아나벨",
+     "아나벨 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "神聖騎士の異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "anabel_es": {
+   "name": "아나벨 ES",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "아나벨",
+     "아나벨 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "叡聖騎士の改典",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "ashtear": {
+   "name": "애쉬티어",
+   "acq": "buddy",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 メインストーリー第87章で加入",
+    "related_styles": [],
+    "category_jp": "メインストーリー",
+    "category": "메인 스토리",
+    "quest_jp": "",
+    "quest": "",
+    "quest_src": "",
+    "step": "제87장",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "benedict": {
+   "name": "베네디트",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ランバージャックの詩篇",
+     "name": null,
+     "qty": 30,
+     "source_jp": "群像「将星の斧と鎧える羊」クリアで入手",
+     "source": "군상 「장성의 도끼와 갑주의 양」 클리어로 입수",
+     "source_src": "ding",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "bertrand": {
+   "name": "베르트랑",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "베르트랑 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "エスクードの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ミグランス城(VH)でドロップ",
+     "source": "미글랜스 성(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ミグランス城"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "bertrand_as": {
+   "name": "베르트랑 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "베르트랑"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ミグルアスピーダの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "biaka": {
+   "name": "비아카",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "비아카 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "コマンデュールの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "工業都市廃墟(VH)でドロップ",
+     "source": "공업도시 폐허(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "工業都市廃墟"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "biaka_as": {
+   "name": "비아카 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "비아카"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アンノーンローズの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "bria": {
+   "name": "브리아",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アレス・ダイヤの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "燃える魔獣城(VH)でドロップ",
+     "source": "불타는 마수성(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "燃える魔獣城"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "cerius_as": {
+   "name": "세리에스",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "세리에스"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "タケミナカタの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "緑鍵2枚アナダン、VHアナダンで入手",
+     "source": "그린 키 2장 어나더 던전, VH 어나더 던전에서 입수",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "cerrine_as": {
+   "name": "셀리느 AS",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 「開眼 シェリーヌ編」クリアで入手",
+    "related_styles": [
+     "셀리느"
+    ],
+    "category_jp": "開眼",
+    "category": "개안",
+    "quest_jp": "開眼 シェリーヌ編",
+    "quest": "개안 셀리느 편",
+    "quest_src": "ding",
+    "step": "클리어",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "cetie": {
+   "name": "세티",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "세티 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "エージェントの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ゼノ・ドメイン(VH)でドロップ",
+     "source": "제노 도메인(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ゼノ・ドメイン"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "cetie_as": {
+   "name": "세티 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "세티"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "クリムゾン・レイの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・緑鍵2枚消費アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 소비어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "chiyo": {
+   "name": "치요",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "치요 AS"
+    ]
+   },
+   "books": [],
+   "books_none": false
+  },
+  "chiyo_as": {
+   "name": "치요 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "치요"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "サヨリヒメの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "ciel": {
+   "name": "시엘",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見 ☆5：断章「異邦の空と自由への箱舟」クリアで解放",
+    "related_styles": [
+     "시엘 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ライラの詩篇",
+     "name": null,
+     "qty": 30,
+     "source_jp": "空中庭園(VH)でドロップ",
+     "source": "공중정원(VH)에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": [
+      "空中庭園"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "ciel_as": {
+   "name": "시엘 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "시엘"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "メロウディーヴァの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "clughorn": {
+   "name": "클러그혼",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アークトゥルスの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "工業都市廃墟(VH)でドロップ",
+     "source": "공업도시 폐허(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "工業都市廃墟"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "colette": {
+   "name": "콜레트",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「救世の神子と黎明の大樹」第2話で加入",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "救世の神子と黎明の大樹",
+    "quest": "구세의 신관과 여명의 거목",
+    "quest_src": "ding",
+    "step": "제2화",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "エンジェリックの史籍",
+     "name": null,
+     "qty": 1,
+     "source_jp": "Raptor Colette撃破で入手",
+     "source": "Raptor Colette 격파로 입수",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "cress": {
+   "name": "클레스",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「光陰の尾、四天の星々～Tales of Chronographia～」第2話で加入",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "光陰の尾、四天の星々～Tales of Chronographia～",
+    "quest": "광음의 꼬리, 사천의 별들 — 테일즈 오브 크로노그래피아",
+    "quest_src": "ding",
+    "step": "제2화",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "時空剣士の史籍",
+     "name": null,
+     "qty": 1,
+     "source_jp": "火精霊の試練クリアで入手",
+     "source": "불의 정령 시련 클리어로 입수",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "curio": {
+   "name": "큐리오",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「光陰の尾、四天の星々～Tales of Chronographia～」第2話で加入",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "光陰の尾、四天の星々～Tales of Chronographia～",
+    "quest": "광음의 꼬리, 사천의 별들 — 테일즈 오브 크로노그래피아",
+    "quest_src": "ding",
+    "step": "제2화",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "剣神の史籍",
+     "name": null,
+     "qty": 1,
+     "source_jp": "風精霊の試練クリアで入手",
+     "source": "바람의 정령 시련 클리어로 입수",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "cyan_scyther_as": {
+   "name": "푸른 빛의 낫잡이 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "푸른 빛의 낫잡이"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "スウィートレディの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚消費アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 소비어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "cynthia": {
+   "name": "신시아",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "신시아 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "グリモワールの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "トト・ドリームランド(VH)でドロップ",
+     "source": "토토 드림랜드(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "トト・ドリームランド"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "cynthia_as": {
+   "name": "신시아 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "신시아"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アヴェスターの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "cyrus_albright": {
+   "name": "사이러스 (협주)",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「最果ての虜と導きの八重奏」で入手",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "最果ての虜と導きの八重奏",
+    "quest": "땅끝의 포로와 인도의 팔중주",
+    "quest_src": "ding",
+    "step": "",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "指輪に選ばれし者の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "星詠みの書架、協奏報酬で獲得",
+     "source": "성영의 서가 , 협주 보상에서 획득",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "daisy_as": {
+   "name": "히나기쿠 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "히나기쿠"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "プリティヴィーの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "赤鍵アナダン、緑鍵2枚アナダンでドロップ",
+     "source": "레드 키어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "dark_devourer_alter": {
+   "name": "어둠 잠식의 몽마",
+   "acq": "buddy",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ナイトメアの典録",
+     "name": null,
+     "qty": 3,
+     "source_jp": "レッド・キー消費アナダンでドロップ",
+     "source": "레드 키 소비어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "deirdre": {
+   "name": "디아드라",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 外伝「ふたりの騎士と祈りの魔剣」クリアで入手",
+    "related_styles": [],
+    "category_jp": "外伝",
+    "category": "외전",
+    "quest_jp": "ふたりの騎士と祈りの魔剣",
+    "quest": "두 명의 기사와 기원의 마검",
+    "quest_src": "ding",
+    "step": "클리어",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "dewey": {
+   "name": "듀이",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "듀이 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "テンペスターの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "トト・ドリームランド(VH)でドロップ",
+     "source": "토토 드림랜드(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "トト・ドリームランド"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "dewey_as": {
+   "name": "듀이 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "듀이"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ファントムシーフの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "dream_weaver_as": {
+   "name": "꿈의 음유 시인",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "꿈의 음유 시인"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ディオニュソスの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚消費アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 소비어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "dunarith": {
+   "name": "듀나리스",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "듀나리스 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ソウルブリンガーの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "蛇肝 ダマク(VH)でドロップ",
+     "source": "뱀의 간 다마크(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "蛇肝 ダマク"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "dunarith_as": {
+   "name": "듀나리스 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "듀나리스"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ゼーレグナーデの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "eleanor": {
+   "name": "엘레노어",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "誓導師の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ミグランス城(VH)でドロップ",
+     "source": "미글랜스 성(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ミグランス城"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "elga_as": {
+   "name": "엘가 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "엘가"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "オルコフィーリャの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "elseal": {
+   "name": "엘실",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "엘실 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "メールドシープの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ミグランス城(VH)でドロップ",
+     "source": "미글랜스 성(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ミグランス城"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "elseal_as": {
+   "name": "엘실 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "엘실"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "カメーネの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "empel": {
+   "name": "엠펠",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「悠かなる叡知と秘密の孤城」クリアで入手",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "悠かなる叡知と秘密の孤城",
+    "quest": "아득한 예지와 비밀의 외딴 성",
+    "quest_src": "ding",
+    "step": "클리어",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ひと夏の冒険者達の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "協奏アナダンなどで入手",
+     "source": "협주 어나더 던전 등에서 입수",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "eva": {
+   "name": "에바",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ドラゴミラージュの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "次元戦艦(VH)でドロップ",
+     "source": "차원전함(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "次元戦艦"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "ewella": {
+   "name": "이벨라",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "이벨라 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ラズルミーディアの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ナダラ火山(VH)でドロップ",
+     "source": "나다라 화산(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ナダラ火山"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "ewella_as": {
+   "name": "이벨라 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "이벨라"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "オーベロンの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "feinne": {
+   "name": "피네",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 メインストーリー第1部(第25章)クリアで入手",
+    "related_styles": [
+     "피네 AS"
+    ],
+    "category_jp": "メインストーリー",
+    "category": "메인 스토리",
+    "quest_jp": "",
+    "quest": "",
+    "quest_src": "",
+    "step": "제25장",
+    "note": "제1부 완결 시점"
+   },
+   "books": [
+    {
+     "rank": "☆4",
+     "name_jp": "すぐれし乙女の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ナダラ火山(VH)でドロップ",
+     "source": "나다라 화산(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ナダラ火山"
+     ]
+    },
+    {
+     "rank": "☆5",
+     "name_jp": "とうとき乙女の詩篇",
+     "name": null,
+     "qty": 5,
+     "source_jp": "猫神神社・地下で入手可",
+     "source": "묘신 신사 지하에서 입수 / 가능",
+     "source_src": "est",
+     "dungeons_jp": [
+      "猫神神社・地下"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "feinne_as": {
+   "name": "피네 AS",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 メインストーリー 第113章クリアで入手",
+    "related_styles": [
+     "피네"
+    ],
+    "category_jp": "メインストーリー",
+    "category": "메인 스토리",
+    "quest_jp": "",
+    "quest": "",
+    "quest_src": "",
+    "step": "제113장",
+    "note": ""
+   },
+   "books": [],
+   "books_none": true
+  },
+  "felmina": {
+   "name": "펠미나",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "펠미나 AS",
+     "펠미나 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "イスマイールの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ミグランス城(VH)でドロップ",
+     "source": "미글랜스 성(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ミグランス城"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "felmina_as": {
+   "name": "펠미나 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "펠미나",
+     "펠미나 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ラブロスキアーの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "felmina_es": {
+   "name": "펠미나 ES",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "펠미나",
+     "펠미나 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "エリニュスの改典",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "flammelapis": {
+   "name": "플람라피스",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "플람라피스 AS",
+     "플람라피스 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "スカディの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "魔獣城(VH)でドロップ",
+     "source": "마수성(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "魔獣城"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "flammelapis_as": {
+   "name": "플람라피스 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "플람라피스",
+     "플람라피스 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ヴォルヴァの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VH・緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "flammelapis_es": {
+   "name": "플람라피스 ES",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "플람라피스",
+     "플람라피스 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "クラウソラスの改典",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VH・緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "foran": {
+   "name": "포란",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "포란 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "フォーランナーの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "各種Hアナダンでドロップ",
+     "source": "각종 H 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "foran_as": {
+   "name": "포란 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "포란"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ハスタアンティカの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "forlorn_thespian_alter": {
+   "name": "적막의 연기자",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "テアトラルベートの典録",
+     "name": null,
+     "qty": 3,
+     "source_jp": "赤鍵使用アナダンでドロップ",
+     "source": "레드 키 사용어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "galliard": {
+   "name": "갤리어드",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 外伝「閉ざされし箱庭と蒼穹の叛逆者」クリアで入手",
+    "related_styles": [],
+    "category_jp": "外伝",
+    "category": "외전",
+    "quest_jp": "閉ざされし箱庭と蒼穹の叛逆者",
+    "quest": "닫힌 정원과 창궁의 반역자",
+    "quest_src": "ding",
+    "step": "클리어",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "garambarrel": {
+   "name": "가람배럴",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "가람배럴 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "フルングニルの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "人喰い沼(VH)でドロップ",
+     "source": "식인 늪(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "人喰い沼"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "garambarrel_as": {
+   "name": "가람배럴 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "가람배럴"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ユミルの異節",
+     "name": null,
+     "qty": 1,
+     "source_jp": "各種VHアナダン・緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "garnet": {
+   "name": "가넷",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「Memories of Another Sky」第1話で加入",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "Memories of Another Sky",
+    "quest": "Memories of Another Sky",
+    "quest_src": "ding",
+    "step": "제1화",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "なし(協奏ストーリー内で☆5にクラスチェンジ)",
+     "name": null,
+     "qty": 1,
+     "source_jp": "",
+     "source": "",
+     "source_src": "",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "glenn": {
+   "name": "글렌",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「COMPLEX DREAM」追加シナリオ「呪われし龍騎士の章」進行で獲得",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "COMPLEX DREAM",
+    "quest": "COMPLEX DREAM",
+    "quest_src": "ding",
+    "step": "",
+    "note": "추가 조건: 저주받은 용기사의 장"
+   },
+   "books": [],
+   "books_none": false
+  },
+  "hardy": {
+   "name": "하디",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "하디 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "グレイハウンドの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "次元戦艦(VH)でドロップ",
+     "source": "차원전함(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "次元戦艦"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "hardy_as": {
+   "name": "하디 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "하디"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "マーヴェリックの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "heena": {
+   "name": "히이나",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "히이나 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "カラクレナイの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ミグランス城(VH)でドロップ",
+     "source": "미글랜스 성(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ミグランス城"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "heena_as": {
+   "name": "히이나 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "히이나"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ジョウルリヒメの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "hismena": {
+   "name": "히스메나",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "히스메나 AS",
+     "히스메나 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ブリューナクの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "工業都市廃墟(VH)でドロップ",
+     "source": "공업도시 폐허(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "工業都市廃墟"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "hismena_as": {
+   "name": "히스메나 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "히스메나",
+     "히스메나 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アラドヴァルの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "hismena_es": {
+   "name": "히스메나",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "히스메나",
+     "히스메나 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "フラガラッハの改典",
+     "name": null,
+     "qty": 5,
+     "source_jp": "緑鍵2枚アナダン、VHアナダンで入手",
+     "source": "그린 키 2장 어나더 던전, VH 어나더 던전에서 입수",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "hoarfrost_songstress_alter": {
+   "name": "빙무의 가희",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アメノウズメの典録",
+     "name": null,
+     "qty": 3,
+     "source_jp": "赤鍵使用アナダンでドロップ",
+     "source": "레드 키 사용어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "hozuki": {
+   "name": "호오즈키",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "호오즈키 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "九尾狐の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "魔獣城(VH)でドロップ",
+     "source": "마수성(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "魔獣城"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "hozuki_as": {
+   "name": "호오즈키 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "호오즈키"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "鬼火ノ唐繻子の異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "id": {
+   "name": "이드",
+   "acq": "buddy",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ニルヴァーナの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ナダラ火山(VH)でドロップ",
+     "source": "나다라 화산(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ナダラ火山"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "ilulu": {
+   "name": "이루루",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "이루루 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "グリムリーパーの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "次元戦艦(VH)でドロップ",
+     "source": "차원전함(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "次元戦艦"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "ilulu_as": {
+   "name": "이루루 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "이루루"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "リビティーナの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "isuka": {
+   "name": "이스카",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "이스카 AS",
+     "이스카 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アドミラルの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ゼノ・ドメイン(VH)でドロップ",
+     "source": "제노 도메인(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ゼノ・ドメイン"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "isuka_as": {
+   "name": "이스카 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "이스카",
+     "이스카 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ステラの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種アナダン(VH)、ガルレアアナダンでドロップ",
+     "source": "각종 어나더 던전(VH), 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "izuna": {
+   "name": "이즈나",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "鴉天狗の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "月影の森(VH)でドロップ",
+     "source": "달그림자 숲(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "月影の森"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "jet_tactician_as": {
+   "name": "먹빛의 책사 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "먹빛의 책사"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "オオクニヌシの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "jillfunny": {
+   "name": "질퍼니",
+   "acq": "buddy",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "剣聖の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ゼノ・ドメイン(VH)でドロップ",
+     "source": "제노 도메인(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ゼノ・ドメイン"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "kagurame": {
+   "name": "카구라메",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "八百比丘尼の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "月影の森(VH)でドロップ",
+     "source": "달그림자 숲(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "月影の森"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "kamlanage": {
+   "name": "캄라녜쥬",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 メインストーリー第95章クリアで入手",
+    "related_styles": [],
+    "category_jp": "メインストーリー",
+    "category": "메인 스토리",
+    "quest_jp": "",
+    "quest": "",
+    "quest_src": "",
+    "step": "제95장",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "kid": {
+   "name": "키드",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「COMPLEX DREAM」キッドルートクリアで加入",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "COMPLEX DREAM",
+    "quest": "COMPLEX DREAM",
+    "quest_src": "ding",
+    "step": "클리어",
+    "note": "키드 루트"
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "運命の女神の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "アナダン報酬で獲得",
+     "source": "어나더 던전 보상에서 획득",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "kikyo": {
+   "name": "키쿄",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "키쿄 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "リーラ・ブリッツの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "トト・ドリームランド(VH)でドロップ",
+     "source": "토토 드림랜드(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "トト・ドリームランド"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "kikyo_as": {
+   "name": "키쿄 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "키쿄"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "トランスポーターの異節",
+     "name": null,
+     "qty": 1,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "klaudia": {
+   "name": "클라우디아",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「悠かなる叡知と秘密の孤城」クリアで入手",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "悠かなる叡知と秘密の孤城",
+    "quest": "아득한 예지와 비밀의 외딴 성",
+    "quest_src": "ding",
+    "step": "클리어",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ひと夏の冒険者達の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "協奏アナダンなどで入手",
+     "source": "협주 어나더 던전 등에서 입수",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "komachi": {
+   "name": "코마치",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "코마치 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "サクヤビメの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "komachi_as": {
+   "name": "코마치 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "코마치"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "サクヤビメの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "krervo": {
+   "name": "쿨레르보",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "クレルヴォ?"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "リバイバーの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "krervo_as": {
+   "name": "쿨레르보 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "쿨레르보"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "リバイバーの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "kuchinawa": {
+   "name": "쿠치나와",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "쿠치나와 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ヘルメースの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "人喰い沼(VH)でドロップ",
+     "source": "식인 늪(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "人喰い沼"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "kuchinawa_as": {
+   "name": "쿠치나와 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "쿠치나와"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アイテールの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、グリーン・キー2枚消費アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 소비어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "kula": {
+   "name": "쿨라",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「THE KING OF FIGHTERS ANOTHER BOUT」第1話クリアで入手",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "THE KING OF FIGHTERS ANOTHER BOUT",
+    "quest": "THE KING OF FIGHTERS ANOTHER BOUT",
+    "quest_src": "ding",
+    "step": "제1화",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "kyo": {
+   "name": "쿄",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「THE KING OF FIGHTERS ANOTHER BOUT」第1話クリアで入手",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "THE KING OF FIGHTERS ANOTHER BOUT",
+    "quest": "THE KING OF FIGHTERS ANOTHER BOUT",
+    "quest_src": "ding",
+    "step": "제1화",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "laclair": {
+   "name": "라클레어",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "라클레어 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ミンストレルの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ナダラ火山(VH)でドロップ",
+     "source": "나다라 화산(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ナダラ火山"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "laclair_as": {
+   "name": "라클레어 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "라클레어"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ブランムナールの異節",
+     "name": null,
+     "qty": 1,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "lele": {
+   "name": "레레",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "레레 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ミスティックの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "各種H/VHアナダンでドロップ",
+     "source": "각종 H/VH 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "lele_as": {
+   "name": "레레 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "레레"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ミラクルワーカーの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "linaria": {
+   "name": "리나리아",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ディテクティブの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ゼノ・ドメイン(VH)でドロップ",
+     "source": "제노 도메인(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ゼノ・ドメイン"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "lingli": {
+   "name": "링리",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "링리 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ウーシュウの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "",
+     "source": "",
+     "source_src": "",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "lingli_as": {
+   "name": "링리 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "링리"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "九天玄女の異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種赤鍵アナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 레드 키어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "lloyd": {
+   "name": "로이드",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「救世の神子と黎明の大樹」第2話で加入",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "救世の神子と黎明の大樹",
+    "quest": "구세의 신관과 여명의 거목",
+    "quest_src": "ding",
+    "step": "제2화",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "剣聖の史籍",
+     "name": null,
+     "qty": 1,
+     "source_jp": "Raptor Lloyd撃破で入手",
+     "source": "Raptor Lloyd 격파로 입수",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "lokido": {
+   "name": "로키드",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "로키드 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ティターンの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "月影の森(VH)でドロップ",
+     "source": "달그림자 숲(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "月影の森"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "lokido_as": {
+   "name": "로키드 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "로키드"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "フィエルテベートの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "mai": {
+   "name": "마이",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「THE KING OF FIGHTERS ANOTHER BOUT」第1話クリアで入手",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "THE KING OF FIGHTERS ANOTHER BOUT",
+    "quest": "THE KING OF FIGHTERS ANOTHER BOUT",
+    "quest_src": "ding",
+    "step": "제1화",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "mana": {
+   "name": "마나",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 外伝 IDAスクール編Ⅲ「導きの果実と電影の迷い子」第4話で加入",
+    "related_styles": [],
+    "category_jp": "外伝",
+    "category": "외전",
+    "quest_jp": "導きの果実と電影の迷い子",
+    "quest": "IDA 스쿨편Ⅲ — 인도하는 과실과 화면 속 미아",
+    "quest_src": "ding",
+    "step": "제4화",
+    "note": ""
+   },
+   "books": [],
+   "books_none": true
+  },
+  "mariel": {
+   "name": "마리엘",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "마리엘 AS",
+     "마리엘 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ハイエロファントの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "次元戦艦(VH)でドロップ",
+     "source": "차원전함(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "次元戦艦"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "mariel_as": {
+   "name": "마리엘 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "마리엘",
+     "마리엘 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ハイプリエステスの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "mariel_es": {
+   "name": "마리엘 ES",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "마리엘",
+     "마리엘 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アルカナムの改典",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "mayu": {
+   "name": "마유",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 外典「霊長の理と枢機の天秤」クリア後、サブクエスト「旅立ちの羽化」クリアで加入",
+    "related_styles": [],
+    "category_jp": "外典",
+    "category": "외경",
+    "quest_jp": "霊長の理と枢機の天秤",
+    "quest": "영장의 이치와 추기의 천칭",
+    "quest_src": "ding",
+    "step": "클리어",
+    "note": "추가 조건: 여행길의 우화"
+   },
+   "books": [],
+   "books_none": false
+  },
+  "mazrika": {
+   "name": "마츠리카",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "エウリュディケの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "蛇肝 ダマク(VH)でドロップ",
+     "source": "뱀의 간 다마크(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "蛇肝 ダマク"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "melina": {
+   "name": "메리나",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "메리나 AS",
+     "메리나 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "マルアハの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ナダラ火山(VH)・古代ゼルベリヤ大陸 雷/晶/陰・失楽の都でドロップ",
+     "source": "나다라 화산(VH), 고대 젤베리아 대륙 雷/晶/陰, 실락의 도시에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": [
+      "古代ゼルベリヤ大陸",
+      "ナダラ火山",
+      "失楽の都"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "melina_as": {
+   "name": "메리나 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "메리나",
+     "메리나 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "パニッシュメントの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "melissa": {
+   "name": "멜리사",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "スレイヤーの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "工業都市廃墟(VH)でドロップ",
+     "source": "공업도시 폐허(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "工業都市廃墟"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "melody": {
+   "name": "멜로디",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "멜로디 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "リヴェットの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "工業都市廃墟(VH)でドロップ",
+     "source": "공업도시 폐허(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "工業都市廃墟"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "melody_as": {
+   "name": "멜로디 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "멜로디"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "メーデイアの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "melpiphia": {
+   "name": "멜피피아",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "オラクルの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ナダラ火山(VH)でドロップ",
+     "source": "나다라 화산(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ナダラ火山"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "meryt": {
+   "name": "메릿",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "バステトの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ナダラ火山(VH)でドロップ",
+     "source": "나다라 화산(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ナダラ火山"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "mighty": {
+   "name": "마이티",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "마이티 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アクアルーラーの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "工業都市廃墟(VH)でドロップ",
+     "source": "공업도시 폐허(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "工業都市廃墟"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "mighty_as": {
+   "name": "마이티 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "마이티"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ヒュプノシストの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "mildy": {
+   "name": "밀디",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アルフェッカの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ゼノ・ドメイン(VH)でドロップ",
+     "source": "제노 도메인(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ゼノ・ドメイン"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "minalca": {
+   "name": "미나르카",
+   "acq": "buddy",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "미나르카 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ネメシスの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "次元戦艦(VH)でドロップ",
+     "source": "차원전함(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "次元戦艦"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "minalca_as": {
+   "name": "미나르카 AS",
+   "acq": "buddy",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "미나르카"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "エリスの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種赤鍵アナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 레드 키어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "miyu": {
+   "name": "미유",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見 ☆5：断章「小さな王女の小さな大冒険」クリアで解放",
+    "related_styles": [
+     "미유 AS",
+     "미유 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "プリンセスの詩篇",
+     "name": null,
+     "qty": 30,
+     "source_jp": "不思議の森(VH)でドロップ",
+     "source": "신비한 숲(VH)에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": [
+      "不思議の森"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "miyu_as": {
+   "name": "미유 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "미유",
+     "미유 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ミネルヴァの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "moonlight_flower_alter": {
+   "name": "월화의 영애",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "フロイラインの典録",
+     "name": null,
+     "qty": 3,
+     "source_jp": "赤鍵使用アナダンでドロップ",
+     "source": "레드 키 사용어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "morgana": {
+   "name": "모르가나",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「双魂の絆と虚ろの傀儡子」第1話で入手",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "双魂の絆と虚ろの傀儡子",
+    "quest": "두 영혼의 인연과 공허의 괴뢰사",
+    "quest_src": "ding",
+    "step": "제1화",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "myrus": {
+   "name": "뮬루스",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "뮬루스 AS",
+     "뮬루스 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ラパンの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "月影の森(VH)でドロップ",
+     "source": "달그림자 숲(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "月影の森"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "myrus_as": {
+   "name": "뮬루스 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "뮬루스",
+     "뮬루스 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "キュベレーの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "myrus_es": {
+   "name": "뮬루스",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "뮬루스",
+     "뮬루스 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ウェネトの改典",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚消費アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 소비어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "myunfa": {
+   "name": "밍화",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "밍화 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ジンの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "蛇肝 ダマク(VH)でドロップ",
+     "source": "뱀의 간 다마크(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "蛇肝 ダマク"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "myunfa_as": {
+   "name": "밍화 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "밍화"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "玉茶娘々の異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "nagi": {
+   "name": "나기",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "나기 AS",
+     "나기 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "エイトマーダーの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "人喰い沼(VH)でドロップ",
+     "source": "식인 늪(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "人喰い沼"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "nagi_as": {
+   "name": "나기 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "나기",
+     "나기 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "テンタクルメアの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "nagi_es": {
+   "name": "나기 ES",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "나기",
+     "나기 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "クリトルリトルの改典",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "necoco": {
+   "name": "네코코",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "네코코 AS",
+     "네코코 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "金花猫の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "月影の森(VH)でドロップ",
+     "source": "달그림자 숲(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "月影の森"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "necoco_as": {
+   "name": "네코코 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "네코코",
+     "네코코 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "五徳猫の異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "necoco_es": {
+   "name": "네코코 ES",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "네코코",
+     "네코코 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "猫又権現の改典",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "nikeh": {
+   "name": "니케",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "니케 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ケンセイの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "各種アナダンでドロップ",
+     "source": "각종 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "nikeh_as": {
+   "name": "니케 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "니케"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ヤソマガツヒの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "nilya": {
+   "name": "니르야",
+   "acq": "buddy",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アノマリーデブリの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "次元戦艦(VH)でドロップ",
+     "source": "차원전함(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "次元戦艦"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "nina": {
+   "name": "니나",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アラクネの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "工業都市廃墟(VH)でドロップ",
+     "source": "공업도시 폐허(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "工業都市廃墟"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "noahxis": {
+   "name": "녹시스",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 「メビウスの迷宮」を繰り返し、3段階目のイベントを見ると加入",
+    "related_styles": [
+     "녹시스 AS"
+    ],
+    "category_jp": "",
+    "category": "특수 던전",
+    "quest_jp": "メビウスの迷宮",
+    "quest": "뫼비우스의 미궁",
+    "quest_src": "est",
+    "step": "",
+    "note": "반복 진행 중 이벤트 3단계까지"
+   },
+   "books": [],
+   "books_none": false
+  },
+  "noahxis_as": {
+   "name": "녹시스 AS",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 外伝「彷徨える少女と白夜の綴糸 Edge of the Vortex」クリア",
+    "related_styles": [
+     "녹시스"
+    ],
+    "category_jp": "外伝",
+    "category": "외전",
+    "quest_jp": "彷徨える少女と白夜の綴糸 Edge of the Vortex",
+    "quest": "방황하는 소녀와 백야의 고리 — Edge of the Vortex",
+    "quest_src": "ding",
+    "step": "클리어",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "noble_blossom_alter_as": {
+   "name": "꽃피우는 공주 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "꽃피우는 공주"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "マリシテンの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "グリーン・キー2枚消費アナダン、VHアナダンでドロップ",
+     "source": "그린 키 2장 소비어나더 던전, VH 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "noble_specturr": {
+   "name": "고답의 오묘",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "陰陽猫の典録",
+     "name": null,
+     "qty": 3,
+     "source_jp": "レッド・キー使用アナダンでドロップ",
+     "source": "레드 키 사용어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "nocturne_ninja_alter": {
+   "name": "까마귀 밤의 밀정",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "フェリスロードの典録",
+     "name": null,
+     "qty": 3,
+     "source_jp": "赤鍵使用アナダンでドロップ",
+     "source": "레드 키 사용어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "oboro": {
+   "name": "오보로",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ナルカミの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ゼノ・ドメイン(VH)でドロップ",
+     "source": "제노 도메인(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ゼノ・ドメイン"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "otoha": {
+   "name": "오토하",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "오토하 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ケンゴウの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "各種Hアナダンなどでドロップ",
+     "source": "각종 H 어나더 던전 등에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "otoha_as": {
+   "name": "오토하 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "오토하"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "猫多羅天女の異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "parisa": {
+   "name": "파리사",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "파리사 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "バードの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "各種H、VHアナダンでドロップ",
+     "source": "각종 H, VH 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "parisa_as": {
+   "name": "파리사 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "파리사"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ポリュムニアーの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "partitio": {
+   "name": "파르티티오",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「最果ての虜と導きの八重奏」で入手",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "最果ての虜と導きの八重奏",
+    "quest": "땅끝의 포로와 인도의 팔중주",
+    "quest_src": "ding",
+    "step": "",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "指輪に選ばれし者の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "星詠みの書架、協奏報酬で獲得",
+     "source": "성영의 서가 , 협주 보상에서 획득",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "philo": {
+   "name": "필로",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "필로 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アムルタートの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "トト・ドリームランド(VH)でドロップ",
+     "source": "토토 드림랜드(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "トト・ドリームランド"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "philo_as": {
+   "name": "필로 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "필로"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ヴィーシュロンの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "pizzica": {
+   "name": "피치카",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "피치카 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "シレーナリアの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ナダラ火山(VH)、氷の海(VH)でドロップ",
+     "source": "나다라 화산(VH), 얼음 바다(VH)에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": [
+      "ナダラ火山",
+      "氷の海"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "pizzica_as": {
+   "name": "피치카 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "피치카"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "エラトの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "pom": {
+   "name": "폼",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "폼 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ドルイドの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "",
+     "source": "",
+     "source_src": "",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "pom_as": {
+   "name": "폼 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "폼"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ウェヌスの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "porcelain_pixie_as": {
+   "name": "백자의 마인",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "백자의 마인"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "シャスティの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "緑鍵2枚アナダン、VHアナダンで入手",
+     "source": "그린 키 2장 어나더 던전, VH 어나더 던전에서 입수",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "prai": {
+   "name": "프라이",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "サンクトスの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "「剣の唄と失楽の翼 the winged prayer」クリアで入手",
+     "source": "「검의 노래와 실락의 날개 — The Winged Prayer」 클리어로 입수",
+     "source_src": "ding",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "premaya": {
+   "name": "프레메아",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "프레메아 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "デュアルペルソナの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ゼノ・ドメイン(VH)でドロップ",
+     "source": "제노 도메인(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ゼノ・ドメイン"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "premaya_as": {
+   "name": "프레메아 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "프레메아"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ブリダーヴァントの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "radias": {
+   "name": "라디아스",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "라디아스 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "紅焔騎士の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ミグランス城(VH)でドロップ",
+     "source": "미글랜스 성(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ミグランス城"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "radias_as": {
+   "name": "라디아스 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "라디아스"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "日輪騎士の異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "radica": {
+   "name": "라디카",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "라디카 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ディヴィネーターの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ナダラ火山(VH)でドロップ",
+     "source": "나다라 화산(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ナダラ火山"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "radica_as": {
+   "name": "라디카 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "라디카"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "フォルトゥーナの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "raven_as": {
+   "name": "레이븐 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "プロフェットの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚消費アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 소비어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "renri_as": {
+   "name": "렌리 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "렌리"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アンダーカバーの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種赤鍵アナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 레드 키어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "riica": {
+   "name": "리이카",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 メインストーリー第3章で入手",
+    "related_styles": [],
+    "category_jp": "メインストーリー",
+    "category": "메인 스토리",
+    "quest_jp": "",
+    "quest": "",
+    "quest_src": "",
+    "step": "제3장",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "☆4",
+     "name_jp": "パトリアークの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "",
+     "source": "",
+     "source_src": "",
+     "dungeons_jp": []
+    },
+    {
+     "rank": "☆5",
+     "name_jp": "グラティネルの詩篇",
+     "name": null,
+     "qty": 5,
+     "source_jp": "ゼノ・ドメイン(VH)でドロップ",
+     "source": "제노 도메인(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ゼノ・ドメイン"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "rosetta": {
+   "name": "로제타",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "로제타 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ジャッジメントの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ナダラ火山(VH), ゼルベリアアナダンでドロップ",
+     "source": "나다라 화산(VH), 젤베리아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": [
+      "ナダラ火山"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "rosetta_as": {
+   "name": "로제타 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "로제타"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "レミテーターの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン, ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "ruby_sleeved_merchant_alter": {
+   "name": "붉은 소매의 행상인",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ダイコクテンの典録",
+     "name": null,
+     "qty": 3,
+     "source_jp": "レッド・キー使用アナダンでドロップ",
+     "source": "레드 키 사용어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "rufus": {
+   "name": "루프스",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "루프스 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アサシンフィストの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "各種Hアナダンなどでドロップ",
+     "source": "각종 H 어나더 던전 등에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "rufus_as": {
+   "name": "루프스 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "루프스"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ブレイズヒーローの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "ruina": {
+   "name": "루이나",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "루이나 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "エルヴンナイトの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "各種Hアナダンなどでドロップ",
+     "source": "각종 H 어나더 던전 등에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "ruina_as": {
+   "name": "루이나 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "ルイナ?"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ルフトゥ・アルヴの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "ruvi": {
+   "name": "루비",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 外史「望郷の魂と逆星の旅人」プロローグで入手",
+    "related_styles": [],
+    "category_jp": "外史",
+    "category": "외사",
+    "quest_jp": "望郷の魂と逆星の旅人",
+    "quest": "망향의 혼과 역성의 나그네",
+    "quest_src": "est",
+    "step": "프롤로그",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "ryza": {
+   "name": "라이자",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「悠かなる叡知と秘密の孤城」クリアで入手",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "悠かなる叡知と秘密の孤城",
+    "quest": "아득한 예지와 비밀의 외딴 성",
+    "quest_src": "ding",
+    "step": "클리어",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ひと夏の冒険者達の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "協奏アナダンなどで入手",
+     "source": "협주 어나더 던전 등에서 입수",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "saki": {
+   "name": "사키",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 外伝「IDAスクール編Ⅱ 天の揺り籠と胡蝶の街」第2話クリアで入手",
+    "related_styles": [
+     "사키 AS"
+    ],
+    "category_jp": "外伝",
+    "category": "외전",
+    "quest_jp": "IDAスクール編Ⅱ 天の揺り籠と胡蝶の街",
+    "quest": "IDA 스쿨편Ⅱ — 나비의 도시와 하늘의 요람",
+    "quest_src": "ding",
+    "step": "제2화",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "sazanca": {
+   "name": "사잔카",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "スクナヒコナの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "人喰い沼(VH)でドロップ",
+     "source": "식인 늪(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "人喰い沼"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "selfless_seeker_alter": {
+   "name": "의협의 사냥꾼",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ヴォルールの典録",
+     "name": null,
+     "qty": 3,
+     "source_jp": "レッド・キー消費アナダンでドロップ",
+     "source": "레드 키 소비어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "senya": {
+   "name": "센야",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 外典「八千夜の咎とまつろわぬ刃」第1話で入手",
+    "related_styles": [
+     "센야 AS"
+    ],
+    "category_jp": "外典",
+    "category": "외경",
+    "quest_jp": "八千夜の咎とまつろわぬ刃",
+    "quest": "만고의 죄와 불복의 칼날",
+    "quest_src": "ding",
+    "step": "제1화",
+    "note": ""
+   },
+   "books": [],
+   "books_none": true
+  },
+  "senya_as": {
+   "name": "센야 AS",
+   "acq": "buddy",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 外典「八千夜の咎とまつろわぬ刃」第7話で入手",
+    "related_styles": [
+     "센야"
+    ],
+    "category_jp": "外典",
+    "category": "외경",
+    "quest_jp": "八千夜の咎とまつろわぬ刃",
+    "quest": "만고의 죄와 불복의 칼날",
+    "quest_src": "ding",
+    "step": "제7화",
+    "note": ""
+   },
+   "books": [],
+   "books_none": true
+  },
+  "serge": {
+   "name": "세르주",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「COMPLEX DREAM」第1話で入手",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "COMPLEX DREAM",
+    "quest": "COMPLEX DREAM",
+    "quest_src": "ding",
+    "step": "제1화",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "運命の女神の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "アナダン報酬で獲得",
+     "source": "어나더 던전 보상에서 획득",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "sesta": {
+   "name": "세스타",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "세스타 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "フェンリルの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "工業都市廃墟(VH)でドロップ",
+     "source": "공업도시 폐허(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "工業都市廃墟"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "sesta_as": {
+   "name": "세스타 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "세스타"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ヴァナルガンドの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "shanie": {
+   "name": "셰이네",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "셰이네 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アークナイトの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "次元戦艦(VH)でドロップ",
+     "source": "차원전함(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "次元戦艦"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "shanie_as": {
+   "name": "셰이네 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "셰이네"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ブリュンヒルドの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "shannon": {
+   "name": "섀넌",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "섀넌 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ホワイトナイトの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "次元戦艦(VH)でドロップ",
+     "source": "차원전함(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "次元戦艦"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "shannon_as": {
+   "name": "섀넌 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "섀넌"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ビューティポリスの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "sheila": {
+   "name": "시에라",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 外伝「千年の匣 わだつみの神殿」第1話で入手",
+    "related_styles": [
+     "시에라 AS"
+    ],
+    "category_jp": "外伝",
+    "category": "외전",
+    "quest_jp": "千年の匣 わだつみの神殿",
+    "quest": "천년의 상자, 해신의 신전",
+    "quest_src": "ding",
+    "step": "제1화",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "shigure": {
+   "name": "시구레",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "시구레 AS",
+     "시구레 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ワタツミの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ミグランス城(VH)でドロップ",
+     "source": "미글랜스 성(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ミグランス城"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "shigure_as": {
+   "name": "시구레 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "시구레",
+     "시구레 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "スサノオの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "shigure_es": {
+   "name": "시구레 ES",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "시구레",
+     "시구레 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アメノムラクモの改典",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "shion_as": {
+   "name": "시온 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "시온 (협주)",
+     "시온 (협주) ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "タケミカヅチの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "shion_es": {
+   "name": "시온 ES",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "시온 (협주)",
+     "시온 (협주) AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "フツノミタマの改典",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "shionne": {
+   "name": "시온 (협주)",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「救世の神子と黎明の大樹」第2話で加入",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "救世の神子と黎明の大樹",
+    "quest": "구세의 신관과 여명의 거목",
+    "quest_src": "ding",
+    "step": "제2화",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "<荊>の女の史籍",
+     "name": null,
+     "qty": 1,
+     "source_jp": "Raptor Shionne撃破で入手",
+     "source": "Raptor Shionne 격파로 입수",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "soira": {
+   "name": "소이라",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "소이라 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ファランクスの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "各種Hアナダンでドロップ",
+     "source": "각종 H 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "soira_as": {
+   "name": "소이라 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "소이라"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アリストクラットの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "sophia": {
+   "name": "소피아",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 外伝「失われし正典と銀の不凋花」第1話で入手 ☆5：外伝「失われし正典と銀の不凋花」第3話クリアで入手",
+    "related_styles": [],
+    "category_jp": "外伝",
+    "category": "외전",
+    "quest_jp": "失われし正典と銀の不凋花",
+    "quest": "잃어버린 경전과 시들지 않는 은꽃",
+    "quest_src": "ding",
+    "step": "제1화",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "spirika": {
+   "name": "유우체리카",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 外伝「螺旋の記憶と原初の旋律 螺旋の章」第3話で加入",
+    "related_styles": [],
+    "category_jp": "外伝",
+    "category": "외전",
+    "quest_jp": "螺旋の記憶と原初の旋律 螺旋の章",
+    "quest": "나선의 기억과 원초의 선율 Ⅳ — 나선의 장: 진화의 두 원칙",
+    "quest_src": "ding",
+    "step": "제3화",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "starky": {
+   "name": "별이",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「COMPLEX DREAM」追加シナリオ「星を喰らうもの」クリアで獲得",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "COMPLEX DREAM",
+    "quest": "COMPLEX DREAM",
+    "quest_src": "ding",
+    "step": "클리어",
+    "note": "추가 조건: 별을 먹는 자"
+   },
+   "books": [],
+   "books_none": false
+  },
+  "steiner": {
+   "name": "슈타이너",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「Memories of Another Sky」第1話で加入",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "Memories of Another Sky",
+    "quest": "Memories of Another Sky",
+    "quest_src": "ding",
+    "step": "제1화",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "なし(協奏ストーリー内で☆5にクラスチェンジ)",
+     "name": null,
+     "qty": 1,
+     "source_jp": "",
+     "source": "",
+     "source_src": "",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "suzette": {
+   "name": "수제트",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "수제트 AS",
+     "수제트 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ドラグナーの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ゼノ・ドメイン(VH)でドロップ",
+     "source": "제노 도메인(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ゼノ・ドメイン"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "suzette_as": {
+   "name": "수제트 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "수제트",
+     "수제트 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "蝶火女の異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "suzette_es": {
+   "name": "수제트 ES",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "수제트",
+     "수제트 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ルシフェルの改典",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "terry": {
+   "name": "테리",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「THE KING OF FIGHTERS ANOTHER BOUT」第1話クリアで入手",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "THE KING OF FIGHTERS ANOTHER BOUT",
+    "quest": "THE KING OF FIGHTERS ANOTHER BOUT",
+    "quest_src": "ding",
+    "step": "제1화",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "thillelille_es": {
+   "name": "틸릴 ES",
+   "acq": "buddy",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "틸릴",
+     "틸릴 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "サクラメントの改典",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "thornbound_witch_alter": {
+   "name": "가시나무 저주의 여인",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ブライアローズの典録",
+     "name": null,
+     "qty": 3,
+     "source_jp": "赤鍵使用アナダンでドロップ",
+     "source": "레드 키 사용어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "tiramisu": {
+   "name": "티라미수",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "티라미수 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ドラゴンルーラーの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "人喰い沼(VH)でドロップ",
+     "source": "식인 늪(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "人喰い沼"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "tiramisu_as": {
+   "name": "티라미수 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "티라미수"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ドラグノードゥスの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "tithi": {
+   "name": "티티",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「最果ての虜と導きの八重奏」で入手",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "最果ての虜と導きの八重奏",
+    "quest": "땅끝의 포로와 인도의 팔중주",
+    "quest_src": "ding",
+    "step": "",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "指輪に選ばれし者の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "星詠みの書架、協奏報酬で獲得",
+     "source": "성영의 서가 , 협주 보상에서 획득",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "toova": {
+   "name": "투바",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "투바 AS",
+     "투바 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ジオマンサーの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "人喰い沼(VH)でドロップ",
+     "source": "식인 늪(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "人喰い沼"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "toova_as": {
+   "name": "투바 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "투바",
+     "투바 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "カースブライドの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "tsubame": {
+   "name": "츠바메",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "츠바메 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "シャドウロードの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "月影の森(VH)でドロップ",
+     "source": "달그림자 숲(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "月影の森"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "tsubame_as": {
+   "name": "츠바메 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "츠바메"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "フェーリクルスの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "tsukiha": {
+   "name": "츠키하",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "츠키하 AS",
+     "츠키하 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ムラサメの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "月影の森(VH)でドロップ",
+     "source": "달그림자 숲(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "月影の森"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "tsukiha_as": {
+   "name": "츠키하 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "츠키하",
+     "츠키하 ES"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "サラシナヒメの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "tsukiha_es": {
+   "name": "츠키하 ES",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "츠키하",
+     "츠키하 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "シナツヒメノカミの改典",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "undercover_scribe_alter": {
+   "name": "도희의 자객",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "エンフォーサーの典録",
+     "name": null,
+     "qty": 3,
+     "source_jp": "各種赤鍵アナダンでドロップ",
+     "source": "각종 레드 키어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "uquaji": {
+   "name": "우쿠아지",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 「旅の終わりと始まり」クリアで入手",
+    "related_styles": [],
+    "category_jp": "",
+    "category": "서브 퀘스트",
+    "quest_jp": "旅の終わりと始まり",
+    "quest": "여행의 끝과 시작",
+    "quest_src": "ding",
+    "step": "클리어",
+    "note": ""
+   },
+   "books": [],
+   "books_none": true
+  },
+  "utpalaka": {
+   "name": "우츠하라",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ドラゴンリーパーの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ナダラ火山(VH)でドロップ",
+     "source": "나다라 화산(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ナダラ火山"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "vares": {
+   "name": "바레스",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アトラスの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "蛇肝ダマク(VH)でドロップ",
+     "source": "뱀의 간 다마크(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "蛇肝ダマク"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "veina": {
+   "name": "베이나",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "베이나 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アウラの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "人喰い沼(VH)でドロップ",
+     "source": "식인 늪(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "人喰い沼"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "veina_as": {
+   "name": "베이나 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "베이나"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ティターニアの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "velette": {
+   "name": "베레토",
+   "acq": "buddy",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "베레토 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ドリームディガーの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "人食い沼(VH)でドロップ",
+     "source": "식인 늪(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "人食い沼"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "velette_as": {
+   "name": "베레토 AS",
+   "acq": "buddy",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "베레토"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "アークロジストの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種Vhアナダン、緑鍵2枚消費アナダンでドロップ",
+     "source": "각종 Vh 어나더 던전, 그린 키 2장 소비어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "velvet": {
+   "name": "벨벳",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「光陰の尾、四天の星々～Tales of Chronographia～」第2話で加入",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "光陰の尾、四天の星々～Tales of Chronographia～",
+    "quest": "광음의 꼬리, 사천의 별들 — 테일즈 오브 크로노그래피아",
+    "quest_src": "ding",
+    "step": "제2화",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "エンプレスクロウの史籍",
+     "name": null,
+     "qty": 1,
+     "source_jp": "地精霊の試練クリアで入手",
+     "source": "땅의 정령 시련 클리어로 입수",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "verdanta": {
+   "name": "베르단타",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "グランジェネラルの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ミグランス城(VH)でドロップ",
+     "source": "미글랜스 성(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ミグランス城"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "violet_lancer_as": {
+   "name": "보라 의상의 창술사",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "보라 의상의 창술사"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "プロセルピナの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "レッド・キー、グリーン・キー2枚使用アナダンでドロップ",
+     "source": "레드 키, 그린 키 2장 사용어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "vivi": {
+   "name": "비비",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「Memories of Another Sky」第1話で加入",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "Memories of Another Sky",
+    "quest": "Memories of Another Sky",
+    "quest_src": "ding",
+    "step": "제1화",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "なし(協奏ストーリー内で☆5にクラスチェンジ)",
+     "name": null,
+     "qty": 1,
+     "source_jp": "",
+     "source": "",
+     "source_src": "",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "wryz": {
+   "name": "류제",
+   "acq": "buddy",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 外伝「臥竜の島と絶崖の紋」第1話で入手",
+    "related_styles": [],
+    "category_jp": "外伝",
+    "category": "외전",
+    "quest_jp": "臥竜の島と絶崖の紋",
+    "quest": "벌룡 공주 기담 Ⅰ — 와룡의 섬과 절벽의 문양",
+    "quest_src": "ding",
+    "step": "제1화",
+    "note": ""
+   },
+   "books": [],
+   "books_none": false
+  },
+  "xianhua": {
+   "name": "셴화",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": []
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "太乙真人の書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "工業都市廃墟(VH)でドロップ",
+     "source": "공업도시 폐허(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "工業都市廃墟"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "yakumo": {
+   "name": "야쿠모",
+   "acq": "buddy",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "야쿠모 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ダインスレイヴの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "ゼノ・ドメイン(VH)でドロップ",
+     "source": "제노 도메인(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "ゼノ・ドメイン"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "yakumo_as": {
+   "name": "야쿠모 AS",
+   "acq": "buddy",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "야쿠모"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ヘグニスの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種緑鍵2枚アナダン、赤鍵アナダンでドロップ",
+     "source": "각종 그린 키 2장 어나더 던전, 레드 키어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "yukino": {
+   "name": "유키노",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "유키노 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ウツタヒメの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "月影の森(VH)でドロップ",
+     "source": "달그림자 숲(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "月影の森"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "yukino_as": {
+   "name": "유키노 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "유키노"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "オカミノカミの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "yuna": {
+   "name": "유나",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "유나 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "カンナギの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "人喰い沼(VH)でドロップ",
+     "source": "식인 늪(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "人喰い沼"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "yuna_as": {
+   "name": "유나 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "유나"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ミズハノメの異節",
+     "name": null,
+     "qty": 1,
+     "source_jp": "各種VHアナダン、ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "zeviro": {
+   "name": "제빌로",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "제빌로 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "デモンリーパーの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "蛇肝 ダマク(VH)でドロップ",
+     "source": "뱀의 간 다마크(VH)에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": [
+      "蛇肝 ダマク"
+     ]
+    }
+   ],
+   "books_none": false
+  },
+  "zeviro_as": {
+   "name": "제빌로 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "제빌로"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ソウルキーパーの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン・ガルレアアナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 갈레아 어나더 던전에서 드랍",
+     "source_src": "est",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "zidane": {
+   "name": "지단",
+   "acq": "free",
+   "recruit": {
+    "kind": "free",
+    "kind_ko": "배포(무료)",
+    "raw": "配布 協奏「Memories of Another Sky」第1話で加入",
+    "related_styles": [],
+    "category_jp": "協奏",
+    "category": "협주",
+    "quest_jp": "Memories of Another Sky",
+    "quest": "Memories of Another Sky",
+    "quest_src": "ding",
+    "step": "제1화",
+    "note": ""
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "なし(協奏ストーリー内で☆5にクラスチェンジ)",
+     "name": null,
+     "qty": 1,
+     "source_jp": "",
+     "source": "",
+     "source_src": "",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "zilva": {
+   "name": "질버",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "질버 AS"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "バトラーの書",
+     "name": null,
+     "qty": 1,
+     "source_jp": "",
+     "source": "",
+     "source_src": "",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  },
+  "zilva_as": {
+   "name": "질버 AS",
+   "acq": "gacha",
+   "recruit": {
+    "kind": "gacha",
+    "kind_ko": "드림 메달(가챠)",
+    "raw": "夢見",
+    "related_styles": [
+     "질버"
+    ]
+   },
+   "books": [
+    {
+     "rank": "",
+     "name_jp": "ウールヴヘジンの異節",
+     "name": null,
+     "qty": 5,
+     "source_jp": "各種VHアナダン、緑鍵2枚アナダンでドロップ",
+     "source": "각종 VH 어나더 던전, 그린 키 2장 어나더 던전에서 드랍",
+     "source_src": "local",
+     "dungeons_jp": []
+    }
+   ],
+   "books_none": false
+  }
+ },
+ "dungeon_index": {
+  "나다라 화산": {
+   "name_jp": "ナダラ火山",
+   "src": "local",
+   "drops": [
+    {
+     "char": "라디카",
+     "id": "radica",
+     "book_jp": "ディヴィネーターの書",
+     "qty": 1
+    },
+    {
+     "char": "라클레어",
+     "id": "laclair",
+     "book_jp": "ミンストレルの書",
+     "qty": 1
+    },
+    {
+     "char": "로제타",
+     "id": "rosetta",
+     "book_jp": "ジャッジメントの書",
+     "qty": 1
+    },
+    {
+     "char": "메리나",
+     "id": "melina",
+     "book_jp": "マルアハの書",
+     "qty": 1
+    },
+    {
+     "char": "메릿",
+     "id": "meryt",
+     "book_jp": "バステトの書",
+     "qty": 1
+    },
+    {
+     "char": "멜피피아",
+     "id": "melpiphia",
+     "book_jp": "オラクルの書",
+     "qty": 1
+    },
+    {
+     "char": "우츠하라",
+     "id": "utpalaka",
+     "book_jp": "ドラゴンリーパーの書",
+     "qty": 1
+    },
+    {
+     "char": "이드",
+     "id": "id",
+     "book_jp": "ニルヴァーナの書",
+     "qty": 1
+    },
+    {
+     "char": "이벨라",
+     "id": "ewella",
+     "book_jp": "ラズルミーディアの書",
+     "qty": 1
+    },
+    {
+     "char": "피네",
+     "id": "feinne",
+     "book_jp": "すぐれし乙女の書",
+     "qty": 1
+    },
+    {
+     "char": "피치카",
+     "id": "pizzica",
+     "book_jp": "シレーナリアの書",
+     "qty": 1
+    }
+   ]
+  },
+  "식인 늪": {
+   "name_jp": "人喰い沼",
+   "src": "local",
+   "drops": [
+    {
+     "char": "가람배럴",
+     "id": "garambarrel",
+     "book_jp": "フルングニルの書",
+     "qty": 1
+    },
+    {
+     "char": "나기",
+     "id": "nagi",
+     "book_jp": "エイトマーダーの書",
+     "qty": 1
+    },
+    {
+     "char": "베레토",
+     "id": "velette",
+     "book_jp": "ドリームディガーの書",
+     "qty": 1
+    },
+    {
+     "char": "베이나",
+     "id": "veina",
+     "book_jp": "アウラの書",
+     "qty": 1
+    },
+    {
+     "char": "사잔카",
+     "id": "sazanca",
+     "book_jp": "スクナヒコナの書",
+     "qty": 1
+    },
+    {
+     "char": "알마",
+     "id": "alma",
+     "book_jp": "キトリニタスの書",
+     "qty": 1
+    },
+    {
+     "char": "유나",
+     "id": "yuna",
+     "book_jp": "カンナギの書",
+     "qty": 1
+    },
+    {
+     "char": "쿠치나와",
+     "id": "kuchinawa",
+     "book_jp": "ヘルメースの書",
+     "qty": 1
+    },
+    {
+     "char": "투바",
+     "id": "toova",
+     "book_jp": "ジオマンサーの書",
+     "qty": 1
+    },
+    {
+     "char": "티라미수",
+     "id": "tiramisu",
+     "book_jp": "ドラゴンルーラーの書",
+     "qty": 1
+    }
+   ]
+  },
+  "제노 도메인": {
+   "name_jp": "ゼノ・ドメイン",
+   "src": "local",
+   "drops": [
+    {
+     "char": "리나리아",
+     "id": "linaria",
+     "book_jp": "ディテクティブの書",
+     "qty": 1
+    },
+    {
+     "char": "리이카",
+     "id": "riica",
+     "book_jp": "グラティネルの詩篇",
+     "qty": 5
+    },
+    {
+     "char": "밀디",
+     "id": "mildy",
+     "book_jp": "アルフェッカの書",
+     "qty": 1
+    },
+    {
+     "char": "세티",
+     "id": "cetie",
+     "book_jp": "エージェントの書",
+     "qty": 1
+    },
+    {
+     "char": "수제트",
+     "id": "suzette",
+     "book_jp": "ドラグナーの書",
+     "qty": 1
+    },
+    {
+     "char": "야쿠모",
+     "id": "yakumo",
+     "book_jp": "ダインスレイヴの書",
+     "qty": 1
+    },
+    {
+     "char": "오보로",
+     "id": "oboro",
+     "book_jp": "ナルカミの書",
+     "qty": 1
+    },
+    {
+     "char": "이스카",
+     "id": "isuka",
+     "book_jp": "アドミラルの書",
+     "qty": 1
+    },
+    {
+     "char": "질퍼니",
+     "id": "jillfunny",
+     "book_jp": "剣聖の書",
+     "qty": 1
+    },
+    {
+     "char": "프레메아",
+     "id": "premaya",
+     "book_jp": "デュアルペルソナの書",
+     "qty": 1
+    }
+   ]
+  },
+  "미글랜스 성": {
+   "name_jp": "ミグランス城",
+   "src": "local",
+   "drops": [
+    {
+     "char": "라디아스",
+     "id": "radias",
+     "book_jp": "紅焔騎士の書",
+     "qty": 1
+    },
+    {
+     "char": "베르단타",
+     "id": "verdanta",
+     "book_jp": "グランジェネラルの書",
+     "qty": 1
+    },
+    {
+     "char": "베르트랑",
+     "id": "bertrand",
+     "book_jp": "エスクードの書",
+     "qty": 1
+    },
+    {
+     "char": "시구레",
+     "id": "shigure",
+     "book_jp": "ワタツミの書",
+     "qty": 1
+    },
+    {
+     "char": "아나벨",
+     "id": "anabel",
+     "book_jp": "聖騎士の書",
+     "qty": 1
+    },
+    {
+     "char": "엘레노어",
+     "id": "eleanor",
+     "book_jp": "誓導師の書",
+     "qty": 1
+    },
+    {
+     "char": "엘실",
+     "id": "elseal",
+     "book_jp": "メールドシープの書",
+     "qty": 1
+    },
+    {
+     "char": "펠미나",
+     "id": "felmina",
+     "book_jp": "イスマイールの書",
+     "qty": 1
+    },
+    {
+     "char": "히이나",
+     "id": "heena",
+     "book_jp": "カラクレナイの書",
+     "qty": 1
+    }
+   ]
+  },
+  "공업도시 폐허": {
+   "name_jp": "工業都市廃墟",
+   "src": "local",
+   "drops": [
+    {
+     "char": "니나",
+     "id": "nina",
+     "book_jp": "アラクネの書",
+     "qty": 1
+    },
+    {
+     "char": "마이티",
+     "id": "mighty",
+     "book_jp": "アクアルーラーの書",
+     "qty": 1
+    },
+    {
+     "char": "멜로디",
+     "id": "melody",
+     "book_jp": "リヴェットの書",
+     "qty": 1
+    },
+    {
+     "char": "멜리사",
+     "id": "melissa",
+     "book_jp": "スレイヤーの書",
+     "qty": 1
+    },
+    {
+     "char": "비아카",
+     "id": "biaka",
+     "book_jp": "コマンデュールの書",
+     "qty": 1
+    },
+    {
+     "char": "세스타",
+     "id": "sesta",
+     "book_jp": "フェンリルの書",
+     "qty": 1
+    },
+    {
+     "char": "셴화",
+     "id": "xianhua",
+     "book_jp": "太乙真人の書",
+     "qty": 1
+    },
+    {
+     "char": "클러그혼",
+     "id": "clughorn",
+     "book_jp": "アークトゥルスの書",
+     "qty": 1
+    },
+    {
+     "char": "히스메나",
+     "id": "hismena",
+     "book_jp": "ブリューナクの書",
+     "qty": 1
+    }
+   ]
+  },
+  "차원전함": {
+   "name_jp": "次元戦艦",
+   "src": "local",
+   "drops": [
+    {
+     "char": "니르야",
+     "id": "nilya",
+     "book_jp": "アノマリーデブリの書",
+     "qty": 1
+    },
+    {
+     "char": "마리엘",
+     "id": "mariel",
+     "book_jp": "ハイエロファントの書",
+     "qty": 1
+    },
+    {
+     "char": "미나르카",
+     "id": "minalca",
+     "book_jp": "ネメシスの書",
+     "qty": 1
+    },
+    {
+     "char": "섀넌",
+     "id": "shannon",
+     "book_jp": "ホワイトナイトの書",
+     "qty": 1
+    },
+    {
+     "char": "셰이네",
+     "id": "shanie",
+     "book_jp": "アークナイトの書",
+     "qty": 1
+    },
+    {
+     "char": "에바",
+     "id": "eva",
+     "book_jp": "ドラゴミラージュの書",
+     "qty": 1
+    },
+    {
+     "char": "이루루",
+     "id": "ilulu",
+     "book_jp": "グリムリーパーの書",
+     "qty": 1
+    },
+    {
+     "char": "하디",
+     "id": "hardy",
+     "book_jp": "グレイハウンドの書",
+     "qty": 1
+    }
+   ]
+  },
+  "달그림자 숲": {
+   "name_jp": "月影の森",
+   "src": "local",
+   "drops": [
+    {
+     "char": "네코코",
+     "id": "necoco",
+     "book_jp": "金花猫の書",
+     "qty": 1
+    },
+    {
+     "char": "로키드",
+     "id": "lokido",
+     "book_jp": "ティターンの書",
+     "qty": 1
+    },
+    {
+     "char": "뮬루스",
+     "id": "myrus",
+     "book_jp": "ラパンの書",
+     "qty": 1
+    },
+    {
+     "char": "유키노",
+     "id": "yukino",
+     "book_jp": "ウツタヒメの書",
+     "qty": 1
+    },
+    {
+     "char": "이즈나",
+     "id": "izuna",
+     "book_jp": "鴉天狗の書",
+     "qty": 1
+    },
+    {
+     "char": "츠바메",
+     "id": "tsubame",
+     "book_jp": "シャドウロードの書",
+     "qty": 1
+    },
+    {
+     "char": "츠키하",
+     "id": "tsukiha",
+     "book_jp": "ムラサメの書",
+     "qty": 1
+    },
+    {
+     "char": "카구라메",
+     "id": "kagurame",
+     "book_jp": "八百比丘尼の書",
+     "qty": 1
+    }
+   ]
+  },
+  "뱀의 간 다마크": {
+   "name_jp": "蛇肝 ダマク",
+   "src": "local",
+   "drops": [
+    {
+     "char": "듀나리스",
+     "id": "dunarith",
+     "book_jp": "ソウルブリンガーの書",
+     "qty": 1
+    },
+    {
+     "char": "마츠리카",
+     "id": "mazrika",
+     "book_jp": "エウリュディケの書",
+     "qty": 1
+    },
+    {
+     "char": "밍화",
+     "id": "myunfa",
+     "book_jp": "ジンの書",
+     "qty": 1
+    },
+    {
+     "char": "바레스",
+     "id": "vares",
+     "book_jp": "アトラスの書",
+     "qty": 1
+    },
+    {
+     "char": "알도",
+     "id": "aldo",
+     "book_jp": "ドラゴンベアラーの詩篇",
+     "qty": 5
+    },
+    {
+     "char": "제빌로",
+     "id": "zeviro",
+     "book_jp": "デモンリーパーの書",
+     "qty": 1
+    }
+   ]
+  },
+  "토토 드림랜드": {
+   "name_jp": "トト・ドリームランド",
+   "src": "local",
+   "drops": [
+    {
+     "char": "듀이",
+     "id": "dewey",
+     "book_jp": "テンペスターの書",
+     "qty": 1
+    },
+    {
+     "char": "신시아",
+     "id": "cynthia",
+     "book_jp": "グリモワールの書",
+     "qty": 1
+    },
+    {
+     "char": "키쿄",
+     "id": "kikyo",
+     "book_jp": "リーラ・ブリッツの書",
+     "qty": 1
+    },
+    {
+     "char": "필로",
+     "id": "philo",
+     "book_jp": "アムルタートの書",
+     "qty": 1
+    }
+   ]
+  },
+  "마수성": {
+   "name_jp": "魔獣城",
+   "src": "local",
+   "drops": [
+    {
+     "char": "플람라피스",
+     "id": "flammelapis",
+     "book_jp": "スカディの書",
+     "qty": 1
+    },
+    {
+     "char": "호오즈키",
+     "id": "hozuki",
+     "book_jp": "九尾狐の書",
+     "qty": 1
+    }
+   ]
+  },
+  "불타는 마수성": {
+   "name_jp": "燃える魔獣城",
+   "src": "local",
+   "drops": [
+    {
+     "char": "브리아",
+     "id": "bria",
+     "book_jp": "アレス・ダイヤの書",
+     "qty": 1
+    }
+   ]
+  },
+  "공중정원": {
+   "name_jp": "空中庭園",
+   "src": "est",
+   "drops": [
+    {
+     "char": "시엘",
+     "id": "ciel",
+     "book_jp": "ライラの詩篇",
+     "qty": 30
+    }
+   ]
+  },
+  "묘신 신사 지하": {
+   "name_jp": "猫神神社・地下",
+   "src": "est",
+   "drops": [
+    {
+     "char": "피네",
+     "id": "feinne",
+     "book_jp": "とうとき乙女の詩篇",
+     "qty": 5
+    }
+   ]
+  },
+  "고대 젤베리아 대륙": {
+   "name_jp": "古代ゼルベリヤ大陸",
+   "src": "est",
+   "drops": [
+    {
+     "char": "메리나",
+     "id": "melina",
+     "book_jp": "マルアハの書",
+     "qty": 1
+    }
+   ]
+  },
+  "실락의 도시": {
+   "name_jp": "失楽の都",
+   "src": "local",
+   "drops": [
+    {
+     "char": "메리나",
+     "id": "melina",
+     "book_jp": "マルアハの書",
+     "qty": 1
+    }
+   ]
+  },
+  "신비한 숲": {
+   "name_jp": "不思議の森",
+   "src": "est",
+   "drops": [
+    {
+     "char": "미유",
+     "id": "miyu",
+     "book_jp": "プリンセスの詩篇",
+     "qty": 30
+    }
+   ]
+  },
+  "얼음 바다": {
+   "name_jp": "氷の海",
+   "src": "est",
+   "drops": [
+    {
+     "char": "피치카",
+     "id": "pizzica",
+     "book_jp": "シレーナリアの書",
+     "qty": 1
+    }
+   ]
+  }
+ }
+}

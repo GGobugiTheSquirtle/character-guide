@@ -2,20 +2,20 @@
 
 어나더에덴 전 캐릭터 카탈로그 + 캐릭터별 깊이 자료 SPA.
 
-- **397명 인덱스**: 카드 그리드 + 검색(한/영/일) + 필터(속성/무기/스타일/성급/SA)
-- **264명 풀데이터**: 카드 클릭 시 `data/full/<id>.json` lazy-load — game-info.wiki 운용평가 + namu.wiki 작중행적/평가를 파싱한 클린 텍스트
+- **409명 인덱스**: 카드 그리드 + 검색(한/영/일) + 필터(속성/무기/스타일/성급/SA)
+- **330명 풀데이터**: 카드 클릭 시 `data/full/<id>.json` lazy-load — game-info.wiki 운용평가 + namu.wiki 작중행적/평가를 파싱한 클린 텍스트
 - **133명 stub**: 한글명만 매핑된 캐릭(confidence 0). namu 검색 링크로 폴백
 - 다크 + 골드 톤, 프레임워크 없는 단일 `index.html` + 외부 JSON
 
 ## 데이터 구조
 
 ```
-data/index.json        # 397명 메타(roster) — 카드 렌더용
-data/full/<id>.json    # 264명 상세 — game-info 섹션 + namu 섹션
-images/icons/          # 397개 캐릭터 아이콘 (id 기준)
+data/index.json        # 409명 메타(roster) — 카드 렌더용
+data/full/<id>.json    # 330명 상세 — game-info 섹션 + namu 섹션
+images/icons/          # 409개 캐릭터 아이콘 (id 기준)
 ```
 
-`index.json.meta`: `total 397 / with_mapping 264 / with_full 264`, version 기준일.
+`index.json.meta`: `total 409 / with_mapping 330 / with_full 330`, version 기준일.
 
 ## 로컬 실행
 

@@ -125,6 +125,16 @@
   .pt { font-size: 11px; line-height: 1.5; color: var(--text); }
   .pt.more { color: var(--muted); }
   .role-gap { color: var(--red) !important; font-weight: 600; }
+  .slots { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .slot-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: stretch; }
+  .slot-row .filter-label { width: 36px; align-self: center; }
+  .slot { flex: 1 1 140px; max-width: 200px; background: var(--panel-2); border: 1px solid var(--gold-dim); border-radius: 8px; padding: 6px 8px; }
+  .slot.empty { border-style: dashed; border-color: var(--line); color: var(--muted); }
+  .slot-no { font-size: 10px; color: var(--muted); }
+  .slot-name { font-size: 13px; font-weight: 600; margin: 2px 0 4px; }
+  .slot-ctl { display: flex; gap: 4px; }
+  .slot-btn { background: transparent; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; font-size: 11px; padding: 1px 6px; cursor: pointer; }
+  .slot-btn:hover { color: var(--text); border-color: var(--gold-dim); }
   .role-ok { color: var(--gold); }
 
   .sources { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); margin-top: 16px; }
@@ -780,7 +790,8 @@ async function openModal(id) {
   if (recSec) body.appendChild(recSec);
   const bookSec = buildBooksSection(id);
   if (bookSec) body.appendChild(bookSec);
-  if (c.skills_ko) body.appendChild(buildSkillsKoSection(c));   // 상세본 없는 신규 캐릭도 공식 스킬은 보인다
+  if (c.skills_ko) body.appendChild(buildSkillsSection(c, "ko"));   // 상세본 없는 신규 캐릭도 공식 스킬은 보인다
+  if (c.skills_en) body.appendChild(buildSkillsSection(c, "en"));   // 위키 영어 — 공식 한국어가 있으면 접어 둔 대조용
 
   if (!c.has_full) {
     body.appendChild(buildStubNotice(c));
@@ -931,6 +942,7 @@ function fxDur(u) {
   if (u.perm) p.push("영구");
   if (u.until_turn_end) p.push("턴 종료까지");
   if (u.max_stack) p.push("최대 " + u.max_stack + "중첩");
+  if (u.chance) p.push(u.chance + "% 확률");
   return p.length ? " · " + p.join(", ") : "";
 }
 function fxText(u) {
@@ -946,8 +958,9 @@ function fxText(u) {
     case "guard": return u.what + (u.value ? " " + u.value + "%" : "") + (u.detail ? " (" + u.detail + ")" : "");
     case "stack": return `${u.name || ""} ${u.value ?? ""} ${u.op}`.replace(/\s+/g, " ").trim();
     case "cost": return `${u.what} ${u.value}% 소모`;
-    case "power": return u.what + (u.detail ? " (" + u.detail + ")" : "");
-    case "heal": return /^(HP|MP)$/.test(u.what) ? `${u.what} 회복 ${u.value}${u.flat ? "" : "%"}` : u.what;
+    case "power": return u.what + (u.detail ? " (" + u.detail + ")" : "") + (u.xmult ? ` ×${u.xmult}` : "");
+    case "heal": return /^(HP|MP)$/.test(u.what) ? `${u.what} 회복 ${u.value}${u.flat ? "" : "%"}`
+      : u.what + (u.value != null ? ` ${u.value}${u.flat ? "" : "%"}` : u.power ? ` (${u.power})` : "");
     default: return u.what || u.raw;
   }
 }
@@ -956,32 +969,45 @@ function fxChip(u) {
   chip.appendChild(el("b", { text: FX_KIND[u.k] || u.k }));
   if (u.mode && u.mode !== "추가 효과") chip.appendChild(el("span", { class: "mode", text: `[${u.mode.replace(/ 효과$/, "")}] ` }));
   if (u.cond) chip.appendChild(el("span", { class: "cond", text: u.cond + " → " }));
+  if (u.via) chip.appendChild(el("span", { class: "mode", text: `[${u.via}] ` }));
   chip.appendChild(document.createTextNode(u.k === "other" ? u.raw : fxText(u) + fxDur(u)));
   if (u.target && ["stat_pct", "stat_flat", "dmg", "buff", "ailment", "guard", "heal", "dispel"].includes(u.k))
     chip.appendChild(el("span", { class: "cond", text: " @" + u.target }));
   return chip;
 }
-function buildSkillsKoSection(c) {
-  const sec = el("div", { class: "section", children: [el("h3", { text: "공식 스킬 (한국어 · 인게임 공지)" })] });
-  const tags = el("div", { class: "skko-tags" });
-  for (const t of (c.effect_tags || [])) {
-    const chip = el("span", { class: "chip", text: t, attrs: { title: "이 효과를 가진 캐릭 보기" } });
-    chip.addEventListener('click', () => { closeModal(); addEffectFilter(t); });
-    tags.appendChild(chip);
-  }
-  sec.appendChild(tags);
-  if (c.roles) {
-    const rl = el("div", { class: "skko-src", text: "역할: " + PARTY_ROLES.filter(r => c.roles[r]).map(r => `${ROLE_KO[r]} ${c.roles[r]}`).join(" · ") });
-    sec.appendChild(rl);
+// lang "ko" = 공식 공지(data/skills_ko) · "en" = 위키 영어(data/skills_en, _tools/character/build_skills_en.py).
+// 영어도 효과는 같은 한국어 체계로 분해돼 있다 — 칩은 같고 원문만 영어
+const SKILL_SRC = {
+  ko: { dir: "skills_ko", title: "공식 스킬 (한국어 · 인게임 공지)" },
+  en: { dir: "skills_en", title: "위키 스킬 (영문 원문 · 효과는 자동 분해)" },
+};
+function buildSkillsSection(c, lang) {
+  const src = SKILL_SRC[lang];
+  const folded = lang === "en" && c.skills_ko;                    // 공식 한국어가 정본 — 영어는 대조용으로 접는다
+  const sec = el(folded ? "details" : "div", { class: "section" });
+  sec.appendChild(el(folded ? "summary" : "h3", { text: folded ? src.title + " — 대조용" : src.title, class: folded ? "filter-label" : "" }));
+  if (!folded) {
+    const tags = el("div", { class: "skko-tags" });
+    for (const t of (c.effect_tags || [])) {
+      const chip = el("span", { class: "chip", text: t, attrs: { title: "이 효과를 가진 캐릭 보기" } });
+      chip.addEventListener('click', () => { closeModal(); addEffectFilter(t); });
+      tags.appendChild(chip);
+    }
+    sec.appendChild(tags);
+    if (c.roles) sec.appendChild(el("div", { class: "skko-src", text: "역할: " + PARTY_ROLES.filter(r => c.roles[r]).map(r => `${ROLE_KO[r]} ${c.roles[r]}`).join(" · ") }));
+    if (lang === "en") sec.appendChild(el("div", { class: "skko-src", text: "영어 문장 자동 분해 — 공식 한국어 61명과 대조한 역할 일치: 정밀도 0.84 · 재현율 0.77. 칩에 마우스를 올리면 원문." }));
   }
   const host = el("div", { class: "loading", text: "로딩 중…" });
   sec.appendChild(host);
-  fetch(`data/skills_ko/${c.id}.json`).then(r => r.json()).then(d => {
+  fetch(`data/${src.dir}/${c.id}.json`).then(r => r.json()).then(d => {
     host.className = ""; host.textContent = "";
     for (const b of d.blocks) {
       const blk = el("div", { class: "skko-block" });
-      blk.appendChild(el("h4", { text: b.kind === "sa" ? `성도 각성 「${b.class}」` : "신규 소개" }));
-      blk.appendChild(el("div", { class: "skko-src", text: `공지 #${b.notice}` + (b.class_en ? ` · ${b.class_en}` : "") }));
+      if (b.kind === "wiki") blk.appendChild(el("div", { class: "skko-src", text: `anothereden.wiki 「${b.who}」 · 스킬 문서 Cargo HeroSkills` }));
+      else {
+        blk.appendChild(el("h4", { text: b.kind === "sa" ? `성도 각성 「${b.class}」` : "신규 소개" }));
+        blk.appendChild(el("div", { class: "skko-src", text: `공지 #${b.notice}` + (b.class_en ? ` · ${b.class_en}` : "") }));
+      }
       for (const [key, items] of Object.entries(b.sections)) {
         if (!items.length) continue;
         blk.appendChild(el("div", { class: "filter-label", text: SKKO_SECTION[key] || key, style: "margin:10px 0 6px" }));
@@ -997,7 +1023,7 @@ function buildSkillsKoSection(c) {
             box.appendChild(nm);
           }
           const list = el("div", { class: "fx-list" });
-          for (const u of it.effects) if (u.k !== "meta") list.appendChild(fxChip(u));
+          for (const u of it.effects) if (u.k !== "meta" && !u.explain) list.appendChild(fxChip(u));
           box.appendChild(list);
           const raw = el("details", { class: "skko-raw" });
           raw.appendChild(el("summary", { text: "원문" }));
@@ -1008,75 +1034,149 @@ function buildSkillsKoSection(c) {
       }
       host.appendChild(blk);
     }
-  }).catch(e => { host.className = "empty-state"; host.textContent = "공식 스킬 로드 실패: " + e.message; });
+  }).catch(e => { host.className = "empty-state"; host.textContent = "스킬 로드 실패: " + e.message; });
   return sec;
 }
 
 // ─────────────────────────────────────
-// 파티 구성 (2026-10-07) — 공식 한국어 스킬의 효과 단위 × 역할로 파티의 담당 · 빈칸 · 속성 정렬 · ZONE 충돌을 본다
-//   성도 각성 블록은 각성 완료로 보고 포함. 고른 명단은 localStorage (실패해도 동작)
+// 파티 구성 (2026-10-07) — 효과 단위 × 역할로 파티의 담당 · 빈칸 · 속성 정렬 · ZONE 충돌 · 배치를 본다
+//   공식 한국어 스킬(있으면) 또는 위키 영어 스킬. 성도 각성은 완료로 보고 포함. 명단 = 칸 순서(0~3 전방 · 4~5 후방, 빈 칸 null), localStorage
 // ─────────────────────────────────────
-const PARTY_MAX = 6;
+const PARTY_MAX = 6, FRONT_N = 4;                 // 전방 4 · 후방 2 — 칸 순서 = 화면 왼쪽부터
 const ELEMS = ["불", "물", "땅", "바람", "번개", "그림자", "결정"];
-STATE.party = (() => { try { return JSON.parse(localStorage.getItem('cg-party') || '[]'); } catch { return []; } })();
-STATE.skko = {};
+STATE.party = (() => { try { return JSON.parse(localStorage.getItem('cg-party') || '[]').slice(0, PARTY_MAX); } catch { return []; } })();
+STATE.skfx = {};
 function saveParty() { try { localStorage.setItem('cg-party', JSON.stringify(STATE.party)); } catch {} }
-async function loadSkko(id) {
-  if (!STATE.skko[id]) STATE.skko[id] = await fetch(`data/skills_ko/${id}.json`).then(r => r.json());
-  return STATE.skko[id];
+const hasSkills = c => c && (c.skills_ko || c.skills_en);
+async function loadSkills(c) {                        // 공식 한국어가 있으면 그것, 없으면 위키 영어
+  const dir = c.skills_ko ? "skills_ko" : "skills_en";
+  const key = dir + "/" + c.id;
+  if (!STATE.skfx[key]) STATE.skfx[key] = await fetch(`data/${dir}/${c.id}.json`).then(r => r.json());
+  return STATE.skfx[key];
 }
 function flatEffects(d) {
   const out = [];
   for (const b of d.blocks) for (const [sec, items] of Object.entries(b.sections))
-    for (const it of items) for (const u of it.effects) out.push({ ...u, _skill: it.name || "", _sec: sec });
+    for (const it of items) for (const u of it.effects) if (!u.explain) out.push({ ...u, _skill: it.name || "", _sec: sec });
   return out;
 }
 function uniqTexts(us, n = 4) {
   const seen = new Set(), out = [];
   for (const u of us) {
-    const t = (u.cond ? "(" + u.cond.slice(0, 18) + ") " : "") + fxText(u) + fxDur(u) + (u.tc ? " @" + u.tc : "");
+    const t = (u.cond ? "(" + u.cond.slice(0, 30) + ") " : "") + fxText(u) + fxDur(u) + (u.tc ? " @" + u.tc : "");
     if (!seen.has(t)) { seen.add(t); out.push(t); }
   }
   return [out.slice(0, n), out.length];
 }
+// 배치 조건 — 효과가 보유자의 위치를 요구하는가 (인원수 조건 「전방에 「검」 특성의 아군이 2명 이상」은 needOf 가 따로 센다)
+const KO_COUNT = /((?:「[^」]+」\s*)+)특성(?:의)?\s*(?:아군|인원수)?[^。]*?(\d+)명\s*이상/;
+const POS_BACK = /후방에서|후방에 있|(?:user|self) (?:is )?(?:in|on) (?:the )?(?:back ?-?line|reserve)|\bin (?:the )?reserve\b|from (?:the )?reserve/i;
+const POS_FRONT = /전방에서|전방에 있는 경우|(?:user|self) (?:is )?(?:in|on) (?:the )?front ?-?line|if in (?:the )?front ?-?line|when in (?:the )?front ?-?line/i;
+function posReq(u) {
+  const t = (u.cond || "") + " " + (u.raw || "");
+  if (POS_BACK.test(t)) return "back";
+  if (POS_FRONT.test(t)) return "front";              // 「user is in the front line and there are 4 …」 — 위치와 인원은 따로 판정
+  return null;
+}
+function sideReq(u) {                                 // 「자신의 전방 좌측 아군」「ally to the right of user」
+  const t = (u.scope || u.target || "") + " " + (u.raw || "");
+  if (/양옆|left and right/i.test(t)) return ["L", "R"];
+  if (/좌측|to the left of user|user's left|left of user/i.test(t)) return ["L"];
+  if (/우측|to the right of user|user's right|right of user/i.test(t)) return ["R"];
+  return null;
+}
+function needOf(u) {                                  // 인원수 특성 조건 — 영어는 빌더가 구조화(need), 한국어는 문장에서
+  if (u.need) return u.need;
+  const src = (u.cond || "") + " " + (u.raw || "");
+  const mm = src.match(KO_COUNT);
+  if (!mm) return null;
+  return { traits: [...mm[1].matchAll(/「([^」]+)」/g)].map(x => x[1]), n: +mm[2], front: /전방/.test(src), others: /자신(을)? ?(제외|이외)/.test(src) };
+}
+function trimParty() { while (STATE.party.length && !STATE.party[STATE.party.length - 1]) STATE.party.pop(); }
+
+function buildSlots() {
+  const box = el("div", { class: "slots" });
+  const move = (i, j) => {
+    const p = STATE.party;
+    while (p.length <= Math.max(i, j)) p.push(null);
+    [p[i], p[j]] = [p[j], p[i]];
+    trimParty(); saveParty(); renderParty();
+  };
+  for (const [label, from, to] of [["전방", 0, FRONT_N], ["후방", FRONT_N, PARTY_MAX]]) {
+    const row = el("div", { class: "slot-row", children: [el("span", { class: "filter-label", text: label })] });
+    for (let i = from; i < to; i++) {
+      const id = STATE.party[i], c = id && STATE.all.find(x => x.id === id);
+      const slot = el("div", { class: "slot" + (c ? "" : " empty") });
+      slot.appendChild(el("div", { class: "slot-no", text: String(i + 1) }));
+      slot.appendChild(el("div", { class: "slot-name", text: c ? c.nameKo : "빈 칸" }));
+      if (c) {
+        const ctl = el("div", { class: "slot-ctl" });
+        const front = i < FRONT_N;
+        const btns = [["◀", "왼쪽으로", () => i - 1], ["▶", "오른쪽으로", () => i + 1],
+          [front ? "▼" : "▲", front ? "후방으로" : "전방으로", () => {     // 반대편 첫 빈 칸, 없으면 그 줄 첫 칸과 맞바꿈
+            const [a, b] = front ? [FRONT_N, PARTY_MAX] : [0, FRONT_N];
+            for (let x = a; x < b; x++) if (!STATE.party[x]) return x;
+            return a;
+          }]];
+        for (const [t, tip, to] of btns) {
+          if ((t === "◀" && (i === 0 || i === FRONT_N)) || (t === "▶" && (i === FRONT_N - 1 || i === PARTY_MAX - 1))) continue;
+          const b = el("button", { class: "slot-btn", text: t, attrs: { title: tip } });
+          b.addEventListener('click', () => move(i, to()));
+          ctl.appendChild(b);
+        }
+        const x = el("button", { class: "slot-btn", text: "×", attrs: { title: "빼기" } });
+        x.addEventListener('click', () => { STATE.party[i] = null; trimParty(); saveParty(); renderParty(); });
+        ctl.appendChild(x);
+        slot.appendChild(ctl);
+      }
+      row.appendChild(slot);
+    }
+    box.appendChild(row);
+  }
+  return box;
+}
+
 async function renderParty() {
   const host = document.getElementById('party-view');
   clear(host);
   const wrap = el("div", { class: "party" });
   host.appendChild(wrap);
-  wrap.appendChild(el("h3", { class: "party-h", text: "파티 구성 — 역할 · 속성 · ZONE 점검" }));
-  wrap.appendChild(el("div", { class: "skko-src", text: `공식 한국어 스킬이 있는 캐릭터만 분석됩니다(현재 ${STATE.all.filter(c => c.skills_ko).length}명, Ver 3.11.10 이후 공지 기준). 성도 각성은 완료 상태로 계산.` }));
+  wrap.appendChild(el("h3", { class: "party-h", text: "파티 구성 — 역할 · 속성 · ZONE · 배치 점검" }));
+  const nKo = STATE.all.filter(c => c.skills_ko).length, nEn = STATE.all.filter(c => !c.skills_ko && c.skills_en).length;
+  wrap.appendChild(el("div", { class: "skko-src", text: `공식 한국어 스킬 ${nKo}명 + 위키 영어 스킬(자동 분해) ${nEn}명. 성도 각성은 완료 상태로 계산. 「전방에서 / 후방에서」 효과는 그 자리에 있을 때만 셉니다.` }));
   // 고르기
-  const pick = el("div", { class: "filter-group", style: "margin:10px 0 14px" });
+  const pick = el("div", { class: "filter-group", style: "margin:10px 0 8px" });
   const dl = el("datalist", { attrs: { id: "party-cands" } });
-  for (const c of STATE.all.filter(c => c.skills_ko)) dl.appendChild(el("option", { attrs: { value: c.nameKo } }));
+  for (const c of STATE.all.filter(hasSkills)) dl.appendChild(el("option", { attrs: { value: c.nameKo } }));
   const input = el("input", { class: "fx-input", attrs: { list: "party-cands", placeholder: `멤버 추가 (최대 ${PARTY_MAX})` } });
   input.addEventListener('change', () => {
-    const c = STATE.all.find(x => x.nameKo === input.value.trim() && x.skills_ko);
-    if (c && !STATE.party.includes(c.id) && STATE.party.length < PARTY_MAX) { STATE.party.push(c.id); saveParty(); renderParty(); }
+    const c = STATE.all.find(x => x.nameKo === input.value.trim() && hasSkills(x));
+    if (c && !STATE.party.includes(c.id)) {
+      const hole = STATE.party.indexOf(null);
+      if (hole >= 0) STATE.party[hole] = c.id; else if (STATE.party.length < PARTY_MAX) STATE.party.push(c.id);
+      saveParty(); renderParty();
+    }
     input.value = "";
   });
   pick.append(dl, input);
-  for (const id of STATE.party) {
-    const c = STATE.all.find(x => x.id === id);
-    if (!c) continue;
-    const chip = el("span", { class: "chip active fx-sel", text: c.nameKo, attrs: { title: "빼기" } });
-    chip.addEventListener('click', () => { STATE.party = STATE.party.filter(x => x !== id); saveParty(); renderParty(); });
-    pick.appendChild(chip);
-  }
   wrap.appendChild(pick);
-  if (!STATE.party.length) { wrap.appendChild(el("div", { class: "empty-state", text: "멤버를 추가하세요." })); return; }
+  wrap.appendChild(buildSlots());
+  if (!STATE.party.some(Boolean)) { wrap.appendChild(el("div", { class: "empty-state", text: "멤버를 추가하세요." })); return; }
 
   const members = [];
-  for (const id of STATE.party) {
-    const c = STATE.all.find(x => x.id === id);
-    members.push({ c, fx: flatEffects(await loadSkko(id)).filter(u => u.k !== "meta") });
+  for (let i = 0; i < STATE.party.length; i++) {
+    const c = STATE.party[i] && STATE.all.find(x => x.id === STATE.party[i]);
+    if (!c || !hasSkills(c)) continue;
+    const pos = i < FRONT_N ? "front" : "back";
+    const fx = flatEffects(await loadSkills(c)).filter(u => u.k !== "meta");
+    members.push({ c, slot: i, pos, fx, act: fx.filter(u => { const p = posReq(u); return !p || p === pos; }) });
   }
+  const label = m => `${m.c.nameKo}${m.pos === "back" ? " (후방)" : ""}`;
 
-  // 1. 역할 커버리지
+  // 1. 역할 커버리지 — 지금 자리에서 발동하는 효과만
   const t1 = el("table", { class: "skill-table party-table" });
   const hr = el("tr", { children: [el("th", { text: "역할" })] });
-  for (const m of members) hr.appendChild(el("th", { text: m.c.nameKo }));
+  for (const m of members) hr.appendChild(el("th", { text: label(m), attrs: { title: m.c.skills_ko ? "공식 한국어 스킬" : "위키 영어 스킬(자동 분해)" } }));
   t1.appendChild(el("thead", { children: [hr] }));
   const tb = el("tbody");
   const trTr = el("tr", { children: [el("td", { text: "특성", attrs: { title: "anothereden.wiki 캐릭터 문서 personalities" } })] });
@@ -1085,11 +1185,11 @@ async function renderParty() {
   const gaps = [];
   for (const r of PARTY_ROLES) {
     const tr = el("tr");
-    const any = members.some(m => m.fx.some(u => u.r === r));
+    const any = members.some(m => m.act.some(u => u.r === r));
     if (!any) gaps.push(ROLE_KO[r]);
     tr.appendChild(el("td", { class: any ? "role-ok" : "role-gap", text: (any ? "" : "⚠ ") + ROLE_KO[r], attrs: { title: ROLE_HINT[r] || "" } }));
     for (const m of members) {
-      const [txt, n] = uniqTexts(m.fx.filter(u => u.r === r), 3);
+      const [txt, n] = uniqTexts(m.act.filter(u => u.r === r), 3);
       const td = el("td");
       for (const t of txt) td.appendChild(el("div", { class: "pt", text: t }));
       if (n > txt.length) td.appendChild(el("div", { class: "pt more", text: `+${n - txt.length}` }));
@@ -1104,7 +1204,7 @@ async function renderParty() {
   wrap.appendChild(s1);
 
   // 2. 속성 · 공격 종류 정렬
-  const all = members.flatMap(m => m.fx.map(u => ({ ...u, _who: m.c.nameKo })));
+  const all = members.flatMap(m => m.act.map(u => ({ ...u, _who: m.c.nameKo })));
   const atk = all.filter(u => u.k === "attack" && u.atk);
   const elemCount = Object.fromEntries(ELEMS.map(e => [e, atk.filter(u => u.element === e).length]));
   const typeCount = { "물리": atk.filter(u => ["베기", "찌르기", "타격"].includes(u.atk)).length, "마법": atk.filter(u => u.atk === "마법").length };
@@ -1114,8 +1214,8 @@ async function renderParty() {
   t2.appendChild(el("thead", { children: [el("tr", { children: ["속성", "우리 공격 수", "속성 공격 UP (아군)", "속성 저항 DOWN (적)"].map(h => el("th", { text: h })) })] }));
   const tb2 = el("tbody");
   for (const e of ELEMS) {
-    const up = statHits(new RegExp(`^(${e}|모든) 속성 공격$`), "UP", ["atk_buff"]);
-    const dn = statHits(new RegExp(`^(${e}|모든) 속성 저항$`), "DOWN", ["atk_debuff"]);
+    const up = statHits(new RegExp(`^(${e}|모든) 속성 공격$|^속성 공격$`), "UP", ["atk_buff"]);
+    const dn = statHits(new RegExp(`^(${e}|모든) 속성 저항$|^속성 저항$`), "DOWN", ["atk_debuff"]);
     if (!elemCount[e] && !up.length && !dn.length) continue;
     const mis = elemCount[e] && !up.length && !dn.length;
     tb2.appendChild(el("tr", { children: [el("td", { text: e, class: mis ? "role-gap" : "" }), el("td", { text: String(elemCount[e]) }), el("td", { text: whoVal(up) || "—" }), el("td", { text: whoVal(dn) || "—" })] }));
@@ -1125,14 +1225,20 @@ async function renderParty() {
     tb2.appendChild(el("tr", { children: [el("td", { text: ty, class: typeCount[ty] && !dn.length ? "role-gap" : "" }), el("td", { text: String(typeCount[ty]) }), el("td", { text: "—" }), el("td", { text: whoVal(dn) || "—" })] }));
   }
   t2.appendChild(tb2);
-  const s2 = el("div", { class: "section", children: [el("h3", { text: "2. 속성 · 공격 종류 정렬" }),
-    el("div", { class: "skko-src", text: "빨간 칸 = 우리가 그 속성/종류로 공격하는데 맞춘 버프·저항 디버프가 없음. 공격 수는 스킬 문장 기준(사용 빈도 아님)." }),
-    el("div", { class: "table-scroll", children: [t2] })] });
-  wrap.appendChild(s2);
+  wrap.appendChild(el("div", { class: "section", children: [el("h3", { text: "2. 속성 · 공격 종류 정렬" }),
+    el("div", { class: "skko-src", text: "빨간 칸 = 우리가 그 속성/종류로 공격하는데 맞춘 버프·저항 디버프가 없음. 공격 수는 스킬 문장 기준(사용 빈도 아님). 속성 미지정 「속성 공격/저항」은 모든 속성에 셉니다." }),
+    el("div", { class: "table-scroll", children: [t2] })] }));
 
-  // 3. ZONE
+  // 3. ZONE — 한국어 「풍왕진 전개」 · 영어 「Deploy Wind King Stance」
   const s3 = el("div", { class: "section", children: [el("h3", { text: "3. ZONE" })] });
-  const zoneBy = members.map(m => [m.c.nameKo, [...new Set(m.fx.filter(u => u.k === "zone" && /전개/.test(u.what || "")).map(u => (u.what.match(/((?:극 |절 )?\S+진(?: \S+)?) ?전개/) || [, u.what])[1]))]]).filter(x => x[1].length);
+  const zoneName = u => {
+    const w = u.what || "";
+    const k = w.match(/((?:극 |절 )?\S+진(?: \S+)?) ?전개/);
+    if (k) return k[1];
+    const e = w.match(/deploys? (.+?)(?: and |$)/i);
+    return e ? e[1].trim() : null;
+  };
+  const zoneBy = members.map(m => [m.c.nameKo, [...new Set(m.act.filter(u => u.k === "zone").map(zoneName).filter(Boolean))]]).filter(x => x[1].length);
   const kinds = new Set(zoneBy.flatMap(x => x[1].map(z => z.replace(/^(극|절) /, ""))));
   s3.appendChild(el("div", { class: "skko-src", text: kinds.size > 1 ? `⚠ 서로 다른 ZONE ${kinds.size}종 — 나중에 전개한 쪽이 덮어씁니다. 주력 ZONE을 정하세요.` : kinds.size ? "ZONE 한 종류로 정렬됨." : "ZONE 전개 담당 없음." }));
   for (const [who, zs] of zoneBy) s3.appendChild(el("div", { class: "pt", text: `${who}: ${zs.join(" · ")}` }));
@@ -1148,29 +1254,57 @@ async function renderParty() {
   }
   wrap.appendChild(s4);
 
-  // 5. 특성 조건 — 「「검」 「활」 「창」 특성의 아군이 3명 이상일 경우」 를 파티 특성으로 판정
-  const s5 = el("div", { class: "section", children: [el("h3", { text: "5. 특성 조건 충족" }),
-    el("div", { class: "skko-src", text: "전방/후방 배치는 아직 반영하지 않음 — 파티 전원을 전방으로 보고 셉니다. 「자신 이외」 조건은 본인을 뺍니다." })] });
+  // 5. 특성 인원 조건 — 전방 조건은 전방 4명만 센다
+  const s5 = el("div", { class: "section", children: [el("h3", { text: "5. 특성 인원 조건" }),
+    el("div", { class: "skko-src", text: "「전방에 ○○ 특성 N명 이상」은 전방 칸만 셉니다. 「자신 이외」는 본인을 뺍니다. 특성 = 위키 personalities(무기 · 속성 포함)." })] });
   const seen = new Set();
   for (const m of members) for (const u of m.fx) {
-    const src = (u.cond || "") + " " + (u.raw || "");
-    const mm = src.match(/((?:「[^」]+」\s*)+)특성(?:의)?\s*(?:아군|인원수)?[^。]*?(\d+)명\s*이상/);
-    if (!mm) continue;
-    const traits = [...mm[1].matchAll(/「([^」]+)」/g)].map(x => x[1]);
-    const need = +mm[2];
-    const key = m.c.id + "|" + traits.join(",") + "|" + need;
+    const nd = needOf(u);
+    if (!nd) continue;
+    const key = m.c.id + "|" + nd.traits.join(",") + "|" + nd.n + "|" + nd.front;
     if (seen.has(key)) continue;
     seen.add(key);
-    const others = /자신(을)? ?(제외|이외)/.test(src);
-    const who = members.filter(x => (!others || x !== m) && (x.c.traits || []).some(t => traits.includes(t)));
-    const ok = who.length >= need;
+    const pool = members.filter(x => (!nd.front || x.pos === "front") && (!nd.others || x !== m));
+    const who = pool.filter(x => (x.c.traits || []).some(t => nd.traits.includes(t)));
+    const ok = who.length >= nd.n;
     s5.appendChild(el("div", { class: "pt", children: [
       el("span", { class: ok ? "role-ok" : "role-gap", text: (ok ? "✓ " : "✗ ") }),
-      document.createTextNode(`${m.c.nameKo} · ${u._skill || ROLE_KO[u.r] || ""}: 「${traits.join("」「")}」 ${need}명 이상 → 현재 ${who.length}명`),
+      document.createTextNode(`${label(m)} · ${u._skill || ROLE_KO[u.r] || ""}: ${nd.front ? "전방 " : ""}「${nd.traits.join("」「")}」 ${nd.n}명 이상 → 현재 ${who.length}명`),
       el("span", { class: "cond", text: who.length ? ` (${who.map(x => x.c.nameKo).join(", ")})` : "" })] }));
   }
   if (!seen.size) s5.appendChild(el("div", { class: "skko-src", text: "인원수 특성 조건이 있는 효과 없음" }));
   wrap.appendChild(s5);
+
+  // 6. 배치 — 자리 조건 · 옆자리 대상
+  const s6 = el("div", { class: "section", children: [el("h3", { text: "6. 배치 (전방 · 후방 · 옆자리)" }),
+    el("div", { class: "skko-src", text: "전방 칸은 화면 왼쪽부터 1~4. 좌측 = 한 칸 왼쪽, 우측 = 한 칸 오른쪽(전방 안에서만)." })] });
+  const bySlot = Object.fromEntries(members.map(m => [m.slot, m]));
+  let n6 = 0;
+  for (const m of members) {
+    const pos = [], side = [];
+    for (const u of m.fx) {
+      const p = posReq(u);
+      if (p) pos.push([u, p === m.pos]);
+      const sd = sideReq(u);
+      if (sd) side.push([u, sd]);
+    }
+    const [okT] = uniqTexts(pos.filter(x => x[1]).map(x => x[0]), 4), [ngT] = uniqTexts(pos.filter(x => !x[1]).map(x => x[0]), 4);
+    if (okT.length) s6.appendChild(el("div", { class: "pt", children: [el("span", { class: "role-ok", text: "✓ " }), document.createTextNode(`${label(m)} 자리 조건 충족: ${okT.join(" / ")}`)] }));
+    if (ngT.length) s6.appendChild(el("div", { class: "pt", children: [el("span", { class: "role-gap", text: "✗ " }), document.createTextNode(`${label(m)} ${m.pos === "front" ? "후방" : "전방"}에 있어야 발동: ${ngT.join(" / ")}`)] }));
+    n6 += okT.length + ngT.length;
+    const seenS = new Set();
+    for (const [u, sd] of side) {
+      const t = fxText(u) + fxDur(u);
+      if (seenS.has(t)) continue;
+      seenS.add(t);
+      const got = m.pos !== "front" ? [] : sd.map(d => bySlot[m.slot + (d === "L" ? -1 : 1)]).filter(x => x && x.pos === "front");
+      s6.appendChild(el("div", { class: "pt", children: [el("span", { class: got.length ? "role-ok" : "role-gap", text: got.length ? "→ " : "✗ " }),
+        document.createTextNode(`${label(m)} · ${u._skill}: ${t} ⇒ ${got.length ? got.map(x => x.c.nameKo).join(", ") : "받을 옆자리 아군 없음"}`)] }));
+      n6++;
+    }
+  }
+  if (!n6) s6.appendChild(el("div", { class: "skko-src", text: "자리 · 옆자리 조건이 있는 효과 없음" }));
+  wrap.appendChild(s6);
 }
 
 function buildSkillTable(rows) {

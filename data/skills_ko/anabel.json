@@ -30,7 +30,10 @@
         "raw": "수세",
         "target": "자신",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "buff",
@@ -40,7 +43,10 @@
         "raw": "크리티컬 가드(턴 종료 시까지)",
         "target": "자신",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "surv_state",
+        "tm": "턴 종료",
+        "tc": "자신"
        },
        {
         "k": "guard",
@@ -50,7 +56,10 @@
         "raw": "대미지 90% 감소 배리어(1턴)",
         "target": "자신",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "action",
@@ -58,7 +67,10 @@
         "raw": "가디언 소울, 엘리먼트 월 연속 실행",
         "target": "자신",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "tempo",
+        "tm": "사용 시",
+        "tc": "자신"
        }
       ]
      }

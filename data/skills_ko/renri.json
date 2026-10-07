@@ -29,7 +29,10 @@
         "name": "심기일체",
         "raw": "심기일체",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "buff",
@@ -37,7 +40,10 @@
         "turns": 3,
         "raw": "오버 크리티컬(3턴)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "stat_pct",
@@ -50,7 +56,10 @@
         "actions": 5,
         "raw": "크리티컬율 300% UP(5회 행동)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "attack",
@@ -63,7 +72,10 @@
         "preempt": false,
         "raw": "이후 적 하나에 베기 공격(극대, 50배)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "buff",
@@ -71,7 +83,10 @@
         "turns": 3,
         "raw": "버프 리버설(3턴)",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "enemy_utility",
+        "tm": "사용 시",
+        "tc": "적 하나"
        }
       ]
      }

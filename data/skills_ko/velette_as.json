@@ -35,7 +35,10 @@
         "raw": "힘 35% DOWN",
         "target": "적 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "stat_pct",
@@ -48,7 +51,10 @@
         "raw": "지능 35% DOWN",
         "target": "적 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "stat_pct",
@@ -61,7 +67,10 @@
         "raw": "속도 35% DOWN",
         "target": "적 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "buff",
@@ -70,7 +79,10 @@
         "raw": "버프 리버설(3턴)",
         "target": "적 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "enemy_utility",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "buff",
@@ -78,7 +90,10 @@
         "raw": "공명",
         "target": "적 전체",
         "mode": "추가 효과",
-        "preempt": true
+        "preempt": true,
+        "r": "state_unknown",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "action",
@@ -87,7 +102,10 @@
         "target": "적 전체",
         "mode": "추가 효과",
         "cond": "10 축적 시",
-        "preempt": true
+        "preempt": true,
+        "r": "mode",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "stack",
@@ -98,7 +116,10 @@
         "target": "적 전체",
         "mode": "추가 효과",
         "cond": "10 축적 시",
-        "preempt": true
+        "preempt": true,
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "buff",
@@ -106,7 +127,10 @@
         "raw": "공명",
         "target": "적 전체",
         "mode": "추가 효과",
-        "preempt": true
+        "preempt": true,
+        "r": "state_unknown",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "stack",
@@ -116,7 +140,10 @@
         "raw": "모두 소비",
         "target": "적 전체",
         "mode": "추가 효과",
-        "preempt": true
+        "preempt": true,
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "적 전체"
        }
       ]
      },
@@ -147,7 +174,10 @@
         "until_turn_end": true,
         "raw": "모든 속성 저항 100% DOWN(턴 종료 시까지)",
         "target": "적 전체",
-        "mode": ""
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "턴 종료",
+        "tc": "적 전체"
        },
        {
         "k": "stat_pct",
@@ -160,7 +190,10 @@
         "actions": 3,
         "raw": "모든 속성 공격 100% UP(3회 행동)",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "stack",
@@ -171,7 +204,10 @@
         "raw": "자신에게 데도메나 축적 시 데도메나를 1 소비해 적 전체에 약점 간파(번개) 부여(턴 종료 시까지)",
         "target": "아군 전체",
         "mode": "추가 효과",
-        "cond": "자신에게 데도메나 축적 시"
+        "cond": "자신에게 데도메나 축적 시",
+        "r": "resource",
+        "tm": "턴 종료",
+        "tc": "아군 전체"
        },
        {
         "k": "dmg",
@@ -181,7 +217,10 @@
         "raw": "약점 시 대미지 UP(턴 종료 시까지)",
         "target": "아군 전체",
         "mode": "추가 효과",
-        "cond": "약점 시"
+        "cond": "약점 시",
+        "r": "atk_buff",
+        "tm": "턴 종료",
+        "tc": "아군 전체"
        }
       ]
      }
@@ -206,21 +245,27 @@
         "k": "other",
         "raw": "데도메나 축적 시 「아포신디시스」와 「일렉트리」에 추가 효과",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "other",
+        "tm": "상시·조건"
        },
        {
         "k": "meta",
         "what": "최대 축적 수",
         "detail": "5",
         "raw": "최대 축적 수: 5",
-        "mode": ""
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
        },
        {
         "k": "meta",
         "what": "축적 조건",
         "detail": "턴 종료 시 1 축적",
         "raw": "축적 조건: 턴 종료 시 1 축적",
-        "mode": ""
+        "mode": "",
+        "r": "meta",
+        "tm": "턴 종료"
        },
        {
         "k": "stack",
@@ -230,14 +275,18 @@
         "raw": "스텔라 버스트 중 「아파니슴」 사용 시 1 축적",
         "target": "",
         "mode": "",
-        "cond": "스텔라 버스트 중 「아파니슴」 사용 시"
+        "cond": "스텔라 버스트 중 「아파니슴」 사용 시",
+        "r": "resource",
+        "tm": "스텔라 버스트"
        },
        {
         "k": "buff",
         "name": "공명",
         "raw": "공명",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "상시·조건"
        },
        {
         "k": "stack",
@@ -247,7 +296,9 @@
         "raw": "10 축적 시에 「디어리시스」 사용 시 5 축적",
         "target": "",
         "mode": "",
-        "cond": "10 축적 시에 「디어리시스」 사용 시"
+        "cond": "10 축적 시에 「디어리시스」 사용 시",
+        "r": "resource",
+        "tm": "상시·조건"
        }
       ]
      },
@@ -280,34 +331,44 @@
         "value": 10.0,
         "raw": "레브마 축적 수에 따라 물리, 마법 저항 10% DOWN",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "상시·조건"
        },
        {
         "k": "meta",
         "what": "최대 축적 수",
         "detail": "99",
         "raw": "최대 축적 수: 99",
-        "mode": ""
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
        },
        {
         "k": "meta",
         "what": "축적 조건",
         "detail": "「일렉트리」 사용 시 1 축적",
         "raw": "축적 조건: 「일렉트리」 사용 시 1 축적",
-        "mode": ""
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
        },
        {
         "k": "other",
         "raw": "데도메나 축적 수에 따라 「일렉트리」의 레브마 축적 수 증가",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "other",
+        "tm": "상시·조건"
        },
        {
         "k": "buff",
         "name": "공명",
         "raw": "공명",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "상시·조건"
        },
        {
         "k": "stat_pct",
@@ -321,7 +382,9 @@
         "max": true,
         "raw": "축적 수에 따라 크리티컬율 UP",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "상시·조건"
        },
        {
         "k": "stat_pct",
@@ -335,21 +398,27 @@
         "max": true,
         "raw": "마법 크리티컬율 UP(최대 200%)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "상시·조건"
        },
        {
         "k": "zone",
         "what": "ZONE 전개",
         "raw": "절 ZONE 전개 시 추가: 아군 전체에 배리어 관통",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "zone",
+        "tm": "상시·조건"
        },
        {
         "k": "meta",
         "what": "최대 축적 수",
         "detail": "10",
         "raw": "최대 축적 수: 10",
-        "mode": ""
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
        }
       ]
      }
@@ -375,7 +444,10 @@
         "turns": 5,
         "raw": "아나스카피 상태로 변화(5턴)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "mode",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "stack",
@@ -384,7 +456,10 @@
         "op": "축적",
         "raw": "데도메나 1 축적",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "attack",
@@ -397,7 +472,10 @@
         "preempt": false,
         "raw": "이후 적 전체에 번개 속성 타격 공격(극대)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "power",
@@ -405,7 +483,10 @@
         "detail": "최대 75배",
         "raw": "자신의 데도메나 축적 수에 따라 위력 증가(최대 75배)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "power",
+        "tm": "사용 시",
+        "tc": "자신"
        }
       ]
      }

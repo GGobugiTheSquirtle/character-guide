@@ -29,7 +29,10 @@
         "raw": "전투 불능 회복",
         "target": "아군 전후방 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "recover",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "heal",
@@ -39,7 +42,10 @@
         "raw": "HP 회복 100%",
         "target": "아군 전후방 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "recover",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "heal",
@@ -47,7 +53,10 @@
         "raw": "상태 이상 회복",
         "target": "아군 전후방 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "recover",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "dispel",
@@ -55,7 +64,10 @@
         "raw": "디버프 해제",
         "target": "아군 전후방 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "recover",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "buff",
@@ -63,7 +75,10 @@
         "raw": "버티기",
         "target": "아군 전후방 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "dispel",
@@ -71,7 +86,10 @@
         "raw": "초틸릴 상태 해제",
         "target": "아군 전후방 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "other",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "stack",
@@ -81,7 +99,10 @@
         "raw": "새크리피전 모두 소비",
         "target": "아군 전후방 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        }
       ]
      }

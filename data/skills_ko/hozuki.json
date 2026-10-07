@@ -30,7 +30,9 @@
         "what": "극 순돌진 전개",
         "raw": "아군 전방의 「불」 「활」 「창」 특성 인원수에 따라 극 열화진 또는 극 순돌진 전개",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "zone",
+        "tm": "사용 시"
        },
        {
         "k": "attack",
@@ -43,7 +45,10 @@
         "preempt": false,
         "raw": "이후 적 전체에 불 속성 찌르기 공격 9회(극대, 30배)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "stat_pct",
@@ -55,7 +60,10 @@
         "value": 50.0,
         "raw": "내구 50% DOWN",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "stat_pct",
@@ -68,7 +76,10 @@
         "turns": 5,
         "raw": "정신 50% DOWN(5턴)",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "ailment",
@@ -77,7 +88,10 @@
         "ignore_res": true,
         "raw": "페인(영구 지속, 대상의 저항 무시)",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "buff",
@@ -85,7 +99,10 @@
         "guess": true,
         "raw": "후공 행동",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "tempo",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "buff",
@@ -94,7 +111,10 @@
         "turns": 5,
         "raw": "호시탐탐(5턴)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "stack",
@@ -103,7 +123,10 @@
         "op": "축적",
         "raw": "금전운 5 축적",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "자신"
        }
       ]
      }

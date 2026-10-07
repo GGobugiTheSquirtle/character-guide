@@ -32,7 +32,10 @@
         "preempt": false,
         "raw": "적 전체에 불 속성 베기 공격 2회(극)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "power",
@@ -40,7 +43,9 @@
         "detail": "최대 25배",
         "raw": "자신의 현재 MP가 최대치에 가까울수록 위력 증가(최대 25배)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "power",
+        "tm": "사용 시"
        },
        {
         "k": "stack",
@@ -49,14 +54,18 @@
         "op": "축적",
         "raw": "아군 전체에 교격 1 축적",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시"
        },
        {
         "k": "zone",
         "what": "쌍격진 참돌 전개",
         "raw": "쌍격진 참돌 전개 시 교격 축적량 증가(2배)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "zone",
+        "tm": "사용 시"
        }
       ]
      },
@@ -82,7 +91,10 @@
         "preempt": false,
         "raw": "적 하나에 불 속성 베기 공격(중)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "stat_pct",
@@ -94,7 +106,10 @@
         "value": 25.0,
         "raw": "베기 저항 25% DOWN",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "stat_pct",
@@ -107,7 +122,10 @@
         "turns": 3,
         "raw": "찌르기 저항 25% DOWN(3턴)",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
        }
       ]
      },
@@ -128,7 +146,9 @@
         "what": "쌍격진 참돌 전개",
         "raw": "쌍격진 참돌 전개",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "zone",
+        "tm": "사용 시"
        },
        {
         "k": "stat_pct",
@@ -141,14 +161,20 @@
         "turns": 5,
         "raw": "물리 저항 30% UP(5턴)",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "guard",
         "what": "상태 이상 무효",
         "raw": "상태 이상 무효",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "guard",
@@ -156,7 +182,10 @@
         "times": 2,
         "raw": "날리기 무효(2회)",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        }
       ]
      },
@@ -186,7 +215,10 @@
         "raw": "힘 100% UP",
         "target": "아군 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "stat_pct",
@@ -199,7 +231,10 @@
         "raw": "속도 100% UP",
         "target": "아군 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "tempo",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "buff",
@@ -207,7 +242,10 @@
         "raw": "오버 크리티컬",
         "target": "아군 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "buff",
@@ -217,7 +255,10 @@
         "raw": "크리티컬 가드(5턴)",
         "target": "아군 전체",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "buff",
@@ -225,7 +266,10 @@
         "turns": 5,
         "raw": "연계(5턴)",
         "target": "검, 도끼, 도, 창, 활 장착자",
-        "mode": ""
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "특정 아군"
        },
        {
         "k": "attack",
@@ -239,7 +283,10 @@
         "raw": "아군 공격 시 불 속성 추가 공격(극, 2배)",
         "target": "검, 도끼, 도, 창, 활 장착자",
         "mode": "연계 효과",
-        "cond": "아군 공격 시"
+        "cond": "아군 공격 시",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "특정 아군"
        }
       ]
      }
@@ -273,7 +320,9 @@
         "cap": "",
         "raw": "축적 수에 따라 힘 4 UP",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "상시·조건"
        },
        {
         "k": "stat_pct",
@@ -285,34 +334,44 @@
         "value": 10.0,
         "raw": "크리티컬율 10% UP",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "상시·조건"
        },
        {
         "k": "other",
         "raw": "(최대 힘 120 UP/크리티컬율 300% UP)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "other",
+        "tm": "상시·조건"
        },
        {
         "k": "meta",
         "what": "최대 축적 수",
         "detail": "30",
         "raw": "최대 축적 수: 30",
-        "mode": ""
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
        },
        {
         "k": "meta",
         "what": "축적 조건",
         "detail": "「터미너스 아츠」 사용 시 1 축적",
         "raw": "축적 조건: 「터미너스 아츠」 사용 시 1 축적",
-        "mode": ""
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
        },
        {
         "k": "zone",
         "what": "쌍격진 참돌 전개",
         "raw": "쌍격진 참돌 전개 시 축적량 증가(2배)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "zone",
+        "tm": "상시·조건"
        }
       ]
      }
@@ -340,7 +399,10 @@
         "times": 5,
         "raw": "치유(HP 최대치 15%, 5회)",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "recover",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "heal",
@@ -348,14 +410,20 @@
         "times": 5,
         "raw": "MP 치유(MP 최대치 15%, 5회)",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "action",
         "what": "컴퍼트 존 실행",
         "raw": "컴퍼트 존 실행",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "mode",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "action",
@@ -363,7 +431,10 @@
         "raw": "스텔라 버스트 시 최종 결전 프로토콜(으)로 변화",
         "target": "아군 전체",
         "mode": "추가 효과",
-        "cond": "스텔라 버스트 시"
+        "cond": "스텔라 버스트 시",
+        "r": "mode",
+        "tm": "스텔라 버스트",
+        "tc": "아군 전체"
        }
       ]
      },
@@ -388,7 +459,10 @@
         "until_turn_end": true,
         "raw": "크리티컬 대미지 100% UP(턴 종료 시까지)",
         "target": "극 쌍격진 참돌 전개, 아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "턴 종료",
+        "tc": "아군 전체"
        },
        {
         "k": "attack",
@@ -401,7 +475,10 @@
         "preempt": false,
         "raw": "이후 적 전체에 불 속성 베기 공격 10회(극대, 40배)",
         "target": "극 쌍격진 참돌 전개, 아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
        }
       ]
      }

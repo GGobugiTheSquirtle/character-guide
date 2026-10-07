@@ -29,7 +29,10 @@
         "perm": true,
         "raw": "귀수 상태로 변화(영구 지속)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "mode",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "buff",
@@ -37,7 +40,10 @@
         "turns": 3,
         "raw": "심기일체(3턴)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "attack",
@@ -50,14 +56,20 @@
         "preempt": false,
         "raw": "이후 적 전체에 땅 속성 타격 공격(극대, 60배)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "buff",
         "name": "대상 배리어 관통",
         "raw": "대상 배리어 관통",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "자신"
        }
       ]
      }

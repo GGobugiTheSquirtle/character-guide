@@ -38,28 +38,38 @@
         "preempt": true,
         "raw": "적 전체에 바람 속성 찌르기 공격으로 선제 공격(극대)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "af",
         "what": "어나더 포스 콤보 배율 증가량 UP(2배)",
         "raw": "어나더 포스 콤보 배율 증가량 UP(2배)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시"
        },
        {
         "k": "buff",
         "name": "대상 배리어 관통",
         "raw": "대상 배리어 관통",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시"
        },
        {
         "k": "ailment",
         "name": "독",
         "raw": "독",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "dot",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "ailment",
@@ -68,7 +78,10 @@
         "ignore_res": true,
         "raw": "페인(영구 지속, 대상의 저항 무시)",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "ailment",
@@ -76,7 +89,10 @@
         "guess": true,
         "raw": "브레이크",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "stack",
@@ -85,14 +101,20 @@
         "op": "축적",
         "raw": "저무는 달 5 축적",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "dispel",
         "what": "버프 해제",
         "raw": "버프 해제",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "enemy_utility",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "power",
@@ -100,7 +122,10 @@
         "detail": "최대 7 축적/70배",
         "raw": "듀온 축적 수에 따라 저무는 달 축적 수와 위력 증가(최대 7 축적/70배)",
         "target": "공격 대상",
-        "mode": "추가 효과"
+        "mode": "추가 효과",
+        "r": "power",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "stack",
@@ -109,7 +134,10 @@
         "op": "소비",
         "raw": "듀온 모두 소비",
         "target": "공격 대상",
-        "mode": "추가 효과"
+        "mode": "추가 효과",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "적 하나"
        }
       ]
      }

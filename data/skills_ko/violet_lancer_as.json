@@ -33,7 +33,10 @@
         "preempt": false,
         "raw": "적 하나에 땅 속성 찌르기 공격(극)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "dmg",
@@ -43,14 +46,20 @@
         "raw": "약점 시 대미지 UP(3턴)",
         "target": "자신",
         "mode": "",
-        "cond": "약점 시"
+        "cond": "약점 시",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "buff",
         "name": "공명",
         "raw": "공명",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "stack",
@@ -59,7 +68,10 @@
         "op": "축적",
         "raw": "2 축적",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "자신"
        }
       ]
      },
@@ -88,7 +100,10 @@
         "value": 50.0,
         "raw": "땅 속성 공격 50% UP",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "buff",
@@ -96,7 +111,10 @@
         "guess": true,
         "raw": "다단 강화(최대 5hit/3배)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "stat_pct",
@@ -109,7 +127,10 @@
         "turns": 1,
         "raw": "HP 최대치 30% UP(1턴)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "guard",
@@ -117,21 +138,30 @@
         "times": 3,
         "raw": "상태 이상 무효(3회)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "zone",
         "what": "ZONE 각성 실행",
         "raw": "ZONE 각성 실행",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "zone",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "zone",
         "what": "ANOTHER ZONE 전개",
         "raw": "ANOTHER ZONE 전개 시 버프 턴 수 증가(5배)",
         "target": "자신",
-        "mode": "추가 효과"
+        "mode": "추가 효과",
+        "r": "zone",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "zone",
@@ -139,7 +169,10 @@
         "raw": "지열진 전개 시 각성 강화: 절 지열진",
         "target": "자신",
         "mode": "추가 효과",
-        "cond": "지열진 전개 시"
+        "cond": "지열진 전개 시",
+        "r": "zone",
+        "tm": "사용 시",
+        "tc": "자신"
        }
       ]
      },
@@ -168,7 +201,10 @@
         "preempt": false,
         "raw": "적 하나에 땅 속성 찌르기 공격 4회(극)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "stat_pct",
@@ -181,7 +217,10 @@
         "actions": 3,
         "raw": "크리티컬율 100% UP(3회 행동)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "power",
@@ -190,7 +229,10 @@
         "raw": "ANOTHER ZONE 전개 시 위력 증가(5배)",
         "target": "자신",
         "mode": "추가 효과",
-        "cond": "ANOTHER ZONE 전개 시"
+        "cond": "ANOTHER ZONE 전개 시",
+        "r": "power",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "action",
@@ -198,7 +240,10 @@
         "raw": "재공격 실행",
         "target": "자신",
         "mode": "추가 효과",
-        "cond": "ANOTHER ZONE 전개 시"
+        "cond": "ANOTHER ZONE 전개 시",
+        "r": "tempo",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "action",
@@ -206,7 +251,10 @@
         "raw": "절 지열진 전개 시 추가로 재공격 실행",
         "target": "자신",
         "mode": "추가 효과",
-        "cond": "절 지열진 전개 시"
+        "cond": "절 지열진 전개 시",
+        "r": "tempo",
+        "tm": "사용 시",
+        "tc": "자신"
        }
       ]
      },
@@ -236,7 +284,10 @@
         "preempt": false,
         "raw": "적 하나에 땅 속성 찌르기 공격(강)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "dmg",
@@ -246,7 +297,10 @@
         "turns": 3,
         "raw": "크리티컬 대미지 25% UP(3턴)",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "stat_pct",
@@ -258,7 +312,10 @@
         "value": 25.0,
         "raw": "힘 25% UP",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "stat_pct",
@@ -271,7 +328,10 @@
         "turns": 3,
         "raw": "속도 25% UP(3턴)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "tempo",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "power",
@@ -280,14 +340,20 @@
         "raw": "ANOTHER ZONE 전개 시 위력 증가(2배)",
         "target": "자신",
         "mode": "추가 효과",
-        "cond": "ANOTHER ZONE 전개 시"
+        "cond": "ANOTHER ZONE 전개 시",
+        "r": "power",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "other",
         "raw": "힘, 속도 UP 효과량 100%로 증가",
         "target": "자신",
         "mode": "추가 효과",
-        "cond": "ANOTHER ZONE 전개 시"
+        "cond": "ANOTHER ZONE 전개 시",
+        "r": "other",
+        "tm": "사용 시",
+        "tc": "자신"
        }
       ]
      }
@@ -301,16 +367,20 @@
        {
         "k": "stat_pct",
         "stats": [
-         "아군 전체의 소비 MP"
+         "소비 MP"
         ],
         "group": "etc",
         "dir": "DOWN",
+        "scope": "아군 전체",
         "value": 100.0,
         "turns": 1,
         "raw": "전방에서 전투 시작 시 아군 전체의 소비 MP 100% DOWN(1턴)",
         "target": "",
         "mode": "",
-        "cond": "전방에서 전투 시작 시"
+        "cond": "전방에서 전투 시작 시",
+        "r": "other",
+        "tm": "전투 시작",
+        "tc": "아군 전체"
        }
       ]
      },
@@ -325,7 +395,9 @@
         "raw": "전방에서 턴 종료 시 공명",
         "target": "",
         "mode": "",
-        "cond": "전방에서 턴 종료 시"
+        "cond": "전방에서 턴 종료 시",
+        "r": "state_unknown",
+        "tm": "턴 종료"
        }
       ]
      },
@@ -341,7 +413,9 @@
         "op": "축적",
         "raw": "1 축적",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "상시·조건"
        }
       ]
      },
@@ -355,7 +429,9 @@
         "what": "ZONE 각성 강화",
         "raw": "ZONE 각성 강화",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "zone",
+        "tm": "상시·조건"
        }
       ]
      },
@@ -368,7 +444,9 @@
         "k": "other",
         "raw": "체인지 지점으로 자신의 버프 디버프 이전",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "other",
+        "tm": "상시·조건"
        }
       ]
      },
@@ -383,7 +461,9 @@
         "guess": true,
         "raw": "레저넌스",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "상시·조건"
        }
       ]
      },
@@ -397,7 +477,9 @@
         "name": "공명",
         "raw": "『공명",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "상시·조건"
        }
       ]
      },
@@ -410,7 +492,9 @@
         "k": "other",
         "raw": "』",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "other",
+        "tm": "상시·조건"
        }
       ]
      },
@@ -423,7 +507,9 @@
         "k": "other",
         "raw": "축적 수에 따라 속도 UP(최대 10/50 UP)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "other",
+        "tm": "상시·조건"
        }
       ]
      },
@@ -437,7 +523,9 @@
         "what": "ZONE 전개",
         "raw": "절 ZONE 전개 시 추가: 아군 전체에 루나틱",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "zone",
+        "tm": "상시·조건"
        }
       ]
      },
@@ -452,7 +540,9 @@
         "guess": true,
         "raw": "효과",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "상시·조건"
        }
       ]
      },
@@ -466,7 +556,9 @@
         "what": "최대 축적 수",
         "detail": "",
         "raw": "최대 축적 수:",
-        "mode": ""
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
        }
       ]
      },
@@ -479,7 +571,9 @@
         "k": "other",
         "raw": "10",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "other",
+        "tm": "상시·조건"
        }
       ]
      }
@@ -507,21 +601,27 @@
         "what": "발동 조건",
         "detail": "자신 이외의 아군이 땅 속성 공격 스킬 사용 시",
         "raw": "발동 조건: 자신 이외의 아군이 땅 속성 공격 스킬 사용 시",
-        "mode": ""
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
        },
        {
         "k": "meta",
         "what": "턴 중 최대 발동 횟수",
         "detail": "2회",
         "raw": "턴 중 최대 발동 횟수 2회",
-        "mode": ""
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
        },
        {
         "k": "meta",
         "what": "발동 효과",
         "detail": "체인 어빌리티 전용 스킬 「어스 피어서」 실행",
         "raw": "발동 효과: 체인 어빌리티 전용 스킬 「어스 피어서」 실행",
-        "mode": ""
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
        },
        {
         "k": "attack",
@@ -534,14 +634,19 @@
         "preempt": false,
         "raw": "적 전체에 땅 속성 찌르기 공격(극)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "상시·조건",
+        "tc": "적 전체"
        },
        {
         "k": "buff",
         "name": "공명",
         "raw": "공명",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "상시·조건"
        },
        {
         "k": "stack",
@@ -550,14 +655,18 @@
         "op": "축적",
         "raw": "2 축적",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "상시·조건"
        },
        {
         "k": "buff",
         "name": "어나더 센스",
         "raw": "어나더 센스",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "상시·조건"
        }
       ]
      },
@@ -576,7 +685,9 @@
         "what": "ANOTHER ZONE 전개",
         "raw": "ANOTHER ZONE 전개 시 지속 턴 수 2턴 연장",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "zone",
+        "tm": "상시·조건"
        }
       ]
      }
@@ -619,14 +730,19 @@
         "what": "극 지열진 전개",
         "raw": "극 지열진 전개",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "zone",
+        "tm": "사용 시"
        },
        {
         "k": "buff",
         "name": "루나틱",
         "raw": "루나틱",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "meta",
@@ -634,7 +750,10 @@
         "until_turn_end": true,
         "raw": "(턴 종료 시까지)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "meta",
+        "tm": "턴 종료",
+        "tc": "자신"
        },
        {
         "k": "attack",
@@ -647,14 +766,20 @@
         "preempt": false,
         "raw": "이후 적 전체에 땅 속성 찌르기 공격 3회(극대, 16배)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "buff",
         "name": "대상의 방어 무시",
         "raw": "대상의 방어 무시",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "buff",
@@ -662,7 +787,10 @@
         "raw": "모든 공격 종료 시 공명",
         "target": "자신",
         "mode": "",
-        "cond": "모든 공격 종료 시"
+        "cond": "모든 공격 종료 시",
+        "r": "state_unknown",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "stack",
@@ -671,14 +799,20 @@
         "op": "축적",
         "raw": "1 축적",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "buff",
         "name": "공명",
         "raw": "공명",
         "target": "자신",
-        "mode": "추가 효과"
+        "mode": "추가 효과",
+        "r": "state_unknown",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "buff",
@@ -688,7 +822,10 @@
         "raw": "2 소비마다 추가로 공격 반복(최대 8/4회 추가)",
         "target": "자신",
         "mode": "추가 효과",
-        "cond": "2 소비마다"
+        "cond": "2 소비마다",
+        "r": "state_unknown",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "buff",
@@ -696,7 +833,10 @@
         "raw": "전방에서 전투 시작 시 공명",
         "target": "자신",
         "mode": "추가 효과",
-        "cond": "전방에서 전투 시작 시"
+        "cond": "전방에서 전투 시작 시",
+        "r": "state_unknown",
+        "tm": "전투 시작",
+        "tc": "자신"
        },
        {
         "k": "stack",
@@ -705,7 +845,10 @@
         "op": "축적",
         "raw": "3 축적",
         "target": "자신",
-        "mode": "추가 효과"
+        "mode": "추가 효과",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "zone",
@@ -713,7 +856,10 @@
         "raw": "전방에서 턴 시작 시 전방에 「땅」 특성의 아군이 4명일 경우 지열진 전개",
         "target": "자신",
         "mode": "추가 효과",
-        "cond": "전방에서 턴 시작 시"
+        "cond": "전방에서 턴 시작 시",
+        "r": "zone",
+        "tm": "턴 시작",
+        "tc": "자신"
        },
        {
         "k": "action",
@@ -721,7 +867,10 @@
         "raw": "전방에 「땅」 「로스트 랩」 특성의 아군이 2명 이상일 경우 효과 발동",
         "target": "자신",
         "mode": "추가 효과",
-        "cond": "전방에 「땅」 「로스트 랩」 특성의 아군이 2명 이상일 경우"
+        "cond": "전방에 「땅」 「로스트 랩」 특성의 아군이 2명 이상일 경우",
+        "r": "mode",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "af",
@@ -729,7 +878,10 @@
         "raw": "배틀 중 자신의 행동 시 축적하는 명의 힘 증가(중)",
         "target": "자신",
         "mode": "추가 효과",
-        "cond": "배틀 중 자신의 행동 시"
+        "cond": "배틀 중 자신의 행동 시",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "af",
@@ -737,7 +889,10 @@
         "raw": "스텔라 버스트 발동 시 명의 힘이 많을 경우 발동",
         "target": "자신",
         "mode": "추가 효과",
-        "cond": "스텔라 버스트 발동 시"
+        "cond": "스텔라 버스트 발동 시",
+        "r": "resource",
+        "tm": "스텔라 버스트",
+        "tc": "자신"
        },
        {
         "k": "ailment",
@@ -745,7 +900,10 @@
         "scope": "적 전체",
         "raw": "적 전체에 독",
         "target": "자신",
-        "mode": "추가 효과"
+        "mode": "추가 효과",
+        "r": "dot",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "ailment",
@@ -754,19 +912,25 @@
         "ignore_res": true,
         "raw": "페인 부여(영구 지속, 대상의 저항 무시)",
         "target": "자신",
-        "mode": "추가 효과"
+        "mode": "추가 효과",
+        "r": "state_unknown",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "stat_pct",
         "stats": [
-         "턴 종료 시까지 속도"
+         "속도"
         ],
-        "group": "etc",
+        "group": "base",
         "dir": "DOWN",
         "value": 50.0,
         "raw": "턴 종료 시까지 속도 50% DOWN",
         "target": "자신",
-        "mode": "추가 효과"
+        "mode": "추가 효과",
+        "r": "other",
+        "tm": "턴 종료",
+        "tc": "자신"
        }
       ]
      }

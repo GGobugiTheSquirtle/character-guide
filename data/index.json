@@ -55,7 +55,23 @@
         "하극상",
         "힘 DOWN",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "surv_state": 2,
+        "atk_state": 4,
+        "atk_buff": 3,
+        "attack": 3,
+        "tempo": 2,
+        "power": 1,
+        "resource": 5,
+        "atk_debuff": 3,
+        "surv_debuff": 3,
+        "dot": 1,
+        "state_unknown": 1,
+        "mode": 2,
+        "recover": 1,
+        "zone": 1
+      }
     },
     {
       "id": "kuchinawa_as",
@@ -94,6 +110,7 @@
         "땅 속성 저항 DOWN",
         "마법 저항 DOWN",
         "모든 속성 공격 DOWN",
+        "모든 속성 저항 DOWN",
         "물리 저항 DOWN",
         "선제 공격",
         "속도 DOWN",
@@ -105,7 +122,19 @@
         "축적 수에 따라 땅 속성 공격 대미지 UP",
         "힘 DOWN",
         "힘 DOWN (수치)"
-      ]
+      ],
+      "roles": {
+        "attack": 6,
+        "zone": 5,
+        "resource": 8,
+        "atk_debuff": 9,
+        "surv_debuff": 4,
+        "atk_state": 1,
+        "tempo": 1,
+        "atk_buff": 1,
+        "mode": 2,
+        "dot": 1
+      }
     },
     {
       "id": "noble_blossom_alter_as",
@@ -150,7 +179,6 @@
         "속도 DOWN",
         "속도 UP (수치)",
         "실드",
-        "아군 전체의 크리티컬율 UP",
         "요격",
         "지능 DOWN",
         "축적 수에 따라 불 속성 공격 대미지 UP",
@@ -158,7 +186,21 @@
         "회피율 UP",
         "힘 DOWN",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "attack": 6,
+        "surv_buff": 3,
+        "state_unknown": 6,
+        "resource": 8,
+        "surv_state": 3,
+        "mode": 2,
+        "atk_buff": 6,
+        "zone": 6,
+        "tempo": 2,
+        "power": 3,
+        "surv_debuff": 4,
+        "atk_debuff": 2
+      }
     },
     {
       "id": "hameow",
@@ -237,7 +279,19 @@
         "크리티컬율 UP",
         "힘 UP",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "attack": 9,
+        "atk_state": 5,
+        "resource": 9,
+        "atk_buff": 17,
+        "tempo": 5,
+        "power": 4,
+        "state_unknown": 1,
+        "zone": 3,
+        "atk_debuff": 3,
+        "mode": 1
+      }
     },
     {
       "id": "ruvi",
@@ -323,7 +377,22 @@
         "크리티컬율 UP",
         "힘 DOWN",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "mode": 6,
+        "state_unknown": 1,
+        "attack": 4,
+        "power": 6,
+        "surv_debuff": 6,
+        "tempo": 2,
+        "recover": 3,
+        "resource": 7,
+        "surv_buff": 5,
+        "surv_state": 4,
+        "zone": 3,
+        "atk_buff": 4,
+        "atk_state": 1
+      }
     },
     {
       "id": "dark_devourer_alter",
@@ -370,14 +439,27 @@
         "선제 공격",
         "속도 UP",
         "수면",
-        "아군 전체의 마법 크리티컬율 UP",
         "어나더 센스",
         "정신 통일",
         "지능 UP",
         "지팡이 장착자 대미지 UP",
         "축적 수에 따라 속도 DOWN",
         "크리티컬 발생 확정"
-      ]
+      ],
+      "roles": {
+        "attack": 8,
+        "mode": 4,
+        "state_unknown": 2,
+        "resource": 15,
+        "tempo": 3,
+        "atk_state": 5,
+        "power": 2,
+        "surv_debuff": 2,
+        "zone": 2,
+        "surv_state": 2,
+        "atk_debuff": 1,
+        "atk_buff": 6
+      }
     },
     {
       "id": "mare",
@@ -476,15 +558,29 @@
         "땅 속성 공격 UP",
         "루나틱",
         "상태 이상 무효",
+        "소비 MP DOWN",
+        "속도 DOWN",
         "속도 UP",
-        "아군 전체의 소비 MP DOWN",
         "어나더 센스",
         "크리티컬 대미지 UP",
         "크리티컬율 UP",
-        "턴 종료 시까지 속도 DOWN",
         "페인",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "attack": 5,
+        "atk_buff": 5,
+        "state_unknown": 12,
+        "resource": 7,
+        "atk_state": 3,
+        "surv_buff": 1,
+        "surv_state": 1,
+        "zone": 8,
+        "power": 2,
+        "tempo": 3,
+        "mode": 1,
+        "dot": 1
+      }
     },
     {
       "id": "glenn",
@@ -565,7 +661,22 @@
         "페인",
         "힘 DOWN",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "attack": 5,
+        "surv_debuff": 4,
+        "dot": 1,
+        "state_unknown": 2,
+        "power": 3,
+        "zone": 4,
+        "resource": 5,
+        "atk_state": 2,
+        "atk_debuff": 6,
+        "tempo": 2,
+        "mode": 2,
+        "atk_buff": 2,
+        "enemy_utility": 1
+      }
     },
     {
       "id": "lovinia_as",
@@ -618,7 +729,20 @@
         "크리티컬율 UP",
         "힘 DOWN",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "mode": 3,
+        "atk_buff": 18,
+        "surv_buff": 4,
+        "recover": 2,
+        "atk_debuff": 3,
+        "resource": 2,
+        "power": 1,
+        "attack": 1,
+        "tempo": 1,
+        "surv_debuff": 2,
+        "enemy_utility": 1
+      }
     },
     {
       "id": "meryt",
@@ -660,7 +784,18 @@
         "지능 UP",
         "크리티컬율 UP",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "atk_state": 6,
+        "attack": 4,
+        "resource": 5,
+        "atk_buff": 7,
+        "power": 2,
+        "tempo": 1,
+        "surv_debuff": 1,
+        "surv_buff": 1,
+        "surv_state": 1
+      }
     },
     {
       "id": "cerius_as",
@@ -700,7 +835,16 @@
         "심기일체",
         "크리티컬 대미지 UP",
         "크리티컬율 UP"
-      ]
+      ],
+      "roles": {
+        "mode": 11,
+        "atk_buff": 2,
+        "atk_state": 9,
+        "tempo": 4,
+        "resource": 4,
+        "attack": 7,
+        "atk_debuff": 6
+      }
     },
     {
       "id": "hismena_es",
@@ -742,7 +886,19 @@
         "크리티컬 대미지 UP",
         "크리티컬율 UP",
         "힘 DOWN"
-      ]
+      ],
+      "roles": {
+        "attack": 4,
+        "atk_buff": 3,
+        "atk_state": 1,
+        "surv_debuff": 3,
+        "power": 2,
+        "resource": 3,
+        "atk_debuff": 1,
+        "tempo": 1,
+        "zone": 1,
+        "state_unknown": 1
+      }
     },
     {
       "id": "porcelain_pixie_as",
@@ -797,7 +953,20 @@
         "힘 DOWN",
         "힘 UP",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "surv_debuff": 2,
+        "zone": 2,
+        "mode": 1,
+        "attack": 2,
+        "state_unknown": 2,
+        "resource": 10,
+        "surv_state": 4,
+        "surv_buff": 5,
+        "atk_buff": 9,
+        "tempo": 1,
+        "atk_state": 3
+      }
     },
     {
       "id": "garnet",
@@ -896,7 +1065,18 @@
         "크리티컬 발생 확정",
         "크리티컬율 UP",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "attack": 4,
+        "atk_buff": 6,
+        "tempo": 1,
+        "state_unknown": 1,
+        "atk_state": 4,
+        "surv_debuff": 1,
+        "power": 1,
+        "resource": 1,
+        "atk_debuff": 1
+      }
     },
     {
       "id": "vivi",
@@ -998,7 +1178,21 @@
         "오버 크리티컬",
         "지능 DOWN",
         "힘 DOWN"
-      ]
+      ],
+      "roles": {
+        "mode": 2,
+        "state_unknown": 2,
+        "zone": 2,
+        "attack": 2,
+        "resource": 3,
+        "recover": 2,
+        "tempo": 2,
+        "power": 2,
+        "atk_state": 2,
+        "surv_buff": 3,
+        "surv_debuff": 2,
+        "surv_state": 3
+      }
     },
     {
       "id": "clughorn",
@@ -1046,7 +1240,21 @@
         "지능 DOWN",
         "힘 DOWN",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "attack": 5,
+        "atk_state": 1,
+        "resource": 3,
+        "mode": 3,
+        "surv_state": 4,
+        "zone": 2,
+        "surv_buff": 2,
+        "power": 1,
+        "surv_debuff": 6,
+        "tempo": 3,
+        "atk_buff": 1,
+        "atk_debuff": 1
+      }
     },
     {
       "id": "mildy",
@@ -1104,7 +1312,21 @@
         "피격 대미지 DOWN",
         "힘 UP",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "mode": 2,
+        "atk_buff": 12,
+        "tempo": 1,
+        "resource": 6,
+        "recover": 1,
+        "power": 1,
+        "attack": 2,
+        "atk_debuff": 2,
+        "surv_buff": 2,
+        "zone": 3,
+        "atk_state": 1,
+        "surv_state": 1
+      }
     },
     {
       "id": "dream_weaver_as",
@@ -1148,7 +1370,6 @@
         "상태 이상 무효",
         "속도 UP (수치)",
         "실드",
-        "아군 전체의 지능 UP (수치)",
         "자신의 피격 대미지 DOWN",
         "전투 불능 회복",
         "정신 UP (수치)",
@@ -1158,7 +1379,21 @@
         "크리티컬율 UP",
         "페인",
         "행운 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "attack": 3,
+        "zone": 3,
+        "mode": 2,
+        "state_unknown": 4,
+        "resource": 4,
+        "surv_state": 6,
+        "surv_buff": 3,
+        "tempo": 4,
+        "atk_buff": 5,
+        "power": 1,
+        "recover": 2,
+        "atk_state": 1
+      }
     },
     {
       "id": "nina",
@@ -1208,7 +1443,21 @@
         "페인",
         "하극상",
         "힘 DOWN"
-      ]
+      ],
+      "roles": {
+        "attack": 5,
+        "surv_debuff": 3,
+        "state_unknown": 1,
+        "surv_state": 2,
+        "surv_buff": 3,
+        "tempo": 1,
+        "resource": 3,
+        "atk_debuff": 2,
+        "mode": 1,
+        "atk_buff": 2,
+        "atk_state": 4,
+        "zone": 1
+      }
     },
     {
       "id": "vares",
@@ -1253,7 +1502,20 @@
         "자신의 HP 회복",
         "지능 DOWN",
         "힘 DOWN"
-      ]
+      ],
+      "roles": {
+        "attack": 6,
+        "surv_debuff": 2,
+        "atk_debuff": 1,
+        "power": 2,
+        "surv_state": 4,
+        "tempo": 1,
+        "resource": 5,
+        "state_unknown": 2,
+        "surv_buff": 2,
+        "recover": 2,
+        "atk_state": 1
+      }
     },
     {
       "id": "myrus_es",
@@ -1291,7 +1553,18 @@
         "지능 DOWN",
         "크리티컬율 UP",
         "힘 DOWN"
-      ]
+      ],
+      "roles": {
+        "attack": 5,
+        "surv_debuff": 2,
+        "atk_debuff": 1,
+        "power": 3,
+        "recover": 1,
+        "atk_buff": 1,
+        "tempo": 1,
+        "zone": 1,
+        "atk_state": 1
+      }
     },
     {
       "id": "black_clad_sw_as",
@@ -1333,7 +1606,19 @@
         "위력 UP",
         "크리티컬 대미지 UP",
         "회피율 UP"
-      ]
+      ],
+      "roles": {
+        "tempo": 3,
+        "state_unknown": 3,
+        "zone": 3,
+        "attack": 7,
+        "mode": 1,
+        "atk_buff": 1,
+        "surv_state": 1,
+        "surv_buff": 1,
+        "atk_state": 1,
+        "atk_debuff": 1
+      }
     },
     {
       "id": "raven_as",
@@ -1377,7 +1662,20 @@
         "절망의 날개 상태 해제",
         "정신 통일",
         "지능 UP"
-      ]
+      ],
+      "roles": {
+        "mode": 1,
+        "attack": 2,
+        "power": 4,
+        "resource": 4,
+        "state_unknown": 3,
+        "recover": 1,
+        "tempo": 1,
+        "atk_buff": 2,
+        "atk_state": 2,
+        "zone": 1,
+        "atk_debuff": 1
+      }
     },
     {
       "id": "ruby_sleeved_merchant_alter",
@@ -1423,7 +1721,18 @@
         "크리티컬 대미지 UP",
         "크리티컬 발생 확정",
         "크리티컬율 UP"
-      ]
+      ],
+      "roles": {
+        "attack": 3,
+        "atk_buff": 5,
+        "resource": 3,
+        "state_unknown": 1,
+        "atk_state": 3,
+        "zone": 2,
+        "surv_buff": 2,
+        "surv_state": 2,
+        "power": 2
+      }
     },
     {
       "id": "cyan_scyther_as",
@@ -1472,7 +1781,20 @@
         "지능 DOWN",
         "타깃 확률 감소",
         "힘 DOWN"
-      ]
+      ],
+      "roles": {
+        "state_unknown": 3,
+        "resource": 4,
+        "surv_state": 5,
+        "attack": 2,
+        "recover": 3,
+        "zone": 2,
+        "tempo": 2,
+        "surv_buff": 3,
+        "surv_debuff": 2,
+        "power": 3,
+        "mode": 2
+      }
     },
     {
       "id": "linaria",
@@ -1517,7 +1839,21 @@
         "크리티컬율 UP",
         "힘 UP",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "attack": 4,
+        "power": 1,
+        "resource": 2,
+        "zone": 3,
+        "atk_debuff": 2,
+        "surv_buff": 1,
+        "surv_state": 3,
+        "atk_buff": 4,
+        "tempo": 1,
+        "atk_state": 2,
+        "recover": 1,
+        "mode": 2
+      }
     },
     {
       "id": "selfless_seeker_alter",
@@ -1562,7 +1898,21 @@
         "크리티컬 대미지 UP",
         "활, 창 장착자 대미지 UP",
         "힘 DOWN"
-      ]
+      ],
+      "roles": {
+        "attack": 4,
+        "surv_debuff": 2,
+        "power": 1,
+        "zone": 2,
+        "atk_buff": 2,
+        "atk_debuff": 3,
+        "tempo": 1,
+        "surv_buff": 1,
+        "resource": 2,
+        "atk_state": 1,
+        "surv_state": 1,
+        "recover": 1
+      }
     },
     {
       "id": "red_clad_flam_as",
@@ -1606,7 +1956,21 @@
         "지능 DOWN",
         "하극상",
         "힘 DOWN"
-      ]
+      ],
+      "roles": {
+        "tempo": 1,
+        "state_unknown": 2,
+        "zone": 6,
+        "resource": 10,
+        "attack": 3,
+        "atk_buff": 1,
+        "power": 4,
+        "atk_state": 2,
+        "mode": 1,
+        "surv_debuff": 1,
+        "atk_debuff": 1,
+        "surv_buff": 1
+      }
     },
     {
       "id": "velette_as",
@@ -1650,7 +2014,19 @@
         "지능 DOWN",
         "크리티컬율 UP",
         "힘 DOWN"
-      ]
+      ],
+      "roles": {
+        "surv_debuff": 4,
+        "enemy_utility": 1,
+        "state_unknown": 4,
+        "mode": 2,
+        "resource": 6,
+        "atk_debuff": 1,
+        "atk_buff": 4,
+        "zone": 1,
+        "attack": 1,
+        "power": 1
+      }
     },
     {
       "id": "gunce_as",
@@ -4427,7 +4803,24 @@
         "크리티컬율 UP",
         "힘 DOWN",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "attack": 5,
+        "recover": 5,
+        "resource": 13,
+        "state_unknown": 3,
+        "mode": 2,
+        "surv_state": 4,
+        "enemy_utility": 1,
+        "zone": 3,
+        "surv_buff": 2,
+        "tempo": 3,
+        "atk_debuff": 5,
+        "surv_debuff": 3,
+        "atk_buff": 5,
+        "power": 8,
+        "atk_state": 2
+      }
     },
     {
       "id": "korobo",
@@ -4651,7 +5044,14 @@
       "effect_tags": [
         "배리어 관통",
         "심기일체"
-      ]
+      ],
+      "roles": {
+        "attack": 1,
+        "atk_state": 2,
+        "power": 2,
+        "resource": 1,
+        "tempo": 1
+      }
     },
     {
       "id": "noble_blossom_alter",
@@ -6522,7 +6922,22 @@
         "행운 UP (수치)",
         "힘 UP",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "attack": 4,
+        "atk_state": 4,
+        "resource": 9,
+        "tempo": 3,
+        "mode": 1,
+        "surv_state": 4,
+        "atk_buff": 8,
+        "atk_debuff": 6,
+        "recover": 2,
+        "state_unknown": 2,
+        "surv_buff": 7,
+        "power": 1,
+        "zone": 1
+      }
     },
     {
       "id": "miyu_as",
@@ -7079,7 +7494,21 @@
         "힘 DOWN",
         "힘 UP",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "attack": 7,
+        "resource": 9,
+        "atk_buff": 7,
+        "recover": 4,
+        "tempo": 4,
+        "power": 7,
+        "mode": 5,
+        "state_unknown": 2,
+        "atk_debuff": 9,
+        "zone": 2,
+        "surv_debuff": 2,
+        "surv_buff": 1
+      }
     },
     {
       "id": "skull",
@@ -7160,7 +7589,21 @@
         "힘 DOWN",
         "힘 UP",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "attack": 11,
+        "atk_debuff": 2,
+        "tempo": 4,
+        "recover": 4,
+        "resource": 13,
+        "mode": 7,
+        "state_unknown": 3,
+        "power": 5,
+        "atk_buff": 9,
+        "surv_debuff": 3,
+        "atk_state": 2,
+        "surv_buff": 1
+      }
     },
     {
       "id": "violet",
@@ -7253,7 +7696,12 @@
         "상태 이상 회복",
         "전투 불능 회복",
         "초틸릴 상태 해제"
-      ]
+      ],
+      "roles": {
+        "recover": 4,
+        "surv_state": 1,
+        "resource": 1
+      }
     },
     {
       "id": "ciel_as",
@@ -8150,7 +8598,15 @@
         "도발",
         "디버프 리버설",
         "요격"
-      ]
+      ],
+      "roles": {
+        "attack": 2,
+        "surv_state": 2,
+        "state_unknown": 1,
+        "tempo": 1,
+        "mode": 1,
+        "power": 1
+      }
     },
     {
       "id": "mana",
@@ -8466,7 +8922,14 @@
         "버티기",
         "상태 이상 회복",
         "정신 통일"
-      ]
+      ],
+      "roles": {
+        "mode": 2,
+        "atk_state": 2,
+        "surv_state": 1,
+        "recover": 3,
+        "resource": 1
+      }
     },
     {
       "id": "shigure",
@@ -8641,7 +9104,15 @@
         "내구 DOWN",
         "정신 DOWN",
         "페인"
-      ]
+      ],
+      "roles": {
+        "zone": 1,
+        "attack": 1,
+        "atk_debuff": 2,
+        "state_unknown": 2,
+        "tempo": 1,
+        "resource": 1
+      }
     },
     {
       "id": "laclair_as",
@@ -8732,14 +9203,14 @@
         "HP 회복",
         "ZONE 전개: 극 열화진",
         "ZONE 파괴",
-        "공격 대상의 지능 DOWN",
-        "공격 대상의 힘 DOWN",
         "독",
         "디버프 해제",
         "루나틱",
         "마법 오버 크리티컬",
         "마법 저항 DOWN",
         "마법 크리티컬율 UP",
+        "모든 속성 저항 DOWN",
+        "물리 저항 DOWN",
         "버프 해제",
         "불 속성 공격 UP",
         "불 속성 저항 DOWN",
@@ -8747,15 +9218,31 @@
         "속도 DOWN",
         "속도 UP (수치)",
         "아군 전체 HP 회복",
-        "적 전체의 모든 속성 저항 DOWN",
-        "적 전체의 물리 저항 DOWN",
         "정신 통일",
+        "지능 DOWN",
         "지능 UP",
         "지능 UP (수치)",
         "행운 UP",
         "행운 UP (수치)",
+        "힘 DOWN",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "zone": 2,
+        "atk_buff": 7,
+        "atk_state": 3,
+        "enemy_utility": 1,
+        "attack": 3,
+        "power": 4,
+        "mode": 5,
+        "resource": 6,
+        "recover": 6,
+        "atk_debuff": 4,
+        "surv_debuff": 3,
+        "dot": 1,
+        "state_unknown": 2,
+        "tempo": 1
+      }
     },
     {
       "id": "poporo",
@@ -8837,7 +9324,22 @@
         "타격 저항 DOWN",
         "힘 DOWN",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "attack": 8,
+        "resource": 8,
+        "atk_state": 1,
+        "tempo": 4,
+        "mode": 4,
+        "recover": 2,
+        "surv_debuff": 10,
+        "surv_buff": 1,
+        "power": 5,
+        "atk_debuff": 2,
+        "dot": 1,
+        "zone": 1,
+        "atk_buff": 5
+      }
     },
     {
       "id": "shion_as",
@@ -8984,7 +9486,13 @@
         "심기일체",
         "오버 크리티컬",
         "크리티컬율 UP"
-      ]
+      ],
+      "roles": {
+        "atk_state": 2,
+        "atk_buff": 1,
+        "attack": 1,
+        "enemy_utility": 1
+      }
     },
     {
       "id": "shannon",
@@ -9105,7 +9613,16 @@
         "버프 해제",
         "선제 공격",
         "페인"
-      ]
+      ],
+      "roles": {
+        "attack": 1,
+        "resource": 3,
+        "atk_state": 1,
+        "dot": 1,
+        "state_unknown": 2,
+        "enemy_utility": 1,
+        "power": 1
+      }
     },
     {
       "id": "mighty_as",
@@ -9273,7 +9790,23 @@
         "페인",
         "힘 DOWN",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "zone": 2,
+        "atk_state": 3,
+        "attack": 6,
+        "tempo": 3,
+        "state_unknown": 3,
+        "resource": 9,
+        "mode": 4,
+        "dot": 1,
+        "atk_buff": 2,
+        "power": 4,
+        "surv_debuff": 4,
+        "surv_buff": 2,
+        "surv_state": 2,
+        "atk_debuff": 3
+      }
     },
     {
       "id": "guildna",
@@ -9368,7 +9901,13 @@
         "상태 이상 회복",
         "전투 불능 회복",
         "크리티컬 대미지 UP"
-      ]
+      ],
+      "roles": {
+        "atk_buff": 2,
+        "surv_state": 2,
+        "recover": 3,
+        "resource": 2
+      }
     },
     {
       "id": "good_macky",
@@ -9567,7 +10106,12 @@
       "skills_ko": true,
       "effect_tags": [
         "선제 공격"
-      ]
+      ],
+      "roles": {
+        "attack": 1,
+        "mode": 1,
+        "resource": 1
+      }
     },
     {
       "id": "yazuki",
@@ -9817,7 +10361,22 @@
         "지능 UP (수치)",
         "지팡이 장착자 대미지 UP",
         "힘 DOWN"
-      ]
+      ],
+      "roles": {
+        "attack": 12,
+        "atk_buff": 8,
+        "atk_state": 3,
+        "mode": 3,
+        "tempo": 2,
+        "state_unknown": 3,
+        "recover": 2,
+        "surv_debuff": 4,
+        "resource": 7,
+        "surv_state": 1,
+        "power": 3,
+        "surv_buff": 4,
+        "dot": 1
+      }
     },
     {
       "id": "yuna",
@@ -10073,7 +10632,11 @@
       "skills_ko": true,
       "effect_tags": [
         "배리어"
-      ]
+      ],
+      "roles": {
+        "surv_state": 3,
+        "tempo": 1
+      }
     },
     {
       "id": "deirdre",
@@ -10224,9 +10787,20 @@
         "속도 UP",
         "속도 UP (수치)",
         "크리티컬율 UP",
+        "타격 저항 DOWN",
         "힘 UP",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "attack": 6,
+        "atk_buff": 6,
+        "resource": 13,
+        "tempo": 6,
+        "mode": 4,
+        "atk_debuff": 3,
+        "power": 6,
+        "surv_debuff": 3
+      }
     },
     {
       "id": "benedict",
@@ -10377,6 +10951,7 @@
         "물 속성 저항 DOWN",
         "물리 저항 UP",
         "버티기",
+        "베기 저항 DOWN",
         "선제 공격",
         "속도 UP",
         "요격",
@@ -10384,7 +10959,21 @@
         "크리티컬 발생 확정",
         "페인",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "attack": 7,
+        "mode": 6,
+        "state_unknown": 3,
+        "recover": 1,
+        "surv_buff": 7,
+        "surv_state": 1,
+        "resource": 2,
+        "atk_debuff": 2,
+        "atk_state": 1,
+        "power": 5,
+        "atk_buff": 2,
+        "tempo": 1
+      }
     },
     {
       "id": "feinne",
@@ -10473,7 +11062,12 @@
       "effect_tags": [
         "대상 배리어 관통",
         "심기일체"
-      ]
+      ],
+      "roles": {
+        "mode": 1,
+        "atk_state": 2,
+        "attack": 1
+      }
     },
     {
       "id": "mariel",
@@ -10510,7 +11104,15 @@
         "버티기",
         "상태 이상 회복",
         "아군 전체의 가하는 대미지 UP"
-      ]
+      ],
+      "roles": {
+        "tempo": 2,
+        "surv_state": 1,
+        "atk_buff": 1,
+        "recover": 2,
+        "resource": 1,
+        "surv_buff": 1
+      }
     },
     {
       "id": "may",
@@ -11272,6 +11874,7 @@
         "MP 회복",
         "기절",
         "대미지 UP",
+        "모든 속성 저항 DOWN",
         "물리 저항 DOWN",
         "스텔스 상태 해제",
         "오버 크리티컬",
@@ -11282,7 +11885,20 @@
         "활 장착자 대미지 UP",
         "힘 UP",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "attack": 6,
+        "atk_buff": 6,
+        "state_unknown": 3,
+        "mode": 7,
+        "resource": 7,
+        "atk_debuff": 2,
+        "surv_debuff": 1,
+        "tempo": 1,
+        "atk_state": 1,
+        "power": 1,
+        "surv_state": 1
+      }
     },
     {
       "id": "rufus",
@@ -12042,7 +12658,23 @@
         "크리티컬율 UP",
         "힘 DOWN (수치)",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "mode": 2,
+        "state_unknown": 1,
+        "attack": 10,
+        "surv_debuff": 6,
+        "atk_debuff": 4,
+        "resource": 10,
+        "power": 1,
+        "recover": 2,
+        "surv_buff": 1,
+        "surv_state": 4,
+        "atk_buff": 6,
+        "tempo": 1,
+        "atk_state": 2,
+        "zone": 3
+      }
     },
     {
       "id": "theodorus",
@@ -12100,7 +12732,23 @@
         "힘 DOWN",
         "힘 UP",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "attack": 10,
+        "resource": 9,
+        "atk_state": 9,
+        "mode": 9,
+        "recover": 2,
+        "atk_debuff": 6,
+        "atk_buff": 6,
+        "tempo": 4,
+        "power": 3,
+        "zone": 2,
+        "surv_state": 2,
+        "surv_debuff": 4,
+        "state_unknown": 1,
+        "surv_buff": 2
+      }
     },
     {
       "id": "erina_as",
@@ -12159,7 +12807,22 @@
         "힘 DOWN",
         "힘 UP",
         "힘 UP (수치)"
-      ]
+      ],
+      "roles": {
+        "mode": 4,
+        "tempo": 5,
+        "zone": 1,
+        "surv_state": 6,
+        "attack": 3,
+        "atk_buff": 8,
+        "resource": 8,
+        "surv_debuff": 2,
+        "atk_debuff": 3,
+        "atk_state": 2,
+        "surv_buff": 3,
+        "recover": 4,
+        "power": 1
+      }
     },
     {
       "id": "moonlight_flower_alter_as",
@@ -12201,6 +12864,7 @@
         "마법 크리티컬 대미지 UP",
         "마법 크리티컬율 UP",
         "모든 속성 공격 UP",
+        "물리 저항 UP",
         "상태 이상 회복",
         "선제 공격",
         "속도 UP",
@@ -12214,11 +12878,26 @@
         "축적 수에 따라 물 속성 공격 대미지 UP",
         "크리티컬 대미지 UP",
         "크리티컬율 UP",
-        "턴 종료 시까지 아군 전체의 물리 저항 UP",
         "하극상",
         "힘 DOWN",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "attack": 9,
+        "atk_debuff": 6,
+        "zone": 22,
+        "atk_buff": 11,
+        "tempo": 4,
+        "resource": 10,
+        "state_unknown": 10,
+        "surv_state": 1,
+        "mode": 4,
+        "power": 2,
+        "recover": 3,
+        "atk_state": 3,
+        "surv_buff": 2,
+        "surv_debuff": 2
+      }
     },
     {
       "id": "choco",
@@ -12287,7 +12966,20 @@
         "정신 통일",
         "지능 UP (수치)",
         "하극상"
-      ]
+      ],
+      "roles": {
+        "attack": 4,
+        "state_unknown": 1,
+        "atk_debuff": 1,
+        "atk_state": 2,
+        "power": 2,
+        "atk_buff": 6,
+        "resource": 4,
+        "tempo": 2,
+        "enemy_utility": 1,
+        "surv_state": 1,
+        "mode": 1
+      }
     },
     {
       "id": "twinkling_illustrator_alter",
@@ -12333,12 +13025,27 @@
         "불 속성 저항 UP",
         "상태 이상 무효",
         "상태 이상 회복",
+        "속도 UP",
         "속도 UP (수치)",
         "아군 전체에 소비 MP DOWN",
         "어나더 센스",
-        "정신 DOWN (수치)",
-        "턴 종료 시까지 아군 전체의 속도 UP"
-      ]
+        "정신 DOWN (수치)"
+      ],
+      "roles": {
+        "zone": 9,
+        "resource": 7,
+        "attack": 5,
+        "atk_buff": 5,
+        "surv_buff": 4,
+        "surv_debuff": 4,
+        "atk_debuff": 5,
+        "recover": 3,
+        "surv_state": 3,
+        "mode": 6,
+        "tempo": 3,
+        "power": 1,
+        "state_unknown": 1
+      }
     },
     {
       "id": "jorna",
@@ -12382,7 +13089,22 @@
         "축적 수에 따라 크리티컬율 UP",
         "크리티컬 대미지 UP",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "mode": 3,
+        "tempo": 11,
+        "zone": 5,
+        "attack": 10,
+        "resource": 15,
+        "power": 3,
+        "surv_state": 1,
+        "enemy_utility": 1,
+        "atk_buff": 3,
+        "atk_debuff": 1,
+        "surv_buff": 2,
+        "atk_state": 1,
+        "state_unknown": 1
+      }
     },
     {
       "id": "jillfunny_as",
@@ -12438,7 +13160,22 @@
         "크리티컬율 UP",
         "힘 DOWN",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "mode": 7,
+        "state_unknown": 3,
+        "zone": 9,
+        "atk_buff": 8,
+        "tempo": 2,
+        "atk_state": 4,
+        "attack": 3,
+        "resource": 9,
+        "power": 2,
+        "atk_debuff": 2,
+        "surv_state": 3,
+        "surv_debuff": 2,
+        "surv_buff": 1
+      }
     },
     {
       "id": "pyggie_as",
@@ -12564,7 +13301,23 @@
         "크리티컬율 UP",
         "힘 DOWN",
         "힘 UP"
-      ]
+      ],
+      "roles": {
+        "attack": 7,
+        "dot": 2,
+        "atk_debuff": 4,
+        "power": 5,
+        "resource": 7,
+        "surv_debuff": 3,
+        "surv_buff": 3,
+        "atk_buff": 3,
+        "tempo": 1,
+        "atk_state": 4,
+        "mode": 3,
+        "zone": 2,
+        "state_unknown": 1,
+        "surv_state": 1
+      }
     }
   ]
 }

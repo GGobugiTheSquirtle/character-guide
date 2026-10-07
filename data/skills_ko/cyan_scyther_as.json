@@ -27,7 +27,9 @@
         "name": "공명",
         "raw": "공명",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "사용 시"
        },
        {
         "k": "stack",
@@ -36,7 +38,9 @@
         "op": "축적",
         "raw": "3 축적",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시"
        },
        {
         "k": "guard",
@@ -45,14 +49,20 @@
         "times": 3,
         "raw": "대미지 80% 감소 배리어(3회)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "buff",
         "name": "버티기",
         "raw": "버티기",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "자신"
        }
       ]
      },
@@ -82,14 +92,19 @@
         "preempt": false,
         "raw": "적 하나에 바람 속성 베기 공격(극, 10배)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "buff",
         "name": "공명",
         "raw": "공명",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "사용 시"
        },
        {
         "k": "stack",
@@ -98,7 +113,9 @@
         "op": "소비",
         "raw": "3 소비",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시"
        },
        {
         "k": "buff",
@@ -106,14 +123,18 @@
         "guess": true,
         "raw": "전개 중인 ZONE 파괴",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "사용 시"
        },
        {
         "k": "dispel",
         "what": "아군 전체의 디버프 해제",
         "raw": "아군 전체의 디버프 해제",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "recover",
+        "tm": "사용 시"
        },
        {
         "k": "zone",
@@ -121,7 +142,9 @@
         "raw": "전방에 「바람」 특성의 아군이 4명일 경우 극 풍왕진 전개",
         "target": "",
         "mode": "추가 효과",
-        "cond": "전방에 「바람」 특성의 아군이 4명일 경우"
+        "cond": "전방에 「바람」 특성의 아군이 4명일 경우",
+        "r": "zone",
+        "tm": "사용 시"
        }
       ]
      },
@@ -148,28 +171,39 @@
         "turns": 3,
         "raw": "선제로 기도 발동(3턴)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "tempo",
+        "tm": "사용 시"
        },
        {
         "k": "other",
         "turns": 3,
         "raw": "푸른 빛의 낫잡이의 최대 HP 30%만큼 실드(최대 2000, 3턴)",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "other",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "heal",
         "what": "상태 이상 회복",
         "raw": "상태 이상 회복",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "recover",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "guard",
         "what": "상태 이상 무효",
         "raw": "상태 이상 무효",
         "target": "전방의 「바람」 특성 아군",
-        "mode": ""
+        "mode": "",
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "특정 아군"
        },
        {
         "k": "guard",
@@ -177,7 +211,10 @@
         "times": 3,
         "raw": "날리기 무효(3회)",
         "target": "전방의 「바람」 특성 아군",
-        "mode": ""
+        "mode": "",
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "특정 아군"
        },
        {
         "k": "dmg",
@@ -186,13 +223,19 @@
         "dir": "DOWN",
         "raw": "아군 전체의 받는 대미지 50% DOWN",
         "target": "전방의 「바람」 특성 아군",
-        "mode": "기도 효과"
+        "mode": "기도 효과",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "특정 아군"
        },
        {
         "k": "other",
         "raw": "턴 시작 시 기도 발동을 제외한 「프로텍티오」 사용 시 효과를 한 번 더 부여",
         "target": "전방의 「바람」 특성 아군",
-        "mode": "기도 효과"
+        "mode": "기도 효과",
+        "r": "other",
+        "tm": "턴 시작",
+        "tc": "특정 아군"
        }
       ]
      },
@@ -223,7 +266,10 @@
         "preempt": false,
         "raw": "적 전체에 바람 속성 베기 공격 5회(극)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "stat_pct",
@@ -235,7 +281,10 @@
         "value": 30.0,
         "raw": "힘 30% DOWN",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "stat_pct",
@@ -248,7 +297,10 @@
         "turns": 3,
         "raw": "지능 30% DOWN(3턴)",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "power",
@@ -257,7 +309,10 @@
         "raw": "HP 최대 시 위력 증가(20배)",
         "target": "공격 대상",
         "mode": "추가 효과",
-        "cond": "HP 최대 시"
+        "cond": "HP 최대 시",
+        "r": "power",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "zone",
@@ -265,7 +320,10 @@
         "raw": "풍왕진 전개 시 각성 강화: 절 풍왕진",
         "target": "공격 대상",
         "mode": "추가 효과",
-        "cond": "풍왕진 전개 시"
+        "cond": "풍왕진 전개 시",
+        "r": "zone",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "power",
@@ -274,7 +332,10 @@
         "raw": "ANOTHER ZONE 전개 시 디버프 효과량 증가(2배)",
         "target": "공격 대상",
         "mode": "추가 효과",
-        "cond": "ANOTHER ZONE 전개 시"
+        "cond": "ANOTHER ZONE 전개 시",
+        "r": "power",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "action",
@@ -282,7 +343,10 @@
         "raw": "리컬렉션 상태 시 재공격",
         "target": "공격 대상",
         "mode": "추가 효과",
-        "cond": "리컬렉션 상태 시"
+        "cond": "리컬렉션 상태 시",
+        "r": "tempo",
+        "tm": "사용 시",
+        "tc": "적 하나"
        }
       ]
      }
@@ -304,7 +368,9 @@
         "what": "잠복 상태로 변화",
         "raw": "잠복 상태로 변화",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "mode",
+        "tm": "상시·조건"
        },
        {
         "k": "power",
@@ -312,14 +378,18 @@
         "detail": "1.2배",
         "raw": "스킬 위력 1.2배",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "power",
+        "tm": "상시·조건"
        },
        {
         "k": "buff",
         "name": "타깃 확률 감소",
         "raw": "잠복 상태 중 자신이 타깃이 될 확률이 낮아짐",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "surv_state",
+        "tm": "상시·조건"
        }
       ]
      }
@@ -350,7 +420,10 @@
         "value": 40.0,
         "raw": "HP 최대치 40% UP",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "stat_pct",
@@ -362,7 +435,10 @@
         "value": 40.0,
         "raw": "MP 최대치 40% UP",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "stat_pct",
@@ -375,7 +451,10 @@
         "turns": 6,
         "raw": "모든 속성 저항 60% UP(6턴)",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "heal",
@@ -384,7 +463,10 @@
         "flat": false,
         "raw": "HP 회복 40%",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "recover",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "heal",
@@ -393,7 +475,10 @@
         "flat": false,
         "raw": "MP 회복 40%",
         "target": "아군 전체",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "아군 전체"
        },
        {
         "k": "action",
@@ -401,7 +486,10 @@
         "turns": 3,
         "raw": "리컬렉션 상태로 변화(3턴)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "mode",
+        "tm": "사용 시",
+        "tc": "자신"
        }
       ]
      }

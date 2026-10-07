@@ -33,7 +33,10 @@
         "preempt": false,
         "raw": "적 전체에 그림자 속성 찌르기 공격(극)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "buff",
@@ -41,7 +44,10 @@
         "turns": 3,
         "raw": "심기일체(3턴)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "stack",
@@ -50,7 +56,10 @@
         "op": "축적",
         "raw": "어그로 스탠스 축적",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "action",
@@ -58,7 +67,10 @@
         "raw": "어그로 스탠스 축적 시 이 스킬이 디펜스 비트(으)로 변화",
         "target": "자신",
         "mode": "추가 효과",
-        "cond": "어그로 스탠스 축적 시"
+        "cond": "어그로 스탠스 축적 시",
+        "r": "mode",
+        "tm": "사용 시",
+        "tc": "자신"
        }
       ]
      },
@@ -86,7 +98,10 @@
         "preempt": false,
         "raw": "적 전체에 그림자 속성 찌르기 공격(극)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "guard",
@@ -95,7 +110,10 @@
         "turns": 1,
         "raw": "대미지 50% 감소 배리어(1턴)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "stack",
@@ -104,7 +122,10 @@
         "op": "소비",
         "raw": "어그로 스탠스 소비",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "ailment",
@@ -113,7 +134,10 @@
         "ignore_res": true,
         "raw": "도발(5턴, 대상의 저항 무시)",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "적 하나"
        }
       ]
      },
@@ -135,7 +159,9 @@
         "what": "월광진 전개",
         "raw": "선제로 월광진 전개",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "zone",
+        "tm": "사용 시"
        },
        {
         "k": "guard",
@@ -143,7 +169,10 @@
         "times": 3,
         "raw": "상태 이상 무효(3회)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "zone",
@@ -151,7 +180,10 @@
         "raw": "월광진 전개 시 ZONE 각성 실행",
         "target": "자신",
         "mode": "추가 효과",
-        "cond": "월광진 전개 시"
+        "cond": "월광진 전개 시",
+        "r": "zone",
+        "tm": "사용 시",
+        "tc": "자신"
        }
       ]
      },
@@ -178,7 +210,10 @@
         "raw": "물리 저항 30% UP",
         "target": "자신",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "stat_pct",
@@ -192,7 +227,10 @@
         "raw": "마법 저항 30% UP(3턴)",
         "target": "자신",
         "mode": "",
-        "preempt": true
+        "preempt": true,
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "power",
@@ -202,7 +240,10 @@
         "target": "자신",
         "mode": "추가 효과",
         "cond": "월광진 전개 시",
-        "preempt": true
+        "preempt": true,
+        "r": "power",
+        "tm": "사용 시",
+        "tc": "자신"
        }
       ]
      },
@@ -231,7 +272,10 @@
         "preempt": false,
         "raw": "적 전체에 그림자 속성 찌르기 공격 3회(극)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "stat_pct",
@@ -243,7 +287,10 @@
         "value": 40.0,
         "raw": "힘 40% DOWN",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "stat_pct",
@@ -255,7 +302,10 @@
         "value": 40.0,
         "raw": "지능 40% DOWN",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "stat_pct",
@@ -267,7 +317,10 @@
         "value": 40.0,
         "raw": "속도 40% DOWN",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "stat_pct",
@@ -279,7 +332,10 @@
         "value": 40.0,
         "raw": "번개 속성 공격 40% DOWN",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "stat_pct",
@@ -291,7 +347,10 @@
         "value": 40.0,
         "raw": "그림자 속성 공격 40% DOWN",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "stat_pct",
@@ -304,7 +363,10 @@
         "turns": 3,
         "raw": "결정 속성 공격 40% DOWN(3턴)",
         "target": "공격 대상",
-        "mode": ""
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "action",
@@ -312,7 +374,10 @@
         "raw": "자신의 HP 80% 이하 시 재공격 실행",
         "target": "공격 대상",
         "mode": "추가 효과",
-        "cond": "자신의 HP 80% 이하 시"
+        "cond": "자신의 HP 80% 이하 시",
+        "r": "tempo",
+        "tm": "사용 시",
+        "tc": "적 하나"
        },
        {
         "k": "action",
@@ -320,7 +385,10 @@
         "raw": "어그로 스탠스 축적 시 이 스킬이 어그로 스파이크(으)로 변화",
         "target": "공격 대상",
         "mode": "추가 효과",
-        "cond": "어그로 스탠스 축적 시"
+        "cond": "어그로 스탠스 축적 시",
+        "r": "mode",
+        "tm": "사용 시",
+        "tc": "적 하나"
        }
       ]
      },
@@ -348,14 +416,19 @@
         "preempt": false,
         "raw": "적 전체에 그림자 속성 찌르기 공격 3회(극, 20배)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "action",
         "what": "재공격 실행",
         "raw": "재공격 실행",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "tempo",
+        "tm": "사용 시"
        },
        {
         "k": "action",
@@ -363,7 +436,9 @@
         "raw": "자신의 HP 80% 이하 시 추가로 재공격 실행",
         "target": "",
         "mode": "추가 효과",
-        "cond": "자신의 HP 80% 이하 시"
+        "cond": "자신의 HP 80% 이하 시",
+        "r": "tempo",
+        "tm": "사용 시"
        },
        {
         "k": "action",
@@ -371,7 +446,9 @@
         "raw": "어그로 스탠스이(가) 축적 안 된 경우 이 스킬이 다운 스파이크(으)로 변화",
         "target": "",
         "mode": "추가 효과",
-        "cond": "어그로 스탠스이(가) 축적 안 된 경우"
+        "cond": "어그로 스탠스이(가) 축적 안 된 경우",
+        "r": "mode",
+        "tm": "사용 시"
        }
       ]
      }
@@ -402,7 +479,9 @@
         "value": 50.0,
         "raw": "힘 +50",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "상시·조건"
        },
        {
         "k": "stat_pct",
@@ -414,7 +493,9 @@
         "value": 30.0,
         "raw": "물리 저항 30% DOWN",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "상시·조건"
        },
        {
         "k": "cost",
@@ -423,21 +504,27 @@
         "raw": "매 턴 종료 시 자신에게 현재 HP 25% 대미지",
         "target": "",
         "mode": "",
-        "cond": "매 턴 종료 시"
+        "cond": "매 턴 종료 시",
+        "r": "resource",
+        "tm": "턴 종료"
        },
        {
         "k": "meta",
         "what": "최대 축적 수",
         "detail": "1",
         "raw": "최대 축적 수: 1",
-        "mode": ""
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
        },
        {
         "k": "meta",
         "what": "축적 조건",
         "detail": "오펜스 비트 사용 시 1 축적",
         "raw": "축적 조건: 오펜스 비트 사용 시 1 축적",
-        "mode": ""
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
        }
       ]
      }
@@ -471,7 +558,10 @@
         "preempt": true,
         "raw": "적 전체에 그림자 속성 찌르기 공격으로 선제 공격 2회(극대, 20배)",
         "target": "",
-        "mode": ""
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
        },
        {
         "k": "buff",
@@ -480,13 +570,19 @@
         "turns": 2,
         "raw": "수호(2턴)",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "자신"
        },
        {
         "k": "other",
         "raw": "효과 턴 수는 루미나 가디언의 스텔라 버스트 시 사용 횟수에 따라 변화",
         "target": "자신",
-        "mode": ""
+        "mode": "",
+        "r": "other",
+        "tm": "스텔라 버스트",
+        "tc": "자신"
        }
       ]
      }

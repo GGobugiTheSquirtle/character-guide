@@ -243,6 +243,8 @@
   </div>
 </template>
 
+<script src="calc/ae_calc.js"></script>
+<script src="calc/party_calc.js"></script>
 <script>
 const STATE = {
   all: [],
@@ -1057,7 +1059,10 @@ async function loadSkills(c) {                        // 공식 한국어가 있
 function flatEffects(d) {
   const out = [];
   for (const b of d.blocks) for (const [sec, items] of Object.entries(b.sections))
-    for (const it of items) for (const u of it.effects) if (!u.explain) out.push({ ...u, _skill: it.name || "", _sec: sec });
+    for (const it of items) {
+      const atkItem = it.effects.some(u => u.k === "attack");      // 공격 스킬 속 성질은 그 스킬에만(party_calc)
+      for (const u of it.effects) if (!u.explain) out.push({ ...u, _skill: it.name || "", _sec: sec, _atkItem: atkItem });
+    }
   return out;
 }
 function uniqTexts(us, n = 4) {
@@ -1305,6 +1310,120 @@ async function renderParty() {
   }
   if (!n6) s6.appendChild(el("div", { class: "skko-src", text: "자리 · 옆자리 조건이 있는 효과 없음" }));
   wrap.appendChild(s6);
+  await renderCalc(wrap, members);
+}
+
+// ─────────────────────────────────────
+// 7. 대미지 추정 (2026-10-07) — calc/ae_calc.js(공식 · 중첩) + calc/party_calc.js(효과 → 입력), data/calc
+//   정적 추정: 파티 버프 · 적 디버프 · 존을 다 깐 뒤 각 전방 멤버의 고른 스킬 1회. 턴 · 지속 · 순서는 아직(로드맵 L4)
+// ─────────────────────────────────────
+STATE.calcDb = null;
+STATE.calc = (() => { try { return JSON.parse(localStorage.getItem('cg-calc') || '{}'); } catch { return {}; } })();
+STATE.calc.m = STATE.calc.m || {};
+function saveCalc() { try { localStorage.setItem('cg-calc', JSON.stringify(STATE.calc)); } catch {} }
+async function loadCalcDb() {
+  if (!STATE.calcDb) {
+    const names = ["chars", "weapons", "grasta", "zones", "enemies"];
+    const parts = await Promise.all(names.map(n => fetch(`data/calc/${n}.json`).then(r => r.json())));
+    STATE.calcDb = Object.fromEntries(names.map((n, i) => [n, parts[i]]));
+    STATE.calcDb.atkGrasta = STATE.calcDb.grasta.filter(g => (g.calc || []).length);
+  }
+  return STATE.calcDb;
+}
+const BASE_ENEMY = { name: "기준 적 (내구 · 정신 300, 상성 없음)", end: 300, spr: 300 };
+const fmtN = x => x >= 1e6 ? (x / 1e6).toFixed(2) + "M" : Math.round(x).toLocaleString();
+
+async function renderCalc(wrap, members) {
+  const sec = el("div", { class: "section", children: [el("h3", { text: "7. 대미지 추정 (정적 · 스킬 1회)" })] });
+  wrap.appendChild(sec);
+  sec.appendChild(el("div", { class: "skko-src", text: "파티의 버프 · 적 디버프 · 존을 다 깐 상태에서 전방 멤버가 고른 스킬을 한 번 쓸 때의 기대값(난수 평균). " +
+    "아군 효과는 「아군 전체 · 자신」 대상만, 조건부 효과는 토글로. 목표 오차 ±5% — 인게임 대조 전이라 아직 추정치입니다." }));
+  let db;
+  try { db = await loadCalcDb(); } catch (e) { sec.appendChild(el("div", { class: "empty-state", text: "계산 데이터 로드 실패: " + e.message })); return; }
+  const S = STATE.calc;
+  // 조건
+  const bar = el("div", { class: "filter-group", style: "gap:10px;align-items:center;margin:8px 0" });
+  const dl = el("datalist", { attrs: { id: "calc-enemies" } });
+  for (const e of db.enemies) dl.appendChild(el("option", { attrs: { value: e.name + (e.type ? ` · ${e.type}` : "") } }));
+  const enemy = db.enemies.find(e => e.name + (e.type ? ` · ${e.type}` : "") === S.enemy) || BASE_ENEMY;
+  const ein = el("input", { class: "fx-input", attrs: { list: "calc-enemies", placeholder: "적 (비우면 기준 적)", value: enemy === BASE_ENEMY ? "" : S.enemy } });
+  ein.addEventListener('change', () => { S.enemy = ein.value.trim(); saveCalc(); renderParty(); });
+  const zsel = el("select", { class: "fx-input" });
+  zsel.appendChild(el("option", { text: "존 없음", attrs: { value: "" } }));
+  for (const z of db.zones) zsel.appendChild(el("option", { text: `${z.name} (${z.up.types.join("·")} +${z.up.v ?? "?"}%)`, attrs: { value: z.name } }));
+  zsel.value = S.zone || "";
+  zsel.addEventListener('change', () => { S.zone = zsel.value; saveCalc(); renderParty(); });
+  const tog = (key, label, tip) => {
+    const lab = el("label", { class: "pt", attrs: { title: tip } });
+    const cb = el("input", { attrs: { type: "checkbox" } });
+    cb.checked = !!S[key];
+    cb.addEventListener('change', () => { S[key] = cb.checked; saveCalc(); renderParty(); });
+    lab.append(cb, document.createTextNode(" " + label));
+    return lab;
+  };
+  bar.append(dl, ein, zsel, tog("cond", "조건부 효과 포함", "「Another Zone 중」「3명 이상일 때」 같은 조건을 다 만족했다고 본다"),
+    tog("maxHp", "HP 최대", "장비 「HP 최대 시 대미지+」 적용"), tog("pain", "적 페인 · 독", "페인/독 그라스타 ×1.3 적용"));
+  sec.appendChild(bar);
+  sec.appendChild(el("div", { class: "skko-src", text: `적: ${enemy.name} — 내구 ${enemy.end ?? "?"} · 정신 ${enemy.spr ?? "?"}` +
+    (enemy.weak ? ` · 약점 ${enemy.weak.join("·")}` : "") + (enemy.resist ? ` · 경감 ${enemy.resist.join("·")}` : "") +
+    (enemy.null ? ` · 무효 ${enemy.null.join("·")}` : "") + (enemy.absorb ? ` · 흡수 ${enemy.absorb.join("·")}` : "") + (enemy.varies ? " · 상성 변동" : "") }));
+  const zone = db.zones.find(z => z.name === S.zone) || null;
+  const opt = { enemy, zone, cond: !!S.cond, maxHp: !!S.maxHp, punish: S.pain ? ["pain", "poison"] : [] };
+
+  // 멤버 준비 — 공격 · 무기 · 그라스타 선택(없으면 기본값)
+  const front = members.filter(m => m.pos === "front");
+  const calcMembers = members.map(m => {
+    const cc = db.chars[m.c.id];
+    const conf = S.m[m.c.id] || {};
+    if (!cc) return { ...m, attack: null };
+    const atks = cc.attacks.filter(a => a.mult);
+    const attack = atks.find(a => a.skill === conf.attack) || atks.filter(a => a.sec === "skills").sort((a, b) => b.mult - a.mult)[0] || atks[0];
+    const magic = attack && attack.dep === "magic";
+    const weapon = db.weapons.find(w => w.name === conf.weapon && w.type === cc.weapon) || AEParty.bestWeapon(db.weapons, cc.weapon, magic);
+    const grasta = (conf.grasta || []).map(n => db.atkGrasta.find(g => g.name === n)).filter(Boolean);
+    return { ...m, cc, atks, attack, weapon, grasta, stats: cc.stats, fx: m.fx };
+  });
+  const tbl = el("table", { class: "skill-table party-table" });
+  tbl.appendChild(el("thead", { children: [el("tr", { children: ["멤버", "스킬", "무기", "그라스타", "일반", "크리 (확률)", "기대값", "근거"].map(h => el("th", { text: h })) })] }));
+  const tb = el("tbody");
+  let sum = 0;
+  for (const m of calcMembers.filter(x => x.pos === "front")) {
+    const tr = el("tr");
+    tr.appendChild(el("td", { text: m.c.nameKo }));
+    if (!m.cc || !m.attack) { tr.appendChild(el("td", { text: "계산 데이터 없음", attrs: { colspan: 7 } })); tb.appendChild(tr); continue; }
+    const conf = S.m[m.c.id] = S.m[m.c.id] || {};
+    const pick = (opts, cur, onPick, w = 170) => {
+      const s = el("select", { class: "fx-input", style: `max-width:${w}px` });
+      for (const [v, t] of opts) s.appendChild(el("option", { text: t, attrs: { value: v } }));
+      s.value = cur; s.addEventListener('change', () => { onPick(s.value); saveCalc(); renderParty(); });
+      return s;
+    };
+    tr.appendChild(el("td", { children: [pick(m.atks.map(a => [a.skill, `${a.skill} · ${a.mult}%${a.element ? " " + a.element : ""} ${a.atk}${a.sec !== "skills" ? " [성도/SB]" : ""}`]), m.attack.skill, v => conf.attack = v, 220)] }));
+    const magic = m.attack.dep === "magic";
+    const wl = db.weapons.filter(w => w.type === m.cc.weapon).sort((a, b) => (magic ? b.matk - a.matk : b.atk - a.atk)).slice(0, 25);
+    if (m.weapon && !wl.includes(m.weapon)) wl.unshift(m.weapon);
+    tr.appendChild(el("td", { children: [pick(wl.map(w => [w.name, `${w.name} (${w.atk}/${w.matk})`]), m.weapon ? m.weapon.name : "", v => conf.weapon = v)] }));
+    tr.appendChild(el("td", { children: [pick([["", "없음"], ...db.atkGrasta.map(g => [g.name, `${g.name} — ${g.effect.slice(0, 40)}`])], (conf.grasta || [])[0] || "", v => conf.grasta = v ? [v] : [])] }));
+    const d = AEParty.memberDamage(m, calcMembers, opt);
+    if (!d) { tr.appendChild(el("td", { text: "배율 없음", attrs: { colspan: 4 } })); tb.appendChild(tr); continue; }
+    sum += d.expected;
+    tr.appendChild(el("td", { text: fmtN(d.normal) }));
+    tr.appendChild(el("td", { text: `${fmtN(d.crit)} (${Math.round(d.p * 100)}%)` }));
+    tr.appendChild(el("td", { class: "role-ok", text: fmtN(d.expected) }));
+    const o = d.o, pctS = x => (x >= 0 ? "+" : "") + Math.round(x * 100) + "%";
+    const why = el("details", { class: "skko-raw" });
+    why.appendChild(el("summary", { text: `힘 ${pctS(o.buff.pwr)} · 지능 ${pctS(o.buff.int)} · 저항↓ 물리 ${pctS(o.resDown.phys)} 속성 ${pctS(o.resDown.type)} 마법 ${pctS(o.resDown.magic)} · 존 ${pctS(o.zone)} · ${o.affinity}` }));
+    why.appendChild(document.createTextNode([`스탯 힘 ${o.stat.pwr} · 지능 ${o.stat.int} · 속도 ${o.stat.spd} · 행운 ${o.stat.lck} · MP ${o.stat.mp}`,
+      `배율 ${Math.round(o.skillMult * 100)}% · 그룹 ${o.groups.map(pctS).join(" / ")} · 장비 가산 ${o.equip.map(pctS).join(" + ") || "없음"} · 단일 ${o.single ? "×1.1" : "-"}`,
+      ...d.why].join("\n")));
+    tr.appendChild(el("td", { children: [why] }));
+    tb.appendChild(tr);
+  }
+  tbl.appendChild(tb);
+  sec.appendChild(el("div", { class: "table-scroll", children: [tbl] }));
+  sec.appendChild(el("div", { class: "pt", children: [el("b", { text: `전방 1회씩 합계 기대값: ${fmtN(sum)}` })] }));
+  sec.appendChild(el("div", { class: "skko-src", text: "가정 — 스탯: 최대 레벨 + 성도 각성 + 명암 255 · 배지 미반영 · 무기: 위키 최대 강화 · 스킬 배율: 위키 최대 레벨 · 크리: 행운/16% + 크리율 가산 · " +
+    "중첩: 위키 Damage Formula/Multipliers(체감 · 반감 · 가산 · 곱). 「특정 아군」 대상 효과 · 고유 축적 · 정신 통일 비율(0.23%/MP 고정)은 단순화." }));
 }
 
 function buildSkillTable(rows) {

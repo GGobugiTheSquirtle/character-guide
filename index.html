@@ -99,6 +99,7 @@
   .skko-name { font-weight: 600; font-size: 13px; color: var(--text); }
   .skko-name .mp { color: var(--blue); font-weight: 400; font-size: 11px; margin-left: 6px; }
   .skko-name .tag { color: var(--muted); font-weight: 400; font-size: 11px; margin-left: 6px; }
+  .skko-name .mult { color: var(--red); font-weight: 600; font-size: 11px; margin-left: 8px; padding: 0 5px; border: 1px solid #6b3a3c; border-radius: 3px; }
   .fx-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
   .fx { font-size: 11px; padding: 2px 7px; border-radius: 4px; border: 1px solid var(--line); color: var(--text); background: var(--panel); line-height: 1.5; }
   .fx b { font-weight: 600; margin-right: 4px; }
@@ -990,6 +991,9 @@ function buildSkillsKoSection(c) {
             const nm = el("div", { class: "skko-name", text: it.name });
             if (it.mp != null) nm.appendChild(el("span", { class: "mp", text: "MP " + it.mp }));
             if (it.tag) nm.appendChild(el("span", { class: "tag", text: it.tag }));
+            if (it.wiki && it.wiki.mult) nm.appendChild(el("span", { class: "mult", text: "배율 " + it.wiki.mult + (it.wiki.crit ? " · 크리 " + it.wiki.crit : ""),
+              attrs: { title: "anothereden.wiki Cargo HeroSkills 기준 — 현현 · 성능 조정 시점에 따라 공지와 다를 수 있음" } }));
+            if (it.en) nm.appendChild(el("span", { class: "tag", text: it.en }));
             box.appendChild(nm);
           }
           const list = el("div", { class: "fx-list" });
@@ -1075,6 +1079,9 @@ async function renderParty() {
   for (const m of members) hr.appendChild(el("th", { text: m.c.nameKo }));
   t1.appendChild(el("thead", { children: [hr] }));
   const tb = el("tbody");
+  const trTr = el("tr", { children: [el("td", { text: "특성", attrs: { title: "anothereden.wiki 캐릭터 문서 personalities" } })] });
+  for (const m of members) trTr.appendChild(el("td", { children: [el("div", { class: "pt more", text: (m.c.traits || []).join(" · ") || "—" })] }));
+  tb.appendChild(trTr);
   const gaps = [];
   for (const r of PARTY_ROLES) {
     const tr = el("tr");
@@ -1140,6 +1147,30 @@ async function renderParty() {
     if (txt.length) s4.appendChild(el("div", { class: "pt", text: `${m.c.nameKo}: ${txt.join(" / ")}` }));
   }
   wrap.appendChild(s4);
+
+  // 5. 특성 조건 — 「「검」 「활」 「창」 특성의 아군이 3명 이상일 경우」 를 파티 특성으로 판정
+  const s5 = el("div", { class: "section", children: [el("h3", { text: "5. 특성 조건 충족" }),
+    el("div", { class: "skko-src", text: "전방/후방 배치는 아직 반영하지 않음 — 파티 전원을 전방으로 보고 셉니다. 「자신 이외」 조건은 본인을 뺍니다." })] });
+  const seen = new Set();
+  for (const m of members) for (const u of m.fx) {
+    const src = (u.cond || "") + " " + (u.raw || "");
+    const mm = src.match(/((?:「[^」]+」\s*)+)특성(?:의)?\s*(?:아군|인원수)?[^。]*?(\d+)명\s*이상/);
+    if (!mm) continue;
+    const traits = [...mm[1].matchAll(/「([^」]+)」/g)].map(x => x[1]);
+    const need = +mm[2];
+    const key = m.c.id + "|" + traits.join(",") + "|" + need;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const others = /자신(을)? ?(제외|이외)/.test(src);
+    const who = members.filter(x => (!others || x !== m) && (x.c.traits || []).some(t => traits.includes(t)));
+    const ok = who.length >= need;
+    s5.appendChild(el("div", { class: "pt", children: [
+      el("span", { class: ok ? "role-ok" : "role-gap", text: (ok ? "✓ " : "✗ ") }),
+      document.createTextNode(`${m.c.nameKo} · ${u._skill || ROLE_KO[u.r] || ""}: 「${traits.join("」「")}」 ${need}명 이상 → 현재 ${who.length}명`),
+      el("span", { class: "cond", text: who.length ? ` (${who.map(x => x.c.nameKo).join(", ")})` : "" })] }));
+  }
+  if (!seen.size) s5.appendChild(el("div", { class: "skko-src", text: "인원수 특성 조건이 있는 효과 없음" }));
+  wrap.appendChild(s5);
 }
 
 function buildSkillTable(rows) {

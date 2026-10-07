@@ -87,6 +87,35 @@
   .skill-table td { color: var(--text); }
   .skill-table tr:hover { background: var(--panel-2); }
 
+  /* 2026-10-07 공식 한국어 스킬 — 효과 단위 칩 */
+  .fx-input { background: var(--panel-2); border: 1px solid var(--line); color: var(--text); padding: 4px 10px; border-radius: 999px; font-size: 12px; width: 190px; }
+  .fx-input:focus { outline: none; border-color: var(--gold-dim); }
+  .chip.fx-sel::after { content: " ×"; }
+  .skko-block { margin-bottom: 18px; }
+  .skko-src { font-size: 11px; color: var(--muted); margin: -4px 0 10px; }
+  .skko-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 14px; }
+  .skko-tags .chip { font-size: 11px; padding: 2px 8px; }
+  .skko-item { background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+  .skko-name { font-weight: 600; font-size: 13px; color: var(--text); }
+  .skko-name .mp { color: var(--blue); font-weight: 400; font-size: 11px; margin-left: 6px; }
+  .skko-name .tag { color: var(--muted); font-weight: 400; font-size: 11px; margin-left: 6px; }
+  .fx-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  .fx { font-size: 11px; padding: 2px 7px; border-radius: 4px; border: 1px solid var(--line); color: var(--text); background: var(--panel); line-height: 1.5; }
+  .fx b { font-weight: 600; margin-right: 4px; }
+  .fx .cond { color: var(--muted); }
+  .fx .mode { color: var(--accent); }
+  .fx.k-attack { border-color: #6b3a3c; } .fx.k-attack b { color: var(--red); }
+  .fx.k-stat_pct b, .fx.k-stat_flat b, .fx.k-dmg b { color: var(--blue); }
+  .fx.k-buff { border-color: var(--gold-dim); } .fx.k-buff b { color: var(--gold); }
+  .fx.k-ailment b { color: #b48ad6; }
+  .fx.k-guard b, .fx.k-heal b { color: var(--green); }
+  .fx.k-zone b { color: var(--accent); }
+  .fx.k-stack b, .fx.k-power b, .fx.k-action b, .fx.k-af b, .fx.k-dispel b, .fx.k-cost b { color: var(--muted); }
+  .fx.k-other { color: var(--muted); border-style: dashed; }
+  .skko-raw { margin-top: 6px; font-size: 11px; color: var(--muted); white-space: pre-wrap; }
+  .skko-raw summary { cursor: pointer; }
+  .badge.skko { background: rgba(108,142,193,0.12); color: var(--blue); border-color: #3a4d6b; }
+
   .sources { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); margin-top: 16px; }
   .sources a { color: var(--muted); font-size: 12px; text-decoration: none; padding: 4px 10px; border: 1px solid var(--line); border-radius: 4px; }
   .sources a:hover { color: var(--gold); border-color: var(--gold-dim); }
@@ -195,7 +224,7 @@
 <script>
 const STATE = {
   all: [],
-  filters: { element: "", weapon: "", style: "", sa: false, hasFull: false, recruit: "" },
+  filters: { element: "", weapon: "", style: "", sa: false, hasFull: false, recruit: "", skillsKo: false, effects: [] },
   search: "",
   // 영입 조건 · 조건템 (2026-09-22)
   recruit: {},        // id → { recruit, books, … }
@@ -303,7 +332,7 @@ function buildFilters() {
   // 토글 필터
   const toggleGroup = el("div", { class: "filter-group" });
   toggleGroup.appendChild(el("span", { class: "filter-label", text: "기타" }));
-  for (const [key, label] of [["sa", "SA 보유"], ["hasFull", "상세 정보 있음"]]) {
+  for (const [key, label] of [["sa", "SA 보유"], ["hasFull", "상세 정보 있음"], ["skillsKo", "공식 한국어 스킬"]]) {
     const chip = el("span", { class: "chip", text: label, dataset: { filter: key } });
     chip.addEventListener('click', () => {
       chip.classList.toggle('active');
@@ -313,6 +342,55 @@ function buildFilters() {
     toggleGroup.appendChild(chip);
   }
   row.appendChild(toggleGroup);
+  row.appendChild(buildEffectFilter());
+}
+
+// 2026-10-07 효과 단위 필터 — index.json 의 effect_tags (공식 공지 한국어 스킬에서 추출). 고른 태그를 모두 가진 캐릭
+function buildEffectFilter() {
+  const group = el("div", { class: "filter-group" });
+  group.appendChild(el("span", { class: "filter-label", text: "효과" }));
+  // 필터 줄은 데이터 로드 전에 만들어진다 — 태그 목록은 쓸 때 센다
+  const counts = () => {
+    const n = {};
+    for (const c of STATE.all) for (const t of (c.effect_tags || [])) n[t] = (n[t] || 0) + 1;
+    return n;
+  };
+  const dl = el("datalist", { attrs: { id: "fx-tags" } });
+  const input = el("input", { class: "fx-input", attrs: { list: "fx-tags", placeholder: "효과 검색 (예: 심기일체)" } });
+  input.addEventListener('focus', () => {
+    if (dl.childElementCount) return;
+    const n = counts();
+    for (const t of Object.keys(n).sort((a, b) => n[b] - n[a] || a.localeCompare(b)))
+      dl.appendChild(el("option", { attrs: { value: t, label: `${n[t]}명` } }));
+  });
+  const sel = el("span", { class: "filter-group", attrs: { id: "fx-selected" } });
+  input.addEventListener('change', () => {
+    const v = input.value.trim();
+    if (counts()[v]) addEffectFilter(v);
+    input.value = "";
+  });
+  group.append(dl, input, sel);
+  return group;
+}
+function addEffectFilter(tag) {
+  const f = STATE.filters;
+  if (!f.effects.includes(tag)) f.effects.push(tag);
+  renderEffectChips();
+  if (STATE.view !== "chars") STATE.view = "chars";
+  render();
+}
+function renderEffectChips() {
+  const sel = document.getElementById('fx-selected');
+  if (!sel) return;
+  clear(sel);
+  for (const t of STATE.filters.effects) {
+    const chip = el("span", { class: "chip active fx-sel", text: t });
+    chip.addEventListener('click', () => {
+      STATE.filters.effects = STATE.filters.effects.filter(x => x !== t);
+      renderEffectChips(); render();
+    });
+    sel.appendChild(chip);
+  }
 }
 
 function onChipClick(chip, key, val, toggle) {
@@ -333,6 +411,8 @@ function applyFilters() {
   if (f.style)   list = list.filter(c => c.style === f.style || (f.style === "Alter" && c.style?.startsWith("Alter")));
   if (f.sa)      list = list.filter(c => c.sa);
   if (f.hasFull) list = list.filter(c => c.has_full);
+  if (f.skillsKo) list = list.filter(c => c.skills_ko);
+  if (f.effects.length) list = list.filter(c => f.effects.every(t => (c.effect_tags || []).includes(t)));
   if (f.recruit === "books") {
     list = list.filter(c => (STATE.recruit[c.id]?.books || []).length > 0);
   } else if (f.recruit) {
@@ -615,6 +695,7 @@ function buildCard(c) {
   if (c.style && c.style !== 'NS') badges.appendChild(badgeEl(c.style, "style-" + c.style.replace(/\s/g, '-')));
   if (c.sa) badges.appendChild(badgeEl("SA", "sa"));
   if (STATE.recruit[c.id]?.recruit?.kind === "free") badges.appendChild(badgeEl("무료", "free"));
+  if (c.skills_ko) badges.appendChild(badgeEl("공식 스킬", "skko"));
 
   // confidence
   const conf = c.confidence || 0;
@@ -649,6 +730,7 @@ async function openModal(id) {
   if (recSec) body.appendChild(recSec);
   const bookSec = buildBooksSection(id);
   if (bookSec) body.appendChild(bookSec);
+  if (c.skills_ko) body.appendChild(buildSkillsKoSection(c));   // 상세본 없는 신규 캐릭도 공식 스킬은 보인다
 
   if (!c.has_full) {
     body.appendChild(buildStubNotice(c));
@@ -778,6 +860,98 @@ function buildTextSection(title, text) {
       el("div", { class: "text-block", text }),
     ]
   });
+}
+
+// ─────────────────────────────────────
+// 공식 한국어 스킬 (2026-10-07) — data/skills_ko/{id}.json
+//   원천: 인게임 공지(news-ap notice_v2) · 빌더: _tools/character/build_skills_ko.py
+// ─────────────────────────────────────
+const SKKO_SECTION = { skills: "스킬", abilities: "어빌리티", stacks: "중첩", chain: "체인 어빌리티",
+  stellar_skills: "성도 스킬", stellar_abilities: "추가 어빌리티", tenmei_ability: "천명 어빌리티",
+  sb_enhance: "스텔라 버스트 강화", adjust_ns: "노멀 스타일 조정", adjust_as: "어나더 스타일 조정" };
+const FX_KIND = { attack: "공격", stat_pct: "스탯", stat_flat: "스탯 수치", dmg: "대미지", zone: "ZONE", buff: "강화",
+  ailment: "상태 이상", guard: "보호", heal: "회복", dispel: "해제", stack: "축적", power: "위력", action: "실행",
+  cost: "대가", af: "AF·천명", other: "원문" };
+
+function fxDur(u) {
+  const p = [];
+  if (u.turns) p.push(u.turns + "턴");
+  if (u.actions) p.push(u.actions + "회 행동");
+  if (u.times) p.push(u.times + "회");
+  if (u.perm) p.push("영구");
+  if (u.until_turn_end) p.push("턴 종료까지");
+  if (u.max_stack) p.push("최대 " + u.max_stack + "중첩");
+  return p.length ? " · " + p.join(", ") : "";
+}
+function fxText(u) {
+  const sign = u.dir === "DOWN" ? "−" : "+";
+  switch (u.k) {
+    case "attack":
+      if (u.fixed) return `${u.scope} 고정 ${u.fixed.toLocaleString()}${u.hits > 1 ? " ×" + u.hits : ""}`;
+      return `${u.scope.replace(/^이후 /, "")} ${u.element || "무"} ${u.atk}${u.hits > 1 ? " ×" + u.hits : ""} (${u.power}${u.mult ? ", " + u.mult + "배" : ""})${u.preempt ? " 선제" : ""}`;
+    case "stat_pct": return `${u.stats.join("·")} ${u.value != null ? sign + u.value + "%" : u.dir}${u.max ? " (최대)" : ""}${u.basis ? " ← " + u.basis : ""}`;
+    case "stat_flat": return `${u.stats.join("·")} ${u.value != null ? sign + u.value : u.dir}${u.derived ? " (" + u.derived + ")" : ""}${u.basis ? " ← " + u.basis : ""}`;
+    case "dmg": return `${u.what} ${u.value != null ? sign + u.value + "%" : u.dir}`;
+    case "buff": case "ailment": return u.name;
+    case "guard": return u.what + (u.value ? " " + u.value + "%" : "") + (u.detail ? " (" + u.detail + ")" : "");
+    case "stack": return `${u.name || ""} ${u.value ?? ""} ${u.op}`.replace(/\s+/g, " ").trim();
+    case "cost": return `${u.what} ${u.value}% 소모`;
+    case "power": return u.what + (u.detail ? " (" + u.detail + ")" : "");
+    default: return u.what || u.raw;
+  }
+}
+function fxChip(u) {
+  const chip = el("span", { class: "fx k-" + u.k, attrs: { title: u.raw || "" } });
+  chip.appendChild(el("b", { text: FX_KIND[u.k] || u.k }));
+  if (u.mode && u.mode !== "추가 효과") chip.appendChild(el("span", { class: "mode", text: `[${u.mode.replace(/ 효과$/, "")}] ` }));
+  if (u.cond) chip.appendChild(el("span", { class: "cond", text: u.cond + " → " }));
+  chip.appendChild(document.createTextNode(u.k === "other" ? u.raw : fxText(u) + fxDur(u)));
+  if (u.target && ["stat_pct", "stat_flat", "dmg", "buff", "ailment", "guard", "heal", "dispel"].includes(u.k))
+    chip.appendChild(el("span", { class: "cond", text: " @" + u.target }));
+  return chip;
+}
+function buildSkillsKoSection(c) {
+  const sec = el("div", { class: "section", children: [el("h3", { text: "공식 스킬 (한국어 · 인게임 공지)" })] });
+  const tags = el("div", { class: "skko-tags" });
+  for (const t of (c.effect_tags || [])) {
+    const chip = el("span", { class: "chip", text: t, attrs: { title: "이 효과를 가진 캐릭 보기" } });
+    chip.addEventListener('click', () => { closeModal(); addEffectFilter(t); });
+    tags.appendChild(chip);
+  }
+  sec.appendChild(tags);
+  const host = el("div", { class: "loading", text: "로딩 중…" });
+  sec.appendChild(host);
+  fetch(`data/skills_ko/${c.id}.json`).then(r => r.json()).then(d => {
+    host.className = ""; host.textContent = "";
+    for (const b of d.blocks) {
+      const blk = el("div", { class: "skko-block" });
+      blk.appendChild(el("h4", { text: b.kind === "sa" ? `성도 각성 「${b.class}」` : "신규 소개" }));
+      blk.appendChild(el("div", { class: "skko-src", text: `공지 #${b.notice}` + (b.class_en ? ` · ${b.class_en}` : "") }));
+      for (const [key, items] of Object.entries(b.sections)) {
+        if (!items.length) continue;
+        blk.appendChild(el("div", { class: "filter-label", text: SKKO_SECTION[key] || key, style: "margin:10px 0 6px" }));
+        for (const it of items) {
+          const box = el("div", { class: "skko-item" });
+          if (it.name) {
+            const nm = el("div", { class: "skko-name", text: it.name });
+            if (it.mp != null) nm.appendChild(el("span", { class: "mp", text: "MP " + it.mp }));
+            if (it.tag) nm.appendChild(el("span", { class: "tag", text: it.tag }));
+            box.appendChild(nm);
+          }
+          const list = el("div", { class: "fx-list" });
+          for (const u of it.effects) if (u.k !== "meta") list.appendChild(fxChip(u));
+          box.appendChild(list);
+          const raw = el("details", { class: "skko-raw" });
+          raw.appendChild(el("summary", { text: "원문" }));
+          raw.appendChild(document.createTextNode([...it.lines, ...(it.notes || [])].join("\n")));
+          box.appendChild(raw);
+          blk.appendChild(box);
+        }
+      }
+      host.appendChild(blk);
+    }
+  }).catch(e => { host.className = "empty-state"; host.textContent = "공식 스킬 로드 실패: " + e.message; });
+  return sec;
 }
 
 function buildSkillTable(rows) {

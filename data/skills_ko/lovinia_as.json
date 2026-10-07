@@ -1,0 +1,532 @@
+{
+ "id": "lovinia_as",
+ "source": "news-ap.another-eden.games notice_v2 (ko)",
+ "blocks": [
+  {
+   "notice": 744,
+   "kind": "encounter",
+   "who": "라비나AS",
+   "class": "",
+   "sections": {
+    "skills": [
+     {
+      "name": "따스한 바람의 노래",
+      "tag": "",
+      "mp": 70,
+      "lines": [
+       "가창 발동(3턴)",
+       "아군 전체에 다음 효과 부여",
+       "힘 50% UP + 지능 50% UP + 바람 속성 공격 50% UP(5턴)",
+       "【가창 효과】",
+       "아군 전체의 가하는 대미지 80% UP + 받는 대미지 50% DOWN + 크리티컬율 100% UP + 마법 크리티컬율 100% UP + 아군 공격 시 콤보 배율 증가량 UP",
+       "가창 효과 발동 중 턴 종료 시 아군 전체에 다음 효과 부여",
+       "HP 최대치 50% UP + 물리 저항 30% UP(5턴)",
+       "HP 회복 50%",
+       "【추가 효과】",
+       "전방에",
+       "캐릭터가 3명 이상일 경우 이 스킬이 부챗불의 노래로 변화"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "action",
+        "what": "가창 발동",
+        "turns": 3,
+        "raw": "가창 발동(3턴)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "힘"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 50.0,
+        "raw": "힘 50% UP",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "지능"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 50.0,
+        "raw": "지능 50% UP",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "바람 속성 공격"
+        ],
+        "group": "elem_atk",
+        "dir": "UP",
+        "value": 50.0,
+        "turns": 5,
+        "raw": "바람 속성 공격 50% UP(5턴)",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "dmg",
+        "what": "아군 전체의 가하는 대미지",
+        "value": 80.0,
+        "dir": "UP",
+        "raw": "아군 전체의 가하는 대미지 80% UP",
+        "target": "아군 전체",
+        "mode": "가창 효과"
+       },
+       {
+        "k": "dmg",
+        "what": "받는 대미지",
+        "value": 50.0,
+        "dir": "DOWN",
+        "raw": "받는 대미지 50% DOWN",
+        "target": "아군 전체",
+        "mode": "가창 효과"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "크리티컬율"
+        ],
+        "group": "crit",
+        "dir": "UP",
+        "value": 100.0,
+        "raw": "크리티컬율 100% UP",
+        "target": "아군 전체",
+        "mode": "가창 효과"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "마법 크리티컬율"
+        ],
+        "group": "crit",
+        "dir": "UP",
+        "value": 100.0,
+        "raw": "마법 크리티컬율 100% UP",
+        "target": "아군 전체",
+        "mode": "가창 효과"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "콤보 배율 증가량"
+        ],
+        "group": "etc",
+        "dir": "UP",
+        "value": null,
+        "basis": "",
+        "max": true,
+        "raw": "아군 공격 시 콤보 배율 증가량 UP",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "cond": "아군 공격 시"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "HP 최대치"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 50.0,
+        "raw": "HP 최대치 50% UP",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "cond": "가창 효과 발동 중 턴 종료 시"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "물리 저항"
+        ],
+        "group": "resist",
+        "dir": "UP",
+        "value": 30.0,
+        "turns": 5,
+        "raw": "물리 저항 30% UP(5턴)",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "cond": "가창 효과 발동 중 턴 종료 시"
+       },
+       {
+        "k": "heal",
+        "what": "HP",
+        "value": 50.0,
+        "flat": false,
+        "raw": "HP 회복 50%",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "cond": "가창 효과 발동 중 턴 종료 시"
+       },
+       {
+        "k": "action",
+        "what": "이 스킬이 부챗불의 노래로 변화",
+        "raw": "전방에 캐릭터가 3명 이상일 경우 이 스킬이 부챗불의 노래로 변화",
+        "target": "아군 전체",
+        "mode": "추가 효과",
+        "cond": "가창 효과 발동 중 턴 종료 시 · 전방에 캐릭터가 3명 이상일 경우"
+       }
+      ]
+     },
+     {
+      "name": "부챗불의 노래",
+      "tag": "",
+      "mp": 70,
+      "lines": [
+       "가창 발동(3턴)",
+       "아군 전체에 다음 효과 부여",
+       "힘 50% UP + 지능 50% UP + 불 속성 공격 50% UP(5턴)",
+       "【가창 효과】",
+       "아군 전체의 가하는 대미지 100% UP + 받는 대미지 30% DOWN + 크리티컬율 100% UP + 마법 크리티컬율 100% UP + 아군 공격 시 콤보 배율 증가량 UP",
+       "가창 효과 발동 중 턴 종료 시 적 전체에 다음 효과 부여",
+       "엘리멘탈 브레이크(불) 5 축적",
+       "아군 전체에 다음 효과 부여",
+       "HP 회복 50%"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "action",
+        "what": "가창 발동",
+        "turns": 3,
+        "raw": "가창 발동(3턴)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "힘"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 50.0,
+        "raw": "힘 50% UP",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "지능"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 50.0,
+        "raw": "지능 50% UP",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "불 속성 공격"
+        ],
+        "group": "elem_atk",
+        "dir": "UP",
+        "value": 50.0,
+        "turns": 5,
+        "raw": "불 속성 공격 50% UP(5턴)",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "dmg",
+        "what": "아군 전체의 가하는 대미지",
+        "value": 100.0,
+        "dir": "UP",
+        "raw": "아군 전체의 가하는 대미지 100% UP",
+        "target": "아군 전체",
+        "mode": "가창 효과"
+       },
+       {
+        "k": "dmg",
+        "what": "받는 대미지",
+        "value": 30.0,
+        "dir": "DOWN",
+        "raw": "받는 대미지 30% DOWN",
+        "target": "아군 전체",
+        "mode": "가창 효과"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "크리티컬율"
+        ],
+        "group": "crit",
+        "dir": "UP",
+        "value": 100.0,
+        "raw": "크리티컬율 100% UP",
+        "target": "아군 전체",
+        "mode": "가창 효과"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "마법 크리티컬율"
+        ],
+        "group": "crit",
+        "dir": "UP",
+        "value": 100.0,
+        "raw": "마법 크리티컬율 100% UP",
+        "target": "아군 전체",
+        "mode": "가창 효과"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "콤보 배율 증가량"
+        ],
+        "group": "etc",
+        "dir": "UP",
+        "value": null,
+        "basis": "",
+        "max": true,
+        "raw": "아군 공격 시 콤보 배율 증가량 UP",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "cond": "아군 공격 시"
+       },
+       {
+        "k": "stack",
+        "name": "엘리멘탈 브레이크(불)",
+        "value": "5",
+        "op": "축적",
+        "raw": "엘리멘탈 브레이크(불) 5 축적",
+        "target": "적 전체",
+        "mode": "가창 효과",
+        "cond": "가창 효과 발동 중 턴 종료 시"
+       },
+       {
+        "k": "heal",
+        "what": "HP",
+        "value": 50.0,
+        "flat": false,
+        "raw": "HP 회복 50%",
+        "target": "아군 전체",
+        "mode": "가창 효과"
+       }
+      ]
+     },
+     {
+      "name": "이그나이트 윈드",
+      "tag": "",
+      "mp": 65,
+      "lines": [
+       "아군 전체에 다음 효과 부여",
+       "크리티컬 대미지 30% UP + 마법 크리티컬 대미지 30% UP(3턴) + 크리티컬율 100% UP + 마법 크리티컬율 100% UP(10회 행동)",
+       "【추가 효과】",
+       "전방에",
+       "캐릭터가 2명 이상일 경우 아군 전체에 다음 효과 부여",
+       "MP 최대치 30% UP(5턴)",
+       "MP 치유(MP 최대치 15%, 5회)",
+       "전방에",
+       "캐릭터가 2명 이상일 경우 크리티컬 대미지 UP과 마법 크리티컬 대미지 UP 효과량 증가(2배)",
+       "추가로 성도 각성하면 다음 성도 스킬을 사용할 수 있습니다"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "dmg",
+        "what": "크리티컬 대미지",
+        "value": 30.0,
+        "dir": "UP",
+        "raw": "크리티컬 대미지 30% UP",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "dmg",
+        "what": "마법 크리티컬 대미지",
+        "value": 30.0,
+        "dir": "UP",
+        "turns": 3,
+        "raw": "마법 크리티컬 대미지 30% UP(3턴)",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "크리티컬율"
+        ],
+        "group": "crit",
+        "dir": "UP",
+        "value": 100.0,
+        "raw": "크리티컬율 100% UP",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "마법 크리티컬율"
+        ],
+        "group": "crit",
+        "dir": "UP",
+        "value": 100.0,
+        "actions": 10,
+        "raw": "마법 크리티컬율 100% UP(10회 행동)",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "MP 최대치"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 30.0,
+        "turns": 5,
+        "raw": "MP 최대치 30% UP(5턴)",
+        "target": "아군 전체",
+        "mode": "추가 효과",
+        "cond": "전방에 캐릭터가 2명 이상일 경우"
+       },
+       {
+        "k": "heal",
+        "what": "MP 치유",
+        "times": 5,
+        "raw": "MP 치유(MP 최대치 15%, 5회)",
+        "target": "아군 전체",
+        "mode": "추가 효과",
+        "cond": "전방에 캐릭터가 2명 이상일 경우"
+       },
+       {
+        "k": "power",
+        "what": "효과량 증가",
+        "detail": "2배",
+        "raw": "전방에 캐릭터가 2명 이상일 경우 크리티컬 대미지 UP과 마법 크리티컬 대미지 UP 효과량 증가(2배)",
+        "target": "아군 전체",
+        "mode": "추가 효과",
+        "cond": "전방에 캐릭터가 2명 이상일 경우 · 전방에 캐릭터가 2명 이상일 경우"
+       }
+      ]
+     }
+    ],
+    "stellar_skills": [
+     {
+      "name": "황금의 춤",
+      "tag": "스텔라 버스트 시",
+      "mp": 88,
+      "lines": [
+       "적 전체에 바람 속성 찌르기 공격(극대, 15배)",
+       "아군 전체에 다음 효과 부여",
+       "속도 100% UP(5턴)",
+       "【추가 효과】",
+       "전방에",
+       "캐릭터가 2명 이상일 경우 적 전체에 다음 효과 부여",
+       "힘 40% DOWN + 지능 40% DOWN(5턴) + 버프 해제",
+       "전방에",
+       "캐릭터가 2명 이상일 경우 공격 속성이 불로 변화 + 아군 전체의 디버프 전부 해제 + 적 전체에 다음 효과 부여",
+       "물리 저항 40% DOWN + 마법 저항 40% DOWN(5턴)"
+      ],
+      "notes": [
+       "※스텔라 보드에서 강화된 상태입니다"
+      ],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "바람",
+        "atk": "찌르기",
+        "hits": 1,
+        "power": "극대",
+        "mult": 15.0,
+        "preempt": false,
+        "raw": "적 전체에 바람 속성 찌르기 공격(극대, 15배)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 100.0,
+        "turns": 5,
+        "raw": "속도 100% UP(5턴)",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "힘"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 40.0,
+        "raw": "힘 40% DOWN",
+        "target": "적 전체",
+        "mode": "추가 효과",
+        "cond": "전방에 캐릭터가 2명 이상일 경우"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "지능"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 40.0,
+        "turns": 5,
+        "raw": "지능 40% DOWN(5턴)",
+        "target": "적 전체",
+        "mode": "추가 효과",
+        "cond": "전방에 캐릭터가 2명 이상일 경우"
+       },
+       {
+        "k": "dispel",
+        "what": "버프 해제",
+        "raw": "버프 해제",
+        "target": "적 전체",
+        "mode": "추가 효과",
+        "cond": "전방에 캐릭터가 2명 이상일 경우"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "물리 저항"
+        ],
+        "group": "resist",
+        "dir": "DOWN",
+        "value": 40.0,
+        "raw": "물리 저항 40% DOWN",
+        "target": "공격 속성이 불로 변화 + 아군 전체의 디버프 전부 해제 + 적 전체",
+        "mode": "추가 효과",
+        "cond": "전방에 캐릭터가 2명 이상일 경우"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "마법 저항"
+        ],
+        "group": "resist",
+        "dir": "DOWN",
+        "value": 40.0,
+        "turns": 5,
+        "raw": "마법 저항 40% DOWN(5턴)",
+        "target": "공격 속성이 불로 변화 + 아군 전체의 디버프 전부 해제 + 적 전체",
+        "mode": "추가 효과",
+        "cond": "전방에 캐릭터가 2명 이상일 경우"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,93 @@
+{
+ "id": "thillelille",
+ "source": "news-ap.another-eden.games notice_v2 (ko)",
+ "blocks": [
+  {
+   "notice": 702,
+   "kind": "sa",
+   "who": "틸릴",
+   "class": "어비스 데보티",
+   "sections": {
+    "stellar_skills": [
+     {
+      "name": "은총의 검",
+      "tag": "스텔라 버스트 시",
+      "mp": 127,
+      "lines": [
+       "선제로 아군 전후방 전체에 다음 효과 부여",
+       "전투 불능 회복 + HP 회복 100% + 상태 이상 회복 + 디버프 해제",
+       "버티기",
+       "초틸릴 상태 해제 + 새크리피전 모두 소비"
+      ],
+      "notes": [
+       "※스텔라 보드에서 강화된 상태입니다"
+      ],
+      "effects": [
+       {
+        "k": "heal",
+        "what": "전투 불능 회복",
+        "raw": "전투 불능 회복",
+        "target": "아군 전후방 전체",
+        "mode": "",
+        "preempt": true
+       },
+       {
+        "k": "heal",
+        "what": "HP",
+        "value": 100.0,
+        "flat": false,
+        "raw": "HP 회복 100%",
+        "target": "아군 전후방 전체",
+        "mode": "",
+        "preempt": true
+       },
+       {
+        "k": "heal",
+        "what": "상태 이상 회복",
+        "raw": "상태 이상 회복",
+        "target": "아군 전후방 전체",
+        "mode": "",
+        "preempt": true
+       },
+       {
+        "k": "dispel",
+        "what": "디버프 해제",
+        "raw": "디버프 해제",
+        "target": "아군 전후방 전체",
+        "mode": "",
+        "preempt": true
+       },
+       {
+        "k": "buff",
+        "name": "버티기",
+        "raw": "버티기",
+        "target": "아군 전후방 전체",
+        "mode": "",
+        "preempt": true
+       },
+       {
+        "k": "dispel",
+        "what": "초틸릴 상태 해제",
+        "raw": "초틸릴 상태 해제",
+        "target": "아군 전후방 전체",
+        "mode": "",
+        "preempt": true
+       },
+       {
+        "k": "stack",
+        "name": "새크리피전",
+        "value": "모두",
+        "op": "소비",
+        "raw": "새크리피전 모두 소비",
+        "target": "아군 전후방 전체",
+        "mode": "",
+        "preempt": true
+       }
+      ]
+     }
+    ]
+   },
+   "class_en": "Abyssal Devotee"
+  }
+ ]
+}

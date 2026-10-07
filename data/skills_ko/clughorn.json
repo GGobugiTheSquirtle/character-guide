@@ -1,0 +1,497 @@
+{
+ "id": "clughorn",
+ "source": "news-ap.another-eden.games notice_v2 (ko)",
+ "blocks": [
+  {
+   "notice": 699,
+   "kind": "encounter",
+   "who": "클러그혼",
+   "class": "",
+   "sections": {
+    "skills": [
+     {
+      "name": "오펜스 비트",
+      "tag": "",
+      "mp": 57,
+      "lines": [
+       "적 전체에 그림자 속성 찌르기 공격(극)",
+       "자신에게 다음 효과 부여",
+       "심기일체(3턴) + 어그로 스탠스 축적",
+       "【추가 효과】",
+       "어그로 스탠스 축적 시 이 스킬이 디펜스 비트(으)로 변화"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "그림자",
+        "atk": "찌르기",
+        "hits": 1,
+        "power": "극",
+        "mult": null,
+        "preempt": false,
+        "raw": "적 전체에 그림자 속성 찌르기 공격(극)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "심기일체",
+        "turns": 3,
+        "raw": "심기일체(3턴)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "stack",
+        "name": "어그로 스탠스",
+        "value": null,
+        "op": "축적",
+        "raw": "어그로 스탠스 축적",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "action",
+        "what": "이 스킬이 디펜스 비트(으)로 변화",
+        "raw": "어그로 스탠스 축적 시 이 스킬이 디펜스 비트(으)로 변화",
+        "target": "자신",
+        "mode": "추가 효과",
+        "cond": "어그로 스탠스 축적 시"
+       }
+      ]
+     },
+     {
+      "name": "디펜스 비트",
+      "tag": "",
+      "mp": 57,
+      "lines": [
+       "적 전체에 그림자 속성 찌르기 공격(극)",
+       "자신에게 다음 효과 부여",
+       "대미지 50% 감소 배리어(1턴) + 어그로 스탠스 소비",
+       "공격 대상에게 다음 효과 부여",
+       "도발(5턴, 대상의 저항 무시)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "그림자",
+        "atk": "찌르기",
+        "hits": 1,
+        "power": "극",
+        "mult": null,
+        "preempt": false,
+        "raw": "적 전체에 그림자 속성 찌르기 공격(극)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "guard",
+        "what": "배리어",
+        "value": 50.0,
+        "turns": 1,
+        "raw": "대미지 50% 감소 배리어(1턴)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "stack",
+        "name": "어그로 스탠스",
+        "value": null,
+        "op": "소비",
+        "raw": "어그로 스탠스 소비",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "ailment",
+        "name": "도발",
+        "turns": 5,
+        "ignore_res": true,
+        "raw": "도발(5턴, 대상의 저항 무시)",
+        "target": "공격 대상",
+        "mode": ""
+       }
+      ]
+     },
+     {
+      "name": "문 나이트 노트",
+      "tag": "",
+      "mp": 25,
+      "lines": [
+       "선제로 월광진 전개",
+       "자신에게 다음 효과 부여",
+       "상태 이상 무효(3회)",
+       "【추가 효과】",
+       "월광진 전개 시 ZONE 각성 실행"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "zone",
+        "what": "월광진 전개",
+        "raw": "선제로 월광진 전개",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "guard",
+        "what": "상태 이상 무효",
+        "times": 3,
+        "raw": "상태 이상 무효(3회)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "zone",
+        "what": "ZONE 각성 실행",
+        "raw": "월광진 전개 시 ZONE 각성 실행",
+        "target": "자신",
+        "mode": "추가 효과",
+        "cond": "월광진 전개 시"
+       }
+      ]
+     },
+     {
+      "name": "사이킥 월",
+      "tag": "",
+      "mp": 25,
+      "lines": [
+       "선제로 자신에게 다음 효과 부여",
+       "물리 저항 30% UP + 마법 저항 30% UP(3턴)",
+       "【추가 효과】",
+       "월광진 전개 시 버프 효과량 증가(2배)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "stat_pct",
+        "stats": [
+         "물리 저항"
+        ],
+        "group": "resist",
+        "dir": "UP",
+        "value": 30.0,
+        "raw": "물리 저항 30% UP",
+        "target": "자신",
+        "mode": "",
+        "preempt": true
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "마법 저항"
+        ],
+        "group": "resist",
+        "dir": "UP",
+        "value": 30.0,
+        "turns": 3,
+        "raw": "마법 저항 30% UP(3턴)",
+        "target": "자신",
+        "mode": "",
+        "preempt": true
+       },
+       {
+        "k": "power",
+        "what": "효과량 증가",
+        "detail": "2배",
+        "raw": "월광진 전개 시 버프 효과량 증가(2배)",
+        "target": "자신",
+        "mode": "추가 효과",
+        "cond": "월광진 전개 시",
+        "preempt": true
+       }
+      ]
+     },
+     {
+      "name": "다운 스파이크",
+      "tag": "",
+      "mp": 52,
+      "lines": [
+       "적 전체에 그림자 속성 찌르기 공격 3회(극)",
+       "공격 대상에게 다음 효과 부여",
+       "힘 40% DOWN + 지능 40% DOWN + 속도 40% DOWN + 번개 속성 공격 40% DOWN + 그림자 속성 공격 40% DOWN + 결정 속성 공격 40% DOWN(3턴)",
+       "【추가 효과】",
+       "자신의 HP 80% 이하 시 재공격 실행",
+       "어그로 스탠스 축적 시 이 스킬이 어그로 스파이크(으)로 변화"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "그림자",
+        "atk": "찌르기",
+        "hits": 3,
+        "power": "극",
+        "mult": null,
+        "preempt": false,
+        "raw": "적 전체에 그림자 속성 찌르기 공격 3회(극)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "힘"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 40.0,
+        "raw": "힘 40% DOWN",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "지능"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 40.0,
+        "raw": "지능 40% DOWN",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 40.0,
+        "raw": "속도 40% DOWN",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "번개 속성 공격"
+        ],
+        "group": "elem_atk",
+        "dir": "DOWN",
+        "value": 40.0,
+        "raw": "번개 속성 공격 40% DOWN",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "그림자 속성 공격"
+        ],
+        "group": "elem_atk",
+        "dir": "DOWN",
+        "value": 40.0,
+        "raw": "그림자 속성 공격 40% DOWN",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "결정 속성 공격"
+        ],
+        "group": "elem_atk",
+        "dir": "DOWN",
+        "value": 40.0,
+        "turns": 3,
+        "raw": "결정 속성 공격 40% DOWN(3턴)",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "action",
+        "what": "재공격 실행",
+        "raw": "자신의 HP 80% 이하 시 재공격 실행",
+        "target": "공격 대상",
+        "mode": "추가 효과",
+        "cond": "자신의 HP 80% 이하 시"
+       },
+       {
+        "k": "action",
+        "what": "이 스킬이 어그로 스파이크(으)로 변화",
+        "raw": "어그로 스탠스 축적 시 이 스킬이 어그로 스파이크(으)로 변화",
+        "target": "공격 대상",
+        "mode": "추가 효과",
+        "cond": "어그로 스탠스 축적 시"
+       }
+      ]
+     },
+     {
+      "name": "어그로 스파이크",
+      "tag": "",
+      "mp": 52,
+      "lines": [
+       "적 전체에 그림자 속성 찌르기 공격 3회(극, 20배)",
+       "재공격 실행",
+       "【추가 효과】",
+       "자신의 HP 80% 이하 시 추가로 재공격 실행",
+       "어그로 스탠스이(가) 축적 안 된 경우 이 스킬이 다운 스파이크(으)로 변화"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "그림자",
+        "atk": "찌르기",
+        "hits": 3,
+        "power": "극",
+        "mult": 20.0,
+        "preempt": false,
+        "raw": "적 전체에 그림자 속성 찌르기 공격 3회(극, 20배)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "action",
+        "what": "재공격 실행",
+        "raw": "재공격 실행",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "action",
+        "what": "추가로 재공격 실행",
+        "raw": "자신의 HP 80% 이하 시 추가로 재공격 실행",
+        "target": "",
+        "mode": "추가 효과",
+        "cond": "자신의 HP 80% 이하 시"
+       },
+       {
+        "k": "action",
+        "what": "이 스킬이 다운 스파이크(으)로 변화",
+        "raw": "어그로 스탠스이(가) 축적 안 된 경우 이 스킬이 다운 스파이크(으)로 변화",
+        "target": "",
+        "mode": "추가 효과",
+        "cond": "어그로 스탠스이(가) 축적 안 된 경우"
+       }
+      ]
+     }
+    ],
+    "stacks": [
+     {
+      "name": "어그로 스탠스",
+      "tag": "",
+      "mp": null,
+      "lines": [
+       "힘 +50",
+       "물리 저항 30% DOWN",
+       "매 턴 종료 시 자신에게 현재 HP 25% 대미지",
+       "최대 축적 수:",
+       "1",
+       "축적 조건: 오펜스 비트 사용 시 1 축적",
+       "추가로 성도 각성하면 다음 성도 스킬을 사용할 수 있습니다"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "stat_flat",
+        "stats": [
+         "힘"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 50.0,
+        "raw": "힘 +50",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "물리 저항"
+        ],
+        "group": "resist",
+        "dir": "DOWN",
+        "value": 30.0,
+        "raw": "물리 저항 30% DOWN",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "cost",
+        "what": "HP",
+        "value": 25.0,
+        "raw": "매 턴 종료 시 자신에게 현재 HP 25% 대미지",
+        "target": "",
+        "mode": "",
+        "cond": "매 턴 종료 시"
+       },
+       {
+        "k": "meta",
+        "what": "최대 축적 수",
+        "detail": "1",
+        "raw": "최대 축적 수: 1",
+        "mode": ""
+       },
+       {
+        "k": "meta",
+        "what": "축적 조건",
+        "detail": "오펜스 비트 사용 시 1 축적",
+        "raw": "축적 조건: 오펜스 비트 사용 시 1 축적",
+        "mode": ""
+       }
+      ]
+     }
+    ],
+    "stellar_skills": [
+     {
+      "name": "루미나 가디언",
+      "tag": "스텔라 버스트 시",
+      "mp": 250,
+      "lines": [
+       "적 전체에 그림자 속성 찌르기 공격으로 선제 공격 2회(극대, 20배)",
+       "자신에게 다음 효과 부여",
+       "수호(2턴)",
+       "효과 턴 수는 루미나 가디언의 스텔라 버스트 시 사용 횟수에 따라 변화",
+       "1회째: 2턴",
+       "2회째: 1턴",
+       "3회째 이후: 턴 종료 시까지"
+      ],
+      "notes": [
+       "※스텔라 보드에서 강화된 상태입니다"
+      ],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "그림자",
+        "atk": "찌르기",
+        "hits": 2,
+        "power": "극대",
+        "mult": 20.0,
+        "preempt": true,
+        "raw": "적 전체에 그림자 속성 찌르기 공격으로 선제 공격 2회(극대, 20배)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "수호",
+        "guess": true,
+        "turns": 2,
+        "raw": "수호(2턴)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "other",
+        "raw": "효과 턴 수는 루미나 가디언의 스텔라 버스트 시 사용 횟수에 따라 변화",
+        "target": "자신",
+        "mode": ""
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,115 @@
+{
+ "id": "hozuki",
+ "source": "news-ap.another-eden.games notice_v2 (ko)",
+ "blocks": [
+  {
+   "notice": 744,
+   "kind": "sa",
+   "who": "호오즈키",
+   "class": "구미호",
+   "sections": {
+    "stellar_skills": [
+     {
+      "name": "호치 - 염일전",
+      "tag": "스텔라 버스트 시",
+      "mp": 76,
+      "lines": [
+       "아군 전방의 「불」 「활」 「창」 특성 인원수에 따라 극 열화진 또는 극 순돌진 전개",
+       "이후 적 전체에 불 속성 찌르기 공격 9회(극대, 30배)",
+       "공격 대상에게 다음 효과 부여",
+       "내구 50% DOWN + 정신 50% DOWN(5턴) + 페인(영구 지속, 대상의 저항 무시)",
+       "자신에게 다음 효과 부여",
+       "후공 행동 + 호시탐탐(5턴) + 금전운 5 축적"
+      ],
+      "notes": [
+       "※스텔라 보드에서 강화된 상태입니다"
+      ],
+      "effects": [
+       {
+        "k": "zone",
+        "what": "극 순돌진 전개",
+        "raw": "아군 전방의 「불」 「활」 「창」 특성 인원수에 따라 극 열화진 또는 극 순돌진 전개",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "attack",
+        "scope": "이후 적 전체",
+        "element": "불",
+        "atk": "찌르기",
+        "hits": 9,
+        "power": "극대",
+        "mult": 30.0,
+        "preempt": false,
+        "raw": "이후 적 전체에 불 속성 찌르기 공격 9회(극대, 30배)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "내구"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 50.0,
+        "raw": "내구 50% DOWN",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "정신"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 50.0,
+        "turns": 5,
+        "raw": "정신 50% DOWN(5턴)",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "ailment",
+        "name": "페인",
+        "perm": true,
+        "ignore_res": true,
+        "raw": "페인(영구 지속, 대상의 저항 무시)",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "후공 행동",
+        "guess": true,
+        "raw": "후공 행동",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "호시탐탐",
+        "guess": true,
+        "turns": 5,
+        "raw": "호시탐탐(5턴)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "stack",
+        "name": "금전운",
+        "value": "5",
+        "op": "축적",
+        "raw": "금전운 5 축적",
+        "target": "자신",
+        "mode": ""
+       }
+      ]
+     }
+    ]
+   },
+   "class_en": "Ninetails Fox"
+  }
+ ]
+}

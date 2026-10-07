@@ -1,0 +1,121 @@
+{
+ "id": "claude",
+ "source": "news-ap.another-eden.games notice_v2 (ko)",
+ "blocks": [
+  {
+   "notice": 716,
+   "kind": "sa",
+   "who": "클로드",
+   "class": "페일너트",
+   "sections": {
+    "stellar_skills": [
+     {
+      "name": "듀온 셀레네",
+      "tag": "스텔라 버스트 시",
+      "mp": 84,
+      "lines": [
+       "적 전체에 바람 속성 찌르기 공격으로 선제 공격(극대) + 어나더 포스 콤보 배율 증가량 UP(2배)",
+       "대상 배리어 관통",
+       "공격 대상에게 다음 효과 부여",
+       "독 + 페인(영구 지속, 대상의 저항 무시) + 브레이크",
+       "+ 저무는 달 5 축적 + 버프 해제",
+       "【추가 효과】",
+       "듀온 축적 수에 따라 저무는 달 축적 수와 위력 증가(최대 7 축적/70배)",
+       "듀온 모두 소비"
+      ],
+      "notes": [
+       "※스텔라 보드에서 강화된 상태입니다"
+      ],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "바람",
+        "atk": "찌르기",
+        "hits": 1,
+        "power": "극대",
+        "mult": null,
+        "preempt": true,
+        "raw": "적 전체에 바람 속성 찌르기 공격으로 선제 공격(극대)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "af",
+        "what": "어나더 포스 콤보 배율 증가량 UP(2배)",
+        "raw": "어나더 포스 콤보 배율 증가량 UP(2배)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "대상 배리어 관통",
+        "raw": "대상 배리어 관통",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "ailment",
+        "name": "독",
+        "raw": "독",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "ailment",
+        "name": "페인",
+        "perm": true,
+        "ignore_res": true,
+        "raw": "페인(영구 지속, 대상의 저항 무시)",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "ailment",
+        "name": "브레이크",
+        "guess": true,
+        "raw": "브레이크",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "stack",
+        "name": "저무는 달",
+        "value": "5",
+        "op": "축적",
+        "raw": "저무는 달 5 축적",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "dispel",
+        "what": "버프 해제",
+        "raw": "버프 해제",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "power",
+        "what": "위력 증가",
+        "detail": "최대 7 축적/70배",
+        "raw": "듀온 축적 수에 따라 저무는 달 축적 수와 위력 증가(최대 7 축적/70배)",
+        "target": "공격 대상",
+        "mode": "추가 효과"
+       },
+       {
+        "k": "stack",
+        "name": "듀온",
+        "value": "모두",
+        "op": "소비",
+        "raw": "듀온 모두 소비",
+        "target": "공격 대상",
+        "mode": "추가 효과"
+       }
+      ]
+     }
+    ]
+   },
+   "class_en": "Armiger"
+  }
+ ]
+}

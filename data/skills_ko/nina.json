@@ -1,0 +1,424 @@
+{
+ "id": "nina",
+ "source": "news-ap.another-eden.games notice_v2 (ko)",
+ "blocks": [
+  {
+   "notice": 676,
+   "kind": "encounter",
+   "who": "니나",
+   "class": "",
+   "sections": {
+    "skills": [
+     {
+      "name": "실비 감옥",
+      "tag": "",
+      "mp": 52,
+      "lines": [
+       "적 전체에 결정 속성 마법 공격으로 선제 공격 5회(극)",
+       "공격 대상에게 다음 효과 부여",
+       "힘 25% DOWN + 지능 25% DOWN + 속도 25% DOWN(3턴, 최고 누적 횟수 3) + 페인(영구 지속, 대상의 저항 무시)",
+       "아군 전체에 다음 효과 부여",
+       "실드(니나의 최대 HP 30%만큼/최대 2000/3턴)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "결정",
+        "atk": "마법",
+        "hits": 5,
+        "power": "극",
+        "mult": null,
+        "preempt": true,
+        "raw": "적 전체에 결정 속성 마법 공격으로 선제 공격 5회(극)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "힘"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 25.0,
+        "raw": "힘 25% DOWN",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "지능"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 25.0,
+        "raw": "지능 25% DOWN",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 25.0,
+        "turns": 3,
+        "max_stack": 3,
+        "raw": "속도 25% DOWN(3턴, 최고 누적 횟수 3)",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "ailment",
+        "name": "페인",
+        "perm": true,
+        "ignore_res": true,
+        "raw": "페인(영구 지속, 대상의 저항 무시)",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "guard",
+        "what": "실드",
+        "detail": "니나의 최대 HP 30%만큼/최대 2000/3턴",
+        "turns": 3,
+        "raw": "실드(니나의 최대 HP 30%만큼/최대 2000/3턴)",
+        "target": "아군 전체",
+        "mode": ""
+       }
+      ]
+     },
+     {
+      "name": "인스피레이션",
+      "tag": "",
+      "mp": 40,
+      "lines": [
+       "아군 전체에 다음 효과 부여",
+       "물리 저항 20% UP + 마법 저항 20% UP + HP 최대치 25% UP(3턴, 최고 누적 횟수 3)",
+       "【추가 효과】",
+       "루나틱 시 코디네이트 연속 실행",
+       "(코디네이트 습득 시 한정)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "stat_pct",
+        "stats": [
+         "물리 저항"
+        ],
+        "group": "resist",
+        "dir": "UP",
+        "value": 20.0,
+        "raw": "물리 저항 20% UP",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "마법 저항"
+        ],
+        "group": "resist",
+        "dir": "UP",
+        "value": 20.0,
+        "raw": "마법 저항 20% UP",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "HP 최대치"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 25.0,
+        "turns": 3,
+        "max_stack": 3,
+        "raw": "HP 최대치 25% UP(3턴, 최고 누적 횟수 3)",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "action",
+        "what": "코디네이트 연속 실행",
+        "raw": "루나틱 시 코디네이트 연속 실행",
+        "target": "아군 전체",
+        "mode": "추가 효과",
+        "cond": "루나틱 시"
+       },
+       {
+        "k": "other",
+        "raw": "(코디네이트 습득 시 한정)",
+        "target": "아군 전체",
+        "mode": "추가 효과"
+       }
+      ]
+     },
+     {
+      "name": "코디네이트",
+      "tag": "",
+      "mp": 46,
+      "lines": [
+       "적 전체에 결정 속성 마법 공격(강)",
+       "아군 전체에 다음 효과 부여",
+       "MP 최대치 50% UP(3턴) + 코디네이트 1 축적"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "결정",
+        "atk": "마법",
+        "hits": 1,
+        "power": "강",
+        "mult": null,
+        "preempt": false,
+        "raw": "적 전체에 결정 속성 마법 공격(강)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "MP 최대치"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 50.0,
+        "turns": 3,
+        "raw": "MP 최대치 50% UP(3턴)",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "stack",
+        "name": "코디네이트",
+        "value": "1",
+        "op": "축적",
+        "raw": "코디네이트 1 축적",
+        "target": "아군 전체",
+        "mode": ""
+       }
+      ]
+     },
+     {
+      "name": "소잉",
+      "tag": "",
+      "mp": 54,
+      "lines": [
+       "적 전체에 결정 속성 마법 공격으로 선제 공격(극)",
+       "공격 대상에게 다음 효과 부여",
+       "모든 속성 저항 25% DOWN(5턴, 최고 누적 횟수 3회)",
+       "【추가 효과】",
+       "아군 전방의 코디네이트 합계 40 축적 시 이치의 재봉(으)로 변화"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "결정",
+        "atk": "마법",
+        "hits": 1,
+        "power": "극",
+        "mult": null,
+        "preempt": true,
+        "raw": "적 전체에 결정 속성 마법 공격으로 선제 공격(극)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "모든 속성 저항"
+        ],
+        "group": "resist",
+        "dir": "DOWN",
+        "value": 25.0,
+        "turns": 5,
+        "max_stack": 3,
+        "raw": "모든 속성 저항 25% DOWN(5턴, 최고 누적 횟수 3회)",
+        "target": "공격 대상",
+        "mode": ""
+       },
+       {
+        "k": "action",
+        "what": "이치의 재봉(으)로 변화",
+        "raw": "아군 전방의 코디네이트 합계 40 축적 시 이치의 재봉(으)로 변화",
+        "target": "공격 대상",
+        "mode": "추가 효과",
+        "cond": "아군 전방의 코디네이트 합계 40 축적 시"
+       }
+      ]
+     },
+     {
+      "name": "이치의 재봉",
+      "tag": "",
+      "mp": 54,
+      "lines": [
+       "적 전체에 결정 속성 마법 공격으로 선제 공격(극)",
+       "공격 대상에게 턴 종료 시까지 약점 간파(결정) 부여",
+       "아군 전체에 다음 효과 부여",
+       "모든 무기 종류 장착자 대미지 100% UP + 정신 통일 + 심기일체 + 하극상(1턴)",
+       "코디네이트 모두 소비",
+       "추가로 성도 각성하면 다음 성도 스킬을 사용할 수 있습니다"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "결정",
+        "atk": "마법",
+        "hits": 1,
+        "power": "극",
+        "mult": null,
+        "preempt": true,
+        "raw": "적 전체에 결정 속성 마법 공격으로 선제 공격(극)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "ailment",
+        "name": "약점 간파(결정)",
+        "guess": true,
+        "until_turn_end": true,
+        "scope": "공격 대상",
+        "raw": "공격 대상에게 턴 종료 시까지 약점 간파(결정) 부여",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "dmg",
+        "what": "모든 무기 종류 장착자 대미지",
+        "value": 100.0,
+        "dir": "UP",
+        "raw": "모든 무기 종류 장착자 대미지 100% UP",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "정신 통일",
+        "raw": "정신 통일",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "심기일체",
+        "raw": "심기일체",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "하극상",
+        "turns": 1,
+        "raw": "하극상(1턴)",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "stack",
+        "name": "코디네이트",
+        "value": "모두",
+        "op": "소비",
+        "raw": "코디네이트 모두 소비",
+        "target": "아군 전체",
+        "mode": ""
+       }
+      ]
+     }
+    ],
+    "stellar_skills": [
+     {
+      "name": "드리미 스티치",
+      "tag": "스텔라 버스트 시",
+      "mp": 48,
+      "lines": [
+       "선제로 극 휘정진 전개",
+       "적 전체에 결정 속성 마법 공격 4회(극대, 10배)",
+       "자신에게 다음 효과 부여",
+       "루나틱",
+       "(3턴)",
+       "아군 전체에 다음 효과 부여",
+       "결정 속성 공격 50% UP(3턴, 최고 누적 횟수 3)",
+       "대미지 50% 감소 배리어(3회)"
+      ],
+      "notes": [
+       "※스텔라 보드에서 강화된 상태입니다"
+      ],
+      "effects": [
+       {
+        "k": "zone",
+        "what": "극 휘정진 전개",
+        "raw": "선제로 극 휘정진 전개",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "결정",
+        "atk": "마법",
+        "hits": 4,
+        "power": "극대",
+        "mult": 10.0,
+        "preempt": false,
+        "raw": "적 전체에 결정 속성 마법 공격 4회(극대, 10배)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "루나틱",
+        "raw": "루나틱",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "meta",
+        "what": "지속",
+        "turns": 3,
+        "raw": "(3턴)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "결정 속성 공격"
+        ],
+        "group": "elem_atk",
+        "dir": "UP",
+        "value": 50.0,
+        "turns": 3,
+        "max_stack": 3,
+        "raw": "결정 속성 공격 50% UP(3턴, 최고 누적 횟수 3)",
+        "target": "아군 전체",
+        "mode": ""
+       },
+       {
+        "k": "guard",
+        "what": "배리어",
+        "value": 50.0,
+        "times": 3,
+        "raw": "대미지 50% 감소 배리어(3회)",
+        "target": "아군 전체",
+        "mode": ""
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

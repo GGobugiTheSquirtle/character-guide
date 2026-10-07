@@ -1,0 +1,428 @@
+{
+ "id": "black_clad_sw_as",
+ "source": "news-ap.another-eden.games notice_v2 (ko)",
+ "blocks": [
+  {
+   "notice": 655,
+   "kind": "encounter",
+   "who": "검은 옷의 칼잡이 AS",
+   "class": "",
+   "sections": {
+    "skills": [
+     {
+      "name": "루나틱+",
+      "tag": "일반 공격 변화",
+      "mp": null,
+      "lines": [
+       "선제로 루나틱 발동(5턴) + 자신에게 결사 부여(5턴)",
+       "ZONE 각성 실행",
+       "전투 중 한 번만 발동 가능",
+       "【추가 효과】",
+       "각음진 전개 시 각성 강화: 절 각음진"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "action",
+        "what": "선제로 루나틱 발동",
+        "turns": 5,
+        "raw": "선제로 루나틱 발동(5턴)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "결사",
+        "guess": true,
+        "turns": 5,
+        "scope": "자신",
+        "raw": "자신에게 결사 부여(5턴)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "zone",
+        "what": "ZONE 각성 실행",
+        "raw": "ZONE 각성 실행",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "meta",
+        "what": "전투 중 1회",
+        "raw": "전투 중 한 번만 발동 가능",
+        "mode": ""
+       },
+       {
+        "k": "zone",
+        "what": "각성 강화: 절 각음진",
+        "raw": "각음진 전개 시 각성 강화: 절 각음진",
+        "target": "",
+        "mode": "추가 효과",
+        "cond": "각음진 전개 시"
+       }
+      ]
+     },
+     {
+      "name": "아라네아 레가토",
+      "tag": "",
+      "mp": 105,
+      "lines": [
+       "적 전체에 그림자 속성 베기 공격으로 선제 공격 2회(극)",
+       "각음진 전개",
+       "자신에게 다음 효과 부여",
+       "암영 상태로 변화(턴 종료 시까지)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "그림자",
+        "atk": "베기",
+        "hits": 2,
+        "power": "극",
+        "mult": null,
+        "preempt": true,
+        "raw": "적 전체에 그림자 속성 베기 공격으로 선제 공격 2회(극)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "zone",
+        "what": "각음진 전개",
+        "raw": "각음진 전개",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "action",
+        "what": "암영 상태로 변화",
+        "until_turn_end": true,
+        "raw": "암영 상태로 변화(턴 종료 시까지)",
+        "target": "자신",
+        "mode": ""
+       }
+      ]
+     },
+     {
+      "name": "샴발라",
+      "tag": "",
+      "mp": 34,
+      "lines": [
+       "적 하나에 그림자 속성 베기 공격 5회(극, 15배)",
+       "연속 사용 시 위력 UP(최대 3회/2배)",
+       "자신에게 다음 효과 부여",
+       "속도 40% UP(1턴, 최고 누적 횟수 3)",
+       "물리 저항 40% DOWN + 마법 저항 40% DOWN(1턴, 최고 누적 횟수 3)",
+       "아군 전체에 다음 효과 부여",
+       "크리티컬 대미지 50% UP(3턴)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 하나",
+        "element": "그림자",
+        "atk": "베기",
+        "hits": 5,
+        "power": "극",
+        "mult": 15.0,
+        "preempt": false,
+        "raw": "적 하나에 그림자 속성 베기 공격 5회(극, 15배)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "위력"
+        ],
+        "group": "etc",
+        "dir": "UP",
+        "value": null,
+        "basis": "",
+        "max": true,
+        "times": 3,
+        "raw": "연속 사용 시 위력 UP(최대 3회/2배)",
+        "target": "",
+        "mode": "",
+        "cond": "연속 사용 시"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 40.0,
+        "turns": 1,
+        "max_stack": 3,
+        "raw": "속도 40% UP(1턴, 최고 누적 횟수 3)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "물리 저항"
+        ],
+        "group": "resist",
+        "dir": "DOWN",
+        "value": 40.0,
+        "raw": "물리 저항 40% DOWN",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "마법 저항"
+        ],
+        "group": "resist",
+        "dir": "DOWN",
+        "value": 40.0,
+        "turns": 1,
+        "max_stack": 3,
+        "raw": "마법 저항 40% DOWN(1턴, 최고 누적 횟수 3)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "dmg",
+        "what": "크리티컬 대미지",
+        "value": 50.0,
+        "dir": "UP",
+        "turns": 3,
+        "raw": "크리티컬 대미지 50% UP(3턴)",
+        "target": "아군 전체",
+        "mode": ""
+       }
+      ]
+     }
+    ],
+    "stacks": [
+     {
+      "lines": [
+       "암영"
+      ],
+      "effects": [
+       {
+        "k": "buff",
+        "name": "암영",
+        "guess": true,
+        "raw": "암영",
+        "target": "",
+        "mode": ""
+       }
+      ]
+     },
+     {
+      "lines": [
+       "속도 50% UP"
+      ],
+      "effects": [
+       {
+        "k": "stat_pct",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 50.0,
+        "raw": "속도 50% UP",
+        "target": "",
+        "mode": ""
+       }
+      ]
+     },
+     {
+      "lines": [
+       "대미지를 일정 확률로 회피"
+      ],
+      "effects": [
+       {
+        "k": "buff",
+        "name": "대미지를 일정 확률로 회피",
+        "guess": true,
+        "raw": "대미지를 일정 확률로 회피",
+        "target": "",
+        "mode": ""
+       }
+      ]
+     },
+     {
+      "lines": [
+       "적과의 속도 차이에 따라 회피율 증가(최대 90%)"
+      ],
+      "effects": [
+       {
+        "k": "stat_pct",
+        "stats": [
+         "회피율"
+        ],
+        "group": "etc",
+        "dir": "UP",
+        "value": 90.0,
+        "basis": "적과의 속도 차이에 따라",
+        "max": true,
+        "raw": "적과의 속도 차이에 따라 회피율 증가(최대 90%)",
+        "target": "",
+        "mode": ""
+       }
+      ]
+     },
+     {
+      "lines": [
+       "추가로 턴 종료 시"
+      ],
+      "effects": [
+       {
+        "k": "other",
+        "raw": "추가로 턴 종료 시",
+        "target": "",
+        "mode": ""
+       }
+      ]
+     },
+     {
+      "lines": [
+       "적 전체에 그림자 속성 베기 공격 2회(극, 25배)+ 그림자 속성 저항 50% DOWN(5턴) 실행"
+      ],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "그림자",
+        "atk": "베기",
+        "hits": 2,
+        "power": "극",
+        "mult": 25.0,
+        "preempt": false,
+        "raw": "적 전체에 그림자 속성 베기 공격 2회(극, 25배)+ 그림자 속성 저항 50% DOWN(5턴) 실행",
+        "target": "",
+        "mode": ""
+       }
+      ]
+     },
+     {
+      "lines": [
+       "추가로 성도 각성하면 다음 성도 스킬을 사용할 수 있습니다"
+      ],
+      "effects": []
+     }
+    ],
+    "stellar_skills": [
+     {
+      "name": "안단테",
+      "tag": "스텔라 버스트 시",
+      "mp": 93,
+      "lines": [
+       "자신에게 다음 효과 부여",
+       "심기일체(5턴)",
+       "이후 랜덤 적에 그림자 속성 베기 공격 3회(극대, 10배)",
+       "【추가 효과】",
+       "공명",
+       "축적 수에 따라 추가 공격 발생",
+       "축적 수가 3 이상일 경우 랜덤 적에 그림자 속성 베기 공격 3회(극대, 10배)",
+       "축적 수가 6 이상일 경우 랜덤 적에 그림자 속성 베기 공격 5회(극대, 10배)",
+       "축적 수가 10일 경우 적 전체에 그림자 속성 베기 공격(극대, 20배) + 턴 종료 시까지 약점 간파(그림자) 부여"
+      ],
+      "notes": [
+       "※스텔라 보드에서 강화된 상태입니다"
+      ],
+      "effects": [
+       {
+        "k": "buff",
+        "name": "심기일체",
+        "turns": 5,
+        "raw": "심기일체(5턴)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "attack",
+        "scope": "이후 랜덤 적",
+        "element": "그림자",
+        "atk": "베기",
+        "hits": 3,
+        "power": "극대",
+        "mult": 10.0,
+        "preempt": false,
+        "raw": "이후 랜덤 적에 그림자 속성 베기 공격 3회(극대, 10배)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "공명",
+        "raw": "공명",
+        "target": "자신",
+        "mode": "추가 효과"
+       },
+       {
+        "k": "other",
+        "raw": "축적 수에 따라 추가 공격 발생",
+        "target": "자신",
+        "mode": "추가 효과"
+       },
+       {
+        "k": "attack",
+        "scope": "랜덤 적",
+        "element": "그림자",
+        "atk": "베기",
+        "hits": 3,
+        "power": "극대",
+        "mult": 10.0,
+        "preempt": false,
+        "raw": "축적 수가 3 이상일 경우 랜덤 적에 그림자 속성 베기 공격 3회(극대, 10배)",
+        "target": "자신",
+        "mode": "추가 효과",
+        "cond": "축적 수가 3 이상일 경우"
+       },
+       {
+        "k": "attack",
+        "scope": "랜덤 적",
+        "element": "그림자",
+        "atk": "베기",
+        "hits": 5,
+        "power": "극대",
+        "mult": 10.0,
+        "preempt": false,
+        "raw": "축적 수가 6 이상일 경우 랜덤 적에 그림자 속성 베기 공격 5회(극대, 10배)",
+        "target": "자신",
+        "mode": "추가 효과",
+        "cond": "축적 수가 6 이상일 경우"
+       },
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "그림자",
+        "atk": "베기",
+        "hits": 1,
+        "power": "극대",
+        "mult": 20.0,
+        "preempt": false,
+        "raw": "축적 수가 10일 경우 적 전체에 그림자 속성 베기 공격(극대, 20배)",
+        "target": "자신",
+        "mode": "추가 효과",
+        "cond": "축적 수가 10일 경우"
+       },
+       {
+        "k": "buff",
+        "name": "약점 간파(그림자)",
+        "guess": true,
+        "until_turn_end": true,
+        "raw": "턴 종료 시까지 약점 간파(그림자) 부여",
+        "target": "자신",
+        "mode": "추가 효과",
+        "cond": "축적 수가 10일 경우"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

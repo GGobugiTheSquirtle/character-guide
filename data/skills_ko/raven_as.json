@@ -1,0 +1,362 @@
+{
+ "id": "raven_as",
+ "source": "news-ap.another-eden.games notice_v2 (ko)",
+ "blocks": [
+  {
+   "notice": 649,
+   "kind": "encounter",
+   "who": "레이븐AS",
+   "class": "",
+   "sections": {
+    "skills": [
+     {
+      "name": "절망의 날개",
+      "tag": "일반 공격 변화",
+      "mp": null,
+      "lines": [
+       "절망의 날개 상태로 변화",
+       "절망의 날개 상태가 해제된 후 3턴간 재사용 불가"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "action",
+        "what": "절망의 날개 상태로 변화",
+        "raw": "절망의 날개 상태로 변화",
+        "target": "",
+        "mode": ""
+       }
+      ]
+     },
+     {
+      "name": "스펙트럼 제로",
+      "tag": "",
+      "mp": 44,
+      "lines": [
+       "적 전체에 땅 속성 마법 공격 3회(극)",
+       "HP를 최대치의 30% 소비하고 소비량에 따라 위력 증가(최대 3배)",
+       "【추가 효과】",
+       "절망의 날개 상태 시 자신의 HP 소비량이 99%로 증가, 공격 횟수가 9회로 증가, 최대 위력이 40배로 증가 + 절망의 날개 상태 해제"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "땅",
+        "atk": "마법",
+        "hits": 3,
+        "power": "극",
+        "mult": null,
+        "preempt": false,
+        "raw": "적 전체에 땅 속성 마법 공격 3회(극)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "power",
+        "what": "위력 증가",
+        "detail": "최대 3배",
+        "raw": "HP를 최대치의 30% 소비하고 소비량에 따라 위력 증가(최대 3배)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "power",
+        "what": "위력이 40배",
+        "detail": "로 증가",
+        "raw": "절망의 날개 상태 시 자신의 HP 소비량이 99%로 증가, 공격 횟수가 9회로 증가, 최대 위력이 40배로 증가",
+        "target": "",
+        "mode": "추가 효과",
+        "cond": "절망의 날개 상태 시"
+       },
+       {
+        "k": "dispel",
+        "what": "절망의 날개 상태 해제",
+        "raw": "절망의 날개 상태 해제",
+        "target": "",
+        "mode": "추가 효과",
+        "cond": "절망의 날개 상태 시"
+       }
+      ]
+     },
+     {
+      "name": "소울 스틸",
+      "tag": "",
+      "mp": 0,
+      "lines": [
+       "적 전체에 땅 속성 마법 공격 2회(극)",
+       "자신에게 다음 효과 부여",
+       "MP 회복 20%",
+       "【추가 효과】",
+       "절망의 날개 상태 시 자신의 MP를 회복하지 않음 + 위력 증가(10배) + 자신의 HP 회복 + 재공격 실행"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "땅",
+        "atk": "마법",
+        "hits": 2,
+        "power": "극",
+        "mult": null,
+        "preempt": false,
+        "raw": "적 전체에 땅 속성 마법 공격 2회(극)",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "heal",
+        "what": "MP",
+        "value": 20.0,
+        "flat": false,
+        "raw": "MP 회복 20%",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "자신의 MP를 회복하지 않음",
+        "guess": true,
+        "raw": "절망의 날개 상태 시 자신의 MP를 회복하지 않음",
+        "target": "자신",
+        "mode": "추가 효과",
+        "cond": "절망의 날개 상태 시"
+       },
+       {
+        "k": "power",
+        "what": "위력 증가",
+        "detail": "10배",
+        "raw": "위력 증가(10배)",
+        "target": "자신",
+        "mode": "추가 효과",
+        "cond": "절망의 날개 상태 시"
+       },
+       {
+        "k": "heal",
+        "what": "자신의 HP 회복",
+        "raw": "자신의 HP 회복",
+        "target": "자신",
+        "mode": "추가 효과",
+        "cond": "절망의 날개 상태 시"
+       },
+       {
+        "k": "action",
+        "what": "재공격 실행",
+        "raw": "재공격 실행",
+        "target": "자신",
+        "mode": "추가 효과",
+        "cond": "절망의 날개 상태 시"
+       }
+      ]
+     }
+    ],
+    "stacks": [
+     {
+      "lines": [
+       "절망의 날개"
+      ],
+      "effects": [
+       {
+        "k": "buff",
+        "name": "절망의 날개",
+        "guess": true,
+        "raw": "절망의 날개",
+        "target": "",
+        "mode": ""
+       }
+      ]
+     },
+     {
+      "lines": [
+       "지능 100% UP + MP 최대치 1000 UP + MP 회복 100% + 스킬 위력 1.3배 + 물리, 마법 저항 80% UP"
+      ],
+      "effects": [
+       {
+        "k": "stat_pct",
+        "stats": [
+         "지능"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 100.0,
+        "raw": "지능 100% UP",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "stat_flat",
+        "stats": [
+         "MP 최대치"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 1000.0,
+        "basis": "",
+        "cap": "",
+        "raw": "MP 최대치 1000 UP",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "heal",
+        "what": "MP",
+        "value": 100.0,
+        "flat": false,
+        "raw": "MP 회복 100%",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "power",
+        "what": "스킬 위력",
+        "detail": "1.3배",
+        "raw": "스킬 위력 1.3배",
+        "target": "",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "물리",
+         "마법 저항"
+        ],
+        "group": "etc",
+        "dir": "UP",
+        "value": 80.0,
+        "raw": "물리, 마법 저항 80% UP",
+        "target": "",
+        "mode": ""
+       }
+      ]
+     },
+     {
+      "lines": [
+       "효과 발동 중 턴 종료 시 MP 소비(최대치 30%)"
+      ],
+      "effects": [
+       {
+        "k": "other",
+        "raw": "효과 발동 중 턴 종료 시 MP 소비(최대치 30%)",
+        "target": "",
+        "mode": ""
+       }
+      ]
+     },
+     {
+      "lines": [
+       "MP가 0이 된 턴 종료 시 「절망의 날개」 상태 해제"
+      ],
+      "effects": [
+       {
+        "k": "dispel",
+        "what": "「절망의 날개」 상태 해제",
+        "raw": "MP가 0이 된 턴 종료 시 「절망의 날개」 상태 해제",
+        "target": "",
+        "mode": "",
+        "cond": "MP가 0이 된 턴 종료 시"
+       }
+      ]
+     },
+     {
+      "lines": [
+       "추가로 성도 각성하면 다음 성도 스킬을 사용할 수 있습니다"
+      ],
+      "effects": []
+     }
+    ],
+    "stellar_skills": [
+     {
+      "name": "오아지안",
+      "tag": "스텔라 버스트 시",
+      "mp": 39,
+      "lines": [
+       "자신에게 다음 효과 부여",
+       "MP 회복 100%",
+       "마법 크리티컬율 100% UP + 정신 통일 + 연계(10턴)",
+       "【추가 효과】",
+       "ANOTHER ZONE 미전개 시 극 지열진 전개",
+       "【연계 효과】",
+       "공격 시 땅 속성 마법 공격(극, 2배)",
+       "공격 대상에게 다음 효과 부여",
+       "땅 속성 저항 30% DOWN(3턴, 최고 누적 횟수 5)"
+      ],
+      "notes": [
+       "※스텔라 보드에서 강화된 상태입니다"
+      ],
+      "effects": [
+       {
+        "k": "heal",
+        "what": "MP",
+        "value": 100.0,
+        "flat": false,
+        "raw": "MP 회복 100%",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "마법 크리티컬율"
+        ],
+        "group": "crit",
+        "dir": "UP",
+        "value": 100.0,
+        "raw": "마법 크리티컬율 100% UP",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "정신 통일",
+        "raw": "정신 통일",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "연계",
+        "turns": 10,
+        "raw": "연계(10턴)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "zone",
+        "what": "극 지열진 전개",
+        "raw": "ANOTHER ZONE 미전개 시 극 지열진 전개",
+        "target": "자신",
+        "mode": "추가 효과",
+        "cond": "ANOTHER ZONE 미전개 시"
+       },
+       {
+        "k": "buff",
+        "name": "땅 속성 마법 공격(극, 2배)",
+        "guess": true,
+        "raw": "공격 시 땅 속성 마법 공격(극, 2배)",
+        "target": "자신",
+        "mode": "연계 효과",
+        "cond": "공격 시"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "땅 속성 저항"
+        ],
+        "group": "resist",
+        "dir": "DOWN",
+        "value": 30.0,
+        "turns": 3,
+        "max_stack": 5,
+        "raw": "땅 속성 저항 30% DOWN(3턴, 최고 누적 횟수 5)",
+        "target": "공격 대상",
+        "mode": "연계 효과"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

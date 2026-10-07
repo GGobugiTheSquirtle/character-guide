@@ -1,0 +1,69 @@
+{
+ "id": "lokido",
+ "source": "news-ap.another-eden.games notice_v2 (ko)",
+ "blocks": [
+  {
+   "notice": 661,
+   "kind": "sa",
+   "who": "로키드",
+   "class": "티탄",
+   "sections": {
+    "stellar_skills": [
+     {
+      "name": "연천 귀수권",
+      "tag": "스텔라 버스트 시",
+      "mp": 119,
+      "lines": [
+       "자신에게 다음 효과 부여",
+       "귀수 상태로 변화(영구 지속) + 심기일체(3턴)",
+       "이후 적 전체에 땅 속성 타격 공격(극대, 60배)",
+       "대상 배리어 관통"
+      ],
+      "notes": [
+       "※스텔라 보드에서 강화된 상태입니다"
+      ],
+      "effects": [
+       {
+        "k": "action",
+        "what": "귀수 상태로 변화",
+        "perm": true,
+        "raw": "귀수 상태로 변화(영구 지속)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "심기일체",
+        "turns": 3,
+        "raw": "심기일체(3턴)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "attack",
+        "scope": "이후 적 전체",
+        "element": "땅",
+        "atk": "타격",
+        "hits": 1,
+        "power": "극대",
+        "mult": 60.0,
+        "preempt": false,
+        "raw": "이후 적 전체에 땅 속성 타격 공격(극대, 60배)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "대상 배리어 관통",
+        "raw": "대상 배리어 관통",
+        "target": "자신",
+        "mode": ""
+       }
+      ]
+     }
+    ]
+   },
+   "class_en": "Titan"
+  }
+ ]
+}

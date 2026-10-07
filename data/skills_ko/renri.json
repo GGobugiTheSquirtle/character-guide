@@ -1,0 +1,83 @@
+{
+ "id": "renri",
+ "source": "news-ap.another-eden.games notice_v2 (ko)",
+ "blocks": [
+  {
+   "notice": 639,
+   "kind": "sa",
+   "who": "렌리",
+   "class": "인스펙터",
+   "sections": {
+    "stellar_skills": [
+     {
+      "name": "엔포스먼트",
+      "tag": "스텔라 버스트 시",
+      "mp": 85,
+      "lines": [
+       "자신에게 다음 효과 부여",
+       "심기일체 + 오버 크리티컬(3턴) + 크리티컬율 300% UP(5회 행동)",
+       "이후 적 하나에 베기 공격(극대, 50배)",
+       "공격 대상에게 다음 효과 부여",
+       "버프 리버설(3턴)"
+      ],
+      "notes": [
+       "※스텔라 보드에서 강화된 상태입니다"
+      ],
+      "effects": [
+       {
+        "k": "buff",
+        "name": "심기일체",
+        "raw": "심기일체",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "오버 크리티컬",
+        "turns": 3,
+        "raw": "오버 크리티컬(3턴)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "크리티컬율"
+        ],
+        "group": "crit",
+        "dir": "UP",
+        "value": 300.0,
+        "actions": 5,
+        "raw": "크리티컬율 300% UP(5회 행동)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "attack",
+        "scope": "이후 적 하나",
+        "element": "",
+        "atk": "베기",
+        "hits": 1,
+        "power": "극대",
+        "mult": 50.0,
+        "preempt": false,
+        "raw": "이후 적 하나에 베기 공격(극대, 50배)",
+        "target": "자신",
+        "mode": ""
+       },
+       {
+        "k": "buff",
+        "name": "버프 리버설",
+        "turns": 3,
+        "raw": "버프 리버설(3턴)",
+        "target": "공격 대상",
+        "mode": ""
+       }
+      ]
+     }
+    ]
+   },
+   "class_en": "Inspector"
+  }
+ ]
+}

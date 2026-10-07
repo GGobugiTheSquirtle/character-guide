@@ -1,0 +1,70 @@
+{
+ "id": "anabel",
+ "source": "news-ap.another-eden.games notice_v2 (ko)",
+ "blocks": [
+  {
+   "notice": 676,
+   "kind": "sa",
+   "who": "아나벨",
+   "class": "성기사",
+   "sections": {
+    "stellar_skills": [
+     {
+      "name": "이지스 분",
+      "tag": "스텔라 버스트 시",
+      "mp": 50,
+      "lines": [
+       "선제로 자신에게 다음 효과 부여",
+       "수세 + 크리티컬 가드(턴 종료 시까지)",
+       "대미지 90% 감소 배리어(1턴)",
+       "가디언 소울, 엘리먼트 월 연속 실행"
+      ],
+      "notes": [
+       "※스텔라 보드에서 강화된 상태입니다"
+      ],
+      "effects": [
+       {
+        "k": "buff",
+        "name": "수세",
+        "guess": true,
+        "raw": "수세",
+        "target": "자신",
+        "mode": "",
+        "preempt": true
+       },
+       {
+        "k": "buff",
+        "name": "크리티컬 가드",
+        "guess": true,
+        "until_turn_end": true,
+        "raw": "크리티컬 가드(턴 종료 시까지)",
+        "target": "자신",
+        "mode": "",
+        "preempt": true
+       },
+       {
+        "k": "guard",
+        "what": "배리어",
+        "value": 90.0,
+        "turns": 1,
+        "raw": "대미지 90% 감소 배리어(1턴)",
+        "target": "자신",
+        "mode": "",
+        "preempt": true
+       },
+       {
+        "k": "action",
+        "what": "가디언 소울, 엘리먼트 월 연속 실행",
+        "raw": "가디언 소울, 엘리먼트 월 연속 실행",
+        "target": "자신",
+        "mode": "",
+        "preempt": true
+       }
+      ]
+     }
+    ]
+   },
+   "class_en": "Paladin"
+  }
+ ]
+}

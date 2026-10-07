@@ -416,7 +416,7 @@
         "target": "아군 전체",
         "mode": "추가 효과",
         "cond": "절 수천진 전개 시",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "사용 시",
         "tc": "아군 전체"
        },
@@ -485,7 +485,7 @@
         "raw": "공명",
         "target": "",
         "mode": "",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "사용 시"
        },
        {
@@ -564,7 +564,7 @@
         "target": "",
         "mode": "",
         "cond": "전방에서 턴 종료 시",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "턴 종료"
        }
       ]
@@ -725,7 +725,7 @@
         "raw": "『공명』",
         "target": "",
         "mode": "",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "상시·조건"
        },
        {
@@ -1147,7 +1147,7 @@
         "target": "",
         "mode": "",
         "r": "surv_buff",
-        "tm": "턴 종료",
+        "tm": "스텔라 버스트",
         "tc": "아군 전체"
        },
        {

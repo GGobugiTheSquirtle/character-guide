@@ -28,7 +28,7 @@
         "raw": "공명",
         "target": "",
         "mode": "",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "사용 시"
        },
        {
@@ -107,7 +107,7 @@
         "raw": "공명",
         "target": "",
         "mode": "",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "사용 시"
        },
        {

@@ -91,7 +91,7 @@
         "target": "적 전체",
         "mode": "추가 효과",
         "preempt": true,
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "사용 시",
         "tc": "적 전체"
        },
@@ -128,7 +128,7 @@
         "target": "적 전체",
         "mode": "추가 효과",
         "preempt": true,
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "사용 시",
         "tc": "적 전체"
        },
@@ -177,7 +177,7 @@
         "target": "적 전체",
         "mode": "",
         "r": "atk_debuff",
-        "tm": "턴 종료",
+        "tm": "사용 시",
         "tc": "적 전체"
        },
        {
@@ -207,7 +207,7 @@
         "mode": "추가 효과",
         "cond": "자신에게 데도메나 축적 시",
         "r": "resource",
-        "tm": "턴 종료",
+        "tm": "사용 시",
         "tc": "아군 전체"
        },
        {
@@ -220,7 +220,7 @@
         "mode": "추가 효과",
         "cond": "약점 시",
         "r": "atk_buff",
-        "tm": "턴 종료",
+        "tm": "사용 시",
         "tc": "아군 전체"
        }
       ],
@@ -290,7 +290,7 @@
         "raw": "공명",
         "target": "",
         "mode": "",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "상시·조건"
        },
        {
@@ -373,7 +373,7 @@
         "raw": "공명",
         "target": "",
         "mode": "",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "상시·조건"
        },
        {

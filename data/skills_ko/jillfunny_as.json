@@ -446,7 +446,7 @@
         "target": "자신",
         "mode": "추가 효과",
         "cond": "수천진 전개 시",
-        "r": "state_unknown",
+        "r": "atk_state",
         "tm": "사용 시",
         "tc": "자신"
        },

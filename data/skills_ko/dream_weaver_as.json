@@ -120,7 +120,7 @@
         "raw": "공명",
         "target": "",
         "mode": "",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "사용 시"
        },
        {
@@ -466,7 +466,7 @@
         "raw": "페인(영구 지속, 대상의 저항 무시)",
         "target": "공격 대상",
         "mode": "",
-        "r": "state_unknown",
+        "r": "atk_debuff",
         "tm": "사용 시",
         "tc": "적 하나"
        },
@@ -493,7 +493,7 @@
         "raw": "공명",
         "target": "자신",
         "mode": "추가 효과",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "사용 시",
         "tc": "자신"
        },

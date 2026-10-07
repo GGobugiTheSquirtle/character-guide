@@ -63,7 +63,7 @@
         "raw": "요격(5턴)",
         "target": "자신",
         "mode": "",
-        "r": "state_unknown",
+        "r": "atk_state",
         "tm": "사용 시",
         "tc": "자신"
        },

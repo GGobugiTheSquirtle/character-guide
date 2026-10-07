@@ -57,7 +57,7 @@
         "raw": "공명",
         "target": "자신",
         "mode": "",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "사용 시",
         "tc": "자신"
        },
@@ -411,7 +411,7 @@
         "target": "",
         "mode": "",
         "cond": "전방에서 턴 종료 시",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "턴 종료"
        }
       ]
@@ -493,7 +493,7 @@
         "raw": "『공명",
         "target": "",
         "mode": "",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "상시·조건"
        }
       ]
@@ -660,7 +660,7 @@
         "raw": "공명",
         "target": "",
         "mode": "",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "상시·조건"
        },
        {
@@ -773,7 +773,7 @@
         "target": "자신",
         "mode": "",
         "r": "meta",
-        "tm": "턴 종료",
+        "tm": "사용 시",
         "tc": "자신"
        },
        {
@@ -809,7 +809,7 @@
         "target": "자신",
         "mode": "",
         "cond": "모든 공격 종료 시",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "사용 시",
         "tc": "자신"
        },
@@ -831,7 +831,7 @@
         "raw": "공명",
         "target": "자신",
         "mode": "추가 효과",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "사용 시",
         "tc": "자신"
        },
@@ -855,7 +855,7 @@
         "target": "자신",
         "mode": "추가 효과",
         "cond": "전방에서 전투 시작 시",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "전투 시작",
         "tc": "자신"
        },
@@ -934,7 +934,7 @@
         "raw": "페인 부여(영구 지속, 대상의 저항 무시)",
         "target": "자신",
         "mode": "추가 효과",
-        "r": "state_unknown",
+        "r": "atk_debuff",
         "tm": "사용 시",
         "tc": "자신"
        },
@@ -950,7 +950,7 @@
         "target": "자신",
         "mode": "추가 효과",
         "r": "other",
-        "tm": "턴 종료",
+        "tm": "사용 시",
         "tc": "자신"
        }
       ],

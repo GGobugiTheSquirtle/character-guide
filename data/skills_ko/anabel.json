@@ -45,7 +45,7 @@
         "mode": "",
         "preempt": true,
         "r": "surv_state",
-        "tm": "턴 종료",
+        "tm": "사용 시",
         "tc": "자신"
        },
        {

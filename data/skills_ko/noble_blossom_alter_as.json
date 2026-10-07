@@ -75,7 +75,7 @@
         "raw": "공명",
         "target": "자신",
         "mode": "",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "사용 시",
         "tc": "자신"
        },
@@ -188,7 +188,7 @@
         "raw": "요격(5턴)",
         "target": "자신",
         "mode": "",
-        "r": "state_unknown",
+        "r": "atk_state",
         "tm": "사용 시",
         "tc": "자신"
        },
@@ -404,7 +404,7 @@
         "target": "",
         "mode": "",
         "cond": "전방에서 턴 종료 시",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "턴 종료"
        }
       ]
@@ -489,7 +489,7 @@
         "raw": "『공명』",
         "target": "",
         "mode": "",
-        "r": "state_unknown",
+        "r": "resource",
         "tm": "상시·조건"
        },
        {
@@ -773,7 +773,7 @@
         "target": "공격 대상",
         "mode": "",
         "r": "atk_debuff",
-        "tm": "턴 종료",
+        "tm": "사용 시",
         "tc": "적 하나"
        },
        {

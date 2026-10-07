@@ -123,7 +123,7 @@
     if (!atk || !atk.mult) return null;
     const ag = allyGroups(members, m, opt), eg = enemyGroups(members, opt);
     const aff = affinityOf(opt.enemy, atk);
-    const eq = equipFor([m.weapon, m.armor, ...(m.grasta || [])], atk, { ...opt, _weak: aff === "weak" });
+    const eq = equipFor([m.weapon, m.armor, ...(m.grasta || []), ...(m.badges || [])], atk, { ...opt, _weak: aff === "weak" });
     const st = { ...m.stats };
     for (const [k, v] of Object.entries(eq.stats)) st[k] = (st[k] || 0) + v;
     const magic = atk.dep === "magic" || atk.dep === "magicpwr";

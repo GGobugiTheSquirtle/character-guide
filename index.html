@@ -1323,10 +1323,13 @@ STATE.calc.m = STATE.calc.m || {};
 function saveCalc() { try { localStorage.setItem('cg-calc', JSON.stringify(STATE.calc)); } catch {} }
 async function loadCalcDb() {
   if (!STATE.calcDb) {
-    const names = ["chars", "weapons", "grasta", "zones", "enemies"];
+    const names = ["chars", "weapons", "grasta", "badges", "zones", "enemies"];
     const parts = await Promise.all(names.map(n => fetch(`data/calc/${n}.json`).then(r => r.json())));
     STATE.calcDb = Object.fromEntries(names.map((n, i) => [n, parts[i]]));
     STATE.calcDb.atkGrasta = STATE.calcDb.grasta.filter(g => (g.calc || []).length);
+    // 배지 — 계산에 닿는 것만(고정 스탯 · 대미지 · 크리). 무작위 배지 최대치가 위로
+    STATE.calcDb.calcBadges = STATE.calcDb.badges.filter(b => Object.keys(b.stats || {}).length || (b.calc || []).length)
+      .sort((a, b) => (b.kind === "random") - (a.kind === "random"));
   }
   return STATE.calcDb;
 }
@@ -1381,16 +1384,17 @@ async function renderCalc(wrap, members) {
     const magic = attack && attack.dep === "magic";
     const weapon = db.weapons.find(w => w.name === conf.weapon && w.type === cc.weapon) || AEParty.bestWeapon(db.weapons, cc.weapon, magic);
     const grasta = (conf.grasta || []).map(n => db.atkGrasta.find(g => g.name === n)).filter(Boolean);
-    return { ...m, cc, atks, attack, weapon, grasta, stats: cc.stats, fx: m.fx };
+    const badges = (conf.badges || []).map(n => db.calcBadges.find(b => b.name === n)).filter(Boolean);
+    return { ...m, cc, atks, attack, weapon, grasta, badges, stats: cc.stats, fx: m.fx };
   });
   const tbl = el("table", { class: "skill-table party-table" });
-  tbl.appendChild(el("thead", { children: [el("tr", { children: ["멤버", "스킬", "무기", "그라스타", "일반", "크리 (확률)", "기대값", "근거"].map(h => el("th", { text: h })) })] }));
+  tbl.appendChild(el("thead", { children: [el("tr", { children: ["멤버", "스킬", "무기", "그라스타", "배지 ×2", "일반", "크리 (확률)", "기대값", "근거"].map(h => el("th", { text: h })) })] }));
   const tb = el("tbody");
   let sum = 0;
   for (const m of calcMembers.filter(x => x.pos === "front")) {
     const tr = el("tr");
     tr.appendChild(el("td", { text: m.c.nameKo }));
-    if (!m.cc || !m.attack) { tr.appendChild(el("td", { text: "계산 데이터 없음", attrs: { colspan: 7 } })); tb.appendChild(tr); continue; }
+    if (!m.cc || !m.attack) { tr.appendChild(el("td", { text: "계산 데이터 없음", attrs: { colspan: 8 } })); tb.appendChild(tr); continue; }
     const conf = S.m[m.c.id] = S.m[m.c.id] || {};
     const pick = (opts, cur, onPick, w = 170) => {
       const s = el("select", { class: "fx-input", style: `max-width:${w}px` });
@@ -1404,6 +1408,9 @@ async function renderCalc(wrap, members) {
     if (m.weapon && !wl.includes(m.weapon)) wl.unshift(m.weapon);
     tr.appendChild(el("td", { children: [pick(wl.map(w => [w.name, `${w.name} (${w.atk}/${w.matk})`]), m.weapon ? m.weapon.name : "", v => conf.weapon = v)] }));
     tr.appendChild(el("td", { children: [pick([["", "없음"], ...db.atkGrasta.map(g => [g.name, `${g.name} — ${g.effect.slice(0, 40)}`])], (conf.grasta || [])[0] || "", v => conf.grasta = v ? [v] : [])] }));
+    const bopts = [["", "없음"], ...db.calcBadges.map(b => [b.name, b.kind === "random" ? b.name : `${b.name} — ${b.effect.slice(0, 36)}`])];
+    const bsel = i => pick(bopts, (conf.badges || [])[i] || "", v => { const a = [...(conf.badges || ["", ""])]; a[i] = v; conf.badges = a; }, 190);
+    tr.appendChild(el("td", { children: [bsel(0), bsel(1)] }));
     const d = AEParty.memberDamage(m, calcMembers, opt);
     if (!d) { tr.appendChild(el("td", { text: "배율 없음", attrs: { colspan: 4 } })); tb.appendChild(tr); continue; }
     sum += d.expected;
@@ -1422,7 +1429,7 @@ async function renderCalc(wrap, members) {
   tbl.appendChild(tb);
   sec.appendChild(el("div", { class: "table-scroll", children: [tbl] }));
   sec.appendChild(el("div", { class: "pt", children: [el("b", { text: `전방 1회씩 합계 기대값: ${fmtN(sum)}` })] }));
-  sec.appendChild(el("div", { class: "skko-src", text: "가정 — 스탯: 최대 레벨 + 성도 각성 + 명암 255 · 배지 미반영 · 무기: 위키 최대 강화 · 스킬 배율: 위키 최대 레벨 · 크리: 행운/16% + 크리율 가산 · " +
+  sec.appendChild(el("div", { class: "skko-src", text: "가정 — 스탯: 최대 레벨 + 성도 각성 + 명암 255 · 배지는 고른 것만(무작위 배지는 주 스탯 최대치 · 부 스탯 제외) · 무기: 위키 최대 강화 · 스킬 배율: 위키 최대 레벨 · 크리: 행운/16% + 크리율 가산 · " +
     "중첩: 위키 Damage Formula/Multipliers(체감 · 반감 · 가산 · 곱). 「특정 아군」 대상 효과 · 고유 축적 · 정신 통일 비율(0.23%/MP 고정)은 단순화." }));
 }
 

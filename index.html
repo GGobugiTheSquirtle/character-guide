@@ -115,6 +115,16 @@
   .skko-raw { margin-top: 6px; font-size: 11px; color: var(--muted); white-space: pre-wrap; }
   .skko-raw summary { cursor: pointer; }
   .badge.skko { background: rgba(108,142,193,0.12); color: var(--blue); border-color: #3a4d6b; }
+  /* 파티 구성 (2026-10-07) */
+  .party { max-width: 1400px; margin: 0 auto; }
+  .party-h { font-family: 'Noto Serif KR', serif; color: var(--gold); font-size: 18px; margin-bottom: 4px; }
+  .table-scroll { overflow-x: auto; }
+  .party-table td { min-width: 150px; }
+  .party-table td:first-child, .party-table th:first-child { min-width: 110px; position: sticky; left: 0; background: var(--panel); }
+  .pt { font-size: 11px; line-height: 1.5; color: var(--text); }
+  .pt.more { color: var(--muted); }
+  .role-gap { color: var(--red) !important; font-weight: 600; }
+  .role-ok { color: var(--gold); }
 
   .sources { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); margin-top: 16px; }
   .sources a { color: var(--muted); font-size: 12px; text-decoration: none; padding: 4px 10px; border: 1px solid var(--line); border-radius: 4px; }
@@ -203,6 +213,7 @@
   <div id="grid" class="grid"><div class="loading">데이터 로딩 중…</div></div>
   <div id="quest-view" hidden></div>
   <div id="dungeon-view" hidden></div>
+  <div id="party-view" hidden></div>
 </div>
 
 <div class="modal" id="modal">
@@ -224,7 +235,7 @@
 <script>
 const STATE = {
   all: [],
-  filters: { element: "", weapon: "", style: "", sa: false, hasFull: false, recruit: "", skillsKo: false, effects: [] },
+  filters: { element: "", weapon: "", style: "", sa: false, hasFull: false, recruit: "", skillsKo: false, effects: [], roles: [] },
   search: "",
   // 영입 조건 · 조건템 (2026-09-22)
   recruit: {},        // id → { recruit, books, … }
@@ -343,6 +354,37 @@ function buildFilters() {
   }
   row.appendChild(toggleGroup);
   row.appendChild(buildEffectFilter());
+  row.appendChild(buildRoleFilter());
+}
+
+// 2026-10-07 역할 필터 — index.json roles (효과 단위 → 전투 역할, _tools/character/skill_roles_ko.py). 여러 개 = 모두 가진 캐릭
+const ROLE_KO = { atk_buff: "공격 버프", atk_state: "공격 강화 상태", atk_debuff: "공격 디버프", zone: "ZONE",
+  power: "조건부 위력", surv_debuff: "생존 디버프", surv_buff: "생존 버프", surv_state: "생존 상태",
+  recover: "회복·정화", tempo: "속도·행동", dot: "지속 대미지", enemy_utility: "적 버프 무력화",
+  mode: "상태·형태 변화", resource: "자원", attack: "공격", state_unknown: "기타 상태" };
+const ROLE_HINT = { atk_buff: "아군 힘·지능·크리티컬·속성 공격 UP, 가하는 대미지 UP",
+  atk_state: "아군에게 거는 대미지 증가 상태 — 심기일체·정신 통일·오버 크리티컬·하극상·방어 무시 등",
+  atk_debuff: "적이 받는 피해 증가 — 저항·내구·정신 DOWN, 약점 간파, 브레이크 축적",
+  power: "스킬 자체 배율 조건 — 「독 상태인 경우 위력 증가」 등",
+  surv_debuff: "적 공격 약화 — 힘·지능·속성 공격·속도 DOWN, 기절·수면·마비",
+  surv_buff: "아군 방어 강화 — 저항·내구·정신·HP 최대치 UP, 받는 대미지 DOWN",
+  surv_state: "배리어·실드·무효·버티기·도발·수호·감싸기",
+  recover: "HP 회복·전투 불능 회복·디버프/상태 이상 해제", tempo: "아군 속도 UP·재공격·연속 실행·솔선" };
+const PARTY_ROLES = ["atk_buff", "atk_state", "atk_debuff", "zone", "power", "surv_debuff", "surv_buff", "surv_state", "recover", "tempo", "dot", "enemy_utility"];
+function buildRoleFilter() {
+  const group = el("div", { class: "filter-group" });
+  group.appendChild(el("span", { class: "filter-label", text: "역할" }));
+  for (const r of PARTY_ROLES) {
+    const chip = el("span", { class: "chip", text: ROLE_KO[r], attrs: { title: ROLE_HINT[r] || "" } });
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('active');
+      const f = STATE.filters;
+      f.roles = chip.classList.contains('active') ? [...f.roles, r] : f.roles.filter(x => x !== r);
+      render();
+    });
+    group.appendChild(chip);
+  }
+  return group;
 }
 
 // 2026-10-07 효과 단위 필터 — index.json 의 effect_tags (공식 공지 한국어 스킬에서 추출). 고른 태그를 모두 가진 캐릭
@@ -376,8 +418,7 @@ function addEffectFilter(tag) {
   const f = STATE.filters;
   if (!f.effects.includes(tag)) f.effects.push(tag);
   renderEffectChips();
-  if (STATE.view !== "chars") STATE.view = "chars";
-  render();
+  setView("chars");
 }
 function renderEffectChips() {
   const sel = document.getElementById('fx-selected');
@@ -412,6 +453,7 @@ function applyFilters() {
   if (f.sa)      list = list.filter(c => c.sa);
   if (f.hasFull) list = list.filter(c => c.has_full);
   if (f.skillsKo) list = list.filter(c => c.skills_ko);
+  if (f.roles.length) list = list.filter(c => f.roles.every(r => (c.roles || {})[r]));
   if (f.effects.length) list = list.filter(c => f.effects.every(t => (c.effect_tags || []).includes(t)));
   if (f.recruit === "books") {
     list = list.filter(c => (STATE.recruit[c.id]?.books || []).length > 0);
@@ -432,11 +474,16 @@ function applyFilters() {
 // ─────────────────────────────────────
 // 영입 조건 · 조건템 (2026-09-22)
 // ─────────────────────────────────────
+function setView(key) {
+  STATE.view = key;
+  document.querySelectorAll('#view-toggle .view-btn').forEach(x => x.classList.toggle('active', x.dataset.view === key));
+  render();
+}
 function buildViewToggle() {
   const wrap = document.getElementById('view-toggle');
   if (!wrap) return;
-  for (const [key, label] of [["chars", "캐릭터"], ["quests", "퀘스트 해금"], ["dungeons", "조건템 던전"]]) {
-    const b = el("button", { class: "view-btn" + (STATE.view === key ? " active" : ""), text: label });
+  for (const [key, label] of [["chars", "캐릭터"], ["quests", "퀘스트 해금"], ["dungeons", "조건템 던전"], ["party", "파티 구성"]]) {
+    const b = el("button", { class: "view-btn" + (STATE.view === key ? " active" : ""), text: label, dataset: { view: key } });
     b.addEventListener('click', () => {
       STATE.view = key;
       wrap.querySelectorAll('.view-btn').forEach(x => x.classList.remove('active'));
@@ -652,7 +699,9 @@ function render() {
   grid.hidden = STATE.view !== "chars";
   qview.hidden = STATE.view !== "quests";
   dview.hidden = STATE.view !== "dungeons";
+  document.getElementById('party-view').hidden = STATE.view !== "party";
   filters.hidden = STATE.view !== "chars";
+  if (STATE.view === "party") { renderParty(); return; }
   if (STATE.view === "quests") { renderQuests(); return; }
   if (STATE.view === "dungeons") { renderDungeons(); return; }
 
@@ -897,11 +946,12 @@ function fxText(u) {
     case "stack": return `${u.name || ""} ${u.value ?? ""} ${u.op}`.replace(/\s+/g, " ").trim();
     case "cost": return `${u.what} ${u.value}% 소모`;
     case "power": return u.what + (u.detail ? " (" + u.detail + ")" : "");
+    case "heal": return /^(HP|MP)$/.test(u.what) ? `${u.what} 회복 ${u.value}${u.flat ? "" : "%"}` : u.what;
     default: return u.what || u.raw;
   }
 }
 function fxChip(u) {
-  const chip = el("span", { class: "fx k-" + u.k, attrs: { title: u.raw || "" } });
+  const chip = el("span", { class: "fx k-" + u.k, attrs: { title: `[${ROLE_KO[u.r] || "-"} · ${u.tm || ""}${u.tc ? " · " + u.tc : ""}] ` + (u.raw || "") } });
   chip.appendChild(el("b", { text: FX_KIND[u.k] || u.k }));
   if (u.mode && u.mode !== "추가 효과") chip.appendChild(el("span", { class: "mode", text: `[${u.mode.replace(/ 효과$/, "")}] ` }));
   if (u.cond) chip.appendChild(el("span", { class: "cond", text: u.cond + " → " }));
@@ -919,6 +969,10 @@ function buildSkillsKoSection(c) {
     tags.appendChild(chip);
   }
   sec.appendChild(tags);
+  if (c.roles) {
+    const rl = el("div", { class: "skko-src", text: "역할: " + PARTY_ROLES.filter(r => c.roles[r]).map(r => `${ROLE_KO[r]} ${c.roles[r]}`).join(" · ") });
+    sec.appendChild(rl);
+  }
   const host = el("div", { class: "loading", text: "로딩 중…" });
   sec.appendChild(host);
   fetch(`data/skills_ko/${c.id}.json`).then(r => r.json()).then(d => {
@@ -952,6 +1006,140 @@ function buildSkillsKoSection(c) {
     }
   }).catch(e => { host.className = "empty-state"; host.textContent = "공식 스킬 로드 실패: " + e.message; });
   return sec;
+}
+
+// ─────────────────────────────────────
+// 파티 구성 (2026-10-07) — 공식 한국어 스킬의 효과 단위 × 역할로 파티의 담당 · 빈칸 · 속성 정렬 · ZONE 충돌을 본다
+//   성도 각성 블록은 각성 완료로 보고 포함. 고른 명단은 localStorage (실패해도 동작)
+// ─────────────────────────────────────
+const PARTY_MAX = 6;
+const ELEMS = ["불", "물", "땅", "바람", "번개", "그림자", "결정"];
+STATE.party = (() => { try { return JSON.parse(localStorage.getItem('cg-party') || '[]'); } catch { return []; } })();
+STATE.skko = {};
+function saveParty() { try { localStorage.setItem('cg-party', JSON.stringify(STATE.party)); } catch {} }
+async function loadSkko(id) {
+  if (!STATE.skko[id]) STATE.skko[id] = await fetch(`data/skills_ko/${id}.json`).then(r => r.json());
+  return STATE.skko[id];
+}
+function flatEffects(d) {
+  const out = [];
+  for (const b of d.blocks) for (const [sec, items] of Object.entries(b.sections))
+    for (const it of items) for (const u of it.effects) out.push({ ...u, _skill: it.name || "", _sec: sec });
+  return out;
+}
+function uniqTexts(us, n = 4) {
+  const seen = new Set(), out = [];
+  for (const u of us) {
+    const t = (u.cond ? "(" + u.cond.slice(0, 18) + ") " : "") + fxText(u) + fxDur(u) + (u.tc ? " @" + u.tc : "");
+    if (!seen.has(t)) { seen.add(t); out.push(t); }
+  }
+  return [out.slice(0, n), out.length];
+}
+async function renderParty() {
+  const host = document.getElementById('party-view');
+  clear(host);
+  const wrap = el("div", { class: "party" });
+  host.appendChild(wrap);
+  wrap.appendChild(el("h3", { class: "party-h", text: "파티 구성 — 역할 · 속성 · ZONE 점검" }));
+  wrap.appendChild(el("div", { class: "skko-src", text: `공식 한국어 스킬이 있는 캐릭터만 분석됩니다(현재 ${STATE.all.filter(c => c.skills_ko).length}명, Ver 3.11.10 이후 공지 기준). 성도 각성은 완료 상태로 계산.` }));
+  // 고르기
+  const pick = el("div", { class: "filter-group", style: "margin:10px 0 14px" });
+  const dl = el("datalist", { attrs: { id: "party-cands" } });
+  for (const c of STATE.all.filter(c => c.skills_ko)) dl.appendChild(el("option", { attrs: { value: c.nameKo } }));
+  const input = el("input", { class: "fx-input", attrs: { list: "party-cands", placeholder: `멤버 추가 (최대 ${PARTY_MAX})` } });
+  input.addEventListener('change', () => {
+    const c = STATE.all.find(x => x.nameKo === input.value.trim() && x.skills_ko);
+    if (c && !STATE.party.includes(c.id) && STATE.party.length < PARTY_MAX) { STATE.party.push(c.id); saveParty(); renderParty(); }
+    input.value = "";
+  });
+  pick.append(dl, input);
+  for (const id of STATE.party) {
+    const c = STATE.all.find(x => x.id === id);
+    if (!c) continue;
+    const chip = el("span", { class: "chip active fx-sel", text: c.nameKo, attrs: { title: "빼기" } });
+    chip.addEventListener('click', () => { STATE.party = STATE.party.filter(x => x !== id); saveParty(); renderParty(); });
+    pick.appendChild(chip);
+  }
+  wrap.appendChild(pick);
+  if (!STATE.party.length) { wrap.appendChild(el("div", { class: "empty-state", text: "멤버를 추가하세요." })); return; }
+
+  const members = [];
+  for (const id of STATE.party) {
+    const c = STATE.all.find(x => x.id === id);
+    members.push({ c, fx: flatEffects(await loadSkko(id)).filter(u => u.k !== "meta") });
+  }
+
+  // 1. 역할 커버리지
+  const t1 = el("table", { class: "skill-table party-table" });
+  const hr = el("tr", { children: [el("th", { text: "역할" })] });
+  for (const m of members) hr.appendChild(el("th", { text: m.c.nameKo }));
+  t1.appendChild(el("thead", { children: [hr] }));
+  const tb = el("tbody");
+  const gaps = [];
+  for (const r of PARTY_ROLES) {
+    const tr = el("tr");
+    const any = members.some(m => m.fx.some(u => u.r === r));
+    if (!any) gaps.push(ROLE_KO[r]);
+    tr.appendChild(el("td", { class: any ? "role-ok" : "role-gap", text: (any ? "" : "⚠ ") + ROLE_KO[r], attrs: { title: ROLE_HINT[r] || "" } }));
+    for (const m of members) {
+      const [txt, n] = uniqTexts(m.fx.filter(u => u.r === r), 3);
+      const td = el("td");
+      for (const t of txt) td.appendChild(el("div", { class: "pt", text: t }));
+      if (n > txt.length) td.appendChild(el("div", { class: "pt more", text: `+${n - txt.length}` }));
+      tr.appendChild(td);
+    }
+    tb.appendChild(tr);
+  }
+  t1.appendChild(tb);
+  const s1 = el("div", { class: "section", children: [el("h3", { text: "1. 역할 커버리지" })] });
+  s1.appendChild(el("div", { class: "skko-src", text: gaps.length ? "빈 역할: " + gaps.join(" · ") : "모든 역할에 담당자가 있습니다." }));
+  s1.appendChild(el("div", { class: "table-scroll", children: [t1] }));
+  wrap.appendChild(s1);
+
+  // 2. 속성 · 공격 종류 정렬
+  const all = members.flatMap(m => m.fx.map(u => ({ ...u, _who: m.c.nameKo })));
+  const atk = all.filter(u => u.k === "attack" && u.atk);
+  const elemCount = Object.fromEntries(ELEMS.map(e => [e, atk.filter(u => u.element === e).length]));
+  const typeCount = { "물리": atk.filter(u => ["베기", "찌르기", "타격"].includes(u.atk)).length, "마법": atk.filter(u => u.atk === "마법").length };
+  const statHits = (re, dir, roles) => all.filter(u => (u.k === "stat_pct" || u.k === "stat_flat") && u.dir === dir && roles.includes(u.r) && (u.stats || []).some(s => re.test(s)));
+  const whoVal = us => [...new Set(us.map(u => `${u._who} ${u.value != null ? u.value + "%" : ""}`.trim()))].join(", ");
+  const t2 = el("table", { class: "skill-table" });
+  t2.appendChild(el("thead", { children: [el("tr", { children: ["속성", "우리 공격 수", "속성 공격 UP (아군)", "속성 저항 DOWN (적)"].map(h => el("th", { text: h })) })] }));
+  const tb2 = el("tbody");
+  for (const e of ELEMS) {
+    const up = statHits(new RegExp(`^(${e}|모든) 속성 공격$`), "UP", ["atk_buff"]);
+    const dn = statHits(new RegExp(`^(${e}|모든) 속성 저항$`), "DOWN", ["atk_debuff"]);
+    if (!elemCount[e] && !up.length && !dn.length) continue;
+    const mis = elemCount[e] && !up.length && !dn.length;
+    tb2.appendChild(el("tr", { children: [el("td", { text: e, class: mis ? "role-gap" : "" }), el("td", { text: String(elemCount[e]) }), el("td", { text: whoVal(up) || "—" }), el("td", { text: whoVal(dn) || "—" })] }));
+  }
+  for (const [ty, re] of [["물리", /^(물리|베기|찌르기|타격) 저항$/], ["마법", /^마법 저항$/]]) {
+    const dn = statHits(re, "DOWN", ["atk_debuff"]);
+    tb2.appendChild(el("tr", { children: [el("td", { text: ty, class: typeCount[ty] && !dn.length ? "role-gap" : "" }), el("td", { text: String(typeCount[ty]) }), el("td", { text: "—" }), el("td", { text: whoVal(dn) || "—" })] }));
+  }
+  t2.appendChild(tb2);
+  const s2 = el("div", { class: "section", children: [el("h3", { text: "2. 속성 · 공격 종류 정렬" }),
+    el("div", { class: "skko-src", text: "빨간 칸 = 우리가 그 속성/종류로 공격하는데 맞춘 버프·저항 디버프가 없음. 공격 수는 스킬 문장 기준(사용 빈도 아님)." }),
+    el("div", { class: "table-scroll", children: [t2] })] });
+  wrap.appendChild(s2);
+
+  // 3. ZONE
+  const s3 = el("div", { class: "section", children: [el("h3", { text: "3. ZONE" })] });
+  const zoneBy = members.map(m => [m.c.nameKo, [...new Set(m.fx.filter(u => u.k === "zone" && /전개/.test(u.what || "")).map(u => (u.what.match(/((?:극 |절 )?\S+진(?: \S+)?) ?전개/) || [, u.what])[1]))]]).filter(x => x[1].length);
+  const kinds = new Set(zoneBy.flatMap(x => x[1].map(z => z.replace(/^(극|절) /, ""))));
+  s3.appendChild(el("div", { class: "skko-src", text: kinds.size > 1 ? `⚠ 서로 다른 ZONE ${kinds.size}종 — 나중에 전개한 쪽이 덮어씁니다. 주력 ZONE을 정하세요.` : kinds.size ? "ZONE 한 종류로 정렬됨." : "ZONE 전개 담당 없음." }));
+  for (const [who, zs] of zoneBy) s3.appendChild(el("div", { class: "pt", text: `${who}: ${zs.join(" · ")}` }));
+  wrap.appendChild(s3);
+
+  // 4. 전투 시작 시 자동
+  const s4 = el("div", { class: "section", children: [el("h3", { text: "4. 전투 시작 시 자동 발동" })] });
+  const start = all.filter(u => u.tm === "전투 시작" && u.r !== "resource");
+  if (!start.length) s4.appendChild(el("div", { class: "skko-src", text: "없음" }));
+  for (const m of members) {
+    const [txt] = uniqTexts(start.filter(u => u._who === m.c.nameKo), 6);
+    if (txt.length) s4.appendChild(el("div", { class: "pt", text: `${m.c.nameKo}: ${txt.join(" / ")}` }));
+  }
+  wrap.appendChild(s4);
 }
 
 function buildSkillTable(rows) {

@@ -97,7 +97,8 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Leave me alone!"
      },
      {
       "name": "성대한 티 파티",
@@ -160,7 +161,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Popping Tea Party",
+      "wiki": {
+       "mult": "130%",
+       "type": "Magic"
+      }
      },
      {
       "name": "고양이 손이라도 괜찮다며언",
@@ -249,7 +255,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "I Could Lend a Paw...",
+      "wiki": {
+       "mult": "N/A",
+       "type": "Buff"
+      }
      },
      {
       "name": "도움이 될 줄 알고오……",
@@ -351,7 +362,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Don't Mind Li'l Ol' Me...",
+      "wiki": {
+       "mult": "N/A",
+       "type": "Buff"
+      }
      }
     ],
     "stacks": [
@@ -480,7 +496,8 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Caretaking"
      },
      {
       "name": "번뜩임",
@@ -617,7 +634,8 @@
         "r": "resource",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Whim"
      }
     ],
     "stellar_skills": [
@@ -717,7 +735,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "The Cat's Me-OW!",
+      "wiki": {
+       "mult": "200%-5000%",
+       "type": "Magic"
+      }
      }
     ]
    }

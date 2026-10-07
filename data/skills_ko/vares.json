@@ -96,7 +96,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Ravenous Fall",
+      "wiki": {
+       "mult": "200%",
+       "type": "Slash"
+      }
      },
      {
       "name": "대비책: 선수",
@@ -155,7 +160,11 @@
         "tm": "턴 종료",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Provision: Ward",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "대비책: 예방",
@@ -216,7 +225,11 @@
         "tm": "턴 종료",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Provision: Foil",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "카니지",
@@ -277,7 +290,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Carnage",
+      "wiki": {
+       "mult": "0%-27500%",
+       "type": "Slash"
+      }
      }
     ],
     "stacks": [
@@ -567,7 +585,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Howling Smash",
+      "wiki": {
+       "mult": "210%-4200%",
+       "type": "Slash"
+      }
      }
     ]
    }

@@ -71,7 +71,14 @@
         "mode": 2,
         "recover": 1,
         "zone": 1
-      }
+      },
+      "traits": [
+        "검",
+        "바람",
+        "엘프",
+        "Nicknamer",
+        "Arcadia # After The Wings of Destiny - Wryz Saga II"
+      ]
     },
     {
       "id": "kuchinawa_as",
@@ -134,7 +141,12 @@
         "atk_buff": 1,
         "mode": 2,
         "dot": 1
-      }
+      },
+      "traits": [
+        "지팡이",
+        "땅",
+        "Arcadia # After Wryz Saga III"
+      ]
     },
     {
       "id": "noble_blossom_alter_as",
@@ -291,7 +303,16 @@
         "zone": 3,
         "atk_debuff": 3,
         "mode": 1
-      }
+      },
+      "traits": [
+        "Clergy",
+        "검",
+        "Titan",
+        "Glutton",
+        "물",
+        "Demon Sword",
+        "Baruoki # after clearing ES quest"
+      ]
     },
     {
       "id": "ruvi",
@@ -319,7 +340,12 @@
         "namu": "https://namu.wiki/w/%EB%A3%A8%EB%B9%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%eb%a5%f4%a5%a3",
         "ae_wiki": "https://anothereden.wiki/w/Ruvi"
-      }
+      },
+      "traits": [
+        "검",
+        "Scientist",
+        "고양이 애호가"
+      ]
     },
     {
       "id": "eleanor",
@@ -392,7 +418,13 @@
         "zone": 3,
         "atk_buff": 4,
         "atk_state": 1
-      }
+      },
+      "traits": [
+        "검",
+        "결정",
+        "Clergy",
+        "Glutton"
+      ]
     },
     {
       "id": "dark_devourer_alter",
@@ -459,7 +491,15 @@
         "surv_state": 2,
         "atk_debuff": 1,
         "atk_buff": 6
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "지팡이",
+        "Avenger",
+        "Napper",
+        "Future Revolutionary",
+        "그림자"
+      ]
     },
     {
       "id": "mare",
@@ -514,7 +554,16 @@
         "namu": "https://namu.wiki/w/%EC%9C%A0%EC%9A%B0%EC%B2%B4%EB%A6%AC%EC%B9%B4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a1%bc%a5%c1%a5%a7%a5%ea%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Spirika"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "고양이 애호가",
+        "Spirit-fused",
+        "Bookworm",
+        "Dog lover",
+        "Estrangement",
+        "Star"
+      ]
     },
     {
       "id": "violet_lancer_as",
@@ -608,7 +657,14 @@
         "namu": "https://namu.wiki/w/%EA%B8%80%EB%A0%8C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b0%a5%ec%a5%f3",
         "ae_wiki": "https://anothereden.wiki/w/Glenn"
-      }
+      },
+      "traits": [
+        "검",
+        "바람",
+        "용",
+        "Cursed",
+        "Scars of the Wheel of Time"
+      ]
     },
     {
       "id": "noble_specturr",
@@ -676,7 +732,17 @@
         "mode": 2,
         "atk_buff": 2,
         "enemy_utility": 1
-      }
+      },
+      "traits": [
+        "지팡이",
+        "번개",
+        "동방",
+        "고양이 애호가",
+        "Animal Talker",
+        "Spirit Talker",
+        "Fairy",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "lovinia_as",
@@ -742,7 +808,15 @@
         "tempo": 1,
         "surv_debuff": 2,
         "enemy_utility": 1
-      }
+      },
+      "traits": [
+        "Cat lover # Another Style only",
+        "Minstrel",
+        "활",
+        "Spirit Talker",
+        "바람",
+        "불"
+      ]
     },
     {
       "id": "meryt",
@@ -795,7 +869,13 @@
         "surv_debuff": 1,
         "surv_buff": 1,
         "surv_state": 1
-      }
+      },
+      "traits": [
+        "권갑",
+        "불",
+        "Royalty",
+        "고양이 애호가"
+      ]
     },
     {
       "id": "cerius_as",
@@ -844,7 +924,14 @@
         "resource": 4,
         "attack": 7,
         "atk_debuff": 6
-      }
+      },
+      "traits": [
+        "활",
+        "땅",
+        "Dragon Killer",
+        "Arcadia",
+        "Spicy Lover"
+      ]
     },
     {
       "id": "hismena_es",
@@ -898,7 +985,12 @@
         "tempo": 1,
         "zone": 1,
         "state_unknown": 1
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "검",
+        "불"
+      ]
     },
     {
       "id": "porcelain_pixie_as",
@@ -994,7 +1086,13 @@
         "namu": "https://namu.wiki/w/%EA%B0%80%EB%84%B7%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ac%a1%bc%a5%cd%a5%c3%a5%c8",
         "ae_wiki": "https://anothereden.wiki/w/Garnet"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "Royalty",
+        "Amnesia",
+        "FFIX"
+      ]
     },
     {
       "id": "steiner",
@@ -1022,7 +1120,12 @@
         "namu": "https://namu.wiki/w/%EC%8A%88%ED%83%80%EC%9D%B4%EB%84%88%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b9%a5%bf%a5%a4%a5%ca%a1%bc",
         "ae_wiki": "https://anothereden.wiki/w/Steiner"
-      }
+      },
+      "traits": [
+        "검",
+        "Weapons",
+        "FFIX"
+      ]
     },
     {
       "id": "verdanta",
@@ -1076,7 +1179,15 @@
         "power": 1,
         "resource": 1,
         "atk_debuff": 1
-      }
+      },
+      "traits": [
+        "검",
+        "물",
+        "Gourmet",
+        "Spicy Lover",
+        "Avenger # After Character Quest 3",
+        "Outlaw # After Character Quest 3"
+      ]
     },
     {
       "id": "vivi",
@@ -1104,7 +1215,15 @@
         "namu": "https://namu.wiki/w/%EB%B9%84%EB%B9%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d3%a5%d3",
         "ae_wiki": "https://anothereden.wiki/w/Vivi"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "Estrangement",
+        "FFIX",
+        "불",
+        "물",
+        "번개"
+      ]
     },
     {
       "id": "zidane",
@@ -1132,7 +1251,14 @@
         "namu": "https://namu.wiki/w/%EC%A7%80%EB%8B%A8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b8%a5%bf%a5%f3",
         "ae_wiki": "https://anothereden.wiki/w/Zidane"
-      }
+      },
+      "traits": [
+        "도",
+        "바람",
+        "Outlaw",
+        "Lovesick",
+        "FFIX"
+      ]
     },
     {
       "id": "silver_striker_as",
@@ -1254,7 +1380,13 @@
         "tempo": 3,
         "atk_buff": 1,
         "atk_debuff": 1
-      }
+      },
+      "traits": [
+        "창",
+        "그림자",
+        "Future Revolutionary",
+        "Bookworm"
+      ]
     },
     {
       "id": "mildy",
@@ -1326,7 +1458,13 @@
         "zone": 3,
         "atk_state": 1,
         "surv_state": 1
-      }
+      },
+      "traits": [
+        "지팡이",
+        "결정",
+        "Future Revolutionary",
+        "Minstrel"
+      ]
     },
     {
       "id": "dream_weaver_as",
@@ -1457,7 +1595,15 @@
         "atk_buff": 2,
         "atk_state": 4,
         "zone": 1
-      }
+      },
+      "traits": [
+        "지팡이",
+        "결정",
+        "고양이 애호가",
+        "Estrangement",
+        "Art",
+        "Napper"
+      ]
     },
     {
       "id": "vares",
@@ -1515,7 +1661,13 @@
         "surv_buff": 2,
         "recover": 2,
         "atk_state": 1
-      }
+      },
+      "traits": [
+        "도끼",
+        "그림자",
+        "Beast",
+        "Glasses"
+      ]
     },
     {
       "id": "myrus_es",
@@ -1564,7 +1716,13 @@
         "tempo": 1,
         "zone": 1,
         "atk_state": 1
-      }
+      },
+      "traits": [
+        "Beast",
+        "도끼",
+        "Lovesick # after clearing ES Quest",
+        "물"
+      ]
     },
     {
       "id": "black_clad_sw_as",
@@ -1675,7 +1833,14 @@
         "atk_state": 2,
         "zone": 1,
         "atk_debuff": 1
-      }
+      },
+      "traits": [
+        "Mask",
+        "지팡이",
+        "Hood",
+        "Amnesia",
+        "땅"
+      ]
     },
     {
       "id": "ruby_sleeved_merchant_alter",
@@ -1732,7 +1897,16 @@
         "surv_buff": 2,
         "surv_state": 2,
         "power": 2
-      }
+      },
+      "traits": [
+        "검",
+        "땅",
+        "동방",
+        "Itto-Ryu",
+        "Scallywag",
+        "Spicy Lover",
+        "Land of Mi #After Mythos Shadow of Sin and Steel: Beneath the Twilight Blooms"
+      ]
     },
     {
       "id": "cyan_scyther_as",
@@ -1853,7 +2027,13 @@
         "atk_state": 2,
         "recover": 1,
         "mode": 2
-      }
+      },
+      "traits": [
+        "검",
+        "불",
+        "COA",
+        "IDA School # After 2nd Character Quest"
+      ]
     },
     {
       "id": "selfless_seeker_alter",
@@ -1912,7 +2092,13 @@
         "atk_state": 1,
         "surv_state": 1,
         "recover": 1
-      }
+      },
+      "traits": [
+        "활",
+        "땅",
+        "Outlaw",
+        "Gun"
+      ]
     },
     {
       "id": "red_clad_flam_as",
@@ -2026,7 +2212,14 @@
         "zone": 1,
         "attack": 1,
         "power": 1
-      }
+      },
+      "traits": [
+        "망치",
+        "번개",
+        "Miner",
+        "Chronos Empire",
+        "Glasses"
+      ]
     },
     {
       "id": "gunce_as",
@@ -2081,7 +2274,22 @@
         "namu": "https://namu.wiki/w/%EC%95%8C%EB%8F%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%eb%a5%c9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Aldo_(Another_Style)"
-      }
+      },
+      "traits": [
+        "주인공",
+        "Guiding Light",
+        "Forager",
+        "검",
+        "New Radical Dreamers",
+        "New Time Drift",
+        "용",
+        "바르오키",
+        "Concerto Artes # after Fraxinus Labs Camp Conversations",
+        "불",
+        "Arcadia # During Episode: The Cliffs of Wyrmrest - Wryz Saga I Chapter 1",
+        "Itto-Ryu # After clearing the Fugen Itto-Ryu Dojo Battle",
+        "Demon Sword # After Chapter 12"
+      ]
     },
     {
       "id": "nilya",
@@ -2109,7 +2317,15 @@
         "namu": "https://namu.wiki/w/%EB%8B%88%EB%A5%B4%EC%95%BC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%cb%a5%eb%a5%e4",
         "ae_wiki": "https://anothereden.wiki/w/Nilya"
-      }
+      },
+      "traits": [
+        "권갑",
+        "결정",
+        "Nicknamer # During the Ogre Revival Sidequest",
+        "Dog lover # During the Ogre Revival Sidequest",
+        "Forager",
+        "MMA"
+      ]
     },
     {
       "id": "jilya",
@@ -2164,7 +2380,17 @@
         "namu": "https://namu.wiki/w/%EC%8B%9C%EC%98%A8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%aa%a5%f3%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Shion_(Extra_Style)"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "동방",
+        "Childhood Friend",
+        "도",
+        "Mounted",
+        "Itto-Ryu",
+        "번개",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "laika",
@@ -2219,7 +2445,18 @@
         "namu": "https://namu.wiki/w/%EC%84%BC%EC%95%BC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bb%a5%f3%a5%e4%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Senya_(Another_Style)"
-      }
+      },
+      "traits": [
+        "도",
+        "불",
+        "그림자",
+        "동방",
+        "Cursed",
+        "Hood",
+        "Fairy # During Chapter 3 of Shadow of Sin and Steel",
+        "Itto-Ryu # Another Style only",
+        "Land of Mi"
+      ]
     },
     {
       "id": "jet_tactician_as",
@@ -2302,7 +2539,13 @@
         "namu": "https://namu.wiki/w/%EC%BD%94%EB%A7%88%EC%B9%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b3%a5%de%a5%c1%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Komachi_(Another_Style)"
-      }
+      },
+      "traits": [
+        "동방",
+        "창",
+        "땅",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "hoarfrost_songstress_alter",
@@ -2330,7 +2573,14 @@
         "namu": "https://namu.wiki/w/%EB%B9%99%EB%AC%B4%EC%9D%98%20%EA%B0%80%ED%9D%AC",
         "game_info": "https://anothereden.game-info.wiki/d/%c9%b9%bf%d0%a4%ce%b2%ce%c9%b1",
         "ae_wiki": "https://anothereden.wiki/w/Yukino_(Alter)"
-      }
+      },
+      "traits": [
+        "활",
+        "물",
+        "동방",
+        "Fairy",
+        "Minstrel"
+      ]
     },
     {
       "id": "krervo_as",
@@ -2358,7 +2608,15 @@
         "namu": "https://namu.wiki/w/%EC%BF%A8%EB%A0%88%EB%A5%B4%EB%B3%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%ec%a5%eb%a5%f4%a5%a9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Krervo_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Glasses",
+        "Scientist",
+        "Forager",
+        "지팡이",
+        "KMS",
+        "IDA School # After AS quest"
+      ]
     },
     {
       "id": "kagurame",
@@ -2386,7 +2644,15 @@
         "namu": "https://namu.wiki/w/%EC%B9%B4%EA%B5%AC%EB%9D%BC%EB%A9%94",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ab%a5%b0%a5%e9%a5%e1",
         "ae_wiki": "https://anothereden.wiki/w/Kagurame"
-      }
+      },
+      "traits": [
+        "망치",
+        "그림자",
+        "동방",
+        "Fairy",
+        "Sharp Ears",
+        "Funeral"
+      ]
     },
     {
       "id": "forlorn_thespian_alter",
@@ -2414,7 +2680,13 @@
         "namu": "https://namu.wiki/w/%EC%A0%81%EB%A7%89%EC%9D%98%20%EC%97%B0%EA%B8%B0%EC%9E%90",
         "game_info": "https://anothereden.game-info.wiki/d/%bc%e4%d5%eb%a4%ce%c9%f1%c2%e6%bf%cd",
         "ae_wiki": "https://anothereden.wiki/w/Lokido_(Alter)"
-      }
+      },
+      "traits": [
+        "검",
+        "땅",
+        "Beast",
+        "Bookworm"
+      ]
     },
     {
       "id": "necoco_es",
@@ -2442,7 +2714,17 @@
         "namu": "https://namu.wiki/w/%EB%84%A4%EC%BD%94%EC%BD%94",
         "game_info": "https://anothereden.game-info.wiki/d/%a4%cd%a4%b3%a4%b3%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Necoco_(Extra_Style)"
-      }
+      },
+      "traits": [
+        "활",
+        "동방",
+        "고양이 애호가",
+        "Animal Talker",
+        "Fairy",
+        "바람",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel",
+        "Spirit Talker# After Extra Style quest"
+      ]
     },
     {
       "id": "elseal_as",
@@ -2470,7 +2752,13 @@
         "namu": "https://namu.wiki/w/%EC%97%98%EC%8B%A4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a8%a5%eb%a5%b7%a1%bc%a5%eb%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Elseal_(Another_Style)"
-      }
+      },
+      "traits": [
+        "검",
+        "물",
+        "Bookworm",
+        "Weapons"
+      ]
     },
     {
       "id": "empel",
@@ -2498,7 +2786,13 @@
         "namu": "https://namu.wiki/w/%EC%97%A0%ED%8E%A0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%f3%a5%da%a5%eb",
         "ae_wiki": "https://anothereden.wiki/w/Empel"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "Glasses",
+        "Atelier",
+        "Bookworm"
+      ]
     },
     {
       "id": "id",
@@ -2526,7 +2820,12 @@
         "namu": "https://namu.wiki/w/%EC%9D%B4%EB%93%9C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%c9",
         "ae_wiki": "https://anothereden.wiki/w/Id"
-      }
+      },
+      "traits": [
+        "권갑",
+        "땅",
+        "Purgatory # After 2nd Quest"
+      ]
     },
     {
       "id": "hazama",
@@ -2581,7 +2880,13 @@
         "namu": "https://namu.wiki/w/%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%94%94%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%e9%a5%a6%a5%c7%a5%a3%a5%a2",
         "ae_wiki": "https://anothereden.wiki/w/Klaudia"
-      }
+      },
+      "traits": [
+        "활",
+        "물",
+        "Atelier",
+        "Cooking"
+      ]
     },
     {
       "id": "ryza",
@@ -2609,7 +2914,14 @@
         "namu": "https://namu.wiki/w/%EB%9D%BC%EC%9D%B4%EC%9E%90%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%a4%a5%b6",
         "ae_wiki": "https://anothereden.wiki/w/Ryza"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "불",
+        "Atelier",
+        "Forager",
+        "Miner"
+      ]
     },
     {
       "id": "izuna",
@@ -2637,7 +2949,15 @@
         "namu": "https://namu.wiki/w/%EC%9D%B4%EC%A6%88%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%c5%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Izuna"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "번개",
+        "동방",
+        "Mask",
+        "Estrangement",
+        "Amnesia # After Character Quest 3"
+      ]
     },
     {
       "id": "rufus_as",
@@ -2665,7 +2985,12 @@
         "namu": "https://namu.wiki/w/%EB%A3%A8%ED%94%84%EC%8A%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%eb%a1%bc%a5%d5%a5%b9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Rufus_(Another_Style)"
-      }
+      },
+      "traits": [
+        "권갑",
+        "Bookworm",
+        "불"
+      ]
     },
     {
       "id": "nocturne_ninja_alter",
@@ -2693,7 +3018,16 @@
         "namu": "https://namu.wiki/w/%EA%B9%8C%EB%A7%88%EA%B7%80%20%EB%B0%A4%EC%9D%98%20%EB%B0%80%EC%A0%95",
         "game_info": "https://anothereden.game-info.wiki/d/%b1%a8%cc%eb%a4%ce%b1%a3%cc%a9",
         "ae_wiki": "https://anothereden.wiki/w/Tsubame_(Alter)"
-      }
+      },
+      "traits": [
+        "권갑",
+        "바람",
+        "동방",
+        "Ninja",
+        "고양이 애호가",
+        "Glutton",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "sesta_as",
@@ -2721,7 +3055,12 @@
         "namu": "https://namu.wiki/w/%EC%84%B8%EC%8A%A4%ED%83%80",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bb%a5%b9%a5%bf%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Sesta_(Another_Style)"
-      }
+      },
+      "traits": [
+        "도",
+        "바람",
+        "Avenger"
+      ]
     },
     {
       "id": "senya",
@@ -2749,7 +3088,18 @@
         "namu": "https://namu.wiki/w/%EC%84%BC%EC%95%BC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bb%a5%f3%a5%e4",
         "ae_wiki": "https://anothereden.wiki/w/Senya"
-      }
+      },
+      "traits": [
+        "도",
+        "불",
+        "그림자",
+        "동방",
+        "Avenger # Normal Style only",
+        "Cursed",
+        "Hood # After acquiring AS version",
+        "Fairy # During Chapter 3 of Shadow of Sin and Steel",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "shigure_es",
@@ -2777,7 +3127,18 @@
         "namu": "https://namu.wiki/w/%EC%8B%9C%EA%B5%AC%EB%A0%88%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%b0%a5%ec%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Shigure_(Extra_Style)"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "동방",
+        "Childhood Friend",
+        "도",
+        "Mounted",
+        "Spicy Lover",
+        "Itto-Ryu",
+        "바람",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "lingli_as",
@@ -2805,7 +3166,15 @@
         "namu": "https://namu.wiki/w/%EB%A7%81%EB%A6%AC",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ea%a5%f3%a5%ea%a1%bc%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Lingli_(Another_Style)"
-      }
+      },
+      "traits": [
+        "동방",
+        "Cooking",
+        "권갑",
+        "불",
+        "Land of Shin # During Chapter 7 of Shadow of Sin and Steel",
+        "MMA"
+      ]
     },
     {
       "id": "kula",
@@ -2833,7 +3202,14 @@
         "namu": "https://namu.wiki/w/%EC%BF%A8%EB%9D%BC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a1%bc%a5%e9",
         "ae_wiki": "https://anothereden.wiki/w/Kula"
-      }
+      },
+      "traits": [
+        "권갑",
+        "물",
+        "KOF",
+        "Sweet tooth",
+        "MMA"
+      ]
     },
     {
       "id": "kyo",
@@ -2861,7 +3237,14 @@
         "namu": "https://namu.wiki/w/%EC%BF%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%b5%fe",
         "ae_wiki": "https://anothereden.wiki/w/Kyo"
-      }
+      },
+      "traits": [
+        "권갑",
+        "불",
+        "Mounted",
+        "KOF",
+        "MMA"
+      ]
     },
     {
       "id": "mai",
@@ -2889,7 +3272,15 @@
         "namu": "https://namu.wiki/w/%EB%A7%88%EC%9D%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%c9%f1",
         "ae_wiki": "https://anothereden.wiki/w/Mai"
-      }
+      },
+      "traits": [
+        "권갑",
+        "불",
+        "Ninja",
+        "Lovesick",
+        "KOF",
+        "MMA"
+      ]
     },
     {
       "id": "thornbound_witch_alter",
@@ -2917,7 +3308,16 @@
         "namu": "https://namu.wiki/w/%EA%B0%80%EC%8B%9C%EB%82%98%EB%AC%B4%20%EC%A0%80%EC%A3%BC%EC%9D%98%20%EC%97%AC%EC%9D%B8",
         "game_info": "https://anothereden.game-info.wiki/d/%b0%f1%bc%f6%a4%ce%b1%f0%bd%f7",
         "ae_wiki": "https://anothereden.wiki/w/Shanie_(Alter)"
-      }
+      },
+      "traits": [
+        "망치",
+        "바람",
+        "그림자",
+        "Cursed",
+        "고양이 애호가",
+        "Lovesick",
+        "Hood"
+      ]
     },
     {
       "id": "terry",
@@ -2945,7 +3345,13 @@
         "namu": "https://namu.wiki/w/%ED%85%8C%EB%A6%AC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c6%a5%ea%a1%bc",
         "ae_wiki": "https://anothereden.wiki/w/Terry"
-      }
+      },
+      "traits": [
+        "권갑",
+        "땅",
+        "KOF",
+        "MMA"
+      ]
     },
     {
       "id": "zilva_as",
@@ -2973,7 +3379,14 @@
         "namu": "https://namu.wiki/w/%EC%A7%88%EB%B2%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b8%a5%eb%a5%d0%a1%bc%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Zilva_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Forager",
+        "도끼",
+        "Art",
+        "땅",
+        "Outlaw # After AS Quest"
+      ]
     },
     {
       "id": "utpalaka",
@@ -3001,7 +3414,15 @@
         "namu": "https://namu.wiki/w/%EC%9A%B0%EC%B8%A0%ED%95%98%EB%9D%BC",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a6%a5%c4%a5%cf%a5%e9",
         "ae_wiki": "https://anothereden.wiki/w/Utpalaka"
-      }
+      },
+      "traits": [
+        "도끼",
+        "번개",
+        "용",
+        "Dragon Killer",
+        "연옥계",
+        "Arcadia"
+      ]
     },
     {
       "id": "undercover_scribe_alter",
@@ -3029,7 +3450,15 @@
         "namu": "https://namu.wiki/w/%EB%8F%84%ED%9D%AC%EC%9D%98%20%EC%9E%90%EA%B0%9D%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%f0%eb%b3%a2%a4%ce%c6%a4%bc%ea",
         "ae_wiki": "https://anothereden.wiki/w/Renri_(Alter)"
-      }
+      },
+      "traits": [
+        "권갑",
+        "불",
+        "Spicy Lover",
+        "Outlaw",
+        "Bookworm",
+        "Gun"
+      ]
     },
     {
       "id": "minalca_as",
@@ -3057,7 +3486,15 @@
         "namu": "https://namu.wiki/w/%EB%AF%B8%EB%82%98%EB%A5%B4%EC%B9%B4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%ca%a5%eb%a5%ab%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Minalca_(Another_Style)"
-      }
+      },
+      "traits": [
+        "검",
+        "Military",
+        "Glutton",
+        "Chronos Empire",
+        "불",
+        "Outlaw # After AS Character Quest (?)"
+      ]
     },
     {
       "id": "tetra_as",
@@ -3112,7 +3549,15 @@
         "namu": "https://namu.wiki/w/%ED%94%BC%EB%84%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a3%a1%bc%a5%cd%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Feinne_(Another_Style)"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "Cooking",
+        "지팡이",
+        "바르오키",
+        "Geo",
+        "Demon Sword # After Chapter 113"
+      ]
     },
     {
       "id": "jillfunny",
@@ -3140,7 +3585,15 @@
         "namu": "https://namu.wiki/w/%EC%A7%88%ED%8D%BC%EB%8B%88",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b8%a5%eb%a5%d5%a5%a1%a5%cb%a1%bc",
         "ae_wiki": "https://anothereden.wiki/w/Jillfunny"
-      }
+      },
+      "traits": [
+        "검",
+        "물",
+        "결정",
+        "고양이 애호가",
+        "Hood",
+        "Amnesia"
+      ]
     },
     {
       "id": "pyggie",
@@ -3222,7 +3675,16 @@
         "namu": "https://namu.wiki/w/%EB%A7%88%EC%B8%A0%EB%A6%AC%EC%B9%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%de%a5%c4%a5%ea%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Mazrika"
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "Beast",
+        "도끼",
+        "Napper",
+        "Hood",
+        "연옥계",
+        "물"
+      ]
     },
     {
       "id": "yakumo_as",
@@ -3250,7 +3712,14 @@
         "namu": "https://namu.wiki/w/%EC%95%BC%EC%BF%A0%EB%AA%A8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e4%a5%af%a5%e2%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Yakumo_(Another_Style)"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "KMS",
+        "Estrangement",
+        "그림자",
+        "Glasses # Another Style only"
+      ]
     },
     {
       "id": "kumos_as",
@@ -3304,7 +3773,15 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%A0%84%EC%98%81%EC%9D%98%20%EC%83%9B%EB%B3%84",
         "ae_wiki": "https://anothereden.wiki/w/Ciel_(Alter)"
-      }
+      },
+      "traits": [
+        "망치",
+        "번개",
+        "땅",
+        "Mask",
+        "Sweet tooth",
+        "Hood"
+      ]
     },
     {
       "id": "anabel_es",
@@ -3332,7 +3809,15 @@
         "namu": "https://namu.wiki/w/%EC%95%84%EB%82%98%EB%B2%A8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%ca%a5%d9%a5%eb%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Anabel_(Extra_Style)"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "Sweet tooth",
+        "창",
+        "Mounted",
+        "Shield",
+        "불"
+      ]
     },
     {
       "id": "xianhua",
@@ -3360,7 +3845,14 @@
         "namu": "https://namu.wiki/w/%EC%85%B4%ED%99%94",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%a7%a5%f3%a5%d5%a5%a1",
         "ae_wiki": "https://anothereden.wiki/w/Xianhua"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "KMS",
+        "Scientist",
+        "동방",
+        "Synth Human # After 3rd Character Quest"
+      ]
     },
     {
       "id": "kuchinawa",
@@ -3388,7 +3880,12 @@
         "namu": "https://namu.wiki/w/%EC%BF%A0%EC%B9%98%EB%82%98%EC%99%80%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%c1%a5%ca%a5%ef",
         "ae_wiki": "https://anothereden.wiki/w/Kuchinawa"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "땅",
+        "Arcadia # After Wryz Saga III"
+      ]
     },
     {
       "id": "daisy_as",
@@ -3416,7 +3913,14 @@
         "namu": "https://namu.wiki/w/%ED%9E%88%EB%82%98%EA%B8%B0%EC%BF%A0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d2%a5%ca%a5%ae%a5%af%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Daisy_(Another_Style)"
-      }
+      },
+      "traits": [
+        "망치",
+        "Spicy Lover",
+        "Dog lover",
+        "연옥계",
+        "땅"
+      ]
     },
     {
       "id": "ewella_as",
@@ -3444,7 +3948,13 @@
         "namu": "https://namu.wiki/w/%EC%9D%B4%EB%B2%A8%EB%9D%BC",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%a6%a5%a7%a5%e9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Ewella_(Another_Style)"
-      }
+      },
+      "traits": [
+        "엘프",
+        "창",
+        "물",
+        "결정"
+      ]
     },
     {
       "id": "sazanca",
@@ -3472,7 +3982,17 @@
         "namu": "https://namu.wiki/w/%EC%82%AC%EC%9E%94%EC%B9%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b5%a5%b6%a5%f3%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Sazanca"
-      }
+      },
+      "traits": [
+        "도끼",
+        "불",
+        "Arcadia",
+        "동방",
+        "Shield",
+        "Dragon Killer",
+        "Glutton",
+        "Forager"
+      ]
     },
     {
       "id": "melpiphia",
@@ -3500,7 +4020,14 @@
         "namu": "https://namu.wiki/w/%EB%A9%9C%ED%94%BC%ED%94%BC%EC%95%84",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%eb%a5%d4%a5%d4%a5%a2",
         "ae_wiki": "https://anothereden.wiki/w/Melpiphia"
-      }
+      },
+      "traits": [
+        "검",
+        "바람",
+        "엘프",
+        "Nicknamer",
+        "Arcadia # After The Wings of Destiny - Wryz Saga II"
+      ]
     },
     {
       "id": "iridian_attack",
@@ -3608,7 +4135,14 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EA%B5%AD%ED%99%94%EC%9D%98%EA%B2%80%EC%83%89%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Akane_(Alter)"
-      }
+      },
+      "traits": [
+        "도",
+        "땅",
+        "동방",
+        "Itto-Ryu",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "thillelille_es",
@@ -3636,7 +4170,14 @@
         "namu": "https://namu.wiki/w/%ED%8B%B8%EB%A6%B4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c1%a5%eb%a5%ea%a5%eb%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Thillelille_(Extra_Style)"
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "Clergy",
+        "서방",
+        "검",
+        "결정"
+      ]
     },
     {
       "id": "moke",
@@ -3691,7 +4232,15 @@
         "namu": "https://namu.wiki/w/%EC%95%8C%EB%A7%88%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%eb%a5%de%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Alma_(Another_Style)"
-      }
+      },
+      "traits": [
+        "활",
+        "고양이 애호가",
+        "Gun",
+        "Alchemist",
+        "결정",
+        "Glasses"
+      ]
     },
     {
       "id": "wenefica",
@@ -3719,7 +4268,15 @@
         "namu": "https://namu.wiki/w/%EC%9B%A8%EB%84%A4%ED%94%BC%EC%B9%B4",
         "ae_wiki": "https://anothereden.wiki/w/Wenefica",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a6%a5%a7%a5%cd%a1%bc%a5%d5%a5%a3%a5%ab"
-      }
+      },
+      "traits": [
+        "활",
+        "물",
+        "그림자",
+        "Cursed",
+        "Baruoki # After 2nd Character Quest",
+        "Avenger # After 3rd Character Quest"
+      ]
     },
     {
       "id": "cyrus_albright",
@@ -3747,7 +4304,15 @@
         "namu": "https://namu.wiki/w/%EC%82%AC%EC%9D%B4%EB%9F%AC%EC%8A%A4%20%28%ED%98%91%EC%A3%BC%29%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b5%a5%a4%a5%e9%a5%b9%a1%a6%a5%aa%a5%eb%a5%d6%a5%e9%a5%a4%a5%c8",
         "ae_wiki": "https://anothereden.wiki/w/Cyrus_Albright"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "불",
+        "물",
+        "번개",
+        "Bookworm",
+        "Traveler"
+      ]
     },
     {
       "id": "oboro",
@@ -3775,7 +4340,17 @@
         "namu": "https://namu.wiki/w/%EC%98%A4%EB%B3%B4%EB%A1%9C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%aa%a5%dc%a5%ed",
         "ae_wiki": "https://anothereden.wiki/w/Oboro"
-      }
+      },
+      "traits": [
+        "도",
+        "번개",
+        "동방",
+        "Itto-Ryu",
+        "Mask",
+        "KMS",
+        "고양이 애호가",
+        "Lovesick # After Character Quest 2"
+      ]
     },
     {
       "id": "partitio",
@@ -3803,7 +4378,12 @@
         "namu": "https://namu.wiki/w/%ED%8C%8C%EB%A5%B4%ED%8B%B0%ED%8B%B0%EC%98%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d1%a5%eb%a5%c6%a5%c6%a5%a3%a5%aa",
         "ae_wiki": "https://anothereden.wiki/w/Partitio"
-      }
+      },
+      "traits": [
+        "활",
+        "불",
+        "Traveler"
+      ]
     },
     {
       "id": "tithi",
@@ -3831,7 +4411,12 @@
         "namu": "https://namu.wiki/w/%ED%8B%B0%ED%8B%B0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c6%a5%a3%a5%c6%a5%a3",
         "ae_wiki": "https://anothereden.wiki/w/Tithi"
-      }
+      },
+      "traits": [
+        "권갑",
+        "번개",
+        "Traveler"
+      ]
     },
     {
       "id": "cerius",
@@ -3858,7 +4443,14 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%84%B8%EB%A6%AC%EC%97%90%EC%8A%A4",
         "ae_wiki": "https://anothereden.wiki/w/Cerius"
-      }
+      },
+      "traits": [
+        "활",
+        "땅",
+        "Dragon Killer",
+        "Arcadia",
+        "Spicy Lover"
+      ]
     },
     {
       "id": "wryz",
@@ -3886,7 +4478,15 @@
         "namu": "https://namu.wiki/w/%EB%A5%98%EC%A0%9C",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ea%a5%e5%a5%bc",
         "ae_wiki": "https://anothereden.wiki/w/Wryz"
-      }
+      },
+      "traits": [
+        "창",
+        "물",
+        "Cursed",
+        "Dragon Killer",
+        "Arcadia",
+        "Dragon # After 5-star Upgrade"
+      ]
     },
     {
       "id": "pom_as",
@@ -3914,7 +4514,14 @@
         "namu": "https://namu.wiki/w/%ED%8F%BC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%dd%a5%e0%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Pom_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Scientist",
+        "Forager",
+        "지팡이",
+        "Gun",
+        "불"
+      ]
     },
     {
       "id": "orleya_as",
@@ -3942,7 +4549,13 @@
         "namu": "https://namu.wiki/w/%EC%98%A4%EB%A5%BC%EB%A0%88%EC%95%84",
         "ae_wiki": "https://anothereden.wiki/w/Orleya_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%aa%a5%eb%a5%ec%a5%a4%a5%a2%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "도끼",
+        "Estrangement",
+        "불",
+        "번개"
+      ]
     },
     {
       "id": "porcelain_pixie_alter",
@@ -3969,7 +4582,16 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EB%B0%B1%EC%9E%90%EC%9D%98%20%EB%A7%88%EC%9D%B8",
         "ae_wiki": "https://anothereden.wiki/w/Myunfa_(Alter)"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "땅",
+        "동방",
+        "Bind",
+        "Lovesick # After AS Character Quest",
+        "Cat Hater # After AS Character Quest",
+        "Land of Shin # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "kamlanage",
@@ -3997,7 +4619,15 @@
         "namu": "https://namu.wiki/w/%EC%BA%84%EB%9D%BC%EB%85%9C%EC%A5%AC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ab%a5%e0%a5%e9%a5%ca%a1%bc%a5%b8%a5%e5",
         "ae_wiki": "https://anothereden.wiki/w/Kamlanage"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "번개",
+        "Chronos Empire",
+        "Prince of Time",
+        "Paradoxical Dreamers' Leader",
+        "Future Revolutionary"
+      ]
     },
     {
       "id": "velette",
@@ -4025,7 +4655,13 @@
         "namu": "https://namu.wiki/w/%EB%B2%A0%EB%A0%88%ED%86%A0",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%f4%a5%a7%a5%ec%a5%c3%a5%c8",
         "ae_wiki": "https://anothereden.wiki/w/Velette"
-      }
+      },
+      "traits": [
+        "망치",
+        "번개",
+        "Miner",
+        "Chronos Empire"
+      ]
     },
     {
       "id": "gunce",
@@ -4107,7 +4743,13 @@
         "namu": "https://namu.wiki/w/%ED%8C%8C%EB%A6%AC%EC%82%AC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d1%a5%ea%a5%b5%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Parisa_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Minstrel",
+        "활",
+        "Cursed",
+        "불"
+      ]
     },
     {
       "id": "dream_weaver_alter",
@@ -4134,7 +4776,15 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EA%BF%88%EC%9D%98%20%EC%9D%8C%EC%9C%A0%20%EC%8B%9C%EC%9D%B8",
         "ae_wiki": "https://anothereden.wiki/w/Dunarith_(Alter)"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "물",
+        "Beast",
+        "Minstrel",
+        "Spicy Lover",
+        "Purgatory #After 2nd Character Quest"
+      ]
     },
     {
       "id": "melody_as",
@@ -4162,7 +4812,13 @@
         "namu": "https://namu.wiki/w/%EB%A9%9C%EB%A1%9C%EB%94%94%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%ed%a5%c7%a5%a3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Melody_(Another_Style)"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "지팡이",
+        "Estrangement",
+        "바람"
+      ]
     },
     {
       "id": "noahxis_as",
@@ -4190,7 +4846,12 @@
         "namu": "https://namu.wiki/w/%EB%85%B9%EC%8B%9C%EC%8A%A4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ce%a5%af%a5%b7%a5%b9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Noahxis_(Another_Style)"
-      }
+      },
+      "traits": [
+        "망치",
+        "Scientist",
+        "바람"
+      ]
     },
     {
       "id": "felmina_es",
@@ -4218,7 +4879,15 @@
         "namu": "https://namu.wiki/w/%ED%8E%A0%EB%AF%B8%EB%82%98",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a7%a5%eb%a5%df%a5%ca%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Felmina_(Extra_Style)"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "도끼",
+        "Outlaw",
+        "Ninja",
+        "물",
+        "Hood# After unlocking ES Style"
+      ]
     },
     {
       "id": "elseal",
@@ -4246,7 +4915,13 @@
         "namu": "https://namu.wiki/w/%EC%97%98%EC%8B%A4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a8%a5%eb%a5%b7%a1%bc%a5%eb",
         "ae_wiki": "https://anothereden.wiki/w/Elseal"
-      }
+      },
+      "traits": [
+        "검",
+        "물",
+        "Bookworm",
+        "Weapons"
+      ]
     },
     {
       "id": "premaya_as",
@@ -4274,7 +4949,14 @@
         "namu": "https://namu.wiki/w/%ED%94%84%EB%A0%88%EB%A9%94%EC%95%84",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d7%a5%ec%a5%e1%a5%a2%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Premaya_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Cooking #After AS CQ",
+        "활",
+        "Machinery",
+        "로스트 랩",
+        "땅"
+      ]
     },
     {
       "id": "crimson_reaper_alter",
@@ -4301,7 +4983,13 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%8B%AC%ED%99%8D%EC%9D%98%20%EC%82%AC%EC%9E%90",
         "ae_wiki": "https://anothereden.wiki/w/Ilulu_(Alter)"
-      }
+      },
+      "traits": [
+        "Mask",
+        "도끼",
+        "연옥계",
+        "물"
+      ]
     },
     {
       "id": "limil",
@@ -4356,7 +5044,13 @@
         "namu": "https://namu.wiki/w/%ED%94%BC%EC%B9%98%EC%B9%B4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d4%a5%c1%a5%ab%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Pizzica_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Minstrel",
+        "Northern",
+        "활",
+        "불"
+      ]
     },
     {
       "id": "pisce",
@@ -4411,7 +5105,15 @@
         "namu": "https://namu.wiki/w/%EB%85%B8%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Nona_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ce%a1%bc%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "활",
+        "Royalty# Gain during Episode: Wanderer the Binding Night",
+        "Amnesia",
+        "Hood",
+        "물",
+        "그림자"
+      ]
     },
     {
       "id": "sesta",
@@ -4439,7 +5141,12 @@
         "namu": "https://namu.wiki/w/%EC%84%B8%EC%8A%A4%ED%83%80",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bb%a5%b9%a5%bf",
         "ae_wiki": "https://anothereden.wiki/w/Sesta"
-      }
+      },
+      "traits": [
+        "도",
+        "바람",
+        "Avenger"
+      ]
     },
     {
       "id": "toova_es",
@@ -4467,7 +5174,15 @@
         "namu": "https://namu.wiki/w/%ED%88%AC%EB%B0%94%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Toova_(Extra_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c8%a5%a5%a1%bc%a5%f4%a5%a1%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "망치",
+        "Spirit-fused",
+        "Nicknamer",
+        "Funeral",
+        "물",
+        "그림자"
+      ]
     },
     {
       "id": "lovely_as",
@@ -4495,7 +5210,14 @@
         "namu": "https://namu.wiki/w/%EB%9F%AC%EB%B8%94%EB%A6%AC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Lovely_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%d6%a5%ea%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "Cooking",
+        "권갑",
+        "Dwarf",
+        "Nicknamer # after v.3.1.20 game version",
+        "불"
+      ]
     },
     {
       "id": "cerrine_as",
@@ -4523,7 +5245,14 @@
         "namu": "https://namu.wiki/w/%EC%85%80%EB%A6%AC%EB%8A%90%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%a7%a5%ea%a1%bc%a5%cc%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Cerrine_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Glasses",
+        "IDA 스쿨",
+        "Outlaw # after completing Awakening quests",
+        "권갑",
+        "땅"
+      ]
     },
     {
       "id": "beautiful_stranger_alter",
@@ -4550,7 +5279,14 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%9E%94%EC%98%81%EC%9D%98%20%EA%B0%80%EC%9D%B8",
         "ae_wiki": "https://anothereden.wiki/w/Shannon_(Alter)"
-      }
+      },
+      "traits": [
+        "검",
+        "KMS",
+        "Dog lover",
+        "Amnesia# After 2nd Character Quest",
+        "땅"
+      ]
     },
     {
       "id": "yakumo",
@@ -4578,7 +5314,13 @@
         "namu": "https://namu.wiki/w/%EC%95%BC%EC%BF%A0%EB%AA%A8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e4%a5%af%a5%e2",
         "ae_wiki": "https://anothereden.wiki/w/Yakumo"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "KMS",
+        "Estrangement",
+        "그림자"
+      ]
     },
     {
       "id": "kumos",
@@ -4633,7 +5375,16 @@
         "namu": "https://namu.wiki/w/%EB%93%80%EC%9D%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c7%a5%e5%a1%bc%a5%a4%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Dewey_(Another_Style)"
-      }
+      },
+      "traits": [
+        "권갑",
+        "Glasses # Change to Another Style",
+        "Bookworm",
+        "Lovesick",
+        "Gun",
+        "로스트 랩",
+        "물"
+      ]
     },
     {
       "id": "vermillion_whip_alter",
@@ -4660,7 +5411,16 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%9D%80%EC%A3%BC%EC%9D%98%20%EA%B5%AC%EB%AF%B8%ED%98%B8",
         "ae_wiki": "https://anothereden.wiki/w/Hozuki_(Alter)"
-      }
+      },
+      "traits": [
+        "동방",
+        "Cooking",
+        "창",
+        "Spicy Lover",
+        "Fairy",
+        "불",
+        "Land of Shin # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "mariel_es",
@@ -4688,7 +5448,13 @@
         "namu": "https://namu.wiki/w/%EB%A7%88%EB%A6%AC%EC%97%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%de%a5%ea%a5%a8%a5%eb%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Mariel_(Extra_Style)"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "Clergy",
+        "권갑",
+        "결정"
+      ]
     },
     {
       "id": "heena_as",
@@ -4716,7 +5482,14 @@
         "namu": "https://namu.wiki/w/%ED%9E%88%EC%9D%B4%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d2%a5%a4%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Heena_(Another_Style)"
-      }
+      },
+      "traits": [
+        "동방",
+        "도",
+        "Machinery",
+        "바람",
+        "Land of Ro # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "garambarrel_as",
@@ -4744,7 +5517,14 @@
         "namu": "https://namu.wiki/w/%EA%B0%80%EB%9E%8C%EB%B0%B0%EB%9F%B4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ac%a5%e9%a5%e0%a5%d0%a5%ec%a5%eb%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Garambarrel_(Another_Style)"
-      }
+      },
+      "traits": [
+        "동방",
+        "창",
+        "Cursed",
+        "Titan",
+        "바람"
+      ]
     },
     {
       "id": "ashtear",
@@ -4820,7 +5600,15 @@
         "atk_buff": 5,
         "power": 8,
         "atk_state": 2
-      }
+      },
+      "traits": [
+        "권갑",
+        "Glasses",
+        "Scientist",
+        "바르오키",
+        "Gun",
+        "불"
+      ]
     },
     {
       "id": "korobo",
@@ -4875,7 +5663,15 @@
         "namu": "https://namu.wiki/w/%EB%AF%B8%EB%82%98%EB%A5%B4%EC%B9%B4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%ca%a5%eb%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Minalca"
-      }
+      },
+      "traits": [
+        "검",
+        "Military",
+        "Glutton",
+        "Chronos Empire",
+        "불",
+        "Outlaw # After AS Character Quest (?)"
+      ]
     },
     {
       "id": "tetra",
@@ -5011,7 +5807,16 @@
         "namu": "https://namu.wiki/w/%ED%94%8C%EB%9E%8C%EB%9D%BC%ED%94%BC%EC%8A%A4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%e9%a5%e0%a5%e9%a5%d4%a5%b9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Flammelapis_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Clergy",
+        "지팡이",
+        "Titan",
+        "Glutton",
+        "물",
+        "Demon Sword",
+        "Baruoki # after clearing ES quest"
+      ]
     },
     {
       "id": "iphi",
@@ -5051,7 +5856,14 @@
         "power": 2,
         "resource": 1,
         "tempo": 1
-      }
+      },
+      "traits": [
+        "지팡이",
+        "Gun",
+        "Spicy Lover",
+        "불",
+        "그림자"
+      ]
     },
     {
       "id": "noble_blossom_alter",
@@ -5078,7 +5890,16 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EA%BD%83%ED%94%BC%EC%9A%B0%EB%8A%94%20%EA%B3%B5%EC%A3%BC",
         "ae_wiki": "https://anothereden.wiki/w/Tsukiha_(Alter)"
-      }
+      },
+      "traits": [
+        "창",
+        "동방",
+        "Royalty",
+        "Bookworm",
+        "Fairy",
+        "불",
+        "Land of Ro # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "necoco_as",
@@ -5106,7 +5927,17 @@
         "namu": "https://namu.wiki/w/%EB%84%A4%EC%BD%94%EC%BD%94",
         "game_info": "https://anothereden.game-info.wiki/d/%a4%cd%a4%b3%a4%b3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Necoco_(Another_Style)"
-      }
+      },
+      "traits": [
+        "도끼",
+        "동방",
+        "Cat lover # after v2.14.30 game version",
+        "Animal Talker# after v2.14.30 game version",
+        "Fairy",
+        "땅",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel",
+        "Spirit Talker# After Extra Style quest"
+      ]
     },
     {
       "id": "alphen",
@@ -5134,7 +5965,15 @@
         "namu": "https://namu.wiki/w/%EC%95%8C%ED%8E%9C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%eb%a5%d5%a5%a7%a5%f3",
         "ae_wiki": "https://anothereden.wiki/w/Alphen"
-      }
+      },
+      "traits": [
+        "검",
+        "Mask",
+        "Amnesia",
+        "Tales of",
+        "Concerto Artes # after Fraxinus Labs Camp Conversations",
+        "불"
+      ]
     },
     {
       "id": "colette",
@@ -5162,7 +6001,13 @@
         "namu": "https://namu.wiki/w/%EC%BD%9C%EB%A0%88%ED%8A%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b3%a5%ec%a5%c3%a5%c8",
         "ae_wiki": "https://anothereden.wiki/w/Colette"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "Dog lover",
+        "Tales of",
+        "Concerto Artes # after Fraxinus Labs Camp Conversations"
+      ]
     },
     {
       "id": "moonlight_flower_alter",
@@ -5190,7 +6035,12 @@
         "namu": "https://namu.wiki/w/%EC%9B%94%ED%99%94%EC%9D%98%20%EC%98%81%EC%95%A0",
         "game_info": "https://anothereden.game-info.wiki/d/%b7%ee%b2%da%a4%ce%ce%e1%be%ee",
         "ae_wiki": "https://anothereden.wiki/w/Hismena_(Alter)"
-      }
+      },
+      "traits": [
+        "검",
+        "IDA 스쿨",
+        "물"
+      ]
     },
     {
       "id": "lloyd",
@@ -5218,7 +6068,13 @@
         "namu": "https://namu.wiki/w/%EB%A1%9C%EC%9D%B4%EB%93%9C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ed%a5%a4%a5%c9",
         "ae_wiki": "https://anothereden.wiki/w/Lloyd"
-      }
+      },
+      "traits": [
+        "도",
+        "Tales of",
+        "Concerto Artes # after Fraxinus Labs Camp Conversations",
+        "불"
+      ]
     },
     {
       "id": "shionne",
@@ -5246,7 +6102,16 @@
         "namu": "https://namu.wiki/w/%EC%8B%9C%EC%98%A8%20%28%ED%98%91%EC%A3%BC%29%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%aa%a5%f3%28%a5%c6%a5%a4%a5%eb%a5%ba%29",
         "ae_wiki": "https://anothereden.wiki/w/Shionne"
-      }
+      },
+      "traits": [
+        "활",
+        "Cursed",
+        "Glutton",
+        "Gun",
+        "Tales of",
+        "Concerto Artes # after Fraxinus Labs Camp Conversations",
+        "불"
+      ]
     },
     {
       "id": "biaka_as",
@@ -5274,7 +6139,15 @@
         "namu": "https://namu.wiki/w/%EB%B9%84%EC%95%84%EC%B9%B4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%f4%a5%a3%a5%a2%a5%c3%a5%ab%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Biaka_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Outlaw # after clearing AS Quest",
+        "Mask # after clearing AS Quest",
+        "망치",
+        "Military",
+        "Gun",
+        "바람"
+      ]
     },
     {
       "id": "cynthia_as",
@@ -5302,7 +6175,16 @@
         "namu": "https://namu.wiki/w/%EC%8B%A0%EC%8B%9C%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%f3%a5%b7%a5%a2%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Cynthia_(Another_Style)"
-      }
+      },
+      "traits": [
+        "검",
+        "Art",
+        "Gourmet",
+        "Royalty",
+        "Bookworm",
+        "Bind",
+        "바람"
+      ]
     },
     {
       "id": "claude_es",
@@ -5330,7 +6212,15 @@
         "namu": "https://namu.wiki/w/%ED%81%B4%EB%A1%9C%EB%93%9C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Claude_(Extra_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%ed%a1%bc%a5%c9%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "검",
+        "Royalty",
+        "Bookworm",
+        "Dragon # after clearing ES Quest",
+        "땅"
+      ]
     },
     {
       "id": "aisha",
@@ -5358,7 +6248,14 @@
         "namu": "https://namu.wiki/w/%EC%95%84%EC%9D%B4%EC%83%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%a3%a5%b7%a5%e3",
         "ae_wiki": "https://anothereden.wiki/w/Aisha"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "Minstrel",
+        "Cursed",
+        "불",
+        "물"
+      ]
     },
     {
       "id": "soira_as",
@@ -5386,7 +6283,13 @@
         "namu": "https://namu.wiki/w/%EC%86%8C%EC%9D%B4%EB%9D%BC",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bd%a5%a4%a5%e9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Soira_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "창",
+        "Napper",
+        "바람"
+      ]
     },
     {
       "id": "uquaji",
@@ -5414,7 +6317,11 @@
         "namu": "https://namu.wiki/w/%EC%9A%B0%EC%BF%A0%EC%95%84%EC%A7%80",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a6%a5%af%a5%a2%a1%bc%a5%b8",
         "ae_wiki": "https://anothereden.wiki/w/Uquaji"
-      }
+      },
+      "traits": [
+        "권갑",
+        "물"
+      ]
     },
     {
       "id": "yukino_as",
@@ -5442,7 +6349,13 @@
         "namu": "https://namu.wiki/w/%EC%9C%A0%ED%82%A4%EB%85%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a5%ad%a5%ce%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Yukino_(Another_Style)"
-      }
+      },
+      "traits": [
+        "동방",
+        "활",
+        "Fairy",
+        "물"
+      ]
     },
     {
       "id": "lele_as",
@@ -5470,7 +6383,13 @@
         "namu": "https://namu.wiki/w/%EB%A0%88%EB%A0%88%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ec%a5%ec%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Lele_(Another_Style)"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "지팡이",
+        "Animal Talker",
+        "물"
+      ]
     },
     {
       "id": "alma",
@@ -5498,7 +6417,15 @@
         "namu": "https://namu.wiki/w/%EC%95%8C%EB%A7%88%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%eb%a5%de",
         "ae_wiki": "https://anothereden.wiki/w/Alma"
-      }
+      },
+      "traits": [
+        "활",
+        "고양이 애호가",
+        "Gun",
+        "Alchemist",
+        "결정",
+        "Glasses"
+      ]
     },
     {
       "id": "yipha_as",
@@ -5526,7 +6453,15 @@
         "namu": "https://namu.wiki/w/%EC%9C%A0%EC%9D%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Yipha_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a1%bc%a5%d5%a5%a1%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "망치",
+        "Clergy",
+        "Lovesick",
+        "Nicknamer # after clearing AS Quest",
+        "Spicy Lover#after clearing AS Quest",
+        "바람"
+      ]
     },
     {
       "id": "azami_as",
@@ -5554,7 +6489,15 @@
         "namu": "https://namu.wiki/w/%EC%95%84%EC%9E%90%EB%AF%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Azami_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%b6%a5%df%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "동방",
+        "Sweet tooth",
+        "도",
+        "Lovesick",
+        "바람",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "jet_tactician_alter",
@@ -5581,7 +6524,17 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EB%A8%B9%EB%B9%9B%EC%9D%98%20%EC%B1%85%EC%82%AC",
         "ae_wiki": "https://anothereden.wiki/w/Shion_(Alter)"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "동방",
+        "고양이 애호가",
+        "Bookworm",
+        "Gun",
+        "Itto-Ryu",
+        "불",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "radias_as",
@@ -5609,7 +6562,13 @@
         "namu": "https://namu.wiki/w/%EB%9D%BC%EB%94%94%EC%95%84%EC%8A%A4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%c7%a5%a3%a5%a2%a5%b9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Radias_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "검",
+        "Shield",
+        "불"
+      ]
     },
     {
       "id": "miyu_es",
@@ -5637,7 +6596,14 @@
         "namu": "https://namu.wiki/w/%EB%AF%B8%EC%9C%A0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Miyu_(Extra_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a1%bc%a5%e6%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "창",
+        "Royalty",
+        "땅",
+        "번개"
+      ]
     },
     {
       "id": "noahxis",
@@ -5665,7 +6631,12 @@
         "namu": "https://namu.wiki/w/%EB%85%B9%EC%8B%9C%EC%8A%A4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ce%a5%af%a5%b7%a5%b9",
         "ae_wiki": "https://anothereden.wiki/w/Noahxis"
-      }
+      },
+      "traits": [
+        "망치",
+        "Scientist",
+        "바람"
+      ]
     },
     {
       "id": "nona",
@@ -5693,7 +6664,15 @@
         "namu": "https://namu.wiki/w/%EB%85%B8%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Nona",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ce%a1%bc%a5%ca"
-      }
+      },
+      "traits": [
+        "활",
+        "Royalty# Gain during Episode: Wanderer the Binding Night",
+        "Amnesia",
+        "Hood",
+        "물",
+        "그림자"
+      ]
     },
     {
       "id": "orleya",
@@ -5721,7 +6700,13 @@
         "namu": "https://namu.wiki/w/%EC%98%A4%EB%A5%BC%EB%A0%88%EC%95%84",
         "ae_wiki": "https://anothereden.wiki/w/Orleya",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%aa%a5%eb%a5%ec%a5%a4%a5%a2"
-      }
+      },
+      "traits": [
+        "도끼",
+        "Estrangement",
+        "불",
+        "번개"
+      ]
     },
     {
       "id": "milsha_as",
@@ -5749,7 +6734,15 @@
         "namu": "https://namu.wiki/w/%EB%AF%B8%EB%A5%B4%EC%83%A4",
         "ae_wiki": "https://anothereden.wiki/w/Milsha_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%eb%a5%b7%a5%e3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "Minstrel",
+        "창",
+        "서방",
+        "Fishman",
+        "땅",
+        "그림자"
+      ]
     },
     {
       "id": "philo_as",
@@ -5777,7 +6770,12 @@
         "namu": "https://namu.wiki/w/%ED%95%84%EB%A1%9C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a3%a5%ed%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Philo_(Another_Style)"
-      }
+      },
+      "traits": [
+        "도끼",
+        "Woodcutter",
+        "물"
+      ]
     },
     {
       "id": "otoha_as",
@@ -5805,7 +6803,15 @@
         "namu": "https://namu.wiki/w/%EC%98%A4%ED%86%A0%ED%95%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%aa%a5%c8%a5%cf%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Otoha_(Another_Style)"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "동방",
+        "도",
+        "Zoology",
+        "땅",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "mayu",
@@ -5833,7 +6839,12 @@
         "namu": "https://namu.wiki/w/%EB%A7%88%EC%9C%A0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%de%a5%e6",
         "ae_wiki": "https://anothereden.wiki/w/Mayu"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "IDA 스쿨",
+        "물"
+      ]
     },
     {
       "id": "suzette_es",
@@ -5861,7 +6872,14 @@
         "namu": "https://namu.wiki/w/%EC%88%98%EC%A0%9C%ED%8A%B8",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%e5%a5%bc%a5%c3%a5%c8%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Suzette_(Extra_Style)"
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "망치",
+        "Gourmet",
+        "로스트 랩",
+        "불"
+      ]
     },
     {
       "id": "silver_striker_alter",
@@ -5888,7 +6906,16 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%9D%80%EB%B9%9B%EC%9D%84%20%ED%9C%98%EA%B0%90%EC%9D%80%20%EB%B2%88%EA%B0%9C%EC%88%A0%EC%82%AC",
         "ae_wiki": "https://anothereden.wiki/w/Premaya_(Alter)"
-      }
+      },
+      "traits": [
+        "활",
+        "Machinery",
+        "로스트 랩",
+        "물",
+        "번개",
+        "Lovesick # After AS Quest",
+        "Hood # After AS Quest"
+      ]
     },
     {
       "id": "starky",
@@ -5916,7 +6943,12 @@
         "namu": "https://namu.wiki/w/%EB%B3%84%EC%9D%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%c0%b1%a4%ce%bb%d2",
         "ae_wiki": "https://anothereden.wiki/w/Starky"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "Scars of the Wheel of Time",
+        "결정"
+      ]
     },
     {
       "id": "violet_lancer_alter",
@@ -5943,7 +6975,13 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EB%B3%B4%EB%9D%BC%20%EC%9D%98%EC%83%81%EC%9D%98%20%EC%B0%BD%EC%88%A0%EC%82%AC",
         "ae_wiki": "https://anothereden.wiki/w/Toova_(Alter)"
-      }
+      },
+      "traits": [
+        "창",
+        "로스트 랩",
+        "땅",
+        "Amnesia"
+      ]
     },
     {
       "id": "flammelapis",
@@ -5971,7 +7009,16 @@
         "namu": "https://namu.wiki/w/%ED%94%8C%EB%9E%8C%EB%9D%BC%ED%94%BC%EC%8A%A4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%e9%a5%e0%a5%e9%a5%d4%a5%b9",
         "ae_wiki": "https://anothereden.wiki/w/Flammelapis"
-      }
+      },
+      "traits": [
+        "Clergy",
+        "지팡이",
+        "Titan",
+        "Glutton",
+        "물",
+        "Demon Sword",
+        "Baruoki # after clearing ES quest"
+      ]
     },
     {
       "id": "mistrare_as",
@@ -5999,7 +7046,16 @@
         "namu": "https://namu.wiki/w/%EB%AF%B8%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%95%84",
         "ae_wiki": "https://anothereden.wiki/w/Mistrare_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%b9%a5%c8%a5%ec%a5%a2%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "Minstrel",
+        "서방",
+        "활",
+        "Nicknamer",
+        "Bookworm",
+        "바람",
+        "결정"
+      ]
     },
     {
       "id": "cyan_scyther_alter",
@@ -6026,7 +7082,14 @@
       "urls": {
         "namu": "https://namu.wiki/w/%ED%91%B8%EB%A5%B8%20%EB%B9%9B%EC%9D%98%20%EB%82%AB%EC%9E%A1%EC%9D%B4",
         "ae_wiki": "https://anothereden.wiki/w/Suzette_(Alter)"
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "도끼",
+        "Gourmet",
+        "로스트 랩",
+        "바람"
+      ]
     },
     {
       "id": "red_clad_flam_alter",
@@ -6053,7 +7116,16 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EB%B9%A8%EA%B0%84%20%EC%99%B8%ED%88%AC%EC%9D%98%20%ED%99%94%EC%97%BC%EC%88%A0%EC%82%AC",
         "ae_wiki": "https://anothereden.wiki/w/Dewey_(Alter)"
-      }
+      },
+      "traits": [
+        "권갑",
+        "Gun",
+        "로스트 랩",
+        "불",
+        "결정",
+        "IDA School # After AS quest",
+        "Hood # After AS quest"
+      ]
     },
     {
       "id": "zeviro_as",
@@ -6081,7 +7153,14 @@
         "namu": "https://namu.wiki/w/%EC%A0%9C%EB%B9%8C%EB%A1%9C",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bc%a5%f4%a5%a3%a1%bc%a5%ed%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Zeviro_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Beast",
+        "도끼",
+        "Hood",
+        "연옥계",
+        "물"
+      ]
     },
     {
       "id": "black_clad_sw_alter",
@@ -6108,7 +7187,14 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EA%B2%80%EC%9D%80%20%EC%98%B7%EC%9D%98%20%EC%B9%BC%EC%9E%A1%EC%9D%B4",
         "ae_wiki": "https://anothereden.wiki/w/Isuka_(Alter)"
-      }
+      },
+      "traits": [
+        "도",
+        "로스트 랩",
+        "Power to Rule",
+        "땅",
+        "그림자"
+      ]
     },
     {
       "id": "eva",
@@ -6136,7 +7222,13 @@
         "namu": "https://namu.wiki/w/%EC%97%90%EB%B0%94%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a8%a5%f4%a5%a1",
         "ae_wiki": "https://anothereden.wiki/w/Eva"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "용",
+        "물",
+        "결정"
+      ]
     },
     {
       "id": "curio",
@@ -6164,7 +7256,17 @@
         "namu": "https://namu.wiki/w/%ED%81%90%EB%A6%AC%EC%98%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ad%a5%e5%a5%ea%a5%aa",
         "ae_wiki": "https://anothereden.wiki/w/Curio"
-      }
+      },
+      "traits": [
+        "도",
+        "Sweet tooth",
+        "IDA 스쿨",
+        "Bookworm",
+        "로스트 랩",
+        "Power to Rule",
+        "바람",
+        "그림자"
+      ]
     },
     {
       "id": "isuka_es",
@@ -6192,7 +7294,17 @@
         "namu": "https://namu.wiki/w/%EC%9D%B4%EC%8A%A4%EC%B9%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Isuka_(Extra_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%b9%a5%ab%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "검",
+        "Bookworm",
+        "COA",
+        "로스트 랩",
+        "Power to Rule",
+        "불",
+        "그림자"
+      ]
     },
     {
       "id": "daisy",
@@ -6220,7 +7332,14 @@
         "namu": "https://namu.wiki/w/%ED%9E%88%EB%82%98%EA%B8%B0%EC%BF%A0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Daisy",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d2%a5%ca%a5%ae%a5%af"
-      }
+      },
+      "traits": [
+        "망치",
+        "Spicy Lover",
+        "Dog lover",
+        "연옥계",
+        "땅"
+      ]
     },
     {
       "id": "levia_as",
@@ -6248,7 +7367,15 @@
         "namu": "https://namu.wiki/w/%EB%A0%88%EB%B9%84%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Levia_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ea%a5%f4%a5%a1%a5%a4%a5%a2%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "Dragon Palace",
+        "지팡이",
+        "Amnesia",
+        "Fishman",
+        "Bind",
+        "물"
+      ]
     },
     {
       "id": "nagi_es",
@@ -6276,7 +7403,15 @@
         "namu": "https://namu.wiki/w/%EB%82%98%EA%B8%B0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ca%a5%ae%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Nagi_(Extra_Style)"
-      }
+      },
+      "traits": [
+        "Dragon Palace",
+        "지팡이",
+        "Royalty # after clearing ES quest",
+        "Glutton",
+        "물",
+        "결정"
+      ]
     },
     {
       "id": "harle",
@@ -6304,7 +7439,14 @@
         "namu": "https://namu.wiki/w/%EC%B8%A0%EC%BF%A0%EC%9A%94%EB%AF%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Harle",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c4%a5%af%a5%e8%a5%df"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "New Time Drift",
+        "Scars of the Wheel of Time",
+        "불",
+        "그림자"
+      ]
     },
     {
       "id": "kid",
@@ -6332,7 +7474,13 @@
         "namu": "https://namu.wiki/w/%ED%82%A4%EB%93%9C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ad%a5%c3%a5%c9",
         "ae_wiki": "https://anothereden.wiki/w/Kid"
-      }
+      },
+      "traits": [
+        "도",
+        "New Radical Dreamers",
+        "Scars of the Wheel of Time",
+        "불"
+      ]
     },
     {
       "id": "kikyo_as",
@@ -6360,7 +7508,15 @@
         "namu": "https://namu.wiki/w/%ED%82%A4%EC%BF%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ad%a5%ad%a5%e7%a5%a6%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Kikyo_(Another_Style)"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "동방",
+        "도끼",
+        "Avenger",
+        "Mounted",
+        "바람"
+      ]
     },
     {
       "id": "serge",
@@ -6388,7 +7544,13 @@
         "namu": "https://namu.wiki/w/%EC%84%B8%EB%A5%B4%EC%A3%BC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bb%a5%eb%a5%b8%a5%e5",
         "ae_wiki": "https://anothereden.wiki/w/Serge"
-      }
+      },
+      "traits": [
+        "검",
+        "New Radical Dreamers",
+        "New Time Drift",
+        "Scars of the Wheel of Time"
+      ]
     },
     {
       "id": "pizzica",
@@ -6416,7 +7578,13 @@
         "namu": "https://namu.wiki/w/%ED%94%BC%EC%B9%98%EC%B9%B4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d4%a5%c1%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Pizzica"
-      }
+      },
+      "traits": [
+        "Minstrel",
+        "Northern",
+        "활",
+        "불"
+      ]
     },
     {
       "id": "sheila_as",
@@ -6444,7 +7612,14 @@
         "namu": "https://namu.wiki/w/%EC%8B%9C%EC%97%90%EB%9D%BC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Sheila_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a1%bc%a5%e9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "Dragon Palace",
+        "창",
+        "Royalty",
+        "Fishman",
+        "물"
+      ]
     },
     {
       "id": "hardy_as",
@@ -6472,7 +7647,17 @@
         "namu": "https://namu.wiki/w/%ED%95%98%EB%94%94%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%cf%a1%bc%a5%c7%a5%a3%a1%bc%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Hardy_(Another_Style)"
-      }
+      },
+      "traits": [
+        "권갑",
+        "Weapons",
+        "Zoology",
+        "Outlaw",
+        "Dog lover",
+        "Gun",
+        "Sweet tooth # speak with Hardy in La Vie En Rose",
+        "불"
+      ]
     },
     {
       "id": "chiyo_as",
@@ -6500,7 +7685,12 @@
         "namu": "https://namu.wiki/w/%EC%B9%98%EC%9A%94%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c1%a5%e8%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Chiyo_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Dragon Palace",
+        "지팡이",
+        "땅"
+      ]
     },
     {
       "id": "victor_as",
@@ -6527,7 +7717,14 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EB%B9%85%ED%8A%B8",
         "ae_wiki": "https://anothereden.wiki/w/Victor_(Another_Style)"
-      }
+      },
+      "traits": [
+        "도",
+        "바르오키",
+        "Cursed",
+        "바람",
+        "번개"
+      ]
     },
     {
       "id": "myunfa_as",
@@ -6555,7 +7752,15 @@
         "namu": "https://namu.wiki/w/%EB%B0%8D%ED%99%94",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%e5%a5%f3%a5%d5%a5%a1%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Myunfa_(Another_Style)"
-      }
+      },
+      "traits": [
+        "동방",
+        "망치",
+        "Lovesick",
+        "Bind",
+        "땅",
+        "Land of Shin # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "garambarrel",
@@ -6583,7 +7788,14 @@
         "namu": "https://namu.wiki/w/%EA%B0%80%EB%9E%8C%EB%B0%B0%EB%9F%B4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ac%a5%e9%a5%e0%a5%d0%a5%ec%a5%eb",
         "ae_wiki": "https://anothereden.wiki/w/Garambarrel"
-      }
+      },
+      "traits": [
+        "동방",
+        "창",
+        "Cursed",
+        "Titan",
+        "바람"
+      ]
     },
     {
       "id": "necoco",
@@ -6611,7 +7823,17 @@
         "namu": "https://namu.wiki/w/%EB%84%A4%EC%BD%94%EC%BD%94",
         "game_info": "https://anothereden.game-info.wiki/d/%a4%cd%a4%b3%a4%b3",
         "ae_wiki": "https://anothereden.wiki/w/Necoco"
-      }
+      },
+      "traits": [
+        "도끼",
+        "동방",
+        "Cat lover # after v2.14.30 game version",
+        "Animal Talker# after v2.14.30 game version",
+        "Fairy",
+        "땅",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel",
+        "Spirit Talker# After Extra Style quest"
+      ]
     },
     {
       "id": "tsukiha_es",
@@ -6639,7 +7861,18 @@
         "namu": "https://namu.wiki/w/%EC%B8%A0%ED%82%A4%ED%95%98",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c4%a5%ad%a5%cf%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Tsukiha_(Extra_Style)"
-      }
+      },
+      "traits": [
+        "동방",
+        "Mask",
+        "활",
+        "Avenger",
+        "Cursed",
+        "Royalty",
+        "Fairy",
+        "바람",
+        "Land of Ro # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "tsubame_as",
@@ -6667,7 +7900,15 @@
         "namu": "https://namu.wiki/w/%EC%B8%A0%EB%B0%94%EB%A9%94%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c4%a5%d0%a5%e1%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Tsubame_(Another_Style)"
-      }
+      },
+      "traits": [
+        "동방",
+        "권갑",
+        "Ninja",
+        "Glutton",
+        "땅",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "melody",
@@ -6695,7 +7936,13 @@
         "namu": "https://namu.wiki/w/%EB%A9%9C%EB%A1%9C%EB%94%94%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%ed%a5%c7%a5%a3",
         "ae_wiki": "https://anothereden.wiki/w/Melody"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "지팡이",
+        "Estrangement",
+        "바람"
+      ]
     },
     {
       "id": "clarte_as",
@@ -6723,7 +7970,15 @@
         "namu": "https://namu.wiki/w/%ED%81%B4%EB%9D%BC%EB%A5%B4%ED%85%8C",
         "ae_wiki": "https://anothereden.wiki/w/Clarte_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%e9%a5%eb%a5%c6%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "서방",
+        "지팡이",
+        "Amnesia",
+        "Geo",
+        "땅",
+        "결정"
+      ]
     },
     {
       "id": "thillelille_as",
@@ -6751,7 +8006,15 @@
         "namu": "https://namu.wiki/w/%ED%8B%B8%EB%A6%B4",
         "ae_wiki": "https://anothereden.wiki/w/Thillelille_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c1%a5%eb%a5%ea%a5%eb%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "Clergy",
+        "서방",
+        "검",
+        "불",
+        "그림자"
+      ]
     },
     {
       "id": "tiramisu_as",
@@ -6779,7 +8042,13 @@
         "namu": "https://namu.wiki/w/%ED%8B%B0%EB%9D%BC%EB%AF%B8%EC%88%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c6%a5%a3%a5%e9%a5%df%a5%b9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Tiramisu_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "창",
+        "용",
+        "땅"
+      ]
     },
     {
       "id": "shigure_as",
@@ -6807,7 +8076,18 @@
         "namu": "https://namu.wiki/w/%EC%8B%9C%EA%B5%AC%EB%A0%88%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%b0%a5%ec%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Shigure_(Another_Style)"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "동방",
+        "Childhood Friend",
+        "도",
+        "Mounted",
+        "Spicy Lover",
+        "Itto-Ryu",
+        "물",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "melina_es",
@@ -6835,7 +8115,18 @@
         "namu": "https://namu.wiki/w/%EB%A9%94%EB%A6%AC%EB%82%98",
         "ae_wiki": "https://anothereden.wiki/w/Melina_(Extra_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%ea%a5%ca%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "Clergy",
+        "Minstrel",
+        "Miner",
+        "권갑",
+        "서방",
+        "Royalty",
+        "물",
+        "번개"
+      ]
     },
     {
       "id": "dunarith_as",
@@ -6863,7 +8154,15 @@
         "namu": "https://namu.wiki/w/%EB%93%80%EB%82%98%EB%A6%AC%EC%8A%A4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c7%a5%e5%a5%ca%a5%ea%a5%b9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Dunarith_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Beast",
+        "지팡이",
+        "Funeral",
+        "Animal Talker",
+        "연옥계",
+        "바람"
+      ]
     },
     {
       "id": "ewella",
@@ -6937,7 +8236,13 @@
         "surv_buff": 7,
         "power": 1,
         "zone": 1
-      }
+      },
+      "traits": [
+        "엘프",
+        "창",
+        "물",
+        "결정"
+      ]
     },
     {
       "id": "miyu_as",
@@ -6965,7 +8270,13 @@
         "namu": "https://namu.wiki/w/%EB%AF%B8%EC%9C%A0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a1%bc%a5%e6%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Miyu_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "검",
+        "Royalty",
+        "불"
+      ]
     },
     {
       "id": "radica_as",
@@ -6993,7 +8304,13 @@
         "namu": "https://namu.wiki/w/%EB%9D%BC%EB%94%94%EC%B9%B4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%c7%a5%a3%a5%ab%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Radica_(Another_Style)"
-      }
+      },
+      "traits": [
+        "엘프",
+        "지팡이",
+        "Lovesick",
+        "불"
+      ]
     },
     {
       "id": "hismena_as",
@@ -7021,7 +8338,12 @@
         "namu": "https://namu.wiki/w/%ED%9E%88%EC%8A%A4%EB%A9%94%EB%82%98",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d2%a5%b9%a5%e1%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Hismena_(Another_Style)"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "창",
+        "물"
+      ]
     },
     {
       "id": "milsha",
@@ -7049,7 +8371,15 @@
         "namu": "https://namu.wiki/w/%EB%AF%B8%EB%A5%B4%EC%83%A4",
         "ae_wiki": "https://anothereden.wiki/w/Milsha",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%eb%a5%b7%a5%e3"
-      }
+      },
+      "traits": [
+        "Minstrel",
+        "창",
+        "서방",
+        "Fishman",
+        "땅",
+        "그림자"
+      ]
     },
     {
       "id": "ewan_as",
@@ -7077,7 +8407,16 @@
         "namu": "https://namu.wiki/w/%EC%9C%A0%EC%9D%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Ewan_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a1%bc%a5%a4%a5%f3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "Glasses",
+        "Sweet tooth",
+        "Miner",
+        "망치",
+        "Weapons",
+        "Cursed",
+        "불"
+      ]
     },
     {
       "id": "ilulu_as",
@@ -7105,7 +8444,14 @@
         "namu": "https://namu.wiki/w/%EC%9D%B4%EB%A3%A8%EB%A3%A8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%eb%a5%eb%a5%a5%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Ilulu_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Mask",
+        "도끼",
+        "Hood",
+        "연옥계",
+        "바람"
+      ]
     },
     {
       "id": "hozuki_as",
@@ -7133,7 +8479,16 @@
         "namu": "https://namu.wiki/w/%ED%98%B8%EC%98%A4%EC%A6%88%ED%82%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%db%a5%aa%a5%ba%a5%ad%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Hozuki_(Another_Style)"
-      }
+      },
+      "traits": [
+        "동방",
+        "Cooking",
+        "활",
+        "Spicy Lover",
+        "Fairy",
+        "불",
+        "Land of Shin # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "rosetta_as",
@@ -7161,7 +8516,15 @@
         "namu": "https://namu.wiki/w/%EB%A1%9C%EC%A0%9C%ED%83%80%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ed%a5%bc%a5%c3%a5%bf%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Rosetta_(Another_Style)"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "Clergy",
+        "서방",
+        "지팡이",
+        "Sharp Ears",
+        "불"
+      ]
     },
     {
       "id": "melissa",
@@ -7189,7 +8552,14 @@
         "namu": "https://namu.wiki/w/%EB%A9%9C%EB%A6%AC%EC%82%AC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%ea%a5%c3%a5%b5",
         "ae_wiki": "https://anothereden.wiki/w/Melissa"
-      }
+      },
+      "traits": [
+        "Synth Human",
+        "도",
+        "바람",
+        "결정",
+        "KMS"
+      ]
     },
     {
       "id": "heena",
@@ -7217,7 +8587,14 @@
         "namu": "https://namu.wiki/w/%ED%9E%88%EC%9D%B4%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d2%a5%a4%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Heena"
-      }
+      },
+      "traits": [
+        "동방",
+        "도",
+        "Machinery",
+        "바람",
+        "Land of Ro # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "yukino",
@@ -7245,7 +8622,13 @@
         "namu": "https://namu.wiki/w/%EC%9C%A0%ED%82%A4%EB%85%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a5%ad%a5%ce",
         "ae_wiki": "https://anothereden.wiki/w/Yukino"
-      }
+      },
+      "traits": [
+        "동방",
+        "활",
+        "Fairy",
+        "물"
+      ]
     },
     {
       "id": "tsukiha_as",
@@ -7273,7 +8656,18 @@
         "namu": "https://namu.wiki/w/%EC%B8%A0%ED%82%A4%ED%95%98",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c4%a5%ad%a5%cf%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Tsukiha_(Another_Style)"
-      }
+      },
+      "traits": [
+        "동방",
+        "Mask",
+        "도",
+        "Avenger",
+        "Cursed",
+        "Royalty",
+        "Fairy",
+        "불",
+        "Land of Ro # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "bertrand_as",
@@ -7301,7 +8695,13 @@
         "namu": "https://namu.wiki/w/%EB%B2%A0%EB%A5%B4%ED%8A%B8%EB%9E%91%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d9%a5%eb%a5%c8%a5%e9%a5%f3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Bertrand_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "창",
+        "Shield",
+        "땅"
+      ]
     },
     {
       "id": "cress",
@@ -7329,7 +8729,13 @@
         "namu": "https://namu.wiki/w/%ED%81%B4%EB%A0%88%EC%8A%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%ec%a5%b9",
         "ae_wiki": "https://anothereden.wiki/w/Cress"
-      }
+      },
+      "traits": [
+        "검",
+        "Tales of",
+        "Concerto Artes # after Fraxinus Labs Camp Conversations",
+        "불"
+      ]
     },
     {
       "id": "milla",
@@ -7357,7 +8763,13 @@
         "namu": "https://namu.wiki/w/%EB%AF%B8%EB%9D%BC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Milla",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%e9"
-      }
+      },
+      "traits": [
+        "검",
+        "Tales of",
+        "Concerto Artes # after Fraxinus Labs Camp Conversations",
+        "물"
+      ]
     },
     {
       "id": "velvet",
@@ -7385,7 +8797,13 @@
         "namu": "https://namu.wiki/w/%EB%B2%A8%EB%B2%B3%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d9%a5%eb%a5%d9%a5%c3%a5%c8",
         "ae_wiki": "https://anothereden.wiki/w/Velvet"
-      }
+      },
+      "traits": [
+        "검",
+        "Tales of",
+        "Concerto Artes # after Fraxinus Labs Camp Conversations",
+        "땅"
+      ]
     },
     {
       "id": "yuri",
@@ -7413,7 +8831,13 @@
         "namu": "https://namu.wiki/w/%EC%9C%A0%EB%A6%AC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Yuri",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a1%bc%a5%ea"
-      }
+      },
+      "traits": [
+        "도",
+        "Tales of",
+        "Concerto Artes # after Fraxinus Labs Camp Conversations",
+        "바람"
+      ]
     },
     {
       "id": "clarte",
@@ -7441,7 +8865,15 @@
         "namu": "https://namu.wiki/w/%ED%81%B4%EB%9D%BC%EB%A5%B4%ED%85%8C",
         "ae_wiki": "https://anothereden.wiki/w/Clarte",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%e9%a5%eb%a5%c6"
-      }
+      },
+      "traits": [
+        "서방",
+        "지팡이",
+        "Amnesia",
+        "Geo",
+        "땅",
+        "결정"
+      ]
     },
     {
       "id": "mistrare",
@@ -7508,7 +8940,16 @@
         "zone": 2,
         "surv_debuff": 2,
         "surv_buff": 1
-      }
+      },
+      "traits": [
+        "Minstrel",
+        "서방",
+        "활",
+        "Nicknamer",
+        "Bookworm",
+        "바람",
+        "결정"
+      ]
     },
     {
       "id": "skull",
@@ -7536,7 +8977,14 @@
         "namu": "https://namu.wiki/w/%EC%8A%A4%EC%BB%AC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Skull",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b9%a5%ab%a5%eb"
-      }
+      },
+      "traits": [
+        "Mask",
+        "망치",
+        "Phantom Thieves of Hearts",
+        "Gun",
+        "번개"
+      ]
     },
     {
       "id": "victor",
@@ -7603,7 +9051,14 @@
         "surv_debuff": 3,
         "atk_state": 2,
         "surv_buff": 1
-      }
+      },
+      "traits": [
+        "도",
+        "바르오키",
+        "Cursed",
+        "바람",
+        "번개"
+      ]
     },
     {
       "id": "violet",
@@ -7631,7 +9086,15 @@
         "namu": "https://namu.wiki/w/%EB%B0%94%EC%9D%B4%EC%98%AC%EB%A0%9B%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Violet",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%f4%a5%a1%a5%a4%a5%aa%a5%ec%a5%c3%a5%c8"
-      }
+      },
+      "traits": [
+        "Mask",
+        "검",
+        "Phantom Thieves of Hearts",
+        "Glutton",
+        "Gun",
+        "땅"
+      ]
     },
     {
       "id": "foran_as",
@@ -7659,7 +9122,13 @@
         "namu": "https://namu.wiki/w/%ED%8F%AC%EB%9E%80",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a9%a5%e9%a5%f3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Foran_(Another_Style)"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "창",
+        "Cat Hater",
+        "물"
+      ]
     },
     {
       "id": "thillelille",
@@ -7701,7 +9170,15 @@
         "recover": 4,
         "surv_state": 1,
         "resource": 1
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "Clergy",
+        "서방",
+        "검",
+        "불",
+        "그림자"
+      ]
     },
     {
       "id": "ciel_as",
@@ -7729,7 +9206,12 @@
         "namu": "https://namu.wiki/w/%EC%8B%9C%EC%97%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%a8%a5%eb%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Ciel_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Minstrel",
+        "활",
+        "땅"
+      ]
     },
     {
       "id": "yipha",
@@ -7757,7 +9239,15 @@
         "namu": "https://namu.wiki/w/%EC%9C%A0%EC%9D%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Yipha",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a1%bc%a5%d5%a5%a1"
-      }
+      },
+      "traits": [
+        "망치",
+        "Clergy",
+        "Lovesick",
+        "Nicknamer # after clearing AS Quest",
+        "Spicy Lover#after clearing AS Quest",
+        "바람"
+      ]
     },
     {
       "id": "shannon_as",
@@ -7785,7 +9275,14 @@
         "namu": "https://namu.wiki/w/%EC%84%80%EB%84%8C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%e3%a5%ce%a5%f3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Shannon_(Another_Style)"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "검",
+        "Art",
+        "KMS",
+        "바람"
+      ]
     },
     {
       "id": "hardy",
@@ -7813,7 +9310,17 @@
         "namu": "https://namu.wiki/w/%ED%95%98%EB%94%94%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%cf%a1%bc%a5%c7%a5%a3%a1%bc",
         "ae_wiki": "https://anothereden.wiki/w/Hardy"
-      }
+      },
+      "traits": [
+        "권갑",
+        "Weapons",
+        "Zoology",
+        "Outlaw",
+        "Dog lover",
+        "Gun",
+        "Sweet tooth # speak with Hardy in La Vie En Rose",
+        "불"
+      ]
     },
     {
       "id": "sophia",
@@ -7841,7 +9348,16 @@
         "namu": "https://namu.wiki/w/%EC%86%8C%ED%94%BC%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bd%a5%d5%a5%a3%a5%a2",
         "ae_wiki": "https://anothereden.wiki/w/Sophia"
-      }
+      },
+      "traits": [
+        "도끼",
+        "Weapons",
+        "Art",
+        "Zoology",
+        "Gourmet",
+        "Bind",
+        "물"
+      ]
     },
     {
       "id": "cynthia",
@@ -7869,7 +9385,16 @@
         "namu": "https://namu.wiki/w/%EC%8B%A0%EC%8B%9C%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%f3%a5%b7%a5%a2",
         "ae_wiki": "https://anothereden.wiki/w/Cynthia"
-      }
+      },
+      "traits": [
+        "검",
+        "Art",
+        "Gourmet",
+        "Royalty",
+        "Bookworm",
+        "Bind",
+        "바람"
+      ]
     },
     {
       "id": "veina_as",
@@ -7897,7 +9422,15 @@
         "namu": "https://namu.wiki/w/%EB%B2%A0%EC%9D%B4%EB%82%98",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%f4%a5%a7%a5%a4%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Veina_(Another_Style)"
-      }
+      },
+      "traits": [
+        "엘프",
+        "Forager",
+        "지팡이",
+        "Zoology",
+        "Bookworm",
+        "바람"
+      ]
     },
     {
       "id": "zeviro",
@@ -7925,7 +9458,14 @@
         "namu": "https://namu.wiki/w/%EC%A0%9C%EB%B9%8C%EB%A1%9C",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bc%a5%f4%a5%a3%a1%bc%a5%ed",
         "ae_wiki": "https://anothereden.wiki/w/Zeviro"
-      }
+      },
+      "traits": [
+        "Beast",
+        "도끼",
+        "Hood",
+        "연옥계",
+        "물"
+      ]
     },
     {
       "id": "anabel_as",
@@ -7953,7 +9493,15 @@
         "namu": "https://namu.wiki/w/%EC%95%84%EB%82%98%EB%B2%A8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%ca%a5%d9%a5%eb%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Anabel_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "Sweet tooth",
+        "검",
+        "Mounted",
+        "Shield",
+        "물"
+      ]
     },
     {
       "id": "radias",
@@ -7981,7 +9529,13 @@
         "namu": "https://namu.wiki/w/%EB%9D%BC%EB%94%94%EC%95%84%EC%8A%A4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%c7%a5%a3%a5%a2%a5%b9",
         "ae_wiki": "https://anothereden.wiki/w/Radias"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "검",
+        "Shield",
+        "불"
+      ]
     },
     {
       "id": "myrus_as",
@@ -8009,7 +9563,12 @@
         "namu": "https://namu.wiki/w/%EB%AE%AC%EB%A3%A8%EC%8A%A4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%e5%a5%eb%a5%b9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Myrus_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Beast",
+        "지팡이",
+        "땅"
+      ]
     },
     {
       "id": "renri_as",
@@ -8037,7 +9596,14 @@
         "namu": "https://namu.wiki/w/%EB%A0%8C%EB%A6%AC",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ec%a5%f3%a5%ea%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Renri_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Glasses # after clearing AS Quest",
+        "Sweet tooth",
+        "도끼",
+        "COA",
+        "불"
+      ]
     },
     {
       "id": "tiramisu",
@@ -8065,7 +9631,13 @@
         "namu": "https://namu.wiki/w/%ED%8B%B0%EB%9D%BC%EB%AF%B8%EC%88%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c6%a5%a3%a5%e9%a5%df%a5%b9",
         "ae_wiki": "https://anothereden.wiki/w/Tiramisu"
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "창",
+        "용",
+        "땅"
+      ]
     },
     {
       "id": "elga_as",
@@ -8093,7 +9665,14 @@
         "namu": "https://namu.wiki/w/%EC%97%98%EA%B0%80%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a8%a5%eb%a5%ac%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Elga_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Cat lover # After AS character quest",
+        "도",
+        "Hood",
+        "Amnesia",
+        "땅"
+      ]
     },
     {
       "id": "felmina_as",
@@ -8121,7 +9700,15 @@
         "namu": "https://namu.wiki/w/%ED%8E%A0%EB%AF%B8%EB%82%98",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a7%a5%eb%a5%df%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Felmina_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "권갑",
+        "Outlaw",
+        "Hood# After unlocking ES Style",
+        "Ninja",
+        "바람"
+      ]
     },
     {
       "id": "myunfa",
@@ -8149,7 +9736,15 @@
         "namu": "https://namu.wiki/w/%EB%B0%8D%ED%99%94",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%e5%a5%f3%a5%d5%a5%a1",
         "ae_wiki": "https://anothereden.wiki/w/Myunfa"
-      }
+      },
+      "traits": [
+        "동방",
+        "망치",
+        "Lovesick",
+        "Bind",
+        "땅",
+        "Land of Shin # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "cetie_as",
@@ -8177,7 +9772,14 @@
         "namu": "https://namu.wiki/w/%EC%84%B8%ED%8B%B0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bb%a5%c6%a5%a3%a1%bc%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Cetie_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Glasses # after clearing AS Quest",
+        "창",
+        "Mounted",
+        "COA",
+        "불"
+      ]
     },
     {
       "id": "altena",
@@ -8205,7 +9807,14 @@
         "namu": "https://namu.wiki/w/%EC%95%8C%ED%85%8C%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%eb%a5%c6%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Altena"
-      }
+      },
+      "traits": [
+        "Beast",
+        "활",
+        "Spirit Talker",
+        "Royalty",
+        "Demon Sword"
+      ]
     },
     {
       "id": "kikyo",
@@ -8233,7 +9842,15 @@
         "namu": "https://namu.wiki/w/%ED%82%A4%EC%BF%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ad%a5%ad%a5%e7%a5%a6",
         "ae_wiki": "https://anothereden.wiki/w/Kikyo"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "동방",
+        "도끼",
+        "Avenger",
+        "Mounted",
+        "바람"
+      ]
     },
     {
       "id": "nikeh_as",
@@ -8261,7 +9878,13 @@
         "namu": "https://namu.wiki/w/%EB%8B%88%EC%BC%80%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%cb%a5%b1%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Nikeh_(Another_Style)"
-      }
+      },
+      "traits": [
+        "동방",
+        "도",
+        "Outlaw",
+        "물"
+      ]
     },
     {
       "id": "strawboy",
@@ -8424,7 +10047,15 @@
         "namu": "https://namu.wiki/w/%ED%81%B4%EB%A1%9C%EB%93%9C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Claude_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%ed%a1%bc%a5%c9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "활",
+        "Royalty",
+        "Bookworm",
+        "Dragon # after clearing ES Quest",
+        "바람"
+      ]
     },
     {
       "id": "premaya",
@@ -8452,7 +10083,14 @@
         "namu": "https://namu.wiki/w/%ED%94%84%EB%A0%88%EB%A9%94%EC%95%84",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d7%a5%ec%a5%e1%a5%a2",
         "ae_wiki": "https://anothereden.wiki/w/Premaya"
-      }
+      },
+      "traits": [
+        "Cooking #After AS CQ",
+        "활",
+        "Machinery",
+        "로스트 랩",
+        "땅"
+      ]
     },
     {
       "id": "gariyu_as",
@@ -8480,7 +10118,12 @@
         "namu": "https://namu.wiki/w/%EA%B0%80%EB%A6%AC%EC%9C%A0",
         "ae_wiki": "https://anothereden.wiki/w/Gariyu_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ac%a5%ea%a5%e6%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "용",
+        "불"
+      ]
     },
     {
       "id": "yuna_as",
@@ -8508,7 +10151,14 @@
         "namu": "https://namu.wiki/w/%EC%9C%A0%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Yuna_(Another_Style)"
-      }
+      },
+      "traits": [
+        "동방",
+        "Clergy",
+        "지팡이",
+        "Estrangement",
+        "물"
+      ]
     },
     {
       "id": "shanie_as",
@@ -8536,7 +10186,13 @@
         "namu": "https://namu.wiki/w/%EC%85%B0%EC%9D%B4%EB%84%A4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%a7%a5%a4%a5%cd%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Shanie_(Another_Style)"
-      }
+      },
+      "traits": [
+        "검",
+        "Lovesick",
+        "Cursed",
+        "물"
+      ]
     },
     {
       "id": "ruina_as",
@@ -8564,7 +10220,15 @@
         "namu": "https://namu.wiki/w/%EB%A3%A8%EC%9D%B4%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%eb%a5%a4%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Ruina_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Glasses #After sidegrading to AS",
+        "엘프",
+        "IDA 스쿨",
+        "검",
+        "Bookworm",
+        "바람"
+      ]
     },
     {
       "id": "hismena",
@@ -8606,7 +10270,12 @@
         "tempo": 1,
         "mode": 1,
         "power": 1
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "창",
+        "물"
+      ]
     },
     {
       "id": "mana",
@@ -8634,7 +10303,11 @@
         "namu": "https://namu.wiki/w/%EB%A7%88%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%de%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Mana"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "활"
+      ]
     },
     {
       "id": "mariel_as",
@@ -8662,7 +10335,12 @@
         "namu": "https://namu.wiki/w/%EB%A7%88%EB%A6%AC%EC%97%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%de%a5%ea%a5%a8%a5%eb%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Mariel_(Another_Style)"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "Clergy",
+        "지팡이"
+      ]
     },
     {
       "id": "dunarith",
@@ -8690,7 +10368,15 @@
         "namu": "https://namu.wiki/w/%EB%93%80%EB%82%98%EB%A6%AC%EC%8A%A4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c7%a5%e5%a5%ca%a5%ea%a5%b9",
         "ae_wiki": "https://anothereden.wiki/w/Dunarith"
-      }
+      },
+      "traits": [
+        "Beast",
+        "지팡이",
+        "Funeral",
+        "Animal Talker",
+        "연옥계",
+        "바람"
+      ]
     },
     {
       "id": "lokido_as",
@@ -8718,7 +10404,13 @@
         "namu": "https://namu.wiki/w/%EB%A1%9C%ED%82%A4%EB%93%9C",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ed%a5%ad%a5%c9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Lokido_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Beast # after clearing AS Quest",
+        "권갑",
+        "Avenger",
+        "땅"
+      ]
     },
     {
       "id": "lovely",
@@ -8746,7 +10438,14 @@
         "namu": "https://namu.wiki/w/%EB%9F%AC%EB%B8%94%EB%A6%AC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Lovely",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%d6%a5%ea"
-      }
+      },
+      "traits": [
+        "Cooking",
+        "권갑",
+        "Dwarf",
+        "Nicknamer # after v.3.1.20 game version",
+        "불"
+      ]
     },
     {
       "id": "philo",
@@ -8774,7 +10473,12 @@
         "namu": "https://namu.wiki/w/%ED%95%84%EB%A1%9C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a3%a5%ed",
         "ae_wiki": "https://anothereden.wiki/w/Philo"
-      }
+      },
+      "traits": [
+        "도끼",
+        "Woodcutter",
+        "물"
+      ]
     },
     {
       "id": "nagi_as",
@@ -8802,7 +10506,14 @@
         "namu": "https://namu.wiki/w/%EB%82%98%EA%B8%B0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ca%a5%ae%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Nagi_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Dragon Palace",
+        "도끼",
+        "Royalty # after clearing ES quest",
+        "Glutton",
+        "땅"
+      ]
     },
     {
       "id": "akane_as",
@@ -8830,7 +10541,14 @@
         "namu": "https://namu.wiki/w/%EC%95%84%EC%B9%B4%EB%84%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%ab%a5%cd%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Akane_(Another_Style)"
-      }
+      },
+      "traits": [
+        "동방",
+        "도",
+        "불",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel",
+        "Itto-Ryu # After Character Quest 3"
+      ]
     },
     {
       "id": "joker",
@@ -8858,7 +10576,15 @@
         "namu": "https://namu.wiki/w/%EC%A1%B0%EC%BB%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Joker",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b8%a5%e7%a1%bc%a5%ab%a1%bc"
-      }
+      },
+      "traits": [
+        "Mask",
+        "Glasses",
+        "검",
+        "Phantom Thieves of Hearts",
+        "Gun",
+        "불"
+      ]
     },
     {
       "id": "morgana",
@@ -8886,7 +10612,14 @@
         "namu": "https://namu.wiki/w/%EB%AA%A8%EB%A5%B4%EA%B0%80%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e2%a5%eb%a5%ac%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Morgana"
-      }
+      },
+      "traits": [
+        "검",
+        "Phantom Thieves of Hearts",
+        "Lovesick",
+        "Amnesia",
+        "바람"
+      ]
     },
     {
       "id": "rosetta",
@@ -8929,7 +10662,15 @@
         "surv_state": 1,
         "recover": 3,
         "resource": 1
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "Clergy",
+        "서방",
+        "지팡이",
+        "Sharp Ears",
+        "불"
+      ]
     },
     {
       "id": "shigure",
@@ -8957,7 +10698,18 @@
         "namu": "https://namu.wiki/w/%EC%8B%9C%EA%B5%AC%EB%A0%88%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%b0%a5%ec",
         "ae_wiki": "https://anothereden.wiki/w/Shigure"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "동방",
+        "Childhood Friend",
+        "도",
+        "Mounted",
+        "Spicy Lover",
+        "Itto-Ryu",
+        "물",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "tsubame",
@@ -8985,7 +10737,15 @@
         "namu": "https://namu.wiki/w/%EC%B8%A0%EB%B0%94%EB%A9%94%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c4%a5%d0%a5%e1",
         "ae_wiki": "https://anothereden.wiki/w/Tsubame"
-      }
+      },
+      "traits": [
+        "동방",
+        "권갑",
+        "Ninja",
+        "Glutton",
+        "땅",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "melina_as",
@@ -9013,7 +10773,17 @@
         "namu": "https://namu.wiki/w/%EB%A9%94%EB%A6%AC%EB%82%98",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%ea%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Melina_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "Clergy",
+        "Minstrel",
+        "Miner",
+        "서방",
+        "망치",
+        "Royalty",
+        "물"
+      ]
     },
     {
       "id": "biaka",
@@ -9041,7 +10811,15 @@
         "namu": "https://namu.wiki/w/%EB%B9%84%EC%95%84%EC%B9%B4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%f4%a5%a3%a5%a2%a5%c3%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Biaka"
-      }
+      },
+      "traits": [
+        "Outlaw # after clearing AS Quest",
+        "Mask # after clearing AS Quest",
+        "망치",
+        "Military",
+        "Gun",
+        "바람"
+      ]
     },
     {
       "id": "galliard",
@@ -9069,7 +10847,15 @@
         "namu": "https://namu.wiki/w/%EA%B0%A4%EB%A6%AC%EC%96%B4%EB%93%9C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ac%a5%ea%a5%a2%a1%bc%a5%c9",
         "ae_wiki": "https://anothereden.wiki/w/Galliard"
-      }
+      },
+      "traits": [
+        "Synth Human",
+        "창",
+        "Mounted",
+        "Outlaw",
+        "Gun",
+        "땅"
+      ]
     },
     {
       "id": "hozuki",
@@ -9112,7 +10898,16 @@
         "state_unknown": 2,
         "tempo": 1,
         "resource": 1
-      }
+      },
+      "traits": [
+        "동방",
+        "Cooking",
+        "활",
+        "Spicy Lover",
+        "Fairy",
+        "불",
+        "Land of Shin # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "laclair_as",
@@ -9140,7 +10935,14 @@
         "namu": "https://namu.wiki/w/%EB%9D%BC%ED%81%B4%EB%A0%88%EC%96%B4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%af%a5%ec%a5%a2%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Laclair_(Another_Style)"
-      }
+      },
+      "traits": [
+        "활",
+        "Avenger",
+        "Dragon Killer",
+        "Dog lover",
+        "물"
+      ]
     },
     {
       "id": "ilulu",
@@ -9168,7 +10970,14 @@
         "namu": "https://namu.wiki/w/%EC%9D%B4%EB%A3%A8%EB%A3%A8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%eb%a5%eb%a5%a5",
         "ae_wiki": "https://anothereden.wiki/w/Ilulu"
-      }
+      },
+      "traits": [
+        "Mask",
+        "도끼",
+        "Hood",
+        "연옥계",
+        "바람"
+      ]
     },
     {
       "id": "radica",
@@ -9242,7 +11051,13 @@
         "dot": 1,
         "state_unknown": 2,
         "tempo": 1
-      }
+      },
+      "traits": [
+        "엘프",
+        "지팡이",
+        "Lovesick",
+        "불"
+      ]
     },
     {
       "id": "poporo",
@@ -9270,7 +11085,15 @@
         "namu": "https://namu.wiki/w/%ED%8F%AC%ED%8F%AC%EB%A1%9C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ce%a5%dd%a5%a6%c2%b2%3f",
         "ae_wiki": "https://anothereden.wiki/w/Poporo"
-      }
+      },
+      "traits": [
+        "Blacksmith",
+        "Miner",
+        "망치",
+        "Hood",
+        "Estrangement",
+        "바람"
+      ]
     },
     {
       "id": "dewey",
@@ -9339,7 +11162,16 @@
         "dot": 1,
         "zone": 1,
         "atk_buff": 5
-      }
+      },
+      "traits": [
+        "권갑",
+        "Glasses # Change to Another Style",
+        "Bookworm # after v.3.0.70 game version",
+        "Lovesick",
+        "Gun",
+        "로스트 랩",
+        "물"
+      ]
     },
     {
       "id": "shion_as",
@@ -9367,7 +11199,17 @@
         "namu": "https://namu.wiki/w/%EC%8B%9C%EC%98%A8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%aa%a5%f3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Shion_(Another_Style)"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "동방",
+        "Childhood Friend",
+        "도",
+        "Mounted",
+        "Itto-Ryu",
+        "불",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "veina",
@@ -9395,7 +11237,15 @@
         "namu": "https://namu.wiki/w/%EB%B2%A0%EC%9D%B4%EB%82%98",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%f4%a5%a7%a5%a4%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Veina"
-      }
+      },
+      "traits": [
+        "엘프",
+        "Forager",
+        "지팡이",
+        "Zoology",
+        "Bookworm",
+        "바람"
+      ]
     },
     {
       "id": "elga",
@@ -9423,7 +11273,14 @@
         "namu": "https://namu.wiki/w/%EC%97%98%EA%B0%80%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Elga",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a8%a5%eb%a5%ac"
-      }
+      },
+      "traits": [
+        "Cat lover # After AS character quest",
+        "도",
+        "Hood",
+        "Amnesia",
+        "땅"
+      ]
     },
     {
       "id": "toova_as",
@@ -9451,7 +11308,14 @@
         "namu": "https://namu.wiki/w/%ED%88%AC%EB%B0%94%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c8%a5%a5%a1%bc%a5%f4%a5%a1%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Toova_(Another_Style)"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "Spirit-fused",
+        "Nicknamer",
+        "Funeral",
+        "땅"
+      ]
     },
     {
       "id": "renri",
@@ -9492,7 +11356,14 @@
         "atk_buff": 1,
         "attack": 1,
         "enemy_utility": 1
-      }
+      },
+      "traits": [
+        "Glasses # after clearing AS Quest",
+        "Sweet tooth",
+        "도끼",
+        "COA",
+        "불"
+      ]
     },
     {
       "id": "shannon",
@@ -9520,7 +11391,14 @@
         "namu": "https://namu.wiki/w/%EC%84%80%EB%84%8C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%e3%a5%ce%a5%f3",
         "ae_wiki": "https://anothereden.wiki/w/Shannon"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "검",
+        "Art",
+        "KMS",
+        "바람"
+      ]
     },
     {
       "id": "isuka_as",
@@ -9548,7 +11426,16 @@
         "namu": "https://namu.wiki/w/%EC%9D%B4%EC%8A%A4%EC%B9%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%b9%a5%ab%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Isuka_(Another_Style)"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "도",
+        "Bookworm",
+        "COA",
+        "로스트 랩",
+        "Power to Rule",
+        "바람"
+      ]
     },
     {
       "id": "saki_as",
@@ -9576,7 +11463,12 @@
         "namu": "https://namu.wiki/w/%EC%82%AC%ED%82%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Saki_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b5%a5%ad%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "지팡이",
+        "물"
+      ]
     },
     {
       "id": "claude",
@@ -9622,7 +11514,15 @@
         "state_unknown": 2,
         "enemy_utility": 1,
         "power": 1
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "활",
+        "Royalty",
+        "Bookworm",
+        "Dragon # after clearing ES Quest",
+        "바람"
+      ]
     },
     {
       "id": "mighty_as",
@@ -9650,7 +11550,13 @@
         "namu": "https://namu.wiki/w/%EB%A7%88%EC%9D%B4%ED%8B%B0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%de%a5%a4%a5%c6%a5%a3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Mighty_(Another_Style)"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "지팡이",
+        "Napper",
+        "물"
+      ]
     },
     {
       "id": "saki",
@@ -9678,7 +11584,12 @@
         "namu": "https://namu.wiki/w/%EC%82%AC%ED%82%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b5%a5%ad",
         "ae_wiki": "https://anothereden.wiki/w/Saki"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "지팡이",
+        "물"
+      ]
     },
     {
       "id": "tsukiha",
@@ -9706,7 +11617,18 @@
         "namu": "https://namu.wiki/w/%EC%B8%A0%ED%82%A4%ED%95%98",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c4%a5%ad%a5%cf",
         "ae_wiki": "https://anothereden.wiki/w/Tsukiha"
-      }
+      },
+      "traits": [
+        "동방",
+        "Mask",
+        "도",
+        "Avenger",
+        "Cursed",
+        "Royalty",
+        "Fairy",
+        "불",
+        "Land of Ro # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "bertrand",
@@ -9734,7 +11656,13 @@
         "namu": "https://namu.wiki/w/%EB%B2%A0%EB%A5%B4%ED%8A%B8%EB%9E%91%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d9%a5%eb%a5%c8%a5%e9%a5%f3",
         "ae_wiki": "https://anothereden.wiki/w/Bertrand"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "창",
+        "Shield",
+        "땅"
+      ]
     },
     {
       "id": "felmina",
@@ -9806,7 +11734,15 @@
         "surv_buff": 2,
         "surv_state": 2,
         "atk_debuff": 3
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "권갑",
+        "Outlaw",
+        "Hood# After unlocking ES Style",
+        "Ninja",
+        "바람"
+      ]
     },
     {
       "id": "guildna",
@@ -9834,7 +11770,14 @@
         "namu": "https://namu.wiki/w/%EA%B8%B8%EB%93%9C%EB%84%88",
         "ae_wiki": "https://anothereden.wiki/w/Guildna",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ae%a5%eb%a5%c9%a5%ca"
-      }
+      },
+      "traits": [
+        "Beast",
+        "Luring Shadow #During Chapter 32",
+        "검",
+        "Royalty",
+        "불"
+      ]
     },
     {
       "id": "suzette_as",
@@ -9862,7 +11805,14 @@
         "namu": "https://namu.wiki/w/%EC%88%98%EC%A0%9C%ED%8A%B8",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%e5%a5%bc%a5%c3%a5%c8%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Suzette_(Another_Style)"
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "창",
+        "Gourmet",
+        "로스트 랩",
+        "바람"
+      ]
     },
     {
       "id": "myrus",
@@ -9907,7 +11857,12 @@
         "surv_state": 2,
         "recover": 3,
         "resource": 2
-      }
+      },
+      "traits": [
+        "Beast",
+        "지팡이",
+        "땅"
+      ]
     },
     {
       "id": "good_macky",
@@ -9934,7 +11889,13 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%B0%A9%ED%95%9C%20%EB%A7%88%EC%BF%A0%EB%A7%88%EC%BF%A0",
         "ae_wiki": "https://anothereden.wiki/w/Good_Macky"
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "권갑",
+        "Cat Hater",
+        "바람"
+      ]
     },
     {
       "id": "melina",
@@ -9962,7 +11923,17 @@
         "namu": "https://namu.wiki/w/%EB%A9%94%EB%A6%AC%EB%82%98",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%ea%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Melina"
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "Clergy",
+        "Minstrel",
+        "Miner",
+        "서방",
+        "망치",
+        "Royalty",
+        "물"
+      ]
     },
     {
       "id": "nonold",
@@ -9990,7 +11961,14 @@
         "namu": "https://namu.wiki/w/%EB%85%B8%EB%86%80%EB%93%9C",
         "ae_wiki": "https://anothereden.wiki/w/Nonold",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ce%a5%ce%a5%eb%a5%c9"
-      }
+      },
+      "traits": [
+        "Scientist",
+        "Forager",
+        "지팡이",
+        "KMS",
+        "IDA School # After 5★ Unlock"
+      ]
     },
     {
       "id": "zilva",
@@ -10018,7 +11996,14 @@
         "namu": "https://namu.wiki/w/%EC%A7%88%EB%B2%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b8%a5%eb%a5%d0%a1%bc",
         "ae_wiki": "https://anothereden.wiki/w/Zilva"
-      }
+      },
+      "traits": [
+        "Forager",
+        "도끼",
+        "Art",
+        "땅",
+        "Outlaw # After AS Quest"
+      ]
     },
     {
       "id": "shanie",
@@ -10046,7 +12031,13 @@
         "namu": "https://namu.wiki/w/%EC%85%B0%EC%9D%B4%EB%84%A4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%a7%a5%a4%a5%cd",
         "ae_wiki": "https://anothereden.wiki/w/Shanie"
-      }
+      },
+      "traits": [
+        "검",
+        "Lovesick",
+        "Cursed",
+        "물"
+      ]
     },
     {
       "id": "cerrine",
@@ -10074,7 +12065,14 @@
         "namu": "https://namu.wiki/w/%EC%85%80%EB%A6%AC%EB%8A%90%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Cerrine",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%a7%a5%ea%a1%bc%a5%cc"
-      }
+      },
+      "traits": [
+        "Glasses",
+        "IDA 스쿨",
+        "Outlaw # after completing Awakening quests",
+        "권갑",
+        "땅"
+      ]
     },
     {
       "id": "cetie",
@@ -10111,7 +12109,14 @@
         "attack": 1,
         "mode": 1,
         "resource": 1
-      }
+      },
+      "traits": [
+        "Glasses # after clearing AS Quest",
+        "창",
+        "Mounted",
+        "COA",
+        "불"
+      ]
     },
     {
       "id": "yazuki",
@@ -10139,7 +12144,14 @@
         "namu": "https://namu.wiki/w/%EC%95%BC%EC%A6%88%ED%82%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e4%a5%c5%a5%ad%3f",
         "ae_wiki": "https://anothereden.wiki/w/Yazuki"
-      }
+      },
+      "traits": [
+        "Glasses",
+        "도끼",
+        "Outlaw",
+        "Scallywag",
+        "바람"
+      ]
     },
     {
       "id": "ewan",
@@ -10167,7 +12179,16 @@
         "namu": "https://namu.wiki/w/%EC%9C%A0%EC%9D%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Ewan",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a1%bc%a5%a4%a5%f3"
-      }
+      },
+      "traits": [
+        "Glasses",
+        "Sweet tooth",
+        "Miner",
+        "망치",
+        "Weapons",
+        "Cursed",
+        "불"
+      ]
     },
     {
       "id": "erina",
@@ -10195,7 +12216,13 @@
         "namu": "https://namu.wiki/w/%EC%97%90%EB%A6%AC%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a8%a5%ea%a5%ca%3f",
         "ae_wiki": "https://anothereden.wiki/w/Erina"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "Spirit-fused",
+        "Sweet tooth",
+        "Purgatory#AS Quest"
+      ]
     },
     {
       "id": "levia",
@@ -10223,7 +12250,15 @@
         "namu": "https://namu.wiki/w/%EB%A0%88%EB%B9%84%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Levia",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ea%a5%f4%a5%a1%a5%a4%a5%a2"
-      }
+      },
+      "traits": [
+        "Dragon Palace",
+        "지팡이",
+        "Amnesia",
+        "Fishman",
+        "Bind",
+        "물"
+      ]
     },
     {
       "id": "nagi",
@@ -10251,7 +12286,14 @@
         "namu": "https://namu.wiki/w/%EB%82%98%EA%B8%B0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ca%a5%ae",
         "ae_wiki": "https://anothereden.wiki/w/Nagi"
-      }
+      },
+      "traits": [
+        "Dragon Palace",
+        "도끼",
+        "Royalty # after clearing ES quest",
+        "Glutton",
+        "땅"
+      ]
     },
     {
       "id": "chiyo",
@@ -10279,7 +12321,12 @@
         "namu": "https://namu.wiki/w/%EC%B9%98%EC%9A%94%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c1%a5%e8",
         "ae_wiki": "https://anothereden.wiki/w/Chiyo"
-      }
+      },
+      "traits": [
+        "Dragon Palace",
+        "지팡이",
+        "땅"
+      ]
     },
     {
       "id": "sheila",
@@ -10307,7 +12354,14 @@
         "namu": "https://namu.wiki/w/%EC%8B%9C%EC%97%90%EB%9D%BC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a1%bc%a5%e9",
         "ae_wiki": "https://anothereden.wiki/w/Sheila"
-      }
+      },
+      "traits": [
+        "Dragon Palace",
+        "창",
+        "Royalty",
+        "Fishman",
+        "물"
+      ]
     },
     {
       "id": "gariyu",
@@ -10376,7 +12430,12 @@
         "power": 3,
         "surv_buff": 4,
         "dot": 1
-      }
+      },
+      "traits": [
+        "지팡이",
+        "용",
+        "불"
+      ]
     },
     {
       "id": "yuna",
@@ -10404,7 +12463,13 @@
         "namu": "https://namu.wiki/w/%EC%9C%A0%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Yuna"
-      }
+      },
+      "traits": [
+        "동방",
+        "Clergy",
+        "지팡이",
+        "Estrangement"
+      ]
     },
     {
       "id": "lovinia",
@@ -10432,7 +12497,13 @@
         "namu": "https://namu.wiki/w/%EB%9D%BC%EB%B9%84%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%d3%a5%ca%3f",
         "ae_wiki": "https://anothereden.wiki/w/Lovinia"
-      }
+      },
+      "traits": [
+        "Minstrel",
+        "활",
+        "Spirit Talker",
+        "바람"
+      ]
     },
     {
       "id": "isuka",
@@ -10460,7 +12531,16 @@
         "namu": "https://namu.wiki/w/%EC%9D%B4%EC%8A%A4%EC%B9%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%b9%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Isuka"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "도",
+        "Bookworm",
+        "COA",
+        "로스트 랩",
+        "Power to Rule",
+        "바람"
+      ]
     },
     {
       "id": "jade",
@@ -10488,7 +12568,12 @@
         "namu": "https://namu.wiki/w/%EC%A0%9C%EC%9D%B4%EB%93%9C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Jade",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b8%a5%a7%a5%a4%a5%c9"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "창",
+        "불"
+      ]
     },
     {
       "id": "ruina",
@@ -10516,7 +12601,15 @@
         "namu": "https://namu.wiki/w/%EB%A3%A8%EC%9D%B4%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%eb%a5%a4%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Ruina"
-      }
+      },
+      "traits": [
+        "Glasses # After AS Unlock",
+        "엘프",
+        "IDA 스쿨",
+        "검",
+        "Bookworm",
+        "바람"
+      ]
     },
     {
       "id": "azami",
@@ -10544,7 +12637,15 @@
         "namu": "https://namu.wiki/w/%EC%95%84%EC%9E%90%EB%AF%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Azami",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%b6%a5%df"
-      }
+      },
+      "traits": [
+        "동방",
+        "Sweet tooth",
+        "도",
+        "Lovesick",
+        "바람",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "laclair",
@@ -10572,7 +12673,14 @@
         "namu": "https://namu.wiki/w/%EB%9D%BC%ED%81%B4%EB%A0%88%EC%96%B4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%af%a5%ec%a5%a2",
         "ae_wiki": "https://anothereden.wiki/w/Laclair"
-      }
+      },
+      "traits": [
+        "활",
+        "Avenger",
+        "Dragon Killer",
+        "Dog lover",
+        "물"
+      ]
     },
     {
       "id": "samora",
@@ -10600,7 +12708,15 @@
         "namu": "https://namu.wiki/w/%EC%82%AC%EB%AA%A8%EB%9D%BC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b5%a5%e2%a5%e9%3f",
         "ae_wiki": "https://anothereden.wiki/w/Samora"
-      }
+      },
+      "traits": [
+        "Cooking",
+        "Miner",
+        "망치",
+        "Gourmet",
+        "Dwarf",
+        "불"
+      ]
     },
     {
       "id": "anabel",
@@ -10636,7 +12752,15 @@
       "roles": {
         "surv_state": 3,
         "tempo": 1
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "Sweet tooth",
+        "검",
+        "Mounted",
+        "Shield",
+        "물"
+      ]
     },
     {
       "id": "deirdre",
@@ -10664,7 +12788,15 @@
         "namu": "https://namu.wiki/w/%EB%94%94%EC%95%84%EB%93%9C%EB%9D%BC",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c7%a5%a3%a5%a2%a5%c9%a5%e9",
         "ae_wiki": "https://anothereden.wiki/w/Deirdre"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "검",
+        "Outlaw",
+        "Amnesia",
+        "땅",
+        "Demon Sword"
+      ]
     },
     {
       "id": "nero",
@@ -10692,7 +12824,14 @@
         "namu": "https://namu.wiki/w/%EB%84%A4%EB%A1%9C%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%cd%a5%ed%3f",
         "ae_wiki": "https://anothereden.wiki/w/Nero"
-      }
+      },
+      "traits": [
+        "동방",
+        "권갑",
+        "물",
+        "Land of Shin # During Chapter 7 of Shadow of Sin and Steel",
+        "MMA"
+      ]
     },
     {
       "id": "akane",
@@ -10720,7 +12859,14 @@
         "namu": "https://namu.wiki/w/%EC%95%84%EC%B9%B4%EB%84%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Akane",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%ab%a5%cd"
-      }
+      },
+      "traits": [
+        "동방",
+        "도",
+        "불",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel",
+        "Itto-Ryu # After Character Quest 3"
+      ]
     },
     {
       "id": "aldo",
@@ -10748,7 +12894,22 @@
         "namu": "https://namu.wiki/w/%EC%95%8C%EB%8F%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%eb%a5%c9",
         "ae_wiki": "https://anothereden.wiki/w/Aldo"
-      }
+      },
+      "traits": [
+        "주인공",
+        "Guiding Light",
+        "Forager",
+        "검",
+        "New Radical Dreamers",
+        "New Time Drift",
+        "용",
+        "바르오키",
+        "Concerto Artes # after Fraxinus Labs Camp Conversations",
+        "불",
+        "Arcadia # During Episode: The Cliffs of Wyrmrest - Wryz Saga I Chapter 1",
+        "Itto-Ryu # After clearing the Fugen Itto-Ryu Dojo Battle",
+        "Demon Sword # After Chapter 12"
+      ]
     },
     {
       "id": "amy",
@@ -10800,7 +12961,15 @@
         "atk_debuff": 3,
         "power": 6,
         "surv_debuff": 3
-      }
+      },
+      "traits": [
+        "Blacksmith",
+        "Cooking",
+        "권갑",
+        "Spirit-fused",
+        "Avenger",
+        "바람"
+      ]
     },
     {
       "id": "benedict",
@@ -10828,7 +12997,14 @@
         "namu": "https://namu.wiki/w/%EB%B2%A0%EB%84%A4%EB%94%94%ED%8A%B8",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d9%a5%cd%a5%c7%a5%a3%a5%c8",
         "ae_wiki": "https://anothereden.wiki/w/Benedict"
-      }
+      },
+      "traits": [
+        "Forager",
+        "도끼",
+        "Outlaw",
+        "Woodcutter",
+        "바람"
+      ]
     },
     {
       "id": "bivette",
@@ -10856,7 +13032,14 @@
         "namu": "https://namu.wiki/w/%EB%B9%84%EB%B2%A0%ED%8A%B8",
         "ae_wiki": "https://anothereden.wiki/w/Bivette",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d3%a5%f4%a5%a7%a5%c3%a5%c8"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "지팡이",
+        "Spirit Talker",
+        "Animal Talker",
+        "불"
+      ]
     },
     {
       "id": "bria",
@@ -10884,7 +13067,13 @@
         "namu": "https://namu.wiki/w/%EB%B8%8C%EB%A6%AC%EC%95%84",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d6%a5%ea%a5%a2%a1%bc",
         "ae_wiki": "https://anothereden.wiki/w/Bria"
-      }
+      },
+      "traits": [
+        "엘프",
+        "Fleareth",
+        "창",
+        "물"
+      ]
     },
     {
       "id": "ciel",
@@ -10912,7 +13101,12 @@
         "namu": "https://namu.wiki/w/%EC%8B%9C%EC%97%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%a8%a5%eb",
         "ae_wiki": "https://anothereden.wiki/w/Ciel"
-      }
+      },
+      "traits": [
+        "Minstrel",
+        "활",
+        "땅"
+      ]
     },
     {
       "id": "cyrus",
@@ -10973,7 +13167,14 @@
         "power": 5,
         "atk_buff": 2,
         "tempo": 1
-      }
+      },
+      "traits": [
+        "동방",
+        "Guiding Light",
+        "도",
+        "Cursed",
+        "물"
+      ]
     },
     {
       "id": "feinne",
@@ -11001,7 +13202,15 @@
         "namu": "https://namu.wiki/w/%ED%94%BC%EB%84%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a3%a1%bc%a5%cd",
         "ae_wiki": "https://anothereden.wiki/w/Feinne"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "Cooking",
+        "지팡이",
+        "바르오키",
+        "Geo",
+        "Demon Sword # After Chapter 113"
+      ]
     },
     {
       "id": "helena",
@@ -11029,7 +13238,13 @@
         "namu": "https://namu.wiki/w/%ED%97%AC%EB%A0%88%EB%82%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Helena",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d8%a5%ec%a5%ca"
-      }
+      },
+      "traits": [
+        "Mask",
+        "Synth Human",
+        "지팡이",
+        "땅"
+      ]
     },
     {
       "id": "lokido",
@@ -11067,7 +13282,13 @@
         "mode": 1,
         "atk_state": 2,
         "attack": 1
-      }
+      },
+      "traits": [
+        "Beast # after clearing AS Quest",
+        "권갑",
+        "Avenger",
+        "땅"
+      ]
     },
     {
       "id": "mariel",
@@ -11112,7 +13333,12 @@
         "recover": 2,
         "resource": 1,
         "surv_buff": 1
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "Clergy",
+        "지팡이"
+      ]
     },
     {
       "id": "may",
@@ -11140,7 +13366,16 @@
         "namu": "https://namu.wiki/w/%EB%A9%94%EC%9D%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/May",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%a4"
-      }
+      },
+      "traits": [
+        "Blacksmith",
+        "Glasses",
+        "Miner",
+        "망치",
+        "Lovesick",
+        "바르오키",
+        "땅"
+      ]
     },
     {
       "id": "mighty",
@@ -11168,7 +13403,13 @@
         "namu": "https://namu.wiki/w/%EB%A7%88%EC%9D%B4%ED%8B%B0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%de%a5%a4%a5%c6%a5%a3",
         "ae_wiki": "https://anothereden.wiki/w/Mighty"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "지팡이",
+        "Napper",
+        "물"
+      ]
     },
     {
       "id": "miyu",
@@ -11196,7 +13437,13 @@
         "namu": "https://namu.wiki/w/%EB%AF%B8%EC%9C%A0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a1%bc%a5%e6",
         "ae_wiki": "https://anothereden.wiki/w/Miyu"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "검",
+        "Royalty",
+        "불"
+      ]
     },
     {
       "id": "prai",
@@ -11224,7 +13471,14 @@
         "namu": "https://namu.wiki/w/%ED%94%84%EB%9D%BC%EC%9D%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d7%a5%e9%a5%a4",
         "ae_wiki": "https://anothereden.wiki/w/Prai"
-      }
+      },
+      "traits": [
+        "Clergy",
+        "Miner",
+        "서방",
+        "망치",
+        "불"
+      ]
     },
     {
       "id": "riica",
@@ -11252,7 +13506,15 @@
         "namu": "https://namu.wiki/w/%EB%A6%AC%EC%9D%B4%EC%B9%B4",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ea%a5%a3%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Riica"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "Miner",
+        "망치",
+        "KMS",
+        "Machinery",
+        "땅"
+      ]
     },
     {
       "id": "sevyn",
@@ -11280,7 +13542,15 @@
         "namu": "https://namu.wiki/w/%EC%84%B8%EB%B9%88%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Sevyn",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bb%a5%f4%a5%a7%a5%f3"
-      }
+      },
+      "traits": [
+        "Glasses",
+        "IDA 스쿨",
+        "지팡이",
+        "Spirit Talker",
+        "로스트 랩",
+        "바람"
+      ]
     },
     {
       "id": "shion",
@@ -11308,7 +13578,17 @@
         "namu": "https://namu.wiki/w/%EC%8B%9C%EC%98%A8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Shion",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%aa%a5%f3"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "동방",
+        "Childhood Friend",
+        "도",
+        "Mounted",
+        "Itto-Ryu",
+        "불",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "suzette",
@@ -11336,7 +13616,14 @@
         "namu": "https://namu.wiki/w/%EC%88%98%EC%A0%9C%ED%8A%B8",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%e5%a5%bc%a5%c3%a5%c8",
         "ae_wiki": "https://anothereden.wiki/w/Suzette"
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "창",
+        "Gourmet",
+        "로스트 랩",
+        "바람"
+      ]
     },
     {
       "id": "toova",
@@ -11364,7 +13651,14 @@
         "namu": "https://namu.wiki/w/%ED%88%AC%EB%B0%94%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c8%a5%a5%a1%bc%a5%f4%a5%a1",
         "ae_wiki": "https://anothereden.wiki/w/Toova"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "Spirit-fused",
+        "Nicknamer",
+        "Funeral",
+        "땅"
+      ]
     },
     {
       "id": "breeno",
@@ -11392,7 +13686,13 @@
         "namu": "https://namu.wiki/w/%EB%B8%8C%EB%A6%AC%EB%85%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d6%a5%ea%a1%bc%a5%ce%3f",
         "ae_wiki": "https://anothereden.wiki/w/Breeno"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "엘프",
+        "검",
+        "땅"
+      ]
     },
     {
       "id": "cyuca",
@@ -11420,7 +13720,14 @@
         "namu": "https://namu.wiki/w/%ED%81%90%EC%B9%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ad%a5%e5%a5%ab%3f",
         "ae_wiki": "https://anothereden.wiki/w/Cyuca"
-      }
+      },
+      "traits": [
+        "Mask",
+        "도끼",
+        "Spicy Lover",
+        "Outlaw",
+        "바람"
+      ]
     },
     {
       "id": "darunis",
@@ -11448,7 +13755,13 @@
         "namu": "https://namu.wiki/w/%EB%8B%A4%EB%A5%B4%EB%8B%88%EC%8A%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c0%a5%eb%a5%cb%a5%b9%3f",
         "ae_wiki": "https://anothereden.wiki/w/Darunis"
-      }
+      },
+      "traits": [
+        "Forager",
+        "활",
+        "바르오키",
+        "바람"
+      ]
     },
     {
       "id": "denny",
@@ -11476,7 +13789,12 @@
         "namu": "https://namu.wiki/w/%EB%8D%B0%EB%8B%88%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c7%a5%cb%a1%bc%3f",
         "ae_wiki": "https://anothereden.wiki/w/Denny"
-      }
+      },
+      "traits": [
+        "도끼",
+        "Scallywag",
+        "물"
+      ]
     },
     {
       "id": "foran",
@@ -11504,7 +13822,13 @@
         "namu": "https://namu.wiki/w/%ED%8F%AC%EB%9E%80",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a9%a5%e9%a5%f3",
         "ae_wiki": "https://anothereden.wiki/w/Foran"
-      }
+      },
+      "traits": [
+        "IDA 스쿨",
+        "창",
+        "Cat Hater",
+        "물"
+      ]
     },
     {
       "id": "komachi",
@@ -11532,7 +13856,13 @@
         "namu": "https://namu.wiki/w/%EC%BD%94%EB%A7%88%EC%B9%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b3%a5%de%a5%c1",
         "ae_wiki": "https://anothereden.wiki/w/Komachi"
-      }
+      },
+      "traits": [
+        "동방",
+        "창",
+        "땅",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "krervo",
@@ -11560,7 +13890,14 @@
         "namu": "https://namu.wiki/w/%EC%BF%A8%EB%A0%88%EB%A5%B4%EB%B3%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%ec%a5%eb%a5%f4%a5%a9",
         "ae_wiki": "https://anothereden.wiki/w/Krervo"
-      }
+      },
+      "traits": [
+        "Glasses",
+        "Scientist",
+        "Forager",
+        "지팡이",
+        "KMS"
+      ]
     },
     {
       "id": "lele",
@@ -11588,7 +13925,13 @@
         "namu": "https://namu.wiki/w/%EB%A0%88%EB%A0%88%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ec%a5%ec",
         "ae_wiki": "https://anothereden.wiki/w/Lele"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "지팡이",
+        "Animal Talker",
+        "물"
+      ]
     },
     {
       "id": "lingli",
@@ -11616,7 +13959,15 @@
         "namu": "https://namu.wiki/w/%EB%A7%81%EB%A6%AC",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ea%a5%f3%a5%ea%a1%bc",
         "ae_wiki": "https://anothereden.wiki/w/Lingli"
-      }
+      },
+      "traits": [
+        "동방",
+        "Cooking",
+        "권갑",
+        "불",
+        "Land of Shin # During Chapter 7 of Shadow of Sin and Steel",
+        "MMA"
+      ]
     },
     {
       "id": "miranda",
@@ -11644,7 +13995,13 @@
         "namu": "https://namu.wiki/w/%EB%AF%B8%EB%9E%80%EB%8B%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%e9%a5%f3%a5%c0%3f",
         "ae_wiki": "https://anothereden.wiki/w/Miranda"
-      }
+      },
+      "traits": [
+        "도끼",
+        "Spicy Lover",
+        "Scallywag",
+        "불"
+      ]
     },
     {
       "id": "myron",
@@ -11672,7 +14029,12 @@
         "namu": "https://namu.wiki/w/%EB%AE%A4%EB%A1%A0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%e5%a5%ed%a5%f3%3f",
         "ae_wiki": "https://anothereden.wiki/w/Myron"
-      }
+      },
+      "traits": [
+        "Clergy",
+        "검",
+        "땅"
+      ]
     },
     {
       "id": "nikeh",
@@ -11700,7 +14062,13 @@
         "namu": "https://namu.wiki/w/%EB%8B%88%EC%BC%80%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%cb%a5%b1",
         "ae_wiki": "https://anothereden.wiki/w/Nikeh"
-      }
+      },
+      "traits": [
+        "동방",
+        "도",
+        "Outlaw",
+        "물"
+      ]
     },
     {
       "id": "nomar",
@@ -11728,7 +14096,14 @@
         "namu": "https://namu.wiki/w/%EB%85%B8%EB%A7%88%EB%A5%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ce%a5%de%a5%eb%3f",
         "ae_wiki": "https://anothereden.wiki/w/Nomar"
-      }
+      },
+      "traits": [
+        "Miner",
+        "창",
+        "Weapons",
+        "바르오키",
+        "물"
+      ]
     },
     {
       "id": "otoha",
@@ -11756,7 +14131,15 @@
         "namu": "https://namu.wiki/w/%EC%98%A4%ED%86%A0%ED%95%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%aa%a5%c8%a5%cf",
         "ae_wiki": "https://anothereden.wiki/w/Otoha"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "동방",
+        "도",
+        "Zoology",
+        "땅",
+        "Land of Mi # During Chapter 7 of Shadow of Sin and Steel"
+      ]
     },
     {
       "id": "parisa",
@@ -11784,7 +14167,13 @@
         "namu": "https://namu.wiki/w/%ED%8C%8C%EB%A6%AC%EC%82%AC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d1%a5%ea%a5%b5",
         "ae_wiki": "https://anothereden.wiki/w/Parisa"
-      }
+      },
+      "traits": [
+        "Minstrel",
+        "활",
+        "Cursed",
+        "불"
+      ]
     },
     {
       "id": "pom",
@@ -11812,7 +14201,13 @@
         "namu": "https://namu.wiki/w/%ED%8F%BC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%dd%a5%e0",
         "ae_wiki": "https://anothereden.wiki/w/Pom"
-      }
+      },
+      "traits": [
+        "Scientist",
+        "Forager",
+        "지팡이",
+        "Gun"
+      ]
     },
     {
       "id": "raven",
@@ -11839,7 +14234,14 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EB%A0%88%EC%9D%B4%EB%B8%90%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Raven"
-      }
+      },
+      "traits": [
+        "Mask",
+        "지팡이",
+        "Hood",
+        "Amnesia",
+        "땅"
+      ]
     },
     {
       "id": "rovella",
@@ -11898,7 +14300,17 @@
         "atk_state": 1,
         "power": 1,
         "surv_state": 1
-      }
+      },
+      "traits": [
+        "활",
+        "권갑",
+        "Machinery",
+        "Outlaw",
+        "Military",
+        "로스트 랩",
+        "물",
+        "Amnesia #After The Ghost of Hope Severed Rays of Despair"
+      ]
     },
     {
       "id": "rufus",
@@ -11926,7 +14338,12 @@
         "namu": "https://namu.wiki/w/%EB%A3%A8%ED%94%84%EC%8A%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%eb%a1%bc%a5%d5%a5%b9",
         "ae_wiki": "https://anothereden.wiki/w/Rufus"
-      }
+      },
+      "traits": [
+        "권갑",
+        "Bookworm",
+        "불"
+      ]
     },
     {
       "id": "soira",
@@ -11954,7 +14371,13 @@
         "namu": "https://namu.wiki/w/%EC%86%8C%EC%9D%B4%EB%9D%BC",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bd%a5%a4%a5%e9",
         "ae_wiki": "https://anothereden.wiki/w/Soira"
-      }
+      },
+      "traits": [
+        "Miglance Palace",
+        "창",
+        "Napper",
+        "바람"
+      ]
     },
     {
       "id": "yio",
@@ -11982,7 +14405,12 @@
         "namu": "https://namu.wiki/w/%EC%9D%B4%EC%98%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%aa%3f",
         "ae_wiki": "https://anothereden.wiki/w/Yio"
-      }
+      },
+      "traits": [
+        "도끼",
+        "Dragon Killer",
+        "땅"
+      ]
     },
     {
       "id": "asia",
@@ -12009,7 +14437,12 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%97%90%EC%9D%B4%EC%8B%9C%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Asia"
-      }
+      },
+      "traits": [
+        "Mask",
+        "활",
+        "Estrangement"
+      ]
     },
     {
       "id": "ctos",
@@ -12036,7 +14469,11 @@
       "urls": {
         "namu": "https://namu.wiki/w/%ED%81%AC%ED%86%A0%EC%8A%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Ctos"
-      }
+      },
+      "traits": [
+        "Fleareth",
+        "망치"
+      ]
     },
     {
       "id": "een",
@@ -12063,7 +14500,11 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%9D%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Een"
-      }
+      },
+      "traits": [
+        "창",
+        "Machinery"
+      ]
     },
     {
       "id": "emms",
@@ -12090,7 +14531,12 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%97%90%EB%AC%B4%EC%8A%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Emms"
-      }
+      },
+      "traits": [
+        "Fleareth",
+        "권갑",
+        "Napper"
+      ]
     },
     {
       "id": "esta",
@@ -12117,7 +14563,11 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%97%90%EC%8A%A4%ED%83%80%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Esta"
-      }
+      },
+      "traits": [
+        "Fleareth",
+        "도끼"
+      ]
     },
     {
       "id": "kilqia",
@@ -12144,7 +14594,12 @@
       "urls": {
         "namu": "https://namu.wiki/w/%ED%82%AC%ED%80%B4%EC%96%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Kilqia"
-      }
+      },
+      "traits": [
+        "Mask",
+        "지팡이",
+        "Sharp Ears"
+      ]
     },
     {
       "id": "koot",
@@ -12171,7 +14626,11 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%BF%A0%ED%8A%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Koot"
-      }
+      },
+      "traits": [
+        "도",
+        "Machinery"
+      ]
     },
     {
       "id": "menesia",
@@ -12198,7 +14657,11 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EB%A9%94%EB%84%A4%EC%8B%9C%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Menesia"
-      }
+      },
+      "traits": [
+        "Mask",
+        "도"
+      ]
     },
     {
       "id": "natore",
@@ -12225,7 +14688,12 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EB%82%98%ED%86%A0%EB%A0%88%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Natore"
-      }
+      },
+      "traits": [
+        "Fleareth",
+        "검",
+        "Ninja"
+      ]
     },
     {
       "id": "naylia",
@@ -12252,7 +14720,11 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EB%84%A4%EC%9D%BC%EB%A6%AC%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Naylia"
-      }
+      },
+      "traits": [
+        "Mask",
+        "검"
+      ]
     },
     {
       "id": "nixa",
@@ -12279,7 +14751,11 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EB%8B%89%EC%82%AC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Nixa"
-      }
+      },
+      "traits": [
+        "Fleareth",
+        "활"
+      ]
     },
     {
       "id": "noome",
@@ -12306,7 +14782,11 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EB%88%84%EB%AF%80%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Noome"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "Machinery"
+      ]
     },
     {
       "id": "oor",
@@ -12333,7 +14813,11 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%98%A4%EB%A5%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Oor"
-      }
+      },
+      "traits": [
+        "도끼",
+        "Machinery"
+      ]
     },
     {
       "id": "pasia",
@@ -12360,7 +14844,13 @@
       "urls": {
         "namu": "https://namu.wiki/w/%ED%8C%A8%EC%8B%9C%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Pasia"
-      }
+      },
+      "traits": [
+        "고양이 애호가",
+        "Mask",
+        "망치",
+        "Animal Talker"
+      ]
     },
     {
       "id": "rodeia",
@@ -12387,7 +14877,12 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EB%A1%9C%EB%94%94%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Rodeia"
-      }
+      },
+      "traits": [
+        "Mask",
+        "Sweet tooth",
+        "도끼"
+      ]
     },
     {
       "id": "saithe",
@@ -12414,7 +14909,11 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%84%B8%EC%8A%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Saithe"
-      }
+      },
+      "traits": [
+        "활",
+        "Machinery"
+      ]
     },
     {
       "id": "sauria",
@@ -12441,7 +14940,12 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%82%AC%EC%9A%B0%EB%A6%AC%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Sauria"
-      }
+      },
+      "traits": [
+        "Mask",
+        "창",
+        "Nicknamer"
+      ]
     },
     {
       "id": "tayme",
@@ -12468,7 +14972,11 @@
       "urls": {
         "namu": "https://namu.wiki/w/%ED%85%8C%EC%9E%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Tayme"
-      }
+      },
+      "traits": [
+        "권갑",
+        "Machinery"
+      ]
     },
     {
       "id": "tohme",
@@ -12495,7 +15003,12 @@
       "urls": {
         "namu": "https://namu.wiki/w/%ED%86%B0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Tohme"
-      }
+      },
+      "traits": [
+        "Fleareth",
+        "도",
+        "Avenger"
+      ]
     },
     {
       "id": "toole",
@@ -12522,7 +15035,11 @@
       "urls": {
         "namu": "https://namu.wiki/w/%ED%86%A8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Toole"
-      }
+      },
+      "traits": [
+        "망치",
+        "Machinery"
+      ]
     },
     {
       "id": "urania",
@@ -12549,7 +15066,12 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%9A%B0%EB%9D%BC%EB%8B%88%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Urania"
-      }
+      },
+      "traits": [
+        "Mask",
+        "Cooking",
+        "권갑"
+      ]
     },
     {
       "id": "uuo",
@@ -12576,7 +15098,11 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%9A%B0%EC%98%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Uuo"
-      }
+      },
+      "traits": [
+        "검",
+        "Machinery"
+      ]
     },
     {
       "id": "yssis",
@@ -12603,7 +15129,11 @@
       "urls": {
         "namu": "https://namu.wiki/w/%EC%9D%B4%EC%8B%9C%EC%8A%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Yssis"
-      }
+      },
+      "traits": [
+        "Fleareth",
+        "지팡이"
+      ]
     },
     {
       "id": "havoc",
@@ -12674,7 +15204,18 @@
         "tempo": 1,
         "atk_state": 2,
         "zone": 3
-      }
+      },
+      "traits": [
+        "Scientist",
+        "권갑",
+        "결정",
+        "Machinery",
+        "Military",
+        "Gun",
+        "Lost Laboratory # After Clearing Apocrypha The Ghosts of Hope: Severed Rays of Despair",
+        "Amnesia # After Clearing Apocrypha The Ghosts of Hope: Severed Rays of Despair",
+        "IDA School # After Character Quest 1"
+      ]
     },
     {
       "id": "theodorus",
@@ -12748,7 +15289,13 @@
         "surv_debuff": 4,
         "state_unknown": 1,
         "surv_buff": 2
-      }
+      },
+      "traits": [
+        "권갑",
+        "땅",
+        "MMA",
+        "Sweet tooth"
+      ]
     },
     {
       "id": "erina_as",
@@ -12822,7 +15369,14 @@
         "surv_buff": 3,
         "recover": 4,
         "power": 1
-      }
+      },
+      "traits": [
+        "지팡이",
+        "Spirit-fused",
+        "그림자",
+        "Sweet tooth",
+        "Purgatory#AS Quest"
+      ]
     },
     {
       "id": "moonlight_flower_alter_as",
@@ -12979,7 +15533,14 @@
         "enemy_utility": 1,
         "surv_state": 1,
         "mode": 1
-      }
+      },
+      "traits": [
+        "지팡이",
+        "KMS",
+        "Scientist",
+        "동방",
+        "Synth Human # After 3rd Character Quest"
+      ]
     },
     {
       "id": "twinkling_illustrator_alter",
@@ -13045,7 +15606,15 @@
         "tempo": 3,
         "power": 1,
         "state_unknown": 1
-      }
+      },
+      "traits": [
+        "창",
+        "불",
+        "물",
+        "번개",
+        "Bookworm",
+        "Nicknamer"
+      ]
     },
     {
       "id": "jorna",
@@ -13104,7 +15673,18 @@
         "surv_buff": 2,
         "atk_state": 1,
         "state_unknown": 1
-      }
+      },
+      "traits": [
+        "Sweet tooth",
+        "도끼",
+        "Outlaw",
+        "Bookworm",
+        "Hood",
+        "Amnesia",
+        "연옥계",
+        "Estrangement",
+        "그림자"
+      ]
     },
     {
       "id": "jillfunny_as",
@@ -13175,7 +15755,16 @@
         "surv_state": 3,
         "surv_debuff": 2,
         "surv_buff": 1
-      }
+      },
+      "traits": [
+        "검",
+        "물",
+        "결정",
+        "고양이 애호가",
+        "Hood",
+        "Amnesia",
+        "Cursed # Another Style only"
+      ]
     },
     {
       "id": "pyggie_as",
@@ -13253,7 +15842,12 @@
       "has_full": false,
       "urls": {
         "ae_wiki": "https://anothereden.wiki/w/Ramiu"
-      }
+      },
+      "traits": [
+        "지팡이",
+        "땅",
+        "Animal Talker"
+      ]
     },
     {
       "id": "darunis_as",
@@ -13317,7 +15911,13 @@
         "zone": 2,
         "state_unknown": 1,
         "surv_state": 1
-      }
+      },
+      "traits": [
+        "Forager",
+        "활",
+        "바르오키",
+        "바람"
+      ]
     }
   ]
 }

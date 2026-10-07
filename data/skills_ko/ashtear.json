@@ -83,7 +83,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Cosmic Flare",
+      "wiki": {
+       "mult": "30,000,000 - 1,800,000,000",
+       "type": "Healing"
+      }
      }
     ],
     "stellar_abilities": [
@@ -284,7 +289,11 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Miracle Force",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "배리어 포스",
@@ -381,7 +390,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Barrier Force",
+      "wiki": {
+       "type": "Stance/Buff"
+      }
      },
      {
       "name": "슬립 가스",
@@ -455,7 +468,11 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Sleep Gas",
+      "wiki": {
+       "type": "Status"
+      }
      },
      {
       "name": "리페어 키트",
@@ -531,7 +548,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Repair Kit",
+      "wiki": {
+       "type": "Healing"
+      }
      },
      {
       "name": "위크 체크",
@@ -664,7 +685,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Stress Test",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "미스터리 불릿",
@@ -757,7 +782,12 @@
         "r": "power",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Mystery Bullet",
+      "wiki": {
+       "mult": "190-38000%",
+       "type": "Magic"
+      }
      },
      {
       "name": "차원 폭탄",
@@ -891,7 +921,11 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Dimension Bomb",
+      "wiki": {
+       "type": "Status"
+      }
      }
     ],
     "abilities": [
@@ -975,7 +1009,8 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Material"
      },
      {
       "name": "차원 폭탄",
@@ -1113,7 +1148,11 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Dimension Bomb",
+      "wiki": {
+       "type": "Status"
+      }
      }
     ]
    },

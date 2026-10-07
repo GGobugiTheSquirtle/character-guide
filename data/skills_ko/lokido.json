@@ -71,7 +71,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Enten: Demon Beast Fist",
+      "wiki": {
+       "mult": "2100-12600%",
+       "type": "Blunt"
+      }
      }
     ]
    },

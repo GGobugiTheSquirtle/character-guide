@@ -145,7 +145,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Shigure Style: Tiger",
+      "wiki": {
+       "mult": "160%",
+       "type": "Slash"
+      }
      },
      {
       "name": "사범의 호위 무사",
@@ -179,7 +184,11 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Sage's Retainer",
+      "wiki": {
+       "type": "Stance/Buff"
+      }
      },
      {
       "name": "아성의 비약",
@@ -246,7 +255,11 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Stronghold Elixir",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "기린열파참",
@@ -336,7 +349,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Rending Qilin Slash",
+      "wiki": {
+       "mult": "200%-2000%",
+       "type": "Slash"
+      }
      }
     ],
     "stellar_skills": [
@@ -409,7 +427,13 @@
         "r": "zone",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Pride of Fugen",
+      "wiki": {
+       "mult": "210%",
+       "crit": "2100%-8400%",
+       "type": "Slash"
+      }
      }
     ]
    }

@@ -71,7 +71,8 @@
         "r": "zone",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Lunatic+"
      },
      {
       "name": "앙페르 클로크",
@@ -114,7 +115,11 @@
         "r": "resource",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Manteau d'enfer",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "앙페르 노바",
@@ -207,7 +212,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Nova d'enfer",
+      "wiki": {
+       "mult": "200%-3000%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "블래스트 건 EV",
@@ -288,7 +298,12 @@
         "r": "resource",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Blast Gun EV",
+      "wiki": {
+       "mult": "160%-48000%",
+       "type": "Blunt"
+      }
      }
     ],
     "stacks": [
@@ -370,7 +385,8 @@
         "r": "resource",
         "tm": "스텔라 버스트"
        }
-      ]
+      ],
+      "en": "Core Heat"
      },
      {
       "name": "용융",
@@ -444,7 +460,8 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Dissolve"
      },
      {
       "name": "앙페르 클로크",
@@ -503,7 +520,11 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Manteau d'enfer",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ],
     "stellar_skills": [
@@ -594,7 +615,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Ascension",
+      "wiki": {
+       "mult": "6300%",
+       "type": "Blunt"
+      }
      }
     ]
    }

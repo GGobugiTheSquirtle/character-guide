@@ -64,7 +64,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Safety Link",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "인밸리데이트",
@@ -146,7 +150,12 @@
         "r": "zone",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Invalidate",
+      "wiki": {
+       "mult": "1600%",
+       "type": "Slash"
+      }
      },
      {
       "name": "프로텍티오",
@@ -237,7 +246,11 @@
         "tm": "턴 시작",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Protectio",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "바이올렛 사이스",
@@ -348,7 +361,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Violet Scythe",
+      "wiki": {
+       "mult": "160%-6400%",
+       "type": "Slash"
+      }
      }
     ],
     "stacks": [
@@ -391,7 +409,8 @@
         "r": "surv_state",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Reminiscence"
      }
     ],
     "stellar_skills": [
@@ -491,7 +510,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Mellow Memoria",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ]
    }

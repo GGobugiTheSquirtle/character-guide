@@ -72,7 +72,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Aegis Boon",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ]
    },

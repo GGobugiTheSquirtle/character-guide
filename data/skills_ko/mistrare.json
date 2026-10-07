@@ -169,7 +169,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Winged Heart",
+      "wiki": {
+       "mult": "1050%-4200%",
+       "type": "Piercing"
+      }
      }
     ],
     "skills": [
@@ -215,7 +220,8 @@
         "r": "meta",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Lunatic+"
      },
      {
       "name": "루아흐 케셰트",
@@ -309,7 +315,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Ruach Chets",
+      "wiki": {
+       "mult": "100-300%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "하함 케셰트",
@@ -403,7 +414,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Hakham Chets",
+      "wiki": {
+       "mult": "140-560%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "모시아흐 케셰트",
@@ -497,7 +513,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Savior Chets",
+      "wiki": {
+       "mult": "160-800%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "윈드 피어스",
@@ -540,7 +561,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Piercing Wind",
+      "wiki": {
+       "mult": "100%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "크리스탈 레인",
@@ -589,7 +615,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Crystal Rain",
+      "wiki": {
+       "mult": "120%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "엘의 노래",
@@ -716,7 +747,11 @@
         "tm": "턴 종료",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Stifling Song",
+      "wiki": {
+       "type": "Debuff"
+      }
      },
      {
       "name": "엘의 노래 - 유니즌",
@@ -754,7 +789,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Stifling Song: Unison",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "힐링 로아",
@@ -804,7 +843,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Healing Lore",
+      "wiki": {
+       "mult": "150%",
+       "type": "Healing"
+      }
      },
      {
       "name": "오울 나칼",
@@ -934,7 +978,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Aur Nakar",
+      "wiki": {
+       "mult": "200-3200%",
+       "type": "Piercing"
+      }
      }
     ],
     "stacks": [
@@ -1003,7 +1052,11 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Call",
+      "wiki": {
+       "type": "???"
+      }
      },
      {
       "name": "반짝이는 날개",
@@ -1080,7 +1133,8 @@
         "r": "mode",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Glittering Wings"
      },
      {
       "name": "유니즌",
@@ -1120,7 +1174,8 @@
         "r": "tempo",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Unison"
      }
     ]
    },

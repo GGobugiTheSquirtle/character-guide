@@ -61,7 +61,8 @@
         "r": "meta",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Lunatic+"
      },
      {
       "name": "적멸 일진",
@@ -98,7 +99,12 @@
         "r": "tempo",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Solitary Nirvana",
+      "wiki": {
+       "mult": "280%",
+       "type": "Slash"
+      }
      },
      {
       "name": "적멸 천경",
@@ -135,7 +141,12 @@
         "r": "tempo",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Millennial Nirvana",
+      "wiki": {
+       "mult": "320%",
+       "type": "Slash"
+      }
      },
      {
       "name": "적멸 만상",
@@ -195,7 +206,12 @@
         "r": "power",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Universal Nirvana",
+      "wiki": {
+       "mult": "2000%-8000%",
+       "type": "Slash"
+      }
      },
      {
       "name": "불생불멸",
@@ -256,7 +272,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Lifeless and Deathless",
+      "wiki": {
+       "mult": "2000%",
+       "type": "Slash"
+      }
      },
      {
       "name": "잔진",
@@ -327,7 +348,12 @@
         "r": "resource",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "To Dust",
+      "wiki": {
+       "mult": "240%-2400%",
+       "type": "Slash"
+      }
      },
      {
       "name": "인과역전",
@@ -388,7 +414,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Reversal of Fate",
+      "wiki": {
+       "mult": "400%",
+       "type": "Slash"
+      }
      },
      {
       "name": "공명혼",
@@ -447,7 +478,12 @@
         "r": "tempo",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Soul Resonance",
+      "wiki": {
+       "mult": "320%",
+       "type": "Slash"
+      }
      },
      {
       "name": "어둠의 파도",
@@ -533,7 +569,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Tide of Darkness",
+      "wiki": {
+       "mult": "1600%",
+       "type": "Slash"
+      }
      }
     ],
     "abilities": [
@@ -628,7 +669,8 @@
         "r": "resource",
         "tm": "턴 종료"
        }
-      ]
+      ],
+      "en": "Intent to Kill"
      },
      {
       "name": "공명혼",
@@ -692,7 +734,12 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Soul Resonance",
+      "wiki": {
+       "mult": "320%",
+       "type": "Slash"
+      }
      }
     ],
     "chain": [
@@ -1012,7 +1059,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Nothing Lasts",
+      "wiki": {
+       "mult": "420%-12600%",
+       "type": "Slash"
+      }
      }
     ],
     "stellar_abilities": [

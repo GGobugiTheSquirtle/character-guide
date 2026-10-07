@@ -48,7 +48,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Venom Shot",
+      "wiki": {
+       "mult": "190%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "트리플 샷",
@@ -123,7 +128,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Triple Shot",
+      "wiki": {
+       "mult": "360%-5400%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "커버링 애로",
@@ -245,7 +255,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Cover Shot",
+      "wiki": {
+       "mult": "160%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "갤런트리",
@@ -350,7 +365,11 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Gallantry",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ],
     "abilities": [
@@ -432,7 +451,8 @@
         "r": "resource",
         "tm": "스텔라 버스트"
        }
-      ]
+      ],
+      "en": "Pride"
      },
      {
       "name": "마비 독",
@@ -486,7 +506,8 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Numbing Agent"
      }
     ],
     "chain": [
@@ -562,7 +583,12 @@
         "tm": "상시·조건",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Hunter's Blessed Arrow",
+      "wiki": {
+       "mult": "160%",
+       "type": "Piercing"
+      }
      }
     ],
     "stellar_skills": [
@@ -692,7 +718,8 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Trustworthy Soul"
      }
     ],
     "stellar_abilities": [
@@ -840,7 +867,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Venom Shot",
+      "wiki": {
+       "mult": "190%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "트리플 샷",
@@ -900,7 +932,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Triple Shot",
+      "wiki": {
+       "mult": "360%-5400%",
+       "type": "Piercing"
+      }
      }
     ]
    }

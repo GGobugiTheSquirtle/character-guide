@@ -134,7 +134,8 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Cerulean Compass"
      }
     ],
     "stellar_abilities": [
@@ -342,7 +343,8 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Upright Undine"
      },
      {
       "name": "레종 쿨레어",
@@ -436,7 +438,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Raison Couleur",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "에땅셰 샤리요",
@@ -535,7 +541,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Charriot Etincelle",
+      "wiki": {
+       "mult": "110%",
+       "type": "Buff"
+      }
      },
      {
       "name": "라 몰프람",
@@ -625,7 +636,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Flamme De La Mort",
+      "wiki": {
+       "mult": "130%",
+       "type": "Magic"
+      }
      },
      {
       "name": "어포즈 륀",
@@ -743,7 +759,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Apollo Lune",
+      "wiki": {
+       "mult": "320%-1280% / 300%-1200%",
+       "type": "Slash,Magic"
+      }
      }
     ],
     "abilities": [
@@ -833,7 +854,8 @@
         "r": "resource",
         "tm": "턴 시작"
        }
-      ]
+      ],
+      "en": "Astral Card: Red"
      },
      {
       "name": "아스트랄 카드: 녹",
@@ -874,7 +896,8 @@
         "r": "meta",
         "tm": "턴 시작"
        }
-      ]
+      ],
+      "en": "Astral Card: Green"
      },
      {
       "name": "아스트랄 카드: 청",
@@ -927,7 +950,8 @@
         "r": "resource",
         "tm": "턴 시작"
        }
-      ]
+      ],
+      "en": "Astral Card: Blue"
      },
      {
       "name": "아스트랄 카드: 금",
@@ -978,7 +1002,8 @@
         "r": "mode",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Astral Card: Gold"
      },
      {
       "name": "시간의 예언자",
@@ -1048,7 +1073,8 @@
         "r": "other",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Oracle of Time"
      }
     ]
    },

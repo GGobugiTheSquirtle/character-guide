@@ -128,7 +128,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Burning Fox Fletch",
+      "wiki": {
+       "mult": "210%-6300%",
+       "type": "pierce"
+      }
      }
     ]
    },

@@ -187,7 +187,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Point-Blank",
+      "wiki": {
+       "mult": "630%-31500%",
+       "type": "Piercing"
+      }
      }
     ],
     "skills": [
@@ -240,7 +245,12 @@
         "r": "resource",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Stealth Combat",
+      "wiki": {
+       "mult": "160%-48000%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "퍼머먼트 아이",
@@ -315,7 +325,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Firmament Eye",
+      "wiki": {
+       "mult": "480%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "애로 폴",
@@ -369,7 +384,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Arrow Fall",
+      "wiki": {
+       "mult": "180%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "인필트레이트",
@@ -497,7 +517,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Infiltrate",
+      "wiki": {
+       "mult": "N/A",
+       "type": "Buff"
+      }
      }
     ],
     "abilities": [
@@ -617,7 +642,8 @@
         "r": "meta",
         "tm": "턴 종료"
        }
-      ]
+      ],
+      "en": "Tense"
      },
      {
       "name": "파워 유닛",
@@ -673,7 +699,8 @@
         "r": "mode",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Powered Mechanism"
      },
      {
       "name": "스텔스",
@@ -735,7 +762,8 @@
         "r": "other",
         "tm": "턴 시작"
        }
-      ]
+      ],
+      "en": "Stealth"
      }
     ]
    },

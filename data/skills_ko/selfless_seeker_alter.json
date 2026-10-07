@@ -80,7 +80,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Dirty Shot",
+      "wiki": {
+       "mult": "160%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "헌터즈 하이",
@@ -147,7 +152,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Rush of the Hunt",
+      "wiki": {
+       "mult": "180%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "불릿 러시",
@@ -234,7 +244,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Bullet Rush",
+      "wiki": {
+       "mult": "640%-1280%",
+       "type": "Piercing"
+      }
      }
     ],
     "stellar_skills": [
@@ -354,7 +369,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Stingray",
+      "wiki": {
+       "mult": "210%-4200%",
+       "type": "Piercing"
+      }
      }
     ]
    }

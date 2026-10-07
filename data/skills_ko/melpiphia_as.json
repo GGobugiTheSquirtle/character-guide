@@ -45,7 +45,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Roly-Poly Protection!",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "두근두근 응원!",
@@ -78,7 +82,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Pep Up Step Up!",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "산산조각 초난무!",
@@ -133,7 +141,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Chip 'n' Chop Tornado!",
+      "wiki": {
+       "mult": "6400%",
+       "type": "Slash"
+      }
      },
      {
       "name": "미래 예지 - 순풍만범",
@@ -235,7 +248,11 @@
         "tm": "턴 종료",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Future Sight: Fair Wind",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "극 빙글빙글 베기!",
@@ -290,7 +307,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Ultra Spinny Slice!",
+      "wiki": {
+       "mult": "480%-960%",
+       "type": "Slash"
+      }
      }
     ],
     "stellar_skills": [
@@ -434,7 +456,12 @@
         "tm": "스텔라 버스트",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Witchy Tricks",
+      "wiki": {
+       "mult": "210%",
+       "type": "Magic"
+      }
      },
      {
       "name": "멜멜★매직",
@@ -578,7 +605,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Melly Melly Magic!",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ]
    }

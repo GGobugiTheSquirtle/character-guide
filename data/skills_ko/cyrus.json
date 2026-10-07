@@ -190,7 +190,12 @@
         "tm": "턴 종료",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Enku Jizai: Frog Splash",
+      "wiki": {
+       "mult": "210%-4200%",
+       "type": "Slash"
+      }
      }
     ],
     "skills": [
@@ -273,7 +278,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Idle Nirvana Slash",
+      "wiki": {
+       "mult": "630-1890%",
+       "type": "Slash"
+      }
      },
      {
       "name": "수룡 베기",
@@ -314,7 +324,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Water Slash",
+      "wiki": {
+       "mult": "480%",
+       "type": "Slash"
+      }
      },
      {
       "name": "원공자재류 창파",
@@ -427,7 +442,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Enku Jizai: Broken",
+      "wiki": {
+       "mult": "200%-1200%",
+       "type": "Slash"
+      }
      },
      {
       "name": "오의",
@@ -519,7 +539,8 @@
         "r": "mode",
         "tm": "턴 종료"
        }
-      ]
+      ],
+      "en": "Arcanum"
      },
      {
       "name": "진 오의",
@@ -611,7 +632,8 @@
         "r": "mode",
         "tm": "턴 종료"
        }
-      ]
+      ],
+      "en": "Verus Arcanum"
      }
     ]
    },

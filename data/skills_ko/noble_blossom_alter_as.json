@@ -91,7 +91,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Burning Grace",
+      "wiki": {
+       "mult": "160%",
+       "type": "Slash"
+      }
      },
      {
       "name": "화둔 해면요화 은신",
@@ -281,7 +286,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Unburdened Emberwall",
+      "wiki": {
+       "mult": "160%",
+       "type": "Slash"
+      }
      },
      {
       "name": "앵화난만",
@@ -354,7 +364,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Searing Sakura",
+      "wiki": {
+       "mult": "160%-1600%",
+       "type": "Slash"
+      }
      }
     ],
     "abilities": [
@@ -578,7 +593,11 @@
         "r": "resource",
         "tm": "턴 종료"
        }
-      ]
+      ],
+      "en": "Morale",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "고무",
@@ -626,7 +645,8 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Resonance [Pierce]"
      }
     ],
     "stellar_skills": [
@@ -846,7 +866,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Secret Skyfire",
+      "wiki": {
+       "mult": "2100%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "홍화만효",
@@ -917,7 +942,13 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Brilliant Dawn",
+      "wiki": {
+       "mult": "160-1120%",
+       "crit": "320%-2240%",
+       "type": "Piercing"
+      }
      }
     ]
    }

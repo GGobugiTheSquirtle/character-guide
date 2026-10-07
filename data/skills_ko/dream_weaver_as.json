@@ -78,7 +78,12 @@
         "r": "mode",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Preludio",
+      "wiki": {
+       "mult": "170%",
+       "type": "Magic"
+      }
      },
      {
       "name": "테네라멘테",
@@ -141,7 +146,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Teneramente",
+      "wiki": {
+       "mult": "170%",
+       "type": "Magic"
+      }
      },
      {
       "name": "스카리카 바릴레",
@@ -281,7 +291,11 @@
         "tm": "턴 종료",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Scaricabarile",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "일리아스",
@@ -404,7 +418,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Iliás",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "어보이드 노트",
@@ -502,7 +520,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Perilous Note",
+      "wiki": {
+       "mult": "190%-3800%",
+       "type": "Magic"
+      }
      }
     ],
     "stellar_skills": [
@@ -640,7 +663,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Appassionato",
+      "wiki": {
+       "type": "Healing/Buff"
+      }
      }
     ]
    }

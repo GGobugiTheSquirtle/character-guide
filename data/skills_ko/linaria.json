@@ -67,7 +67,12 @@
         "r": "zone",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Final Slice",
+      "wiki": {
+       "mult": "160%-4000%",
+       "type": "Slash"
+      }
      },
      {
       "name": "피어싱 셀",
@@ -127,7 +132,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Piercing Cell",
+      "wiki": {
+       "mult": "160%",
+       "type": "Slash"
+      }
      },
      {
       "name": "컴퍼트 존",
@@ -187,7 +197,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Safe Space",
+      "wiki": {
+       "type": "Stance/Buff"
+      }
      },
      {
       "name": "어서리제이션",
@@ -288,7 +302,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Authorization",
+      "wiki": {
+       "mult": "N/A",
+       "type": "Buff"
+      }
      }
     ],
     "stacks": [
@@ -373,7 +392,8 @@
         "r": "zone",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Deft Strike"
      }
     ],
     "stellar_skills": [
@@ -436,7 +456,11 @@
         "tm": "스텔라 버스트",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Automation",
+      "wiki": {
+       "type": "Healing"
+      }
      },
      {
       "name": "최종 결전 프로토콜",
@@ -480,7 +504,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Final Protocol",
+      "wiki": {
+       "mult": "8,400%",
+       "type": "Slash"
+      }
      }
     ]
    }

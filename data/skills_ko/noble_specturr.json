@@ -117,7 +117,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Leave Meow Alone!",
+      "wiki": {
+       "mult": "150%",
+       "type": "Magic"
+      }
      },
      {
       "name": "냥빛 좋은 날",
@@ -192,7 +197,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Purrfect Weather",
+      "wiki": {
+       "type": "Stance/Buff"
+      }
      },
      {
       "name": "고양이 범벅 면죄다냐",
@@ -287,7 +296,11 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "My Apawlogies",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "기수 뇌뢰",
@@ -398,7 +411,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Odd Rumble",
+      "wiki": {
+       "mult": "160%",
+       "type": "Slash"
+      }
      },
      {
       "name": "우수 연참",
@@ -494,7 +512,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Even Cut",
+      "wiki": {
+       "mult": "160%",
+       "type": "Slash"
+      }
      }
     ],
     "stacks": [
@@ -545,7 +568,8 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Yang Orb"
      },
      {
       "name": "음의 구슬",
@@ -595,7 +619,8 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Yin Orb"
      }
     ],
     "stellar_skills": [
@@ -730,7 +755,8 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Nekomata Yin-Yang"
      }
     ]
    }

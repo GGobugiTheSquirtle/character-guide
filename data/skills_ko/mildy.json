@@ -158,7 +158,11 @@
         "tm": "턴 종료",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Echoed Moonshine Song",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "펄스 비트",
@@ -233,7 +237,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Pulsing Beat",
+      "wiki": {
+       "mult": "110%",
+       "type": "Magic"
+      }
      },
      {
       "name": "하모니 톤",
@@ -288,7 +297,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Harmonic Tone",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "사이킥 젬",
@@ -435,7 +448,12 @@
         "tm": "사용 시",
         "tc": "적과 아군"
        }
-      ]
+      ],
+      "en": "Psychic Gem",
+      "wiki": {
+       "mult": "3800%",
+       "type": "Magic"
+      }
      }
     ],
     "stacks": [
@@ -517,7 +535,8 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Attack Verse"
      },
      {
       "name": "수비의 연주",
@@ -577,7 +596,8 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Defense Verse"
      }
     ],
     "stellar_skills": [
@@ -698,7 +718,11 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Symphonic Soul",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ]
    }

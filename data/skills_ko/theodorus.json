@@ -105,7 +105,12 @@
         "r": "meta",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Coming from Behind",
+      "wiki": {
+       "mult": "4800%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "페룸 푸그누스",
@@ -146,7 +151,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Pugni Ferrei",
+      "wiki": {
+       "mult": "100%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "아우럼 푸그누스",
@@ -187,7 +197,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Pugni Aurei",
+      "wiki": {
+       "mult": "140%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "레갈리스 푸그누스",
@@ -290,7 +305,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Pugni Regis",
+      "wiki": {
+       "mult": "4800%-7200%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "콤비노 콜푸스",
@@ -397,7 +417,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Ictus Combinati",
+      "wiki": {
+       "mult": "4800%-7200%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "프로보",
@@ -446,7 +471,12 @@
         "r": "other",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Probo",
+      "wiki": {
+       "mult": "100%-2500%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "노련한 거리 조절",
@@ -482,7 +512,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Vetores Vacatio",
+      "wiki": {
+       "type": "Healing"
+      }
      },
      {
       "name": "프로보카티오",
@@ -545,7 +579,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Provocatio",
+      "wiki": {
+       "mult": "120%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "페르세베라레",
@@ -630,7 +669,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Persevero",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "바리스 락티스마",
@@ -752,7 +795,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Varýs Láktisma",
+      "wiki": {
+       "mult": "800%-8000%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "락스 에날레스테",
@@ -888,7 +936,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Klótsisé to Makriá",
+      "wiki": {
+       "mult": "800%-8000%",
+       "type": "Blunt"
+      }
      }
     ],
     "abilities": [
@@ -998,7 +1051,8 @@
         "r": "mode",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Fighting Spirit"
      },
      {
       "name": "전성기",
@@ -1044,7 +1098,8 @@
         "r": "power",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Glory Days"
      },
      {
       "name": "전방에서 턴 시작 시",
@@ -1069,7 +1124,8 @@
         "tm": "턴 종료",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "At Turn-Start in Frontline"
      }
     ],
     "stellar_skills": [
@@ -1174,7 +1230,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Dust from a Dream",
+      "wiki": {
+       "mult": "2100-10500%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "오버 터프니스",
@@ -1219,7 +1280,8 @@
         "r": "other",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Tough as Nails"
      }
     ],
     "stellar_abilities": [

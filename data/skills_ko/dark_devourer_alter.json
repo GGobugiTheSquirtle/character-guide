@@ -95,7 +95,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Biting Dreams",
+      "wiki": {
+       "mult": "1500%-6000%",
+       "type": "Magic"
+      }
      },
      {
       "name": "스케어 폴",
@@ -159,7 +164,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Falling Fear",
+      "wiki": {
+       "mult": "110%",
+       "type": "Magic"
+      }
      },
      {
       "name": "테러 폴",
@@ -223,7 +233,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Falling Terror",
+      "wiki": {
+       "mult": "130%",
+       "type": "Magic"
+      }
      },
      {
       "name": "루인 폴",
@@ -296,7 +311,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Falling Ruin",
+      "wiki": {
+       "mult": "300%",
+       "type": "Magic"
+      }
      },
      {
       "name": "나이트 레이드",
@@ -346,7 +366,12 @@
         "r": "power",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Night Raid",
+      "wiki": {
+       "mult": "90%-1350%",
+       "type": "Magic"
+      }
      },
      {
       "name": "샌드 스로워",
@@ -398,7 +423,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Dream Sand",
+      "wiki": {
+       "mult": "110%",
+       "type": "Magic"
+      }
      },
      {
       "name": "말리스 필드",
@@ -454,7 +484,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Malice Field",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "더스크 브레이크",
@@ -526,7 +560,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Dusk Break",
+      "wiki": {
+       "mult": "150%",
+       "type": "Magic"
+      }
      },
      {
       "name": "아바돈즈 콜",
@@ -637,7 +676,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Abaddon's Call",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ],
     "stacks": [
@@ -689,7 +732,8 @@
         "r": "meta",
         "tm": "전투 시작"
        }
-      ]
+      ],
+      "en": "Bitter Dream"
      },
      {
       "name": "스위트 메어",
@@ -775,7 +819,8 @@
         "r": "state_unknown",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Sweet Dream"
      },
      {
       "name": "나이트메어 타임",
@@ -859,7 +904,11 @@
         "r": "other",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Nightmare Time",
+      "wiki": {
+       "type": "Passive"
+      }
      }
     ],
     "stellar_skills": [
@@ -1025,7 +1074,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Doomsday Peace",
+      "wiki": {
+       "mult": "200%-8000%",
+       "type": "Magic"
+      }
      }
     ]
    }

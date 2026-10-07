@@ -69,7 +69,12 @@
         "tm": "턴 종료",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Infestation of Rot",
+      "wiki": {
+       "mult": "1500%",
+       "type": "Magic"
+      }
      },
      {
       "name": "가호지광황",
@@ -182,7 +187,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Shimmer of Blessings",
+      "wiki": {
+       "mult": "150%",
+       "type": "Magic"
+      }
      },
      {
       "name": "멸예지책주",
@@ -271,7 +281,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Cross of Ruination",
+      "wiki": {
+       "mult": "190%-380%",
+       "type": "Magic"
+      }
      }
     ],
     "abilities": [
@@ -401,7 +416,12 @@
         "r": "atk_buff",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Exorcism of Serpents",
+      "wiki": {
+       "mult": "150%",
+       "type": "Magic"
+      }
      }
     ],
     "chain": [
@@ -748,7 +768,12 @@
         "tm": "턴 종료",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Serpentome: Swallow",
+      "wiki": {
+       "mult": "200%-8000%",
+       "type": "Magic"
+      }
      }
     ]
    }

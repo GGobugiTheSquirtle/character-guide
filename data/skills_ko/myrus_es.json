@@ -96,7 +96,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Rabbit Strike",
+      "wiki": {
+       "mult": "200%",
+       "type": "Slash"
+      }
      },
      {
       "name": "치유 베기",
@@ -149,7 +154,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Soothing Slice",
+      "wiki": {
+       "mult": "160%-4800%",
+       "type": "Slash"
+      }
      },
      {
       "name": "럭키 점프",
@@ -188,7 +198,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Lucky Jump",
+      "wiki": {
+       "type": "Support"
+      }
      },
      {
       "name": "아쿠아 램페이지",
@@ -239,7 +253,12 @@
         "r": "power",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Aqua Rampage",
+      "wiki": {
+       "mult": "3200-6400%",
+       "type": "Slash"
+      }
      }
     ],
     "stellar_skills": [
@@ -324,7 +343,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Myrus Impact",
+      "wiki": {
+       "mult": "210%-6300%",
+       "type": "Slash"
+      }
      }
     ]
    }

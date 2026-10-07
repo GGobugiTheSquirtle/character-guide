@@ -54,7 +54,11 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Entwined Blessing",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "세크메트의 작멸권",
@@ -173,7 +177,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Blazing Fist of Sekhmet",
+      "wiki": {
+       "mult": "800%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "메렐 네스렛",
@@ -229,7 +238,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Merr Nesret",
+      "wiki": {
+       "mult": "140-700%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "연명백장",
@@ -279,7 +293,12 @@
         "r": "tempo",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Palms of Burning Life",
+      "wiki": {
+       "mult": "2400%-4800%",
+       "type": "Blunt"
+      }
      }
     ],
     "stacks": [
@@ -343,7 +362,8 @@
         "r": "other",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Sacrificial Heart"
      },
      {
       "name": "혁작의 심장",
@@ -410,7 +430,8 @@
         "r": "atk_state",
         "tm": "턴 시작"
        }
-      ]
+      ],
+      "en": "Scorched Heart"
      }
     ],
     "stellar_skills": [
@@ -508,7 +529,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Infernal Judgment Scale",
+      "wiki": {
+       "mult": "210%-10500%",
+       "type": "Blunt"
+      }
      }
     ]
    }

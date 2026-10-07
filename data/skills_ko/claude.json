@@ -139,7 +139,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Duon Selene",
+      "wiki": {
+       "mult": "210%-14700%",
+       "type": "Piercing"
+      }
      }
     ]
    },

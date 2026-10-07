@@ -50,7 +50,8 @@
         "r": "meta",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Lunatic"
      },
      {
       "name": "인텐도",
@@ -166,7 +167,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Intendere",
+      "wiki": {
+       "type": "Stance/Buff"
+      }
      },
      {
       "name": "인치데레",
@@ -325,7 +330,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Incisum",
+      "wiki": {
+       "mult": "200%-6000%",
+       "type": "Slash"
+      }
      },
      {
       "name": "크레센티아",
@@ -512,7 +522,11 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Crescentia",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ],
     "abilities": [
@@ -727,7 +741,8 @@
         "r": "resource",
         "tm": "턴 종료"
        }
-      ]
+      ],
+      "en": "Somnium"
      }
     ],
     "stellar_skills": [
@@ -831,7 +846,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Cruor Ensis",
+      "wiki": {
+       "mult": "250%-7500%",
+       "type": "Slash"
+      }
      }
     ],
     "stellar_abilities": [

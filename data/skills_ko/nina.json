@@ -109,7 +109,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Burst Seams Cage",
+      "wiki": {
+       "mult": "150%",
+       "type": "Magic"
+      }
      },
      {
       "name": "인스피레이션",
@@ -191,7 +196,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Inspiration",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "코디네이트",
@@ -248,7 +257,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Outfit",
+      "wiki": {
+       "mult": "130%",
+       "type": "Magic"
+      }
      },
      {
       "name": "소잉",
@@ -307,7 +321,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Sewing",
+      "wiki": {
+       "mult": "150%",
+       "type": "Magic"
+      }
      },
      {
       "name": "이치의 재봉",
@@ -407,7 +426,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Patched Ideals",
+      "wiki": {
+       "mult": "150%",
+       "type": "Magic"
+      }
      }
     ],
     "stellar_skills": [
@@ -504,7 +528,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Dreamlike Stitch",
+      "wiki": {
+       "mult": "200%-2000%",
+       "type": "Magic"
+      }
      }
     ]
    }

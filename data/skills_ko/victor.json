@@ -142,7 +142,12 @@
         "tm": "턴 종료",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Twin Thunder Slash",
+      "wiki": {
+       "mult": "2100%-6300%",
+       "type": "Slash"
+      }
      }
     ],
     "skills": [
@@ -227,7 +232,8 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Lunatic+"
      },
      {
       "name": "우레의 칼날",
@@ -293,7 +299,12 @@
         "r": "power",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Thunder Slash",
+      "wiki": {
+       "mult": "210-630%/210%-630%",
+       "type": "Slash"
+      }
      },
      {
       "name": "뇌신의 칼날",
@@ -359,7 +370,12 @@
         "r": "power",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Divine Cry",
+      "wiki": {
+       "mult": "360-1440%/360% - 1440%",
+       "type": "Slash"
+      }
      },
      {
       "name": "전광뢰인",
@@ -425,7 +441,12 @@
         "r": "power",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Thunderous Blade",
+      "wiki": {
+       "mult": "600-2400%/600%-2400%",
+       "type": "Slash"
+      }
      },
      {
       "name": "카마이타치",
@@ -489,7 +510,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Deep Cutting Wind",
+      "wiki": {
+       "mult": "140%-1400%",
+       "type": "Slash"
+      }
      },
      {
       "name": "바즈라",
@@ -550,7 +576,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Vajra",
+      "wiki": {
+       "mult": "120%",
+       "type": "Slash"
+      }
      },
      {
       "name": "뇌신 강림",
@@ -656,7 +687,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Divine Thunder",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "순간의 폭풍",
@@ -744,7 +779,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Sudden Tempest",
+      "wiki": {
+       "mult": "180%",
+       "type": "Slash"
+      }
      },
      {
       "name": "질풍신뢰",
@@ -851,7 +891,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Lightning Speed",
+      "wiki": {
+       "mult": "160%/160%",
+       "type": "Slash"
+      }
      }
     ],
     "abilities": [
@@ -1016,7 +1061,8 @@
         "r": "meta",
         "tm": "턴 시작"
        }
-      ]
+      ],
+      "en": "Blasting"
      },
      {
       "name": "재림",
@@ -1058,7 +1104,8 @@
         "r": "mode",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Second Coming"
      },
      {
       "name": "백전",
@@ -1099,7 +1146,8 @@
         "r": "surv_buff",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Veteran"
      },
      {
       "name": "용퇴",
@@ -1134,7 +1182,8 @@
         "r": "recover",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Withdraw"
      }
     ]
    },

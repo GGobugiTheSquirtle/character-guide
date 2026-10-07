@@ -85,7 +85,8 @@
         "r": "mode",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Lunatic+"
      },
      {
       "name": "오토 리커버",
@@ -169,7 +170,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Auto Recover",
+      "wiki": {
+       "mult": "180%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "멀티플 레이",
@@ -242,7 +248,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Multi-Beam",
+      "wiki": {
+       "mult": "160-5760%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "시큐어 프로텍트",
@@ -350,7 +361,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Secure Protection",
+      "wiki": {
+       "type": "Buff/Debuff"
+      }
      }
     ],
     "stacks": [
@@ -410,7 +425,8 @@
         "r": "meta",
         "tm": "턴 종료"
        }
-      ]
+      ],
+      "en": "Overcharge"
      }
     ],
     "stellar_skills": [
@@ -493,7 +509,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Triple Barrier",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ]
    }

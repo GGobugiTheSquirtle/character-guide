@@ -28,7 +28,11 @@
         "r": "mode",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Wings of Despair",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "스펙트럼 제로",
@@ -89,7 +93,12 @@
         "r": "other",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Spectrum Zero",
+      "wiki": {
+       "mult": "150-18000%",
+       "type": "Magic"
+      }
      },
      {
       "name": "소울 스틸",
@@ -178,7 +187,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Steal Soul",
+      "wiki": {
+       "mult": "150-3000%",
+       "type": "Magic"
+      }
      }
     ],
     "stacks": [
@@ -419,7 +433,11 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Rook's Eye",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ]
    }

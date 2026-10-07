@@ -56,7 +56,12 @@
         "r": "resource",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Tionchar Am",
+      "wiki": {
+       "mult": "6400%",
+       "type": "Slash"
+      }
      },
      {
       "name": "린 스콜티어",
@@ -162,7 +167,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Scoilteadh Linn",
+      "wiki": {
+       "mult": "140%",
+       "type": "Slash"
+      }
      },
      {
       "name": "스루흐 스콜티어",
@@ -268,7 +278,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Scoilteadh Sruth",
+      "wiki": {
+       "mult": "180%",
+       "type": "Slash"
+      }
      },
      {
       "name": "뮤르 스콜티어",
@@ -386,7 +401,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Scoilteadh Muir",
+      "wiki": {
+       "mult": "200%",
+       "type": "Slash"
+      }
      },
      {
       "name": "트래 이슈케",
@@ -426,7 +446,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Treá Uisce",
+      "wiki": {
+       "mult": "140%",
+       "type": "Slash"
+      }
      },
      {
       "name": "튄슈크너브",
@@ -486,7 +511,12 @@
         "r": "atk_state",
         "tm": "전투 시작"
        }
-      ]
+      ],
+      "en": "Tionscnamh",
+      "wiki": {
+       "mult": "120%-1200%",
+       "type": "Slash"
+      }
      },
      {
       "name": "드리어흐트 크먼",
@@ -538,7 +568,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Meascán Draíochta",
+      "wiki": {
+       "type": "Stance/Buff"
+      }
      },
      {
       "name": "매흘루 리르",
@@ -627,7 +661,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Meathlú Duibheagán",
+      "wiki": {
+       "mult": "180%",
+       "type": "Slash"
+      }
      },
      {
       "name": "둘 슬라무",
@@ -723,7 +762,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Teascadh Nádúrtha",
+      "wiki": {
+       "mult": "160%-8000%",
+       "type": "Slash"
+      }
      }
     ],
     "abilities": [
@@ -817,7 +861,8 @@
         "r": "zone",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Mana Luas"
      },
      {
       "name": "예마",
@@ -876,7 +921,8 @@
         "r": "resource",
         "tm": "턴 종료"
        }
-      ]
+      ],
+      "en": "Sharp Magic"
      }
     ],
     "stellar_skills": [
@@ -1035,7 +1081,12 @@
         "r": "other",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Oggy Loise",
+      "wiki": {
+       "mult": "210%-12600%",
+       "type": "Magic"
+      }
      }
     ]
    }

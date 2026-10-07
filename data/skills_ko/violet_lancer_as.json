@@ -73,7 +73,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Weakness Skewer",
+      "wiki": {
+       "mult": "200%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "리추얼 쿼츠",
@@ -174,7 +179,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Ritual Quartz",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "보이드 폴",
@@ -256,7 +265,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Voidfall",
+      "wiki": {
+       "mult": "200-3000%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "소울 컬랩스",
@@ -355,7 +369,8 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Resonance [Mind's Eye]"
      }
     ],
     "abilities": [
@@ -668,7 +683,12 @@
         "r": "state_unknown",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Earth Piercer",
+      "wiki": {
+       "mult": "160%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "익스텐드",
@@ -689,7 +709,8 @@
         "r": "zone",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Extend"
      }
     ],
     "stellar_skills": [
@@ -932,7 +953,12 @@
         "tm": "턴 종료",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Rending Light Lance",
+      "wiki": {
+       "mult": "3360%-16800%",
+       "type": "Piercing"
+      }
      }
     ]
    }

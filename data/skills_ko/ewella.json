@@ -116,7 +116,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Semper Tecum",
+      "wiki": {
+       "mult": "210%-3150%",
+       "type": "Piercing"
+      }
      }
     ],
     "stellar_abilities": [
@@ -333,7 +338,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Aeternum Amare",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "바데메쿰",
@@ -394,7 +403,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Vade Mecum",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "크리스 사나티오",
@@ -460,7 +473,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Curis Sanatio",
+      "wiki": {
+       "mult": "160%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "에스토 페르페투아",
@@ -543,7 +561,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Esto Perpetua",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "세바 프로레므",
@@ -677,7 +699,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Saevus Furorem",
+      "wiki": {
+       "mult": "200%",
+       "type": "Piercing"
+      }
      }
     ],
     "abilities": [
@@ -881,7 +908,11 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Critical Guard",
+      "wiki": {
+       "type": "Passive"
+      }
      },
      {
       "name": "아물레툼",
@@ -1000,7 +1031,8 @@
         "r": "resource",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Insanire"
      },
      {
       "name": "플라가 젬마",
@@ -1130,7 +1162,11 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Amuletum",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ]
    },

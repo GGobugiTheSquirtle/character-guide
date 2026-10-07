@@ -80,7 +80,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Hydro Detonation",
+      "wiki": {
+       "mult": "210%-6300%",
+       "type": "Blunt"
+      }
      }
     ],
     "stellar_abilities": [
@@ -238,7 +243,12 @@
         "r": "other",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Resonant Buster",
+      "wiki": {
+       "mult": "160%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "베이퍼 너클",
@@ -313,7 +323,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Vapor Knuckle",
+      "wiki": {
+       "mult": "140%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "베이퍼 블로",
@@ -388,7 +403,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Vapor Blow",
+      "wiki": {
+       "mult": "180%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "베이퍼 캐논",
@@ -521,7 +541,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Vapor Cannon",
+      "wiki": {
+       "mult": "500%-1500%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "트릭 슛",
@@ -580,7 +605,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Trick Shot",
+      "wiki": {
+       "mult": "140%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "슬리프 스프레드",
@@ -630,7 +660,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Sleep Spread",
+      "wiki": {
+       "mult": "110%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "퍼니시 블로",
@@ -689,7 +724,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Punishing Blow",
+      "wiki": {
+       "mult": "160%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "어시스트 스모크",
@@ -796,7 +836,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Steam Assist",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "미스트 블래스트",
@@ -876,7 +920,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Mist Blast",
+      "wiki": {
+       "mult": "500%-5000%",
+       "type": "Blunt"
+      }
      }
     ],
     "abilities": [
@@ -981,7 +1030,8 @@
         "r": "mode",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Activated Reaction"
      },
      {
       "name": "나노 머신 각성",
@@ -1009,7 +1059,8 @@
         "r": "tempo",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Awakened Nanomachines"
      }
     ]
    },

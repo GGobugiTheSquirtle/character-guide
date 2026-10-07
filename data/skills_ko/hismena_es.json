@@ -104,7 +104,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Estrella Fugaz",
+      "wiki": {
+       "mult": "170% / 170%",
+       "type": "Slash, Piercing"
+      }
      },
      {
       "name": "치스파 타하르",
@@ -193,7 +198,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Chispa Cortante",
+      "wiki": {
+       "mult": "160%",
+       "type": "Slash"
+      }
      },
      {
       "name": "시엔 칼리엔테",
@@ -261,7 +271,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Calor Abrasador",
+      "wiki": {
+       "mult": "160%-3200%",
+       "type": "Slash"
+      }
      }
     ],
     "stacks": [
@@ -327,7 +342,8 @@
         "r": "meta",
         "tm": "스텔라 버스트"
        }
-      ]
+      ],
+      "en": "Espada"
      }
     ],
     "stellar_skills": [
@@ -409,7 +425,12 @@
         "r": "state_unknown",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Campeón Rojo",
+      "wiki": {
+       "mult": "880% / 1320% - 4400% / 6600%",
+       "type": "Slash, Piercing"
+      }
      }
     ]
    }

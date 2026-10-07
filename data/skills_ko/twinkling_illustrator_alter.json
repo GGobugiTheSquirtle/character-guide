@@ -75,7 +75,11 @@
         "r": "other",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Wrong Headcanon",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "폭염 송고",
@@ -168,7 +172,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Blazing Draft",
+      "wiki": {
+       "mult": "110%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "옥염 탈고",
@@ -261,7 +270,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Infernal Finalization",
+      "wiki": {
+       "mult": "130%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "낙서 재킹",
@@ -366,7 +380,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Doodle-Jack",
+      "wiki": {
+       "mult": "170%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "화이트 수정",
@@ -388,7 +407,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Correction Tape",
+      "wiki": {
+       "type": "Healing"
+      }
      },
      {
       "name": "설렘 주의보♡힐",
@@ -445,7 +468,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Multicolored Heal",
+      "wiki": {
+       "type": "Healing"
+      }
      },
      {
       "name": "설렘 주의보♡가드",
@@ -512,7 +539,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Multicolored Guard",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "트리크로마",
@@ -616,7 +647,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Tri Chroma",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "마감일 데드 러시",
@@ -711,7 +746,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Deadline Rush",
+      "wiki": {
+       "mult": "210%-4200%",
+       "type": "Piercing"
+      }
      }
     ],
     "abilities": [
@@ -813,7 +853,8 @@
         "r": "mode",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Multicoloration"
      },
      {
       "name": "광속 집필",
@@ -866,7 +907,8 @@
         "r": "state_unknown",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Blazing Brush"
      },
      {
       "name": "존에 들어갔습니다만?",
@@ -889,7 +931,11 @@
         "r": "atk_buff",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "In the Zone",
+      "wiki": {
+       "type": "Passive"
+      }
      }
     ],
     "stellar_skills": [
@@ -993,7 +1039,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Vivid World",
+      "wiki": {
+       "mult": "880%-10568%",
+       "type": "Piercing"
+      }
      }
     ],
     "stellar_abilities": [

@@ -127,7 +127,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Immaculate Hymn",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ]
    },

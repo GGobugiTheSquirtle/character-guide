@@ -72,7 +72,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Offense Beat",
+      "wiki": {
+       "mult": "160%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "디펜스 비트",
@@ -139,7 +144,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Defense Beat",
+      "wiki": {
+       "mult": "160%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "문 나이트 노트",
@@ -185,7 +195,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Moonlight Melody",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "사이킥 월",
@@ -245,7 +259,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Psychic Wall",
+      "wiki": {
+       "type": "Support"
+      }
      },
      {
       "name": "다운 스파이크",
@@ -390,7 +408,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Downward Spearhead",
+      "wiki": {
+       "mult": "160%-320%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "어그로 스파이크",
@@ -450,7 +473,12 @@
         "r": "mode",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Forward Spearhead",
+      "wiki": {
+       "mult": "6400%-9600%",
+       "type": "Piercing"
+      }
      }
     ],
     "stacks": [
@@ -526,7 +554,8 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Aggro Stance"
      }
     ],
     "stellar_skills": [
@@ -584,7 +613,12 @@
         "tm": "스텔라 버스트",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Lumina Guardian",
+      "wiki": {
+       "mult": "2100%-4200%",
+       "type": "Piercing"
+      }
      }
     ]
    }

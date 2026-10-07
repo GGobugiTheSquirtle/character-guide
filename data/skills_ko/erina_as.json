@@ -61,7 +61,8 @@
         "r": "meta",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Lunatic+"
      },
      {
       "name": "다크 웨이브",
@@ -194,7 +195,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Wave of Darkness",
+      "wiki": {
+       "mult": "190%",
+       "type": "Magic"
+      }
      },
      {
       "name": "유니즌 소울",
@@ -335,7 +341,11 @@
         "tm": "턴 종료",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Soul Unison",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "라이프 스틸",
@@ -388,7 +398,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Life Steal",
+      "wiki": {
+       "mult": "360%",
+       "type": "Magic"
+      }
      },
      {
       "name": "턴 오버",
@@ -448,7 +463,11 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "My Turn Now",
+      "wiki": {
+       "type": "Buff / Debuff"
+      }
      }
     ],
     "abilities": [
@@ -590,7 +609,8 @@
         "r": "meta",
         "tm": "턴 종료"
        }
-      ]
+      ],
+      "en": "Sunlight"
      }
     ],
     "stellar_skills": [
@@ -742,7 +762,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "First Light",
+      "wiki": {
+       "type": "Buff/Heal"
+      }
      }
     ],
     "stellar_abilities": [
@@ -918,7 +942,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "My Turn Now",
+      "wiki": {
+       "type": "Buff / Debuff"
+      }
      }
     ]
    }

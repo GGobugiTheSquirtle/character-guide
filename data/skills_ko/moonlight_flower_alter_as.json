@@ -83,7 +83,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Peitzchetanzen",
+      "wiki": {
+       "mult": "300%",
+       "type": "Slash"
+      }
      },
      {
       "name": "슐랑게 탄츠",
@@ -159,7 +164,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Schlangetanzen",
+      "wiki": {
+       "mult": "420%",
+       "type": "Slash"
+      }
      },
      {
       "name": "몬트블루메",
@@ -318,7 +328,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Mondblume",
+      "wiki": {
+       "mult": "200%",
+       "type": "Slash"
+      }
      },
      {
       "name": "바이스도른",
@@ -428,7 +443,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Weiße Dorn",
+      "wiki": {
+       "mult": "1000%",
+       "type": "Slash"
+      }
      },
      {
       "name": "몬트리히트",
@@ -491,7 +511,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Mondlicht",
+      "wiki": {
+       "mult": "2000%",
+       "type": "Slash"
+      }
      }
     ],
     "abilities": [
@@ -762,7 +787,8 @@
         "r": "mode",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "White Rose's Blessing"
      },
      {
       "name": "백기사",
@@ -807,7 +833,8 @@
         "r": "state_unknown",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Resonance [Pierce]"
      },
      {
       "name": "트란스첸덴트",
@@ -884,7 +911,8 @@
         "r": "atk_buff",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Alabaster Knight"
      }
     ],
     "stellar_skills": [
@@ -1019,7 +1047,11 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Light of the Moonbeam!",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ],
     "stellar_abilities": [
@@ -1406,7 +1438,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Peitzchetanzen",
+      "wiki": {
+       "mult": "300%",
+       "type": "Slash"
+      }
      },
      {
       "name": "슐랑게 탄츠",
@@ -1480,7 +1517,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Schlangetanzen",
+      "wiki": {
+       "mult": "420%",
+       "type": "Slash"
+      }
      },
      {
       "name": "돈 탄츠",
@@ -1554,7 +1596,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Dorntanzen",
+      "wiki": {
+       "mult": "480%",
+       "type": "Slash"
+      }
      }
     ]
    }

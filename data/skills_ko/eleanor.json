@@ -50,7 +50,8 @@
         "r": "meta",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Lunatic"
      },
      {
       "name": "크리스탈 레이피어",
@@ -135,7 +136,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Crystal Rapier",
+      "wiki": {
+       "mult": "90%-300%",
+       "type": "Magic"
+      }
      },
      {
       "name": "레디언트 소드",
@@ -220,7 +226,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Radiant Sword",
+      "wiki": {
+       "mult": "130%-700%",
+       "type": "Magic"
+      }
      },
      {
       "name": "글린트 클레이모어",
@@ -317,7 +328,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Glimmering Claymore",
+      "wiki": {
+       "mult": "150%-3200%",
+       "type": "Magic"
+      }
      },
      {
       "name": "루미너스 힐",
@@ -353,7 +369,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Luminous Healing",
+      "wiki": {
+       "type": "Healing"
+      }
      },
      {
       "name": "어셈블",
@@ -397,7 +417,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Assemble",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "세이크리드 베일",
@@ -451,7 +475,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Sacred Veil",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "서도 의식",
@@ -534,7 +562,11 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Guiding Vow Rite",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "기서의 인도",
@@ -656,7 +688,11 @@
         "tm": "턴 종료",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Guiding Will",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ],
     "stacks": [
@@ -736,7 +772,8 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Sword of Oath"
      }
     ],
     "stellar_skills": [
@@ -907,7 +944,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Oath Arc",
+      "wiki": {
+       "mult": "210%-10500%",
+       "type": "Slash"
+      }
      }
     ]
    }

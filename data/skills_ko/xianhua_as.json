@@ -48,7 +48,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Gravitational Inversion",
+      "wiki": {
+       "mult": "170%",
+       "type": "Magic"
+      }
      },
      {
       "name": "인테그럴",
@@ -147,7 +152,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Integral",
+      "wiki": {
+       "mult": "1000%",
+       "type": "Magic"
+      }
      },
      {
       "name": "체인 룰",
@@ -268,7 +278,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Rule of the Chain",
+      "wiki": {
+       "mult": "850%-1700%",
+       "type": "Magic"
+      }
      }
     ],
     "stacks": [
@@ -304,7 +319,8 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Chain Energy"
      }
     ],
     "stellar_skills": [
@@ -478,7 +494,12 @@
         "tm": "턴 종료",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Dimension Zero",
+      "wiki": {
+       "mult": "210-10500%",
+       "type": "Magic"
+      }
      }
     ]
    }

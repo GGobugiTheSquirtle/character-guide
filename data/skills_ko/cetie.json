@@ -62,7 +62,12 @@
         "r": "resource",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Holdup",
+      "wiki": {
+       "mult": "1050%-5250%",
+       "type": "Piercing"
+      }
      }
     ]
    },

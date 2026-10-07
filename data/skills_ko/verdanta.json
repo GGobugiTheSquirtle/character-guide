@@ -65,7 +65,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Blue Ice Flare",
+      "wiki": {
+       "mult": "4800%-9000%",
+       "type": "Slash"
+      }
      },
      {
       "name": "쾌진격의 호령",
@@ -122,7 +127,12 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Marching Order",
+      "wiki": {
+       "mult": "160%",
+       "type": "Slash"
+      }
      },
      {
       "name": "스프린트 레이드",
@@ -197,7 +207,12 @@
         "tm": "전투 시작",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Sprinting Raid",
+      "wiki": {
+       "mult": "120%-2400%",
+       "type": "Slash"
+      }
      },
      {
       "name": "제너럴 블레이즈",
@@ -289,7 +304,11 @@
         "tm": "전투 시작",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "General's Blaze",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ],
     "stellar_skills": [
@@ -344,7 +363,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Frost Blossoms",
+      "wiki": {
+       "mult": "4200%-12600%",
+       "type": "Slash"
+      }
      }
     ]
    }

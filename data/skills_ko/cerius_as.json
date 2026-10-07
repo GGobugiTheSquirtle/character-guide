@@ -70,7 +70,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Art of the Archer",
+      "wiki": {
+       "mult": "N/A",
+       "type": "Buff"
+      }
      },
      {
       "name": "묘기 연속 장전",
@@ -185,7 +190,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Rapid Release",
+      "wiki": {
+       "mult": "N/A",
+       "type": "Buff"
+      }
      },
      {
       "name": "유광의 화살",
@@ -251,7 +261,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Lustrous Arrow",
+      "wiki": {
+       "mult": "200%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "유광의 화살 천",
@@ -323,7 +338,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Lustrous Arrow: Bore",
+      "wiki": {
+       "mult": "3000%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "유광의 화살 신",
@@ -405,7 +425,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Lustrous Arrow: Swift",
+      "wiki": {
+       "mult": "200%-680%",
+       "type": "Piercing"
+      }
      }
     ],
     "stacks": [
@@ -478,7 +503,8 @@
         "r": "resource",
         "tm": "턴 시작"
        }
-      ]
+      ],
+      "en": "Full Round"
      },
      {
       "name": "철갑 관통",
@@ -513,7 +539,8 @@
         "r": "other",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Armor Piercer"
      }
     ],
     "stellar_skills": [
@@ -605,7 +632,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Flashing Fletch",
+      "wiki": {
+       "mult": "210%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "천관일섬",
@@ -703,7 +735,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Empyrean Flash",
+      "wiki": {
+       "mult": "12600%",
+       "type": "Piercing"
+      }
      },
      {
       "name": "천관질시",
@@ -793,7 +830,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Empyrean Fletch",
+      "wiki": {
+       "mult": "890%",
+       "type": "Piercing"
+      }
      }
     ]
    }

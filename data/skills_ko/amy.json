@@ -174,7 +174,12 @@
         "tm": "턴 종료",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Crushing Gale",
+      "wiki": {
+       "mult": "630%-4200%",
+       "type": "Blunt"
+      }
      }
     ],
     "skills": [
@@ -218,7 +223,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Super Combo",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "스매시 다운",
@@ -273,7 +282,13 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Smash Down",
+      "wiki": {
+       "mult": "150%",
+       "crit": "300%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "더블 다운",
@@ -338,7 +353,13 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Double Down",
+      "wiki": {
+       "mult": "190%",
+       "crit": "570%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "트리플 다운",
@@ -417,7 +438,13 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Triple Down",
+      "wiki": {
+       "mult": "210%",
+       "crit": "1260%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "차지 스탠스",
@@ -507,7 +534,11 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Charge Stance",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "더블 허리케인",
@@ -567,7 +598,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Double Hurricane",
+      "wiki": {
+       "mult": "180%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "블래스트 헤븐",
@@ -661,7 +697,13 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Blast Elysium",
+      "wiki": {
+       "mult": "200%-400%",
+       "crit": "800%-1600%",
+       "type": "Blunt"
+      }
      }
     ],
     "abilities": [
@@ -797,7 +839,8 @@
         "r": "mode",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Blast Boosters"
      },
      {
       "name": "속격속공",
@@ -824,7 +867,8 @@
         "r": "tempo",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Rapid Pummel"
      }
     ]
    },

@@ -121,7 +121,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Torch of Vaschtal",
+      "wiki": {
+       "mult": "1000%-4000%",
+       "type": "Magic"
+      }
      },
      {
       "name": "극 염옥",
@@ -170,7 +175,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "True Inferno",
+      "wiki": {
+       "mult": "3200%",
+       "type": "Magic"
+      }
      }
     ],
     "stellar_abilities": [
@@ -333,7 +343,8 @@
         "r": "power",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Tyrannical Blaze"
      },
      {
       "name": "플레임 스트라이크",
@@ -360,7 +371,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Flame Strike",
+      "wiki": {
+       "mult": "180%",
+       "type": "Magic"
+      }
      },
      {
       "name": "나선의 업화",
@@ -387,7 +403,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Helix Banefire",
+      "wiki": {
+       "mult": "390%",
+       "type": "Magic"
+      }
      },
      {
       "name": "염옥",
@@ -447,7 +468,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Inferno",
+      "wiki": {
+       "mult": "600%-1800%",
+       "type": "Magic"
+      }
      },
      {
       "name": "파이어 볼",
@@ -487,7 +513,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Fire Ball",
+      "wiki": {
+       "mult": "130%",
+       "type": "Magic"
+      }
      },
      {
       "name": "버닝 실드",
@@ -566,7 +597,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Burning Shield",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "래피드 파이어",
@@ -619,7 +654,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Rapid Fire",
+      "wiki": {
+       "mult": "150%-750%",
+       "type": "Magic"
+      }
      },
      {
       "name": "헬 플레임",
@@ -702,7 +742,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "Fiendish Flame",
+      "wiki": {
+       "mult": "170%",
+       "type": "Magic"
+      }
      },
      {
       "name": "익스플로전",
@@ -804,7 +849,12 @@
         "tm": "사용 시",
         "tc": "자신"
        }
-      ]
+      ],
+      "en": "Explosion",
+      "wiki": {
+       "mult": "570%",
+       "type": "Magic"
+      }
      }
     ],
     "abilities": [
@@ -1003,7 +1053,12 @@
         "r": "resource",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Infernal Demise",
+      "wiki": {
+       "mult": "190-1140%",
+       "type": "Magic"
+      }
      },
      {
       "name": "봉화운천 일식",
@@ -1062,7 +1117,8 @@
         "r": "resource",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Spreading Inferno 1"
      }
     ]
    },

@@ -213,7 +213,11 @@
         "tm": "턴 종료",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Breezy Melody",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "부챗불의 노래",
@@ -385,7 +389,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Igniting Melody",
+      "wiki": {
+       "type": "Buff"
+      }
      },
      {
       "name": "이그나이트 윈드",
@@ -502,7 +510,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Ignition Wind",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ],
     "stellar_skills": [
@@ -635,7 +647,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "Golden Dance",
+      "wiki": {
+       "mult": "210%-3150%",
+       "type": "Piercing"
+      }
      }
     ]
    }

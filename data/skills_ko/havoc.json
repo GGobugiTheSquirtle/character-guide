@@ -50,7 +50,8 @@
         "r": "meta",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Lunatic"
      },
      {
       "name": "K3 스트렐라",
@@ -111,7 +112,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "K2 Strela",
+      "wiki": {
+       "mult": "100%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "K5 풀랴",
@@ -172,7 +178,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "K4 Pulya",
+      "wiki": {
+       "mult": "140%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "K7 스나랴트",
@@ -260,7 +271,12 @@
         "tm": "사용 시",
         "tc": "적 하나"
        }
-      ]
+      ],
+      "en": "K6 Snaryad",
+      "wiki": {
+       "mult": "160%-320%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "이스크라",
@@ -300,7 +316,12 @@
         "r": "power",
         "tm": "사용 시"
        }
-      ]
+      ],
+      "en": "Iskra",
+      "wiki": {
+       "mult": "120%-3000%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "메디카",
@@ -343,7 +364,11 @@
         "tm": "사용 시",
         "tc": "아군 전체"
        }
-      ]
+      ],
+      "en": "Medik",
+      "wiki": {
+       "type": "Healing"
+      }
      },
      {
       "name": "치타델",
@@ -424,7 +449,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Tsitadel",
+      "wiki": {
+       "mult": "140%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "스파사티",
@@ -505,7 +535,12 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Podderzhivat",
+      "wiki": {
+       "mult": "140%",
+       "type": "Blunt"
+      }
      },
      {
       "name": "프페료트",
@@ -644,7 +679,11 @@
         "tm": "사용 시",
         "tc": "특정 아군"
        }
-      ]
+      ],
+      "en": "Vpered",
+      "wiki": {
+       "type": "Buff"
+      }
      }
     ],
     "abilities": [
@@ -743,7 +782,8 @@
         "r": "meta",
         "tm": "턴 종료"
        }
-      ]
+      ],
+      "en": "Bezdna Mekhanizm"
      },
      {
       "name": "구속 와이어",
@@ -825,7 +865,8 @@
         "r": "meta",
         "tm": "상시·조건"
        }
-      ]
+      ],
+      "en": "Restriction Wire"
      }
     ],
     "stellar_skills": [
@@ -998,7 +1039,12 @@
         "tm": "사용 시",
         "tc": "적 전체"
        }
-      ]
+      ],
+      "en": "K8 Svet",
+      "wiki": {
+       "mult": "210%-2100%",
+       "type": "Blunt"
+      }
      }
     ]
    }

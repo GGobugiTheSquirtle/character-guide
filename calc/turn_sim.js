@@ -195,7 +195,7 @@
       } else if (s.do === "awaken") {
         if (sim.zone && !sim.zone.awakened && (s.need == null || sim.zone.name.includes(s.need))) sim.zone = { ...sim.zone, awakened: true, left: (s.turns || 2) - 1 };
       } else if (s.do === "status") {
-        for (const u of targets(sim, a, s.to)) u.statuses[s.name] = durOf(s.dur || { turns: 1 }).left;
+        for (const u of targets(sim, a, s.to)) if (!(u.immune && u.immune.has(s.name))) u.statuses[s.name] = durOf(s.dur || { turns: 1 }).left;
       }
     }
     return { dmg, attacked };
@@ -232,7 +232,8 @@
   function simulate(members, enemy, opt = {}) {
     const turns = opt.turns || 5, rand = rng(opt.seed || 1);
     const sim = { turn: 0, rand, zone: null, zoneDb: opt.zoneDb || [], log: [], order: [], stackDef: {}, stateDef: {}, attacked: new Set() };
-    sim.enemy = { id: "enemy", name: enemy.name, data: enemy, buffs: new Map(), stacks: {}, states: {}, statuses: {} };
+    sim.enemy = { id: "enemy", name: enemy.name, data: enemy, buffs: new Map(), stacks: {}, states: {}, statuses: {},
+      immune: new Set(opt.immune || (/Boss|Horror/.test(enemy.type || "") ? ["Stun", "Sleep", "Paralysis", "Freeze"] : [])) };
     sim.party = members.map((m, i) => {
       Object.assign(sim.stackDef, m.sheet.stacks || {});
       Object.assign(sim.stateDef, m.sheet.states || {});
@@ -244,7 +245,7 @@
         basic: { name: "일반 공격", kind: "active", mp: 0, steps: [{ do: "attack", type, target: "one", hits: 1, mult: 100 }] } };
     });
     let total = 0;
-    const perTurn = [], byMember = Object.fromEntries(sim.party.map(m => [m.id, 0]));
+    const perTurn = [], byMember = Object.fromEntries(sim.party.map(m => [m.id, 0])), choices = Object.fromEntries(sim.party.map(m => [m.id, []]));
     const fire = (a, on) => {
       let d = 0;
       for (const sk of a.sheet.skills) if (sk.kind === "trigger" && sk.on === on && check(sk.need, sim, a, { skill: sk.name })) {
@@ -272,7 +273,7 @@
         }
         return t;
       };
-      const acts = sim.party.map(a => { const sk = choose(sim, a); return { a, sk, tier: tierOf(a, sk), spd: speed(a) }; });
+      const acts = sim.party.map(a => { const sk = choose(sim, a); choices[a.id].push(sk.name); return { a, sk, tier: tierOf(a, sk), spd: speed(a) }; });
       const stunned = Object.keys(sim.enemy.statuses).some(s => /^(Stun|Sleep|Paralysis|Freeze)$/.test(s));
       if (!stunned && opt.enemyActs !== false) acts.push({ enemy: true, tier: 1, spd: speed(sim.enemy) });
       acts.sort((x, y) => x.tier - y.tier || y.spd - x.spd);
@@ -311,7 +312,7 @@
       }
       perTurn.push(total - before);
     }
-    return { total, perTurn, byMember, log: sim.log, order: sim.order };
+    return { total, perTurn, byMember, choices, log: sim.log, order: sim.order };
   }
 
   // 몬테카를로 — 속도 난수 · 적 표적 · 확률 조건을 시드만 바꿔 n 회
@@ -325,7 +326,33 @@
     return { mean, p10: q(0.1), p50: q(0.5), p90: q(0.9), sample: last };
   }
 
-  const api = { simulate, monteCarlo, damageOf, net, durOf, check };
+  function plan(members, enemy, opt = {}, conf = {}) {
+    const turns = opt.turns || 5, seeds = conf.seeds || 8, passes = conf.passes || 4;
+    const score = ms => { let t = 0; for (let i = 0; i < seeds; i++) t += simulate(ms, enemy, { ...opt, seed: 1000 + i }).total; return t / seeds; };
+    const base = simulate(members, enemy, { ...opt, seed: 1000 });
+    let rot = members.map(m => base.choices[m.id].slice(0, turns));
+    const withRot = r => members.map((m, i) => ({ ...m, rotation: r[i] }));
+    const auto = score(members);
+    let best = score(withRot(rot)), evals = 2;
+    for (let pass = 0; pass < passes; pass++) {
+      let moved = false;
+      for (let t = 0; t < turns; t++) for (let i = 0; i < members.length; i++) {
+        const names = [...new Set([...members[i].sheet.skills.filter(s => s.kind === "active").map(s => s.name), "일반 공격"])];
+        for (const nm of names) {
+          if (nm === rot[i][t]) continue;
+          const r2 = rot.map(x => [...x]); r2[i][t] = nm;
+          const v = score(withRot(r2)); evals++;
+          if (v > best * (1 + 1e-9)) { best = v; rot = r2; moved = true; }
+        }
+      }
+      if (!moved) break;
+    }
+    // 실제로 실행된 선택(계획한 스킬을 못 쓰면 자동으로 바뀐다)
+    const run = simulate(withRot(rot), enemy, { ...opt, seed: 1000 });
+    return { rotation: members.map((m, i) => ({ id: m.id, plan: rot[i], ran: run.choices[m.id] })), auto, best, evals, run };
+  }
+
+  const api = { simulate, monteCarlo, plan, damageOf, net, durOf, check };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AETurn = api;
 })(typeof window !== "undefined" ? window : globalThis);

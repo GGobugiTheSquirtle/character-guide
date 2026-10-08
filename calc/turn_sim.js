@@ -294,12 +294,33 @@
       acts.sort((x, y) => x.tier - y.tier || y.spd - x.spd);
       sim.order.push({ t: sim.turn, order: acts.map(x => (x.enemy ? "적" : `${x.a.name}:${x.sk.name}`) + `(${Math.round(x.spd)})`) });
       for (const x of acts) {
-        if (x.enemy) {                                                           // 적: 무작위 아군 1명 공격(피해 계산 없음)
-          const tgt = sim.party[Math.floor(rand() * sim.party.length)];
-          sim.attacked.add(tgt.id);
-          for (const [n, s] of Object.entries(tgt.states)) if (((sim.stateDef[n] || {}).ends || []).includes("attacked")) delete tgt.states[n];
-          fire(tgt, "attacked");
-          for (const a of sim.party) fire(a, "ally_attacked");
+        if (x.enemy) {                                                           // 적 — 스크립트 또는 무작위 아군 1명 공격(피해 계산 없음)
+          const t = sim.turn, plan = (opt.enemyScript || []).filter(e => (e.turn == null || e.turn === t) && (e.every == null || (t - (e.from || 1)) % e.every === 0 && t >= (e.from || 1)));
+          const steps = plan.length ? plan.flatMap(e => e.steps) : [{ do: "attack", target: "one" }];
+          for (const st of steps) {
+            if (st.do === "attack") {
+              const tgts = st.target === "all" ? sim.party : [sim.party[Math.floor(rand() * sim.party.length)]];
+              for (const tgt of tgts) {
+                sim.attacked.add(tgt.id);
+                for (const n of Object.keys(tgt.states)) if (((sim.stateDef[n] || {}).ends || []).includes("attacked")) delete tgt.states[n];
+                fire(tgt, "attacked");
+              }
+              for (const a of sim.party) fire(a, "ally_attacked");
+            } else if (st.do === "dispel") {
+              for (const u of sim.party) for (const [k, b] of u.buffs) if (b.src !== "equip" && b.v > 0) u.buffs.delete(k);
+              sim.log.push({ t, who: "적", skill: "버프 해제", dmg: 0 });
+            } else if (st.do === "cleanse") {
+              for (const [k, b] of sim.enemy.buffs) if (b.v < 0) sim.enemy.buffs.delete(k);
+              sim.enemy.statuses = {};
+              sim.log.push({ t, who: "적", skill: "디버프 정화", dmg: 0 });
+            } else if (st.do === "zone_break") {
+              sim.zone = null;
+              sim.log.push({ t, who: "적", skill: "존 파괴", dmg: 0 });
+            } else if (st.do === "zone") {
+              const z = sim.zoneDb.find(q => q.name === st.name);
+              if (z && !(sim.zone && sim.zone.awakened)) sim.zone = { ...z, awakened: false };
+            }
+          }
           continue;
         }
         const { a, sk } = x;

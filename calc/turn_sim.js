@@ -14,7 +14,7 @@
 
   // ── 버프 칸: 시전자 × 출처 × 그룹 — 같은 칸은 덮어쓰기 (Buffs and Debuffs · Overwriting) ──
   function putBuff(unit, b) {
-    const k = `${b.stat}|${b.caster}|${b.src}`, old = unit.buffs.get(k);
+    const k = `${b.stat}${b.flat ? "#flat" : ""}|${b.caster}|${b.src}`, old = unit.buffs.get(k);   // 고정치와 % 는 다른 칸(배치 1)
     if (b.max_stack) b.n = Math.min(b.max_stack, (old && old.max_stack ? old.n : 0) + 1);   // 「Max Stacks 3」 = 반감 중첩
     unit.buffs.set(k, b);
   }

@@ -154,7 +154,7 @@
   // ── step 실행 ──
   function runSteps(sim, a, skill, ctx) {
     ctx.consumed = {};
-    let dmg = 0, attacked = false;
+    let dmg = 0, attacked = false, moved = !!ctx.noMove;            // noMove: 반격 — 소모 안 함
     for (const s of skill.steps || []) {
       if (!stepOk(s, sim, a, { ...ctx, skill: skill.name, consumed: ctx.consumed })) continue;
       if (s.once && a.onceDone.has(skill.name + "|" + s.do)) continue;
@@ -170,6 +170,7 @@
         }
         ctx.lastAttack = st;
         attacked = true;
+        if (!moved) { consumeMoves(a, st); moved = true; }
       } else if (s.do === "buff") {
         for (const u of targets(sim, a, s.to)) putBuff(u, { stat: s.stat, v: s.v ?? s.flat, flat: s.flat != null, caster: a.id, src: s.src || "skill", max_stack: s.max_stack, ...d });
       } else if (s.do === "stack") {
@@ -202,7 +203,14 @@
   }
 
   // ── 행동 고르기 ──
-  const isSetup = sk => (sk.steps || []).every(s => s.do !== "attack") && (sk.steps || []).some(s => ["buff", "zone", "awaken", "state", "stack", "status"].includes(s.do));
+  // 준비 스킬 = 공격 없이 대미지에 닿는 것을 거는 스킬 — 아군 공격 버프 · 적 저항/방어 디버프 · 존 · 각성 · 축적 · 모드 · 페인/독.
+  //   방어 버프(물리 저항 + 아군 등)는 대미지와 무관해 자동 정책이 고르지 않는다(배치 4 보고)
+  const OFF = /^(힘|지능|속도|행운|크리티컬|마법 크리티컬|.*속성 공격|대미지|대미지 배율|약점 배율|정신 통일|심기일체|매의 눈|하극상|크리티컬 확정)/;
+  const DEF_DOWN = /저항$|^(내구|정신)$/;
+  const helpsDamage = s => (s.do === "buff" && ((["self", "party", "right", "left", "sides"].includes(s.to) && OFF.test(s.stat) && (s.v ?? s.flat) > 0)
+    || (/^enem/.test(s.to) && DEF_DOWN.test(s.stat) && s.v < 0))) || ["zone", "awaken", "stack"].includes(s.do)
+    || (s.do === "state" && !s.end) || (s.do === "status" && /^(Pain|Poison)$/.test(s.name));
+  const isSetup = sk => (sk.steps || []).every(s => s.do !== "attack") && (sk.steps || []).some(helpsDamage);
   function usable(sim, a, sk) {
     return sk.kind === "active" && (sk.mp || 0) <= a.mp && check(sk.need, sim, a, { skill: sk.name });
   }
@@ -249,15 +257,15 @@
     const fire = (a, on) => {
       let d = 0;
       for (const sk of a.sheet.skills) if (sk.kind === "trigger" && sk.on === on && check(sk.need, sim, a, { skill: sk.name })) {
-        const r = runSteps(sim, a, sk, {});
+        const r = runSteps(sim, a, sk, { noMove: on === "counter" || on === "attacked" || on === "ally_attacked" });
         d += r.dmg;
-        if (r.attacked && on !== "counter" && on !== "attacked") for (const s of sk.steps) if (s.do === "attack") consumeMoves(a, s);
       }
       byMember[a.id] += d; total += d;
       return d;
     };
     const speed = u => (u.stats ? u.stats.spd : u.data.spd || 0) * (1 + (u.stats ? net(u, ["속도"], sim) : 0)) * (0.9 + 0.2 * rand());
 
+    for (const a of sim.party) for (const sk of a.sheet.skills) if (sk.kind === "passive" && check(sk.need, sim, a, { skill: sk.name })) runSteps(sim, a, sk, {});   // 상시
     for (const a of sim.party) fire(a, "battle_start");                         // 1. 전투 시작 — 왼쪽부터
     for (sim.turn = 1; sim.turn <= turns; sim.turn++) {
       const before = total;
@@ -293,7 +301,6 @@
         a.used[sk.name] = (a.used[sk.name] || 0) + 1;
         a.usedTurn[sk.name] = sim.turn;
         byMember[a.id] += r.dmg; total += r.dmg;
-        if (r.attacked) for (const s of sk.steps) if (s.do === "attack" && stepOk(s, sim, a, { skill: sk.name })) { consumeMoves(a, s); break; }
         for (const t of a.sheet.skills) if (t.kind === "trigger" && t.on === "on_use:" + sk.name) { const q = runSteps(sim, a, t, {}); byMember[a.id] += q.dmg; total += q.dmg; }
       }
       // 9. 턴 종료 행동 — 속도순

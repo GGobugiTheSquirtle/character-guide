@@ -1,0 +1,43 @@
+{
+  "id": "mighty_as",
+  "verified": false,
+  "src": "wiki-en 2026-10-07 · 기준 시트(손 작성)",
+  "stacks": {
+    "Hypnosis": { "max": 3, "on_attack": { "type": "마법", "consume": 1, "sure_crit": true } }
+  },
+  "states": {},
+  "skills": [
+    { "name": "Sleep Ball", "kind": "active", "mp": 14, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "물", "type": "마법", "dep": "magic", "target": "one", "hits": 1, "mult": 130 },
+                 { "do": "status", "name": "Sleep", "to": "enemy", "dur": { "turns": 1 } } ] },
+    { "name": "Aqua Ruin", "kind": "active", "mp": 20, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "물", "type": "마법", "dep": "magic", "target": "one", "hits": 1, "mult": 130 },
+                 { "do": "buff", "to": "enemy", "stat": "물리 저항", "v": -30, "dur": { "turns": 3 } } ] },
+    { "name": "Aqua Wall", "kind": "active", "mp": 28, "tier": "normal",
+      "steps": [ { "do": "other", "text": "Physical resistance of all party members +30% and Fire type resistance +50% (3 turns) and Barrier 30% (3 times, 3 turns)" } ] },
+    { "name": "Aqua Spread", "kind": "active", "mp": 17, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "물", "type": "마법", "dep": "magic", "target": "all", "hits": 1, "mult": 90 },
+                 { "do": "buff", "to": "enemies", "stat": "물 속성 저항", "v": -30, "dur": { "turns": 3 }, "unless": [ { "front": { "traits": [ "물" ], "gte": 2 } } ] },
+                 { "do": "buff", "to": "enemies", "stat": "물 속성 저항", "v": -60, "dur": { "turns": 3 }, "if": [ { "front": { "traits": [ "물" ], "gte": 2 } } ] },
+                 { "do": "other", "text": "When 2 or more Water characters are on the frontline: Inflict 3 stacks of Elemental Break (Water)", "if": [ { "front": { "traits": [ "물" ], "gte": 2 } } ] } ],
+      "notes": "원문에 지속이 없음 — 3턴으로 가정" },
+    { "name": "Freeze", "kind": "active", "mp": 42, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "물", "type": "마법", "dep": "magic", "target": "one", "hits": 1, "mult": 170 },
+                 { "do": "buff", "to": "enemy", "stat": "속도", "v": -30, "dur": { "turns": 3 }, "unless": [ { "front": { "traits": [ "지팡이" ], "gte": 2 } } ] },
+                 { "do": "buff", "to": "enemy", "stat": "속도", "v": -60, "dur": { "turns": 3 }, "if": [ { "front": { "traits": [ "지팡이" ], "gte": 2 } } ] },
+                 { "do": "status", "name": "Stun", "to": "enemy", "dur": { "turns": 1 } },
+                 { "do": "other", "text": "Inflict 3 stacks of Weapon Break (Magic)", "if": [ { "front": { "traits": [ "지팡이" ], "gte": 2 } } ] } ] },
+    { "name": "Double Sleep", "kind": "active", "mp": 36, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "물", "type": "마법", "dep": "magic", "target": "one", "hits": 2, "mult": 170 },
+                 { "do": "status", "name": "Sleep", "to": "enemy", "dur": { "turns": 1 } } ] },
+    { "name": "Meditation", "kind": "active", "mp": 42, "tier": "normal",
+      "steps": [ { "do": "stack", "name": "Hypnosis", "n": 3, "to": "self" },
+                 { "do": "other", "text": "Inflicts Sleep on user (1 turn); Awaken effects (self-awaken only): restore HP/MP 25% and INT +50% (3 turns)" } ] },
+    { "name": "Hypnoblizzard", "kind": "active", "mp": 42, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "물", "type": "마법", "dep": "magic", "target": "random", "hits": 4, "mult": 225, "unless": [ { "stack": "Hypnosis", "gte": 1 } ] },
+                 { "do": "attack", "elem": "물", "type": "마법", "dep": "magic", "target": "random", "hits": 4, "mult": 450, "if": [ { "stack": "Hypnosis", "gte": 1 } ] },
+                 { "do": "other", "text": "Increases AF combo charge (AF v0 제외)" } ],
+      "notes": "x3 to 5 hits — 평균 4로. 위키 배율 225~750% 의 위값은 5타 × 최면 ×2 를 합친 값으로 보인다" }
+  ],
+  "notes": [ "Meditation 의 자기 수면 · 각성 회복은 HP/행동 불능을 다루지 않는 v0 에서 생략" ]
+}

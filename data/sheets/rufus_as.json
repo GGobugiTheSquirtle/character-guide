@@ -1,0 +1,61 @@
+{
+  "id": "rufus_as",
+  "verified": false,
+  "src": "wiki-en 2026-10-07 · 기준 시트(손 작성)",
+  "stacks": {
+    "Blazing": { "max": 10, "decay": { "turn_end": 1 },
+      "per": [ { "stat": "힘", "flat": 20 }, { "stat": "지능", "flat": 20 }, { "stat": "행운", "flat": 20 },
+               { "stat": "크리티컬율", "v": 15 }, { "stat": "마법 크리티컬율", "v": 15 } ] }
+  },
+  "states": { "Prayer": {} },
+  "skills": [
+    { "name": "Burning Knuckle", "kind": "active", "mp": 14, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "one", "hits": 1, "mult": 140 },
+                 { "do": "status", "name": "Stun", "to": "enemy", "dur": { "turns": 1 } } ] },
+    { "name": "Combo Smash", "kind": "active", "mp": 12, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "타격", "dep": "pwr", "target": "one", "hits": 2, "mult": 150 } ] },
+    { "name": "Somersault Kick", "kind": "active", "mp": 15, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "타격", "dep": "pwr", "target": "one", "hits": 3, "mult": 150 } ] },
+    { "name": "Soul Fist", "kind": "active", "mp": 25, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "타격", "dep": "pwr", "target": "one", "hits": 1, "mult": 170 },
+                 { "do": "other", "text": "Based on number of attacks, restore user's HP by 10% of damage dealt" } ] },
+    { "name": "Justice Blow", "kind": "active", "mp": 34, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "one", "hits": 1, "mult": 180 },
+                 { "do": "status", "name": "Stun", "to": "enemy", "dur": { "turns": 1 } } ] },
+    { "name": "Charge Stance", "kind": "active", "mp": 17, "tier": "normal",
+      "steps": [
+        { "do": "buff", "to": "self", "stat": "힘", "v": 35, "dur": { "turns": 5 }, "unless": [ { "zone": "Raging Fire Stance", "awakened": true } ] },
+        { "do": "buff", "to": "self", "stat": "지능", "v": 35, "dur": { "turns": 5 }, "unless": [ { "zone": "Raging Fire Stance", "awakened": true } ] },
+        { "do": "buff", "to": "self", "stat": "속도", "v": 35, "dur": { "turns": 5 }, "unless": [ { "zone": "Raging Fire Stance", "awakened": true } ] },
+        { "do": "buff", "to": "party", "stat": "힘", "v": 75, "dur": { "turns": 10 }, "if": [ { "zone": "Raging Fire Stance", "awakened": true } ] },
+        { "do": "buff", "to": "party", "stat": "지능", "v": 75, "dur": { "turns": 10 }, "if": [ { "zone": "Raging Fire Stance", "awakened": true } ] },
+        { "do": "buff", "to": "party", "stat": "속도", "v": 75, "dur": { "turns": 10 }, "if": [ { "zone": "Raging Fire Stance", "awakened": true } ] },
+        { "do": "buff", "to": "party", "stat": "불 속성 공격", "v": 100, "dur": { "turns": 10 }, "if": [ { "zone": "Raging Fire Stance", "awakened": true } ] }
+      ] },
+    { "name": "Valiant Roar", "kind": "active", "mp": 62, "tier": "normal",
+      "steps": [
+        { "do": "state", "name": "Prayer", "to": "self", "dur": { "turns": 5 } },
+        { "do": "buff", "to": "self", "stat": "약점 배율", "v": 1, "dur": { "turns": 5 } },
+        { "do": "buff", "to": "right", "stat": "약점 배율", "v": 1, "dur": { "turns": 5 } },
+        { "do": "buff", "to": "party", "stat": "불 속성 공격", "v": 100, "dur": { "until": "turn_end" } }
+      ] },
+    { "name": "Valiant Roar - Prayer", "kind": "trigger", "on": "turn_start", "need": [ { "state": "Prayer" } ],
+      "steps": [ { "do": "buff", "to": "party", "stat": "불 속성 공격", "v": 100, "dur": { "until": "turn_end" } } ] },
+    { "name": "Valiant Roar - EOT", "kind": "trigger", "on": "turn_end", "need": [ { "state": "Prayer" } ],
+      "steps": [ { "do": "other", "text": "Restore all party members MP +25%" } ] },
+    { "name": "Heroic Blow", "kind": "active", "mp": 57, "tier": "pre",
+      "steps": [ { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "one", "hits": 1, "mult": 200 },
+                 { "do": "other", "text": "Knockback immunity (1 time) and Shield 3500 HP (3 turns)" },
+                 { "do": "stack", "name": "Blazing", "n": 1, "to": "party" } ] },
+    { "name": "Battle Start Awakened Raging Fire Stance", "kind": "trigger", "on": "battle_start",
+      "need": [ { "pos": "front" }, { "front": { "traits": [ "불" ], "gte": 4 } } ],
+      "steps": [ { "do": "zone", "name": "Raging Fire Stance" }, { "do": "awaken", "turns": 3, "once": true } ] },
+    { "name": "Meteor Strike", "kind": "active", "mp": 102, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 1, "mult": 210 },
+                 { "do": "zone", "name": "Raging Fire Stance" },
+                 { "do": "other", "text": "When used during Stellar Burst: awaken Another Zone (3 turns-), Link, consume 3 Blazing for x35 (SB 전용 — v0 제외)" } ] },
+    { "name": "Battle Start Blazing Stacking", "kind": "trigger", "on": "battle_start",
+      "steps": [ { "do": "stack", "name": "Blazing", "n": 5, "to": "self" } ] }
+  ],
+  "notes": [ "Prayer 의 「여러 시전자면 최신 기도가 덮어씀」 규칙은 v0 미반영", "Stellar Burst 보너스 · 게이지 보너스는 v0 범위 밖" ]
+}

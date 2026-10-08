@@ -38,11 +38,14 @@
     }
     for (const [name, n] of Object.entries(unit.stacks || {})) {
       const def = sim.stackDef[name];
-      for (const p of (def && def.per) || []) if (stats.includes(p.stat) && p.v) g.named.push(p.v * n / 100);
+      for (const p of (def && def.per) || []) if (stats.includes(p.stat) && p.v) (p.v > 0 ? g.named : (g.namedDown = g.namedDown || [])).push(Math.abs(p.v) * n / 100);
     }
+    for (const name of Object.keys(unit.states || {}))                        // 모드 · 상태의 상시 효과
+      for (const p of (sim.stateDef[name] || {}).per || []) if (stats.includes(p.stat) && p.v) g.named.push(p.v / 100);
     return C.groupNet(g);
   }
-  const sumBuff = (unit, stat) => [...unit.buffs.values()].filter(b => b.stat === stat).reduce((s, b) => s + (b.flat ? 0 : b.v), 0);
+  const sumBuff = (unit, stat, sim) => [...unit.buffs.values()].filter(b => b.stat === stat).reduce((s, b) => s + (b.flat ? 0 : b.v), 0)
+    + (sim ? Object.keys(unit.states || {}).reduce((s, n) => s + ((sim.stateDef[n] || {}).per || []).filter(p => p.stat === stat && p.v).reduce((t, p) => t + p.v, 0), 0) : 0);
 
   // ── 조건 ──
   function check(conds, sim, a, ctx = {}) {
@@ -56,6 +59,8 @@
     return true;
   }
   function one(c, sim, a, ctx) {
+    if (c.not) return !one(c.not, sim, a, ctx);
+    if (c.any) return c.any.some(x => one(x, sim, a, ctx));
     if (c.zone) return !!sim.zone && (c.zone === "any" || sim.zone.name.includes(c.zone)) && (c.awakened == null || !!sim.zone.awakened === c.awakened);
     if (c.state) return !!a.states[c.state];
     if (c.state_turn) return !!a.states[c.state_turn] && cmp(a.states[c.state_turn].age, c);
@@ -100,6 +105,7 @@
     for (const [k, v] of Object.entries(eq.stats)) st[k] = (st[k] || 0) + v;
     for (const [name, n] of Object.entries(a.stacks)) for (const p of (sim.stackDef[name] || {}).per || []) if (p.flat) st[KEY[p.stat] || p.stat] = (st[KEY[p.stat] || p.stat] || 0) + p.flat * n;
     for (const b of a.buffs.values()) if (b.flat) st[KEY[b.stat] || b.stat] = (st[KEY[b.stat] || b.stat] || 0) + b.v;
+    for (const n of Object.keys(a.states)) for (const p of (sim.stateDef[n] || {}).per || []) if (p.flat) st[KEY[p.stat] || p.stat] = (st[KEY[p.stat] || p.stat] || 0) + p.flat;
     const typeStats = ["속성 공격", ...(elem ? [elem + " 속성 공격"] : [])];
     const groups = [net(a, typeStats, sim), net(a, ["대미지"], sim)];
     const focus = [...a.buffs.values()].filter(b => b.stat === (magic ? "정신 통일" : "심기일체"));
@@ -115,7 +121,8 @@
     const physStats = ["물리 저항", type + " 저항"], typeRes = ["속성 저항", ...(elem ? [elem + " 속성 저항"] : [])];
     let mult = step.mult || 0;
     if (step.scale) {
-      const n = ctx.consumed && ctx.consumed[step.scale.by] != null ? ctx.consumed[step.scale.by] : (a.stacks[step.scale.by] || 0);
+      const n = step.scale.by_front ? sim.party.filter(m => (m.traits || []).some(t => step.scale.by_front.traits.includes(t))).length
+        : ctx.consumed && ctx.consumed[step.scale.by] != null ? ctx.consumed[step.scale.by] : (a.stacks[step.scale.by] || 0);
       if (step.scale.table) mult = step.scale.table[Math.min(n, step.scale.table.length - 1)];
       else mult *= 1 + ((step.scale.max_x || 1) - 1) * Math.min(1, n / step.scale.max_n);
     }
@@ -123,12 +130,12 @@
       dep, elemental: !!elem, stat: st, weapon: { atk: (a.weapon || {}).atk || 0, matk: (a.weapon || {}).matk || 0 },
       buff: { pwr: net(a, ["힘"], sim), int: net(a, ["지능"], sim), spd: net(a, ["속도"], sim) },
       enemy: { def: (en.data.end || 0) * (1 - Math.max(0, -net(en, ["내구"], sim))), mdef: (en.data.spr || 0) * (1 - Math.max(0, -net(en, ["정신"], sim))) },
-      affinity: aff, weakBuff: sumBuff(a, "약점 배율"), skillMult: mult / 100, skillFx, zone,
+      affinity: aff, weakBuff: sumBuff(a, "약점 배율", sim), skillMult: mult / 100, skillFx, zone,
       resDown: { phys: -net(en, physStats, sim), type: -net(en, typeRes, sim), magic: -net(en, ["마법 저항"], sim) },
       groups, punish: eq.punish, equip: eq.equip, single: step.target === "one" || step.target === "random", rand: "avg",
     };
-    const critDmg = (magic ? sumBuff(a, "마법 크리티컬 대미지") : sumBuff(a, "크리티컬 대미지")) / 100 + (magic ? eq.mcritDmg : eq.critDmg);
-    const critRate = (magic ? sumBuff(a, "마법 크리티컬율") : sumBuff(a, "크리티컬율")) / 100 + (magic ? eq.mcrit : eq.crit)
+    const critDmg = (magic ? sumBuff(a, "마법 크리티컬 대미지", sim) : sumBuff(a, "크리티컬 대미지", sim)) / 100 + (magic ? eq.mcritDmg : eq.critDmg);
+    const critRate = (magic ? sumBuff(a, "마법 크리티컬율", sim) : sumBuff(a, "크리티컬율", sim)) / 100 + (magic ? eq.mcrit : eq.crit)
       + Object.entries(a.stacks).reduce((s, [n, k]) => s + ((sim.stackDef[n] || {}).per || []).filter(p => p.stat === (magic ? "마법 크리티컬율" : "크리티컬율") && p.v).reduce((t, p) => t + p.v * k / 100, 0), 0);
     const sure = step.sure_crit || [...a.buffs.values()].some(b => b.stat === "크리티컬 확정") || onAttackStack(sim, a, step).some(d => d.sure_crit);
     const normal = C.damage({ ...o, crit: false }).total, crit = C.damage({ ...o, crit: true, critDmg }).total;
@@ -159,7 +166,7 @@
       if (!stepOk(s, sim, a, { ...ctx, skill: skill.name, consumed: ctx.consumed })) continue;
       if (s.once && a.onceDone.has(skill.name + "|" + s.do)) continue;
       if (s.once) a.onceDone.add(skill.name + "|" + s.do);
-      const d = s.dur ? durOf(s.dur) : null;
+      const d = s.dur ? durOf(ctx.startPhase && s.dur.turns != null && !s.dur.moves ? { turns_minus: s.dur.turns } : s.dur) : null;
       if (s.do === "attack" || (s.do === "repeat" && ctx.lastAttack)) {
         const st = s.do === "attack" ? s : ctx.lastAttack;
         for (let i = 0; i < (s.do === "repeat" ? s.n || 1 : 1); i++) {
@@ -186,7 +193,7 @@
       } else if (s.do === "state") {
         for (const u of targets(sim, a, s.to)) {
           if (s.end) delete u.states[s.name];
-          else u.states[s.name] = { ...durOf(s.dur || { perm: true }), age: 1 };
+          else u.states[s.name] = { ...(d || durOf({ perm: true })), age: 1 };
         }
       } else if (s.do === "zone") {
         if (!(sim.zone && sim.zone.awakened)) {
@@ -257,7 +264,7 @@
     const fire = (a, on) => {
       let d = 0;
       for (const sk of a.sheet.skills) if (sk.kind === "trigger" && sk.on === on && check(sk.need, sim, a, { skill: sk.name })) {
-        const r = runSteps(sim, a, sk, { noMove: on === "counter" || on === "attacked" || on === "ally_attacked" });
+        const r = runSteps(sim, a, sk, { noMove: on === "counter" || on === "attacked" || on === "ally_attacked", startPhase: on === "battle_start" || on === "turn_start" });
         d += r.dmg;
       }
       byMember[a.id] += d; total += d;
@@ -301,7 +308,7 @@
         a.used[sk.name] = (a.used[sk.name] || 0) + 1;
         a.usedTurn[sk.name] = sim.turn;
         byMember[a.id] += r.dmg; total += r.dmg;
-        for (const t of a.sheet.skills) if (t.kind === "trigger" && t.on === "on_use:" + sk.name) { const q = runSteps(sim, a, t, {}); byMember[a.id] += q.dmg; total += q.dmg; }
+        for (const t of a.sheet.skills) if (t.kind === "trigger" && t.on === "on_use:" + sk.name && check(t.need, sim, a, { skill: t.name })) { const q = runSteps(sim, a, t, {}); byMember[a.id] += q.dmg; total += q.dmg; }
       }
       // 9. 턴 종료 행동 — 속도순
       for (const a of [...sim.party].sort((p, q) => speed(q) - speed(p))) fire(a, "turn_end");

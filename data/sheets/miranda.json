@@ -1,0 +1,25 @@
+{
+  "id": "miranda",
+  "verified": false,
+  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "stacks": {},
+  "states": {},
+  "skills": [
+    { "name": "In-Fight", "kind": "active", "mp": 14, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "베기", "dep": "pwr", "target": "one", "hits": 2, "mult": 150 },
+                 { "do": "status", "name": "Stun", "to": "enemy", "dur": { "turns": 1 } } ] },
+    { "name": "Fire Slash", "kind": "active", "mp": 12, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "불", "type": "베기", "dep": "pwr", "target": "one", "hits": 1, "mult": 140 } ] },
+    { "name": "Rolling Edge", "kind": "active", "mp": 15, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "베기", "dep": "pwr", "target": "all", "hits": 1, "mult": 110 } ] },
+    { "name": "Blaze Ax", "kind": "active", "mp": 22, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "불", "type": "베기", "dep": "pwr", "target": "one", "hits": 1, "mult": 160 } ] },
+    { "name": "Power Swing", "kind": "active", "mp": 33, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "베기", "dep": "pwr", "target": "all", "hits": 1, "mult": 130 },
+                 { "do": "buff", "to": "enemies", "stat": "힘", "v": -20, "dur": { "turns": 3 } } ] },
+    { "name": "Close Combat", "kind": "active", "mp": 34, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "베기", "dep": "pwr", "target": "one", "hits": 2, "mult": 190 },
+                 { "do": "status", "name": "Stun", "to": "enemy", "dur": { "turns": 1 } } ] }
+  ],
+  "notes": [ "Stun 은 원문에 지속이 없음 — 기준 시트대로 1턴" ]
+}

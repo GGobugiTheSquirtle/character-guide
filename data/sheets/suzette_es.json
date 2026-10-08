@@ -1,0 +1,84 @@
+{
+  "id": "suzette_es",
+  "verified": false,
+  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "stacks": {},
+  "states": {
+    "Multi-upgrade": {}
+  },
+  "skills": [
+    { "name": "Breakblaze", "kind": "active", "mp": 22, "tier": "normal",
+      "steps": [
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 3, "mult": 105, "if": [{"hp": {"lte": 79.9}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 2}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 3, "mult": 210, "sure_crit": true, "if": [{"hp": {"gte": 80}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 2}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 3, "mult": 117, "if": [{"hp": {"lte": 79.9}},{"front": {"traits": ["망치", "권갑"], "gte": 2}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 3}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 3, "mult": 234, "sure_crit": true, "if": [{"hp": {"gte": 80}},{"front": {"traits": ["망치", "권갑"], "gte": 2}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 3}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 3, "mult": 135, "if": [{"hp": {"lte": 79.9}},{"front": {"traits": ["망치", "권갑"], "gte": 3}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 4}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 3, "mult": 270, "sure_crit": true, "if": [{"hp": {"gte": 80}},{"front": {"traits": ["망치", "권갑"], "gte": 3}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 4}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 3, "mult": 165, "if": [{"hp": {"lte": 79.9}},{"front": {"traits": ["망치", "권갑"], "gte": 4}}], "unless": [{"text": "Hammer or Fists characters in the party incl. user (backline 포함) = 5"}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 3, "mult": 330, "sure_crit": true, "if": [{"hp": {"gte": 80}},{"front": {"traits": ["망치", "권갑"], "gte": 4}}], "unless": [{"text": "Hammer or Fists characters in the party incl. user (backline 포함) = 5"}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 3, "mult": 201, "if": [{"hp": {"lte": 79.9}},{"front": {"traits": ["망치", "권갑"], "gte": 4}},{"text": "Hammer or Fists characters in the party incl. user (backline 포함) = 5"}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 3, "mult": 402, "sure_crit": true, "if": [{"hp": {"gte": 80}},{"front": {"traits": ["망치", "권갑"], "gte": 4}},{"text": "Hammer or Fists characters in the party incl. user (backline 포함) = 5"}] } ],
+      "notes": "위키 배율 0% · 원문 표(망치·권갑 동료 수 1~5 → 105/117/135/165/201%)를 단계별 step 으로. 원문은 파티(후방 포함) 수 — v0 는 전방만 세므로 5명 단계는 text 조건. HP 80%+ x2 + 확정 크리. 「HP 80% 미만」은 hp lte 79.9" },
+    { "name": "Collapse, Sodom", "kind": "active", "mp": 19, "tier": "normal",
+      "steps": [
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "one", "hits": 3, "mult": 140, "unless": [{"zone": "any"}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "one", "hits": 3, "mult": 420, "if": [{"zone": "any"}] },
+                 { "do": "status", "name": "Stun", "to": "enemy", "dur": {"turns": 1} } ],
+      "notes": "Any Stance x3 = 420%(위키 위값과 일치). 「Hits calculated separately」(타마다 따로 계산)는 v0 에서 총 배율 한 번으로 계산" },
+    { "name": "Fall, Gomorrah", "kind": "active", "mp": 24, "tier": "normal",
+      "steps": [
+                 { "do": "other", "text": "Fire type blunt attack on all enemies x2 (S)" },
+                 { "do": "buff", "to": "party", "stat": "불 속성 공격", "v": 30, "dur": {"turns": 3}, "unless": [{"zone": "any"}] },
+                 { "do": "buff", "to": "party", "stat": "불 속성 공격", "v": 60, "dur": {"turns": 6}, "if": [{"zone": "any"}] } ],
+      "notes": "위키 배율 0% · 원문 (S) 수치 없음 → 공격은 other(배율 추정 안 함)" },
+    { "name": "Tedium Blast", "kind": "active", "mp": 37, "tier": "pre",
+      "steps": [
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "one", "hits": 4, "mult": 320, "unless": [{"turn": {"lte": 3}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "one", "hits": 4, "mult": 640, "if": [{"turn": {"lte": 3}}] },
+                 { "do": "buff", "to": "enemy", "stat": "타격 저항", "v": -25, "dur": {"turns": 3} } ],
+      "notes": "x3-5 타 무작위 — hits 4(평균)로 둠, 위키 320% 를 총 배율로 씀(타수에 따라 달라지는지 원문 불명). 「첫 3턴 이내」 = turn lte 3" },
+    { "name": "Lost Eden", "kind": "active", "mp": 20, "tier": "normal",
+      "steps": [
+                 { "do": "buff", "to": "enemies", "stat": "힘", "v": -30, "dur": {"turns": 3} },
+                 { "do": "buff", "to": "enemies", "stat": "지능", "v": -30, "dur": {"turns": 3} },
+                 { "do": "buff", "to": "party", "stat": "물리 저항", "v": 50, "dur": {"turns": 3}, "if": [{"turn": {"lte": 3}}] },
+                 { "do": "other", "text": "MP consumption of all party members -70% (3 turns)", "if": [{"turn": {"lte": 3}}] } ],
+      "notes": "MP 소모 −70% 는 형식에 없음 → other" },
+    { "name": "Shatterspark", "kind": "active", "mp": 37, "tier": "normal",
+      "steps": [
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 4, "mult": 156, "if": [{"hp": {"lte": 79.9}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 2}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 4, "mult": 312, "sure_crit": true, "if": [{"hp": {"gte": 80}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 2}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 4, "mult": 184, "if": [{"hp": {"lte": 79.9}},{"front": {"traits": ["망치", "권갑"], "gte": 2}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 3}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 4, "mult": 368, "sure_crit": true, "if": [{"hp": {"gte": 80}},{"front": {"traits": ["망치", "권갑"], "gte": 2}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 3}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 4, "mult": 240, "if": [{"hp": {"lte": 79.9}},{"front": {"traits": ["망치", "권갑"], "gte": 3}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 4}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 4, "mult": 480, "sure_crit": true, "if": [{"hp": {"gte": 80}},{"front": {"traits": ["망치", "권갑"], "gte": 3}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 4}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 4, "mult": 324, "if": [{"hp": {"lte": 79.9}},{"front": {"traits": ["망치", "권갑"], "gte": 4}}], "unless": [{"text": "Hammer or Fists characters in the party incl. user (backline 포함) = 5"}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 4, "mult": 648, "sure_crit": true, "if": [{"hp": {"gte": 80}},{"front": {"traits": ["망치", "권갑"], "gte": 4}}], "unless": [{"text": "Hammer or Fists characters in the party incl. user (backline 포함) = 5"}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 4, "mult": 420, "if": [{"hp": {"lte": 79.9}},{"front": {"traits": ["망치", "권갑"], "gte": 4}},{"text": "Hammer or Fists characters in the party incl. user (backline 포함) = 5"}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 4, "mult": 840, "sure_crit": true, "if": [{"hp": {"gte": 80}},{"front": {"traits": ["망치", "권갑"], "gte": 4}},{"text": "Hammer or Fists characters in the party incl. user (backline 포함) = 5"}] } ],
+      "notes": "위키 배율 0% · 원문 표 156/184/240/324/420% — Breakblaze 와 같은 방식" },
+    { "name": "Tetrabiblos", "kind": "active", "mp": 57, "tier": "normal",
+      "steps": [
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "one", "hits": 4, "mult": 200 },
+                 { "do": "state", "name": "Multi-upgrade", "to": "party", "dur": {"turns": 3} } ],
+      "notes": "Multi-upgrade 효과 원문 없음 — 상태만(states 정의 빈 값). 「Hits calculated separately」 v0 미반영" },
+    { "name": "Hellhammer", "kind": "active", "mp": 47, "tier": "normal",
+      "steps": [
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 5, "mult": 185, "if": [{"hp": {"lte": 79.9}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 2}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 5, "mult": 370, "sure_crit": true, "if": [{"hp": {"gte": 80}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 2}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 5, "mult": 235, "if": [{"hp": {"lte": 79.9}},{"front": {"traits": ["망치", "권갑"], "gte": 2}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 3}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 5, "mult": 470, "sure_crit": true, "if": [{"hp": {"gte": 80}},{"front": {"traits": ["망치", "권갑"], "gte": 2}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 3}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 5, "mult": 330, "if": [{"hp": {"lte": 79.9}},{"front": {"traits": ["망치", "권갑"], "gte": 3}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 4}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 5, "mult": 660, "sure_crit": true, "if": [{"hp": {"gte": 80}},{"front": {"traits": ["망치", "권갑"], "gte": 3}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 4}}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 5, "mult": 475, "if": [{"hp": {"lte": 79.9}},{"front": {"traits": ["망치", "권갑"], "gte": 4}}], "unless": [{"text": "Hammer or Fists characters in the party incl. user (backline 포함) = 5"}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 5, "mult": 950, "sure_crit": true, "if": [{"hp": {"gte": 80}},{"front": {"traits": ["망치", "권갑"], "gte": 4}}], "unless": [{"text": "Hammer or Fists characters in the party incl. user (backline 포함) = 5"}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 5, "mult": 640, "if": [{"hp": {"lte": 79.9}},{"front": {"traits": ["망치", "권갑"], "gte": 4}},{"text": "Hammer or Fists characters in the party incl. user (backline 포함) = 5"}] },
+                 { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 5, "mult": 1280, "sure_crit": true, "if": [{"hp": {"gte": 80}},{"front": {"traits": ["망치", "권갑"], "gte": 4}},{"text": "Hammer or Fists characters in the party incl. user (backline 포함) = 5"}] } ],
+      "notes": "위키 배율 0% · 원문 표 185/235/330/475/640% — Breakblaze 와 같은 방식" },
+    { "name": "AF EX Boost", "kind": "passive", "need": [{"pos": "front"},{"af": true}],
+      "steps": [
+                 { "do": "other", "text": "When user is in frontline and AF is activated: increase EX Level by 2" } ] }
+  ],
+  "notes": [ "망치·권갑 동료 수 배율은 scale 이 축적만 받아서 front 조건 단계로 펼침(스킬당 공격 step 10개)", "HP 조건은 v0 에서 늘 가득(80%+) — HP 80% 미만 단계는 기록용" ]
+}

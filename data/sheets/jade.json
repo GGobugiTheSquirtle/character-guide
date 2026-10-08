@@ -1,0 +1,43 @@
+{
+  "id": "jade",
+  "verified": false,
+  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "stacks": {},
+  "states": {},
+  "skills": [
+    { "name": "Puncture", "kind": "active", "mp": 18, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 1, "mult": 150 },
+                 { "do": "buff", "to": "enemy", "stat": "찌르기 저항", "v": -20, "dur": { "turns": 3 } },
+                 { "do": "buff", "to": "self", "stat": "대미지", "v": 30, "dur": { "turns": 3 } },
+                 { "do": "other", "text": "Lance equipped characters' damage +30% (3 turns) — 자신 외 창 장비 아군분" } ] },
+    { "name": "Fire Thrust", "kind": "active", "mp": 12, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "불", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 1, "mult": 140 } ] },
+    { "name": "Double Thrust", "kind": "active", "mp": 12, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 2, "mult": 150 } ] },
+    { "name": "Blaze Lance", "kind": "active", "mp": 22, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "불", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 1, "mult": 160 },
+                 { "do": "status", "name": "Pain", "to": "enemy", "dur": { "turns": 3 } } ],
+      "notes": "Pain 지속 원문 없음 — 3턴 가정(ignore target resistance)" },
+    { "name": "Volcano Shoot", "kind": "active", "mp": 32, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "불", "type": "찌르기", "dep": "pwr", "target": "all", "hits": 1, "mult": 140 },
+                 { "do": "buff", "to": "enemies", "stat": "불 속성 저항", "v": -30, "dur": { "turns": 3 } } ] },
+    { "name": "Perforate", "kind": "active", "mp": 40, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 1, "mult": 190 },
+                 { "do": "buff", "to": "enemy", "stat": "찌르기 저항", "v": -25, "dur": { "turns": 3 } },
+                 { "do": "buff", "to": "self", "stat": "대미지", "v": 40, "dur": { "turns": 3 } },
+                 { "do": "other", "text": "Lance equipped characters' damage +40% (3 turns) — 자신 외 창 장비 아군분" } ] },
+    { "name": "Celebros Agni", "kind": "active", "mp": 52, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "불", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 3, "mult": 200, "unless": [ { "target_status": "Pain" } ] },
+                 { "do": "attack", "elem": "불", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 3, "mult": 400, "if": [ { "target_status": "Pain" } ] },
+                 { "do": "buff", "to": "enemy", "stat": "힘", "v": -15, "dur": { "turns": 3 }, "max_stack": 3 } ],
+      "notes": "Pain 시 +100% (x2) = 400%(위키 위값)" },
+    { "name": "Volk Howl", "kind": "active", "mp": 53, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 1, "mult": 210 },
+                 { "do": "buff", "to": "enemy", "stat": "찌르기 저항", "v": -30, "dur": { "turns": 3 } },
+                 { "do": "buff", "to": "self", "stat": "대미지", "v": 50, "dur": { "turns": 3 } },
+                 { "do": "other", "text": "Lance equipped characters' damage +50% (3 turns) — 자신 외 창 장비 아군분" } ] }
+  ],
+  "notes": [
+    "「Lance equipped characters' damage +N%」 — 대상 무기 필터가 없어 자신(창)에게만 buff, 다른 창 아군 몫은 other. 무기 종류 대미지 그룹이 §3.5 에 없어 「대미지」 그룹으로 둠(정적 파서 skill_effects_en 과 같은 매핑) — 다른 「대미지」 버프와 체감 합산되는 오차 가능"
+  ]
+}

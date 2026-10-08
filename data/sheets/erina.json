@@ -1,0 +1,31 @@
+{
+  "id": "erina",
+  "verified": false,
+  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "stacks": {},
+  "states": {},
+  "skills": [
+    { "name": "Energy Steal", "kind": "active", "mp": 16, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "마법", "dep": "magic", "target": "one", "hits": 1, "mult": 140 },
+                 { "do": "other", "text": "Restore all party members (S)" } ] },
+    { "name": "Refresh", "kind": "active", "mp": 5, "tier": "normal",
+      "steps": [ { "do": "other", "text": "Restore all statuses" } ] },
+    { "name": "Reset", "kind": "active", "mp": 20, "tier": "normal",
+      "steps": [ { "do": "other", "text": "Remove all buffs/debuffs from a single enemy" } ],
+      "notes": "버프 · 디버프 해제 step 이 형식에 없음" },
+    { "name": "Vivacity", "kind": "active", "mp": 28, "tier": "normal",
+      "steps": [ { "do": "buff", "to": "party", "stat": "힘", "v": 20, "dur": { "turns": 3 } },
+                 { "do": "other", "text": "Regen (L) (3 turns) to all party members" } ] },
+    { "name": "My Turn Now", "kind": "active", "mp": 27, "tier": "normal",
+      "steps": [ { "do": "buff", "to": "enemies", "stat": "속성 저항", "v": -30, "dur": { "turns": 3 } },
+                 { "do": "buff", "to": "party", "stat": "속성 저항", "v": 30, "dur": { "turns": 3 } },
+                 { "do": "other", "text": "Shade allies only: Give Status immunity (3 times)" } ],
+      "notes": "적 속성 저항 −30% 의 지속 원문 없음 — 3턴으로 가정" },
+    { "name": "Life Steal", "kind": "active", "mp": 40, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "마법", "dep": "magic", "target": "one", "hits": 1, "mult": 360, "unless": [ { "front": { "traits": [ "그림자" ], "gte": 3 } } ] },
+                 { "do": "attack", "elem": "그림자", "type": "마법", "dep": "magic", "target": "one", "hits": 1, "mult": 360, "if": [ { "front": { "traits": [ "그림자" ], "gte": 3 } } ] },
+                 { "do": "other", "text": "Restore all party members (M)" } ],
+      "notes": "L, 2x of 180% = 360% (원문 괄호)" }
+  ],
+  "notes": [ "Erina 자신은 그림자 특성이 없음(연옥계) — Life Steal 의 그림자 전환은 다른 멤버 3명 필요" ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "darunis",
+  "verified": false,
+  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "stacks": {
+    "Pride": {}
+  },
+  "states": {},
+  "skills": [
+    { "name": "Hunter Shot", "kind": "active", "mp": 18, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 1, "mult": 150 },
+                 { "do": "buff", "to": "enemy", "stat": "물리 저항", "v": -15, "dur": { "turns": 3 } } ] },
+    { "name": "Wind Shot", "kind": "active", "mp": 12, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "바람", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 1, "mult": 140 } ] },
+    { "name": "Venom Shot", "kind": "active", "mp": 13, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "찌르기", "dep": "pwr", "target": "all", "hits": 1, "mult": 190 },
+                 { "do": "status", "name": "Poison", "to": "enemies", "dur": { "turns": 3 } } ],
+      "notes": "원문 「Inflict Megapoison (3 turns, ignore target resistance)」. 위키 Status Effects: 「Megapoison functions identically as poison with a higher end of turn damage modifier」 → Poison 으로 둠(Triple Shot 조건 · 독 특효 장비가 걸리도록). 턴 종료 독 대미지 차이는 v0 밖" },
+    { "name": "Sonic Arrow", "kind": "active", "mp": 22, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "바람", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 1, "mult": 160 } ] },
+    { "name": "Triple Shot", "kind": "active", "mp": 35, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "바람", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 3, "mult": 360, "unless": [ { "target_status": "Poison" } ] },
+                 { "do": "attack", "elem": "바람", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 3, "mult": 1800, "if": [ { "target_status": "Poison" } ] },
+                 { "do": "buff", "to": "enemy", "stat": "속성 저항", "v": -50, "dur": { "turns": 3 }, "max_stack": 3 },
+                 { "do": "consume", "name": "Pride", "n": 1 },
+                 { "do": "repeat", "n": 1, "if": [ { "consumed": "Pride", "gte": 1 } ] },
+                 { "do": "buff", "to": "enemy", "stat": "속성 저항", "v": -50, "dur": { "turns": 3 }, "max_stack": 3, "if": [ { "consumed": "Pride", "gte": 1 } ] },
+                 { "do": "consume", "name": "Pride", "n": 1 },
+                 { "do": "repeat", "n": 1, "if": [ { "consumed": "Pride", "gte": 1 } ] },
+                 { "do": "buff", "to": "enemy", "stat": "속성 저항", "v": -50, "dur": { "turns": 3 }, "max_stack": 3, "if": [ { "consumed": "Pride", "gte": 1 } ] } ],
+      "notes": "L, 2x of 180% = 360%. Poison 시 +400% (x5) = 1800%. 위키 위값 5400 = 1800 x 3(재행동 2회 포함)로 보임. 「When Pride is stacked: Consume 1 Pride and Attack again at no extra MP cost (Max 2x)」 — consume(조건 없이 n 1: 없으면 0 소모) → repeat 를 두 번. 재행동마다 디버프 중첩도 다시 건다고 봄. 「Counts as a separate move」 — 행동 소모형 버프는 엔진이 스킬당 1회만 소모(미반영)" },
+    { "name": "Hunter Shoot", "kind": "active", "mp": 38, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 1, "mult": 190 },
+                 { "do": "buff", "to": "enemy", "stat": "물리 저항", "v": -20, "dur": { "turns": 3 } } ] }
+  ],
+  "notes": [
+    "Pride 를 쌓는 수단이 이 팩에 없다 — 다른 출처가 없으면 Triple Shot 재행동은 안 나간다",
+    "Type Resistance(원소 미지정) = 「속성 저항」"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "toole",
+  "verified": false,
+  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "stacks": {},
+  "states": {},
+  "skills": [
+    { "name": "Big Strike", "kind": "active", "mp": 10, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "타격", "dep": "pwr", "target": "one", "hits": 1, "mult": 150 } ] },
+    { "name": "Power Bash", "kind": "active", "mp": 12, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "타격", "dep": "pwr", "target": "one", "hits": 1, "mult": 150 },
+                 { "do": "status", "name": "Stun", "to": "enemy", "dur": { "turns": 1 } } ] },
+    { "name": "Swing Hammer", "kind": "active", "mp": 15, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "타격", "dep": "pwr", "target": "all", "hits": 1, "mult": 110 } ] },
+    { "name": "Big Impact", "kind": "active", "mp": 28, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "타격", "dep": "pwr", "target": "one", "hits": 1, "mult": 170 },
+                 { "do": "buff", "to": "enemy", "stat": "타격 저항", "v": -20, "dur": { "turns": 3 } } ] }
+  ],
+  "notes": []
+}

@@ -1,0 +1,22 @@
+{
+  "id": "oor",
+  "verified": false,
+  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "stacks": {},
+  "states": {},
+  "skills": [
+    { "name": "Helm Breaker", "kind": "active", "mp": 10, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "베기", "dep": "pwr", "target": "one", "hits": 1, "mult": 150 } ] },
+    { "name": "Power Slash", "kind": "active", "mp": 12, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "베기", "dep": "pwr", "target": "one", "hits": 1, "mult": 150 },
+                 { "do": "status", "name": "Stun", "to": "enemy", "dur": { "turns": 1 } } ] },
+    { "name": "Venom Slash", "kind": "active", "mp": 13, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "베기", "dep": "pwr", "target": "one", "hits": 1, "mult": 150 },
+                 { "do": "status", "name": "Poison", "to": "enemy", "dur": { "turns": 3 } } ],
+      "notes": "원문에 지속 없음 — 3턴으로 가정. 위키 Status Effects: 지속 미기재 스킬 상태 이상은 무작위 치유(건 턴 0% · 다음 턴부터 37.5/62.5/87.5/100%)라 3턴은 상한, 기대 지속은 더 짧다" },
+    { "name": "Armor Break", "kind": "active", "mp": 28, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "베기", "dep": "pwr", "target": "one", "hits": 1, "mult": 170 },
+                 { "do": "buff", "to": "enemy", "stat": "베기 저항", "v": -20, "dur": { "turns": 3 } } ] }
+  ],
+  "notes": [ "Stun 은 원문에 지속이 없음 — 기준 시트대로 1턴(위키: 그 턴 행동 1회 불능)" ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "samora",
+  "verified": false,
+  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "stacks": {},
+  "states": {},
+  "skills": [
+    { "name": "Raw Heat", "kind": "active", "mp": 18, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "타격", "dep": "pwr", "target": "one", "hits": 1, "mult": 150 },
+                 { "do": "buff", "to": "enemy", "stat": "불 속성 저항", "v": -20, "dur": { "turns": 3 } } ] },
+    { "name": "Scorching Heat", "kind": "active", "mp": 40, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "타격", "dep": "pwr", "target": "one", "hits": 1, "mult": 190 },
+                 { "do": "buff", "to": "enemy", "stat": "불 속성 저항", "v": -25, "dur": { "turns": 3 } } ] },
+    { "name": "Fire Smash", "kind": "active", "mp": 12, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "one", "hits": 1, "mult": 140 } ] },
+    { "name": "Swing Hammer", "kind": "active", "mp": 15, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "없음", "type": "타격", "dep": "pwr", "target": "all", "hits": 1, "mult": 110 } ] },
+    { "name": "Blaze Stamp", "kind": "active", "mp": 22, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "one", "hits": 1, "mult": 160 } ] },
+    { "name": "Flame Impact", "kind": "active", "mp": 32, "tier": "normal",
+      "steps": [ { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "one", "hits": 1, "mult": 180 } ] }
+  ],
+  "notes": []
+}

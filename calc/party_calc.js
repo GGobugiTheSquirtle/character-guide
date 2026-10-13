@@ -141,7 +141,9 @@
   // 장비 효과 중 이 공격에 맞는 것 — 대미지 가산 · 곱(페인/독 · 약점) · 크리 · 고정 스탯
   //   조건부 곱(2026-10-13, 위키 「Damage+ (Multiplier)」 계열 — 각자 (1+x)): 성장 opt.turns · 겨누어 쏘기(opt.af 아닐 때) · MP 소비 공격(MP 쓰는 스킬)
   //   · ZONE 각성 opt.zoneAwake · 누계 승리 opt.wins · 천/명 아군 opt.lightAllies/shadowAllies · 봉인 인핸스 opt.sealed
-  //   · 적 수 opt.enemyCount · 쓰러진 아군 opt.fallen · 대상 페인/독 opt.punish. 하극상 = 대상 Lv²/d %. 환경 조건(env)은 opt.env 와 같을 때만
+  //   · 적 수 opt.enemyCount · 쓰러진 아군 opt.fallen · 대상 페인/독 opt.punish. 하극상 = 대상 Lv²/d %.
+  //   환경 조건(f.env: severe · special · weather · atmos · ground)은 opt.env(data/calc/envs.json 한 항목 — 계열 type · 심화 severe)로 판정
+  const envOk = (cond, env) => !!env && (cond === "severe" ? !!env.severe : env.type === cond);
   function equipFor(items, atk, opt) {
     const out = { equip: [], punish: 0, skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, groups: [], weak: 0, src: [] };
     const mult = (it, label, x) => { if (x > 0) { out.groups.push(x / 100); out.src.push(`${it.name}: ${label} +${+x.toFixed(2)}%`); } };
@@ -150,7 +152,7 @@
       for (const [k, v] of Object.entries(it.stats || {})) out.stats[k] = (out.stats[k] || 0) + v;
       for (const f of [...(it.fx || []).filter(f => f.k !== "etc"), ...(it.calc || [])]) {
         if (f.zone && !(opt.zone && opt.zone.name.includes(f.zone))) continue;
-        if (f.env && f.env !== opt.env) continue;
+        if (f.env && !envOk(f.env, opt.env)) continue;
         const v = (f.v || 0) / 100;
         if (f.k === "stat") out.stats[f.stat] = (out.stats[f.stat] || 0) + f.v;
         else if (f.k === "dmg") {
@@ -174,6 +176,25 @@
         else if (f.k === "fallen") mult(it, "쓰러진 아군", f.per * (opt.fallen || 0));
         else if (f.k === "tstat" && opt.punish && opt.punish.includes(f.when)) mult(it, `대상 ${f.when === "pain" ? "페인" : "독"}`, f.v);
       }
+    }
+    return out;
+  }
+
+  // 환경 대미지 보정(2026-10-13) — 우리 공격에 닿는 것만(who ally · both). 각자 곱(딩님 계산기 「가창 · 기도 · 환경」 칸).
+  //   호시탐탐(Eagle Eyes)은 정신 통일 그룹, 약점 배율 +1 은 weakBuff. 선제 · 후발 조건은 opt.timing('preemptive'|'delayed')
+  function envFor(env, atk, opt) {
+    const out = { groups: [], focus: [], weak: 0, src: [] };
+    if (!env || !env.dmg) return out;
+    const magic = atk.dep === "magic" || atk.dep === "magicpwr";
+    for (const d of env.dmg) {
+      if (d.k === "hawk") { out.focus.push(d.v / 100); out.src.push(`${env.name}: 호시탐탐 +${d.v}%`); continue; }
+      if (d.k === "weak") { out.weak += d.v / 100; out.src.push(`${env.name}: 약점 배율 +${d.v / 100}`); continue; }
+      if (d.who === "enemy") continue;
+      const w = d.when;
+      const ok = w === "*" || (w === "type" && !!atk.element) || (w === "nontype" && !atk.element) || w === atk.element
+        || (w === "notShade" && atk.element !== "그림자") || (w === "phys" && !magic) || (w === "magic" && magic)
+        || (w === "poisoned" && (opt.punish || []).includes("poison")) || (w === opt.timing);
+      if (ok) { out.groups.push(d.v / 100); out.src.push(`${env.name}: ${w} ${d.v > 0 ? "+" : ""}${d.v}%`); }
     }
     return out;
   }
@@ -202,15 +223,18 @@
     const ag = ownGroups(pre, m, opt), eg = pre.eg;
     const aff = affinityOf(opt.enemy, atk);
     const eq = equipFor([m.weapon, m.armor, ...(m.grasta || []), ...(m.badges || [])], atk, { ...opt, _weak: aff === "weak" });
+    const ev = envFor(opt.env, atk, opt);
     const st = { ...m.stats };
     for (const [k, v] of Object.entries(eq.stats)) st[k] = (st[k] || 0) + v;
     const magic = atk.dep === "magic" || atk.dep === "magicpwr";
     const typeKey = atk.element || null;
     const typeNet = net(ag, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(ag.type["*"] || []), ...(ag.type[typeKey] || [])] : (ag.type["*"] || []) }));
-    const groups = [typeNet, net(ag, "dmg", () => C.groupNet(ag.dmg)), ...eq.groups];
+    const groups = [typeNet, net(ag, "dmg", () => C.groupNet(ag.dmg)), ...eq.groups, ...ev.groups];
     const focus = magic ? ag.focusMag : ag.focusPhys;
-    if (focus.length) groups.push(C.focusGroup([C.mentalFocus(st.mp || 0, focus)]));
-    if (ag.overthrow && opt.enemy && opt.enemy.lv) groups.push(Math.min(1, opt.enemy.lv * opt.enemy.lv / 200 / 100));
+    // 정신 통일 · 심기일체 · 호시탐탐 · 하극상(스킬) — 한 감쇠 그룹(각 상한: 정신 통일 250% · 하극상 100%, 합 350%). 딩님 계산기 행 30~32 (2026-10-13)
+    const fv = [...(focus.length ? [C.mentalFocus(st.mp || 0, focus)] : []), ...ev.focus,
+      ...(ag.overthrow && opt.enemy && opt.enemy.lv ? [Math.min(1, opt.enemy.lv * opt.enemy.lv / 200 / 100)] : [])];
+    if (fv.length) groups.push(C.focusGroup(fv));
     const en = opt.enemy || { end: 0, spr: 0 };
     // skillMult — 범위 배율(150~18000%)의 위값(multMax)은 조건부(스택 · HP 소모 · 모드)라 opt.cond 일 때만
     const o = {
@@ -222,12 +246,12 @@
       resDown: { phys: net(eg, "p" + atk.atk, () => C.groupNet({ buffs: [...eg.phys, ...(eg.atk[atk.atk] || [])] })),
         type: net(eg, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(eg.type["*"] || []), ...(eg.type[typeKey] || [])] : [] })),
         magic: net(eg, "magic", () => C.groupNet({ buffs: eg.magic })) },
-      groups, punish: eq.punish, equip: eq.equip, weakBuff: eq.weak, single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
+      groups, punish: eq.punish, equip: eq.equip, weakBuff: eq.weak + ev.weak, single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
     };
     const normal = C.damage({ ...o, crit: false }).total;
     const crit = C.damage({ ...o, crit: true, critDmg: magic ? C.additive([...ag.mcritDmg, eq.mcritDmg]) : C.additive([...ag.critDmg, eq.critDmg]) }).total;
     const p = magic ? Math.min(1, C.additive([...ag.mcrit, eq.mcrit])) : (ag.sureCrit ? 1 : C.critChance({ lck: st.lck, critRate: C.additive([...ag.crit, eq.crit]) }));
-    return { normal, crit, p, expected: p * crit + (1 - p) * normal, o, get why() { return [...ag.src, ...eg.src, ...eq.src]; } };
+    return { normal, crit, p, expected: p * crit + (1 - p) * normal, o, get why() { return [...ag.src, ...eg.src, ...eq.src, ...ev.src]; } };
   }
 
   // 기본 장비 — 무기 종류가 같고 공격(마법이면 마법 공격) 최대
@@ -237,7 +261,7 @@
     return best;
   }
 
-  const api = { allyGroups, enemyGroups, prepare, equipFor, affinityOf, zoneMult, memberDamage, bestWeapon, posReq, contrib };
+  const api = { allyGroups, enemyGroups, prepare, equipFor, envFor, affinityOf, zoneMult, memberDamage, bestWeapon, posReq, contrib };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEParty = api;
 })(typeof window !== "undefined" ? window : globalThis);

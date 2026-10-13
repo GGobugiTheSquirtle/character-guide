@@ -52,7 +52,14 @@
   // ── 셈 변수(count) — 조건 · scale · stack n 이 같이 쓴다(형식 v1) ──
   //   moves: 이번 턴 행동 수({elem?, type?, magic?, who?: party|self|others}) · distinct_debuffs: 적에 걸린 서로 다른 디버프 수(상태 이상 포함) · statuses: 적 상태 이상 수
   //   distinct_buffs: 자신의 서로 다른 버프 수 · enemies: 적 수 · stat: 현재 스탯 · uses: 이 스킬 이전 사용 수 · streak: 직전까지 연속 사용 수 · mp_cost: 이 스킬 MP
+  //   stacks: {name, on?: self|enemy|party} 이름 붙은 축적 수(party = 아군 합) · front: {traits} 전방 특성 인원 · mp_now: 현재 MP
+  //   한 스킬 실행 안에서는 시작 시점 값을 쓴다(runSteps 가 미리 셈) — 원문 조건은 스킬 사용 시점 기준(배치 B: 앞 step 디버프가 뒤 step 의 「5종 이상」을 바꿨다).
+  //   moves 는 예외 — 같은 행동 안 재행동이 늘리는 값이라 그때그때 센다
   function countOf(q, sim, a, ctx = {}) {
+    const k = ctx.counts && JSON.stringify(q);
+    return k && k in ctx.counts ? ctx.counts[k] : countNow(q, sim, a, ctx);
+  }
+  function countNow(q, sim, a, ctx) {
     if (q.moves) {
       const f = q.moves, who = f.who || "party";
       return sim.moves.filter(m => (who === "party" || (who === "self") === (m.who === a.id))
@@ -62,12 +69,27 @@
     if (q.statuses) return Object.keys(sim.enemy.statuses).length;              // 상태 이상만(「afflicted with any status」)
     if (q.distinct_buffs) return new Set([...a.buffs.values()].filter(b => b.v > 0 && b.src !== "equip").map(b => b.stat)).size;
     if (q.enemies) return sim.enemies;
-    if (q.stat) return a.stats[KEY[q.stat] || q.stat] || 0;
+    if (q.stat) return curStat(sim, a, q.stat);
+    if (q.mp_now) return a.mp;
+    if (q.stacks) {
+      const on = q.stacks.on || "self", us = on === "enemy" ? [sim.enemy] : on === "party" ? sim.party : [a];
+      return us.reduce((t, u) => t + (u.stacks[q.stacks.name] || 0), 0);
+    }
+    if (q.front) return sim.party.filter(m => (m.traits || []).some(t => q.front.traits.includes(t))).length;
     const sk = q.uses === true || q.streak === true || q.mp_cost ? ctx.skill : q.uses || q.streak;
     if (q.uses) return a.used[sk] || 0;
     if (q.streak) return a.streak && a.streak.name === sk ? a.streak.n : 0;
     if (q.mp_cost) return ctx.mpCost || 0;
     return 0;
+  }
+  // 현재 스탯 = 전투 전 값 × (1 + % 버프 순효과) + 고정치(버프 · 축적 · 상태) — 배치 D: 행운 버프가 행운 비례 배율에 안 닿았다
+  function curStat(sim, a, stat) {
+    const key = KEY[stat] || stat;
+    let v = (a.stats[key] || 0) * (1 + net(a, [stat], sim));
+    for (const b of a.buffs.values()) if (b.flat && b.stat === stat) v += b.v;
+    for (const [n, k] of Object.entries(a.stacks)) for (const p of (sim.stackDef[n] || {}).per || []) if (p.flat && p.stat === stat) v += p.flat * k;
+    for (const n of Object.keys(a.states)) for (const p of (sim.stateDef[n] || {}).per || []) if (p.flat && p.stat === stat) v += p.flat;
+    return v;
   }
   // 이 스킬의 실제 MP — 「MP 소모」 % · 고정치 버프와 축적(Blue Chalcedony −5/개)
   function mpCost(sim, a, sk) {
@@ -174,7 +196,8 @@
     const critDmg = (magic ? sumBuff(a, "마법 크리티컬 대미지", sim) : sumBuff(a, "크리티컬 대미지", sim)) / 100 + (magic ? eq.mcritDmg : eq.critDmg) + (step.crit_dmg || 0) / 100;
     const critRate = (magic ? sumBuff(a, "마법 크리티컬율", sim) : sumBuff(a, "크리티컬율", sim)) / 100 + (magic ? eq.mcrit : eq.crit) + (step.crit_rate || 0) / 100
       + Object.entries(a.stacks).reduce((s, [n, k]) => s + ((sim.stackDef[n] || {}).per || []).filter(p => p.stat === (magic ? "마법 크리티컬율" : "크리티컬율") && p.v).reduce((t, p) => t + p.v * k / 100, 0), 0);
-    const sure = step.sure_crit || [...a.buffs.values()].some(b => b.stat === "크리티컬 확정") || onAttackStack(sim, a, step).some(d => d.sure_crit);
+    const sure = step.sure_crit || [...a.buffs.values()].some(b => b.stat === "크리티컬 확정" && live(sim, b))
+      || Object.keys(a.states).some(n => ((sim.stateDef[n] || {}).per || []).some(p => p.stat === "크리티컬 확정")) || onAttackStack(sim, a, step).some(d => d.sure_crit);
     const normal = C.damage({ ...o, crit: false }).total, crit = C.damage({ ...o, crit: true, critDmg }).total * (step.crit_x || 1);
     const p = sure ? 1 : magic ? Math.min(1, Math.max(0, critRate)) : C.critChance({ lck: st.lck, critRate });
     return { expected: p * crit + (1 - p) * normal, p, aff, zone, o };
@@ -199,6 +222,13 @@
   function runSteps(sim, a, skill, ctx) {
     ctx.consumed = {};
     ctx.skill = skill.name;
+    ctx.counts = {};                                                            // 이 스킬의 셈 질의를 시작 시점에 미리 센다
+    (function walk(o) {
+      if (Array.isArray(o)) return o.forEach(walk);
+      if (!o || typeof o !== "object") return;
+      if (o.count && typeof o.count === "object" && !o.count.moves) ctx.counts[JSON.stringify(o.count)] = countNow(o.count, sim, a, ctx);
+      Object.values(o).forEach(walk);
+    })(skill.steps);
     let dmg = 0, attacked = false, moved = !!ctx.noMove;            // noMove: 반격 — 소모 안 함
     for (const s of skill.steps || []) {
       if (!stepOk(s, sim, a, { ...ctx, skill: skill.name, consumed: ctx.consumed })) continue;
@@ -268,15 +298,23 @@
   function usable(sim, a, sk) {
     return sk.kind === "active" && mpCost(sim, a, sk) <= a.mp && check(sk.need, sim, a, { skill: sk.name });
   }
+  // 자동 정책의 공격 점수 — 실행과 같은 순서로 소모를 반영한다(배치 D: 소모될 축적의 크리율을 남긴 채 계산해 과대평가)
   function estimate(sim, a, sk) {
+    const saved = a.stacks, consumed = {}, mpc = mpCost(sim, a, sk);
     let v = 0;
-    for (const s of sk.steps || []) if (s.do === "attack" && stepOk(s, sim, a, { skill: sk.name })) {
-      const ctx = { consumed: {}, skill: sk.name, mpCost: mpCost(sim, a, sk) };
-      for (const t of sk.steps) if (t.do === "consume" && stepOk(t, sim, a, { skill: sk.name })) ctx.consumed[t.name] = t.n === "all" ? (a.stacks[t.name] || 0) : Math.min(a.stacks[t.name] || 0, t.n || 1);
-      v += damageOf(sim, a, s, ctx).expected * (s.repeat || 1);
-    }
+    a.stacks = { ...saved };
+    try {
+      for (const s of sk.steps || []) {
+        if (!stepOk(s, sim, a, { skill: sk.name, consumed })) continue;
+        if (s.do === "consume") {
+          const have = a.stacks[s.name] || 0, n = s.n === "all" ? have : Math.min(have, s.n || 1);
+          consumed[s.name] = n; a.stacks[s.name] = have - n;
+        } else if (s.do === "attack") v += damageOf(sim, a, s, { consumed, skill: sk.name, mpCost: mpc }).expected * (s.repeat || 1);
+      }
+    } finally { a.stacks = saved; }
     return v;
   }
+
   function choose(sim, a) {
     const acts = a.sheet.skills.filter(sk => usable(sim, a, sk));
     const plan = a.rotation && a.rotation[(sim.turn - 1) % a.rotation.length];

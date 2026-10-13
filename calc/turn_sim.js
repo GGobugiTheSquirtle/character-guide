@@ -50,7 +50,7 @@
     + (sim ? Object.keys(unit.states || {}).reduce((s, n) => s + ((sim.stateDef[n] || {}).per || []).filter(p => p.stat === stat && p.v).reduce((t, p) => t + p.v, 0), 0) : 0);
 
   // ── 셈 변수(count) — 조건 · scale · stack n 이 같이 쓴다(형식 v1) ──
-  //   moves: 이번 턴 행동 수({elem?, type?, magic?, who?: party|self|others}) · distinct_debuffs: 적에 걸린 서로 다른 디버프 수
+  //   moves: 이번 턴 행동 수({elem?, type?, magic?, who?: party|self|others}) · distinct_debuffs: 적에 걸린 서로 다른 디버프 수(상태 이상 포함) · statuses: 적 상태 이상 수
   //   distinct_buffs: 자신의 서로 다른 버프 수 · enemies: 적 수 · stat: 현재 스탯 · uses: 이 스킬 이전 사용 수 · streak: 직전까지 연속 사용 수 · mp_cost: 이 스킬 MP
   function countOf(q, sim, a, ctx = {}) {
     if (q.moves) {
@@ -59,6 +59,7 @@
         && (!f.elem || m.elem === f.elem) && (!f.type || m.type === f.type) && (f.magic == null || (m.type === "마법") === f.magic)).length;
     }
     if (q.distinct_debuffs) return new Set([...[...sim.enemy.buffs.values()].filter(b => b.v < 0).map(b => b.stat), ...Object.keys(sim.enemy.statuses)]).size;
+    if (q.statuses) return Object.keys(sim.enemy.statuses).length;              // 상태 이상만(「afflicted with any status」)
     if (q.distinct_buffs) return new Set([...a.buffs.values()].filter(b => b.v > 0 && b.src !== "equip").map(b => b.stat)).size;
     if (q.enemies) return sim.enemies;
     if (q.stat) return a.stats[KEY[q.stat] || q.stat] || 0;
@@ -106,7 +107,7 @@
     if (c.attacked_this_turn) return c.attacked_this_turn === "self" ? sim.attacked.has(a.id) : sim.attacked.size > 0;
     if (c.chance != null) return sim.rand() < c.chance;
     if (c.count) return cmp(countOf(c.count, sim, a, ctx), c);
-    if (c.crit) return ctx.lastP != null && sim.rand() < ctx.lastP;               // 이 스킬 직전 공격이 크리였나 — 기대 확률로 추첨
+    if (c.crit) { const r = ctx.critRoll; if (!r) return false; if (r.hit == null) r.hit = sim.rand() < r.p; return r.hit; }   // 직전 공격 크리 — 처음 물을 때 한 번 추첨해 공유(unless · if 쌍이 반대가 되게)
     return false;                                                                // af · sb · text — 모델 밖
   }
   const stepOk = (s, sim, a, ctx) => check(s.if, sim, a, ctx) && !(s.unless && s.unless.length && check(s.unless, sim, a, ctx));
@@ -159,7 +160,7 @@
         : step.scale.by_front ? sim.party.filter(m => (m.traits || []).some(t => step.scale.by_front.traits.includes(t))).length
         : ctx.consumed && ctx.consumed[step.scale.by] != null ? ctx.consumed[step.scale.by] : (a.stacks[step.scale.by] || 0);
       if (step.scale.table) mult = step.scale.table[Math.min(n, step.scale.table.length - 1)];
-      else mult *= 1 + ((step.scale.max_x || 1) - 1) * Math.min(1, n / step.scale.max_n);
+      else { const lo = step.scale.min_n || 0; mult *= 1 + ((step.scale.max_x || 1) - 1) * Math.min(1, Math.max(0, n - lo) / (step.scale.max_n - lo)); }   // min_n = 배율 ×1 인 개수(「1마리 ×1 ~ 5마리 ×10」)
     }
     const o = {
       dep, elemental: !!elem, stat: st, weapon: { atk: (a.weapon || {}).atk || 0, matk: (a.weapon || {}).matk || 0 },
@@ -209,7 +210,7 @@
         for (let i = 0; i < (s.do === "repeat" ? s.n || 1 : 1); i++) {
           const r = damageOf(sim, a, st, ctx);
           dmg += r.expected;
-          ctx.lastP = r.p;
+          ctx.critRoll = { p: r.p };
           if (s.do === "repeat" && ctx.main) sim.moves.push(moveOf(a, skill));    // 재행동(Attack again)은 따로 센다
           sim.log.push({ t: sim.turn, who: a.name, skill: skill.name + (s.do === "repeat" ? " (재행동)" : ""), dmg: Math.round(r.expected), aff: r.aff, zone: r.zone, p: +r.p.toFixed(2) });
           for (const d of onAttackStack(sim, a, st)) { a.stacks[d.n] -= d.consume; if (a.stacks[d.n] <= 0) delete a.stacks[d.n]; }

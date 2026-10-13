@@ -152,7 +152,7 @@
     const elem = step.elem && step.elem !== "없음" ? step.elem : null, type = step.type || "베기";
     const dep = step.dep || (type === "마법" ? "magic" : "pwr");
     const magic = dep === "magic" || dep === "magicpwr";
-    const atk = { element: elem, atk: type, dep };
+    const atk = { element: elem, atk: type, dep, skill: ctx.skill };                // skill — 전용 무기 스킬 강화(skillmod) 매칭
     const en = sim.enemy, aff = P.affinityOf(en.data, atk);
     const punish = Object.keys(en.statuses).filter(s => /^(Pain|Poison)$/.test(s)).map(s => s.toLowerCase());
     const eq = P.equipFor(a.gear, atk, { zone: sim.zone, maxHp: true, punish, _weak: aff === "weak" });
@@ -188,7 +188,7 @@
       dep, elemental: !!elem, stat: st, weapon: { atk: (a.weapon || {}).atk || 0, matk: (a.weapon || {}).matk || 0 },
       buff: { pwr: net(a, ["힘"], sim), int: net(a, ["지능"], sim), spd: net(a, ["속도"], sim) },
       enemy: { def: (en.data.end || 0) * (1 - Math.max(0, -net(en, ["내구"], sim))), mdef: (en.data.spr || 0) * (1 - Math.max(0, -net(en, ["정신"], sim))) },
-      affinity: aff, weakBuff: sumBuff(a, "약점 배율", sim), skillMult: mult / 100, skillFx, zone,
+      affinity: aff, weakBuff: sumBuff(a, "약점 배율", sim), skillMult: mult / 100 * eq.skillMul, skillFx, zone,
       resDown: { phys: -net(en, physStats, sim), type: -net(en, typeRes, sim), magic: -net(en, ["마법 저항"], sim) },
       groups, punish: eq.punish, equip: eq.equip, single: step.target === "one" || step.target === "random", rand: "avg",
     };

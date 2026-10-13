@@ -175,7 +175,7 @@
   //   환경 조건(f.env: severe · special · weather · atmos · ground)은 opt.env(data/calc/envs.json 한 항목 — 계열 type · 심화 severe)로 판정
   const envOk = (cond, env) => !!env && (cond === "severe" ? !!env.severe : env.type === cond);
   function equipFor(items, atk, opt) {
-    const out = { equip: [], punish: 0, skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, groups: [], weak: 0, slots: {}, src: [] };
+    const out = { equip: [], punish: 0, skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, groups: [], weak: 0, slots: {}, skillMul: 1, src: [] };
     // slot = 정밀 엔진(ae_pipeline) 칸 — 근사 엔진에는 모두 곱(groups)으로 들어간다
     const mult = (it, label, x, slot = "condE", raw = x) => {
       if (x > 0) { out.groups.push(x / 100); (out.slots[slot] = out.slots[slot] || []).push(raw); out.src.push(`${it.name}: ${label} +${+x.toFixed(2)}%`); }
@@ -183,7 +183,9 @@
     for (const it of items) {
       if (!it) continue;
       for (const [k, v] of Object.entries(it.stats || {})) out.stats[k] = (out.stats[k] || 0) + v;
-      for (const f of [...(it.fx || []).filter(f => f.k !== "etc"), ...(it.calc || [])]) {
+      // 잠재 광석 연성(calc_ore — 같은 종류 효과 값 교체 · 없던 효과 추가)은 opt.ore !== false 일 때(최대 강화 기준, 2026-10-13)
+      const own = it.calc_ore && opt.ore !== false ? it.calc_ore : it.calc;
+      for (const f of [...(it.fx || []).filter(f => f.k !== "etc"), ...(own || [])]) {
         if (f.zone && !(opt.zone && opt.zone.name.includes(f.zone))) continue;
         if (f.env && !envOk(f.env, opt.env)) continue;
         if (f.loc && f.loc !== opt.loc) continue;                       // 지역 한정(wyrmrest_isle · wyrmrest_isle/darkrealm) — opt.loc 이 같을 때만
@@ -209,6 +211,8 @@
         else if (f.k === "enemies") mult(it, "적 수", f.per * Math.max(0, (opt.enemyCount || 1) - 1));
         else if (f.k === "fallen") mult(it, "쓰러진 아군", f.per * (opt.fallen || 0), "fallen");
         else if (f.k === "tstat" && opt.punish && opt.punish.includes(f.when)) mult(it, `대상 ${f.when === "pain" ? "페인" : "독"}`, f.v, "statusE");
+        // 전용 무기 스킬 강화 「<스킬> MOD+ 50% · 250% total」 = 기본 배율 +50%p → 배율 × total/(total−v) (스킬 자체 배수 보존)
+        else if (f.k === "skillmod" && f.total && atk.skill === f.skill) { out.skillMul *= f.total / (f.total - f.v); out.src.push(`${it.name}: ${f.skill} 배율 +${f.v}%p`); }
       }
     }
     return out;
@@ -283,7 +287,7 @@
       buff: { pwr: net(ag, "pwr", () => C.groupNet(ag.pwr)), int: net(ag, "int", () => C.groupNet(ag.int)), spd: net(ag, "spd", () => C.groupNet(ag.spd)) },
       enemy: { def: (en.end || 0) * (1 - net(eg, "def", () => C.groupNet({ buffs: eg.def }))),
         mdef: (en.spr || 0) * (1 - net(eg, "mdef", () => C.groupNet({ buffs: eg.mdef }))) },
-      affinity: aff, skillMult: ((opt.cond && atk.multMax) || atk.mult) / 100, skillFx: eq.skillFx, zone: zoneMult(opt.zone, atk),
+      affinity: aff, skillMult: ((opt.cond && atk.multMax) || atk.mult) / 100 * eq.skillMul, skillFx: eq.skillFx, zone: zoneMult(opt.zone, atk),
       resDown: { phys: net(eg, "p" + atk.atk, () => C.groupNet({ buffs: [...eg.phys, ...(eg.atk[atk.atk] || [])] })),
         type: net(eg, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(eg.type["*"] || []), ...(eg.type[typeKey] || [])] : [] })),
         magic: net(eg, "magic", () => C.groupNet({ buffs: eg.magic })) },

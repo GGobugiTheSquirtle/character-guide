@@ -35,8 +35,9 @@
   // 효과 기여 — 멤버마다 효과 단위를 한 번만 분류해 s._contrib 에 둔다(파티 탐색은 같은 멤버를 수십만 번 합친다).
   //   s.fx 를 바꾸면 s._contrib 를 지울 것
   const newAG = () => ({ pwr: { buffs: [] }, int: { buffs: [] }, spd: { buffs: [] }, type: {}, dmg: { buffs: [] },
-    crit: [], mcrit: [], critDmg: [], mcritDmg: [], focusPhys: [], focusMag: [], sureCrit: false, overthrow: false, src: [] });
-  const newEG = () => ({ phys: [], magic: [], type: {}, atk: {}, def: [], mdef: [], src: [] });
+    crit: [], mcrit: [], critDmg: [], mcritDmg: [], focusPhys: [], focusMag: [], sureCrit: false, overthrow: false,
+    mindseye: false, risktaker: false, overcrit: false, movercrit: false, hawk: [], src: [] });
+  const newEG = () => ({ phys: [], magic: [], type: {}, atk: {}, def: [], mdef: [], breaks: [], src: [] });
   function mergeInto(g, h) {
     for (const [k, x] of Object.entries(h)) {
       if (typeof x === "boolean") g[k] = g[k] || x;
@@ -86,6 +87,21 @@
     if (!m.has(key)) m.set(key, f());
     return m.get(key);
   }
+  // 상태 효과(2026-10-13, data/calc/statuses.json) — 루나틱 심안 · 결사 · 오버 크리 · 호시탐탐 · 브레이크(대상). 이름(+루나틱은 원문)으로 판정
+  const ATK_EN = { slash: "베기", piercing: "찌르기", pierce: "찌르기", blunt: "타격", magic: "마법" };
+  function statusOf(u) {
+    const n = u.name || "", raw = u.raw || "";
+    if (n === "심안" || (n.startsWith("루나틱") && (/심안/.test(n) || /mind'?s eye/i.test(raw)))) return { id: "mindseye" };
+    if (n === "결사" || (n.startsWith("루나틱") && (/결사/.test(n) || /risk ?taker/i.test(raw)))) return { id: "risktaker" };
+    if (n === "오버 크리티컬") return { id: "overcrit" };
+    if (n === "마법 오버 크리티컬") return { id: "movercrit" };
+    if (n === "호시탐탐" || n === "Eagle Eyes") return { id: "eagle" };
+    if (n === "브레이크") return { id: "break" };
+    let m = n.match(/^엘리멘탈 브레이크\((.+)\)$/);
+    if (m) return { id: "ebreak", which: m[1] };
+    if ((m = n.match(/^웨폰 브레이크\((.+)\)$/))) return { id: "wbreak", which: m[1].split(/\s+/).map(x => ATK_EN[x.toLowerCase()] || x) };
+    return null;
+  }
   function addAlly(g, u, s) {
     const v = (u.value || 0) / 100;
     if ((u.k === "stat_pct") && u.dir === "UP") {
@@ -111,11 +127,25 @@
       else if (u.name === "심기일체") { g.focusPhys.push(0.0023); g.src.push(`${s.c.nameKo}: 심기일체`); }
       else if (u.name === "크리티컬 발생 확정") { g.sureCrit = true; g.src.push(`${s.c.nameKo}: 크리티컬 확정`); }
       else if (u.name === "하극상") { g.overthrow = true; g.src.push(`${s.c.nameKo}: 하극상`); }
+      else {
+        const st = statusOf(u);
+        if (!st || ["break", "ebreak", "wbreak"].includes(st.id)) return;
+        if (st.id === "eagle") { if (u.value) g.hawk.push(u.value / 100); }
+        else g[st.id] = true;
+        g.src.push(`${s.c.nameKo}: ${u.name}${u.value ? " " + u.value + "%" : ""}`);
+      }
     }
   }
 
   // 적에게 거는 디버프 — 저항 그룹(물리 · 속성 · 마법 · 공격 종류별), 내구 · 정신
   function addEnemy(e, u, s) {
+    const st = (u.k === "ailment" || u.k === "stack") && !/아군|자신/.test(u.tc || "") ? statusOf(u) : null;
+    if (st && ["break", "ebreak", "wbreak"].includes(st.id)) {
+      const which = st.id === "ebreak" ? [st.which] : st.id === "wbreak" ? st.which : ["*"];
+      e.breaks.push(...which.map(w => (st.id === "ebreak" ? "e:" : st.id === "wbreak" ? "a:" : "") + w));
+      e.src.push(`${s.c.nameKo}: 적 ${u.name}`);
+      return;
+    }
     if (u.k !== "stat_pct" || u.dir !== "DOWN" || !enemySide(u)) return;
     const v = (u.value || 0) / 100;
     for (const st of u.stats || []) {
@@ -145,8 +175,11 @@
   //   환경 조건(f.env: severe · special · weather · atmos · ground)은 opt.env(data/calc/envs.json 한 항목 — 계열 type · 심화 severe)로 판정
   const envOk = (cond, env) => !!env && (cond === "severe" ? !!env.severe : env.type === cond);
   function equipFor(items, atk, opt) {
-    const out = { equip: [], punish: 0, skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, groups: [], weak: 0, src: [] };
-    const mult = (it, label, x) => { if (x > 0) { out.groups.push(x / 100); out.src.push(`${it.name}: ${label} +${+x.toFixed(2)}%`); } };
+    const out = { equip: [], punish: 0, skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, groups: [], weak: 0, slots: {}, src: [] };
+    // slot = 정밀 엔진(ae_pipeline) 칸 — 근사 엔진에는 모두 곱(groups)으로 들어간다
+    const mult = (it, label, x, slot = "condE", raw = x) => {
+      if (x > 0) { out.groups.push(x / 100); (out.slots[slot] = out.slots[slot] || []).push(raw); out.src.push(`${it.name}: ${label} +${+x.toFixed(2)}%`); }
+    };
     for (const it of items) {
       if (!it) continue;
       for (const [k, v] of Object.entries(it.stats || {})) out.stats[k] = (out.stats[k] || 0) + v;
@@ -165,17 +198,17 @@
         else if (f.k === "weak" && opt._weak) { out.weak += v; out.src.push(`${it.name}: 약점 배율 +${f.v}%`); }
         else if (f.k === "crit_rate") out[f.magic ? "mcrit" : "crit"] += v;
         else if (f.k === "crit_dmg") out[f.magic ? "mcritDmg" : "critDmg"] += v;
-        else if (f.k === "growth") mult(it, "성장", Math.min(f.per * (opt.turns || 0), f.max));
-        else if (f.k === "aim" && !opt.af) mult(it, "겨누어 쏘기", f.v);
+        else if (f.k === "growth") mult(it, "성장", Math.min(f.per * (opt.turns || 0), f.max), "growthAtk");
+        else if (f.k === "aim" && !opt.af) mult(it, "겨누어 쏘기", f.v, "aim");
         else if (f.k === "mpatk" && atk.mp > 0 && !opt.normalAtk) mult(it, "MP 소비 공격", f.v);
-        else if (f.k === "overthrow" && opt.enemy && opt.enemy.lv) mult(it, "하극상", Math.floor(opt.enemy.lv * opt.enemy.lv / f.d * 100) / 100);
-        else if (f.k === "zonedmg" && opt.zoneAwake) mult(it, "ZONE 각성", f.v);
-        else if (f.k === "wins" && opt.wins) mult(it, "누계 승리", f.v);
-        else if (f.k === "lsally") mult(it, f.side === "light" ? "천 아군" : "명 아군", f.per * ((f.side === "light" ? opt.lightAllies : opt.shadowAllies) || 0));
-        else if (f.k === "seal" && opt.sealed) mult(it, "봉인 인핸스", f.v);
+        else if (f.k === "overthrow" && opt.enemy && opt.enemy.lv) mult(it, "하극상", Math.floor(opt.enemy.lv * opt.enemy.lv / f.d * 100) / 100, "overthrowE", f.d);
+        else if (f.k === "zonedmg" && opt.zoneAwake) mult(it, "ZONE 각성", f.v, "zoneAwake");
+        else if (f.k === "wins" && opt.wins) mult(it, "누계 승리", f.v, "wins");
+        else if (f.k === "lsally") mult(it, f.side === "light" ? "천 아군" : "명 아군", f.per * ((f.side === "light" ? opt.lightAllies : opt.shadowAllies) || 0), "lsAlly");
+        else if (f.k === "seal" && opt.sealed) mult(it, "봉인 인핸스", f.v, "enhance");
         else if (f.k === "enemies") mult(it, "적 수", f.per * Math.max(0, (opt.enemyCount || 1) - 1));
-        else if (f.k === "fallen") mult(it, "쓰러진 아군", f.per * (opt.fallen || 0));
-        else if (f.k === "tstat" && opt.punish && opt.punish.includes(f.when)) mult(it, `대상 ${f.when === "pain" ? "페인" : "독"}`, f.v);
+        else if (f.k === "fallen") mult(it, "쓰러진 아군", f.per * (opt.fallen || 0), "fallen");
+        else if (f.k === "tstat" && opt.punish && opt.punish.includes(f.when)) mult(it, `대상 ${f.when === "pain" ? "페인" : "독"}`, f.v, "statusE");
       }
     }
     return out;
@@ -235,7 +268,14 @@
     // 정신 통일 · 심기일체 · 호시탐탐 · 하극상(스킬) — 한 감쇠 그룹(각 상한: 정신 통일 250% · 하극상 100%, 합 350%). 딩님 계산기 행 30~32 (2026-10-13)
     const fv = [...(focus.length ? [C.mentalFocus(st.mp || 0, focus)] : []), ...ev.focus,
       ...(ag.overthrow && opt.enemy && opt.enemy.lv ? [Math.min(1, opt.enemy.lv * opt.enemy.lv / 200 / 100)] : [])];
-    if (fv.length) groups.push(C.focusGroup(fv));
+    // 상태(2026-10-13): 루나틱 · 호시탐탐은 발동 조건(opt.lunatic · opt.enemyFirst, 기본 = 조건부 효과 포함), 브레이크는 opt.breakOn(기본 같음)
+    const lun = opt.lunatic ?? !!opt.cond, brk = opt.breakOn ?? !!opt.cond;
+    if ((opt.enemyFirst ?? !!opt.cond) && ag.hawk.length) fv.push(...ag.hawk);
+    const focusV = fv.length ? C.focusGroup(fv) : 0;
+    if (fv.length) groups.push(focusV);
+    const sx = { shingan: lun && ag.mindseye ? 0.5 : 0, kesshi: lun && ag.risktaker ? 0.7 : 0,
+      brk: brk && eg.breaks.some(b => b === "*" || b === "e:" + atk.element || b === "a:" + atk.atk) ? 1 : 0 };
+    for (const x of [sx.shingan, sx.kesshi, sx.brk]) if (x) groups.push(x);
     const en = opt.enemy || { end: 0, spr: 0 };
     // skillMult — 범위 배율(150~18000%)의 위값(multMax)은 조건부(스택 · HP 소모 · 모드)라 opt.cond 일 때만
     const o = {
@@ -247,12 +287,39 @@
       resDown: { phys: net(eg, "p" + atk.atk, () => C.groupNet({ buffs: [...eg.phys, ...(eg.atk[atk.atk] || [])] })),
         type: net(eg, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(eg.type["*"] || []), ...(eg.type[typeKey] || [])] : [] })),
         magic: net(eg, "magic", () => C.groupNet({ buffs: eg.magic })) },
-      groups, punish: eq.punish, equip: eq.equip, weakBuff: eq.weak + ev.weak, single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
+      groups, punish: eq.punish, equip: eq.equip, weakBuff: eq.weak + ev.weak + (sx.shingan ? 1 : 0), single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
     };
+    const critDmg = magic ? C.additive([...ag.mcritDmg, eq.mcritDmg]) : C.additive([...ag.critDmg, eq.critDmg]);
+    // 오버 크리: 크리 대미지 ×2 확률 = (크리율 − 100%) / 1000% (위키 Status Effects)
+    const rate = magic ? C.additive([...ag.mcrit, eq.mcrit]) : (st.lck || 0) / 1600 + C.additive([...ag.crit, eq.crit]);
+    const oc = (magic ? ag.movercrit : ag.overcrit) ? Math.max(0, Math.min(1, (rate - 1) / 10)) : 0;
     const normal = C.damage({ ...o, crit: false }).total;
-    const crit = C.damage({ ...o, crit: true, critDmg: magic ? C.additive([...ag.mcritDmg, eq.mcritDmg]) : C.additive([...ag.critDmg, eq.critDmg]) }).total;
-    const p = magic ? Math.min(1, C.additive([...ag.mcrit, eq.mcrit])) : (ag.sureCrit ? 1 : C.critChance({ lck: st.lck, critRate: C.additive([...ag.crit, eq.crit]) }));
-    return { normal, crit, p, expected: p * crit + (1 - p) * normal, o, get why() { return [...ag.src, ...eg.src, ...eq.src, ...ev.src]; } };
+    const crit = C.damage({ ...o, crit: true, critDmg }).total * (1 + oc);
+    const p = (ag.sureCrit || sx.kesshi) ? 1 : Math.max(0, Math.min(1, rate));
+    const res = { normal, crit, p, expected: p * crit + (1 - p) * normal, o, get why() { return [...ag.src, ...eg.src, ...eq.src, ...ev.src]; } };
+    // 정밀값(ae_pipeline — 딩님 계산기와 정수 일치 엔진): 난수 전 구간 평균. 근사보다 0~0.4% 낮다(단계마다 버림)
+    Object.defineProperty(res, "precise", { enumerable: false, get() {
+      const P = root.AEPipe || (typeof require === "function" ? require("./ae_pipeline.js") : null);
+      if (!P) return null;
+      const KIND = { pwr: "phys", int: "int_phys", spd: "spd_phys", magic: "magic", magicpwr: "pwr_magic" };
+      const w = o.weapon, pct = x => (x ? [x * 100] : []), negPct = x => (x ? [-x * 100] : []);
+      const defNet = net(eg, "def", () => C.groupNet({ buffs: eg.def })), mdefNet = net(eg, "mdef", () => C.groupNet({ buffs: eg.mdef }));
+      const sl = eq.slots, sum = a => (a || []).reduce((x, y) => x + y, 0);
+      const r = P.compute({ caster: "ally", kind: KIND[atk.dep] || "phys", power: o.skillMult * 100, scope: o.single ? "single" : "all",
+        elemental: o.elemental, affinity: o.affinity, cap: true,
+        stats: { mp: st.mp || 0, atk: (st.pwr || 0) + w.atk, matk: (st.int || 0) + w.matk, pwr: st.pwr || 0, int: st.int || 0, spd: st.spd || 0 },
+        enemy: { lv: (opt.enemy && opt.enemy.lv) || 0, def: en.end || 0, mdef: en.spr || 0 },
+        fx: { pct: { pwr: pct(o.buff.pwr), int: pct(o.buff.int), spd: pct(o.buff.spd), def: negPct(defNet), mdef: negPct(mdefNet) },
+          resPhysMag: negPct(magic ? o.resDown.magic : o.resDown.phys), resType: negPct(o.resDown.type),
+          typeNE: pct(typeNet), wielder: pct(net(ag, "dmg", () => C.groupNet(ag.dmg))), hawk: focusV ? [focusV * 100, 0] : [],
+          weak: o.weakBuff ? [o.weakBuff * 100] : [], typeE: eq.equip.map(x => x * 100), statusE: [...Array(eq.punish).fill(30), ...(sl.statusE || [])],
+          enhance: sl.enhance, fallen: sl.fallen, condE: sl.condE, kesshi: sx.kesshi * 100 || undefined, shingan: sx.shingan * 100 || undefined,
+          condNB: o.skillFx.map(x => x * 100), critDmg: pct(critDmg), overCrit: oc * 100 || undefined, aim: sum(sl.aim) || undefined,
+          zoneAwake: sl.zoneAwake, lsAlly: sl.lsAlly, overthrowE: sl.overthrowE, growthAtk: sl.growthAtk, wins: (sl.wins || [])[0],
+          zone: pct(o.zone), cheer: ev.groups.map(x => x * 100), break: sx.brk * 100 || undefined } });
+      return { normal: r.avg, crit: r.critAvg, p, expected: p * r.critAvg + (1 - p) * r.avg };
+    } });
+    return res;
   }
 
   // 기본 장비 — 무기 종류가 같고 공격(마법이면 마법 공격) 최대
@@ -262,7 +329,7 @@
     return best;
   }
 
-  const api = { allyGroups, enemyGroups, prepare, equipFor, envFor, affinityOf, zoneMult, memberDamage, bestWeapon, posReq, contrib };
+  const api = { allyGroups, enemyGroups, prepare, equipFor, envFor, statusOf, affinityOf, zoneMult, memberDamage, bestWeapon, posReq, contrib };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEParty = api;
 })(typeof window !== "undefined" ? window : globalThis);

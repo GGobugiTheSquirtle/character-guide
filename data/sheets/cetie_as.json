@@ -1,7 +1,7 @@
 {
   "id": "cetie_as",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {
     "Photon Acceleration": { "max": 2, "per": [ { "stat": "물리 저항", "v": 7.5 } ] }
   },
@@ -30,15 +30,15 @@
                  { "do": "buff", "to": "enemy", "stat": "지능", "v": -20, "dur": { "turns": 3 } } ] },
     { "name": "Force Assault", "kind": "active", "mp": 39, "tier": "normal",
       "steps": [ { "do": "attack", "elem": "불", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 1, "mult": 115 },
+                 { "do": "stack", "name": "Photon Acceleration", "n": 1, "to": "self" },
+                 { "do": "stack", "name": "Photon Acceleration", "n": 1, "to": "self", "if": [ { "crit": true } ] },
                  { "do": "attack", "elem": "불", "type": "찌르기", "dep": "pwr", "target": "all", "hits": 1, "mult": 95 },
                  { "do": "buff", "to": "self", "stat": "힘", "v": 50, "dur": { "turns": 3 }, "max_stack": 3 },
                  { "do": "buff", "to": "self", "stat": "속도", "v": 50, "dur": { "turns": 3 }, "max_stack": 3 },
-                 { "do": "stack", "name": "Photon Acceleration", "n": 1, "to": "self", "unless": [ { "text": "attack on single enemy is critical" } ] },
-                 { "do": "stack", "name": "Photon Acceleration", "n": 2, "to": "self", "if": [ { "text": "attack on single enemy is critical" } ] },
                  { "do": "other", "text": "1+ Photon Acceleration: Restore all party members MP 15% and Max HP of all party members +1000 (3 turns)", "if": [ { "stack": "Photon Acceleration", "gte": 1 } ] },
                  { "do": "buff", "to": "self", "stat": "크리티컬율", "v": 100, "dur": { "moves": 3 }, "if": [ { "stack": "Photon Acceleration", "gte": 2 } ] },
                  { "do": "buff", "to": "self", "stat": "크리티컬 대미지", "v": 50, "dur": { "turns": 3 }, "if": [ { "stack": "Photon Acceleration", "gte": 2 } ] } ],
-      "notes": "위키 배율 「115%/95%」를 원문 순서대로 단일 115% · 전체(XL) 95% 로 둠(검사기는 아래값 95 와 비교해 WARN). 「Stacks 2 when attack on single enemy is critical」은 크리 조건이 없어 text 조건 — 엔진은 늘 1 스택. 개수별 추가 효과는 쌓은 뒤 개수로 판정한다고 가정" },
+      "notes": "위키 배율 「115%/95%」를 원문 순서대로 단일 115% · 전체(XL) 95% 로 둠(검사기는 아래값 95 와 비교해 WARN). v1 반영: 「Stacks 2 when attack on single enemy is critical」 = 1 스택 + 크리면 1 더({\"crit\": true}). 직전 공격 = 단일 공격이 되도록 축적 step 을 단일 공격 바로 뒤로 옮김. unless/if 쌍으로 쓰지 않은 것은 crit 조건이 step 마다 따로 추첨하기 때문(쌍이면 0 · 3 스택이 나올 수 있음). 개수별 추가 효과는 쌓은 뒤 개수로 판정한다고 가정" },
     { "name": "Blast Drive", "kind": "active", "mp": 50, "tier": "normal",
       "steps": [ { "do": "consume", "name": "Photon Acceleration", "n": "all" },
                  { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 1, "mult": 160,

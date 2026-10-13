@@ -1,7 +1,7 @@
 {
   "id": "azami_as",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {},
   "states": {},
   "skills": [
@@ -38,7 +38,7 @@
     { "name": "Hold Ground", "kind": "trigger", "on": "battle_start",
       "steps": [ { "do": "other", "text": "Apply Hold Ground on self: when character's HP reduces to 0, stop at 1 HP instead (1 time)" } ] },
     { "name": "Battle start self MP -50", "kind": "trigger", "on": "battle_start", "need": [ { "pos": "front" } ],
-      "steps": [ { "do": "other", "text": "MP consumption of user -50% (1 turn-)" } ] }
+      "steps": [ { "do": "buff", "to": "self", "stat": "MP 소모", "v": -50, "dur": { "turns_minus": 1 } } ] }
   ],
-  "notes": [ "Stun 은 원문에 지속이 없음 — 기준 시트대로 1턴", "Battle start self MP -50 은 MP 소모 감소 — v0 MP 추적에 반영 안 됨(1턴째 스킬 MP 가 실제보다 비싸게 계산)" ]
+  "notes": [ "Stun 은 원문에 지속이 없음 — 기준 시트대로 1턴", "Battle start self MP -50 → v1 stat MP 소모 v −50(1 turn- = 1턴째만)" ]
 }

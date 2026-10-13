@@ -1,7 +1,7 @@
 {
   "id": "mariel_as",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {
     "Blessings": { "max": 2, "per": [ { "stat": "지능", "v": 7.5 } ] }
   },

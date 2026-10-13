@@ -1,7 +1,7 @@
 {
   "id": "zeviro",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {
     "Dread": { "max": 50, "per": [ { "stat": "물리 저항", "v": -0.6 } ] }
   },
@@ -55,5 +55,6 @@
   ],
   "notes": [ "Dread 는 적에게 쌓이는 축적(stack to enemies) — 물리 저항 -0.6%/스택, 최대 50: -30%",
              "Dread 자연 증가(적이 맞을 때마다 +1, 아군 타격 · 페인/독 포함)는 형식에 피격 시 축적 규칙이 없어 미반영 — 스킬 원문의 「additional」 분만 넣음 → Dread 과소 추정",
-             "Terror Curse 의 Dread 2배는 형식 밖(other)" ]
+             "Terror Curse 의 Dread 2배는 형식 밖(other)",
+             "v1 검토(2026-10-13): 바꿀 것 없음 — count 에 「대상(적)의 축적 수」가 없어 Terror Curse 2배(stack n: count) · Soul Harvest 비례(scale.count) 모두 못 씀. Soul Harvest 의 scale.by 는 시전자 축적을 읽어 늘 0 개" ]
 }

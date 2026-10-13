@@ -1,7 +1,7 @@
 {
   "id": "yipha",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {},
   "states": {},
   "skills": [
@@ -43,8 +43,11 @@
                  { "do": "buff", "to": "party", "stat": "속성 저항", "v": 25, "dur": { "turns": 3 } },
                  { "do": "other", "text": "Restore all statuses" } ] },
     { "name": "Yipha turn end buff", "kind": "trigger", "on": "turn_end", "need": [ { "zone": "Roaring Bash Stance" } ],
-      "steps": [ { "do": "other", "text": "Fists and Hammer equipped characters' damage +15% \\ +30% \\ +45% \\ +60% (1 turn) — based on number (1 \\ 2 \\ 3 \\ 4) of Blunt moves used during the turn (Copy double moves count twice, Attack again moves each counted; End-of-Turn, counters, knocked back or dead allies' moves not counted)" } ],
-      "notes": "무기 필터 대상(권갑 · 망치 장비 아군)과 「이번 턴 타격 행동 수」 조건을 형식으로 못 씀 — other" }
+      "steps": [ { "do": "buff", "to": "party", "stat": "대미지", "v": 15, "dur": { "turns": 1 }, "filter": { "weapon": [ "권갑", "망치" ] }, "if": [ { "count": { "moves": { "type": "타격" } }, "eq": 1 } ] },
+                 { "do": "buff", "to": "party", "stat": "대미지", "v": 30, "dur": { "turns": 1 }, "filter": { "weapon": [ "권갑", "망치" ] }, "if": [ { "count": { "moves": { "type": "타격" } }, "eq": 2 } ] },
+                 { "do": "buff", "to": "party", "stat": "대미지", "v": 45, "dur": { "turns": 1 }, "filter": { "weapon": [ "권갑", "망치" ] }, "if": [ { "count": { "moves": { "type": "타격" } }, "eq": 3 } ] },
+                 { "do": "buff", "to": "party", "stat": "대미지", "v": 60, "dur": { "turns": 1 }, "filter": { "weapon": [ "권갑", "망치" ] }, "if": [ { "count": { "moves": { "type": "타격" } }, "gte": 4 } ] } ],
+      "notes": "원문 「Fists and Hammer equipped characters' damage +15% \\ +30% \\ +45% \\ +60% (1 turn) — based on number (1 \\ 2 \\ 3 \\ 4) of Blunt moves」 → v1 filter.weapon(권갑 · 망치) + count.moves(타격) eq 1/2/3 · gte 4. 세기 규칙: Copy 2회 · 재행동 각각 셈, EoT · 반격 · 넉백 · 사망 아군 제외 — 엔진은 Copy 2회 셈 미반영" }
   ],
   "notes": [ "전개 존 없음 — Any Stance · Roaring Bash Stance 조건은 다른 멤버의 존에 의존", "Paidir 3종의 물리 · 속성 저항 버프는 피격 대미지를 계산하지 않는 v0 에서는 효과 없음(기록용)" ]
 }

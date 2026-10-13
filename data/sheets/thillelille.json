@@ -1,23 +1,22 @@
 {
   "id": "thillelille",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {
     "Sacrificium": { "max": 5, "per": [ { "stat": "HP", "v": -15 } ] }
   },
   "states": {
     "Sacrifice": {},
-    "Super Thillelille mode": { "per": [ { "stat": "대미지 배율", "x": 1.1 } ] }
+    "Super Thillelille mode": { "per": [ { "stat": "대미지 배율", "x": 1.1 }, { "stat": "크리티컬율", "v": 100 } ] }
   },
   "skills": [
-    { "name": "I'll Show You!", "kind": "active", "mp": 0, "tier": "normal", "replaces_basic": true,
+    { "name": "I'll Show You!", "kind": "active", "mp": 0, "tier": "normal", "replaces_basic": true, "need": [ { "not": { "state": "Super Thillelille mode" } } ],
       "steps": [ { "do": "state", "name": "Sacrifice", "to": "self", "dur": { "turns": 5 } },
                  { "do": "other", "text": "Sacrifice: Exempt END and SPR stat values from P.DEF and M.DEF and convert them into PWR and INT respectively (pre-battle values incl. equipment stat+; damage formula changes PWR_stacks and INT_stacks only; INT_stacks increase affects Weakness Modifier, not Elemental Modifier; healing: only INT part changes)" },
                  { "do": "state", "name": "Super Thillelille mode", "to": "self", "dur": { "perm": true } } ],
-      "notes": "「Replaces the basic attack when not in Super Thillelille mode (Can be used multiple times)」 — need 에 부정 조건이 없어 「모드 아닐 때만」을 못 적음. 「When in Lunatic」 조건은 이 캐릭터의 유일한 Lunatic 상태인 Sacrifice 로 적음" },
-    { "name": "Super Thillelille mode", "kind": "passive", "need": [ { "state": "Super Thillelille mode" } ],
-      "steps": [ { "do": "buff", "to": "self", "stat": "크리티컬율", "v": 100, "dur": { "perm": true }, "src": "skill" } ],
-      "notes": "모드 설명 항목. Increase damage and healing +10% (x1.1) 는 states 정의(대미지 배율 x1.1), Activates Sacrificium Stacking 은 해당 trigger 의 need 로 반영. 크리 +100% 는 모드 중 상시 효과라 passive — v0 엔진은 passive 를 실행하지 않는다" },
+      "notes": "「Replaces the basic attack when not in Super Thillelille mode」 = need not 조건. 「When in Lunatic」 조건은 이 캐릭터의 유일한 Lunatic 상태인 Sacrifice 로 적음" },
+    { "name": "Super Thillelille mode", "kind": "passive", "need": [ { "state": "Super Thillelille mode" } ], "steps": [],
+      "notes": "모드 설명 항목. 대미지 x1.1 · 크리 +100% 는 states 정의(per)로 — passive 는 전투 시작 때 한 번만 돌아 모드 진입 뒤 효과를 못 건다(10-13 수정). Sacrificium Stacking 은 해당 trigger 의 need" },
     { "name": "Eclipse Edge", "kind": "active", "mp": 31, "tier": "normal",
       "steps": [ { "do": "attack", "elem": "그림자", "type": "베기", "dep": "pwr", "target": "one", "hits": 1, "mult": 160, "if": [ { "hp": { "lte": 79.9 } } ], "unless": [ { "state": "Sacrifice" } ] },
                  { "do": "attack", "elem": "그림자", "type": "베기", "dep": "pwr", "target": "one", "hits": 1, "mult": 288, "if": [ { "hp": { "gte": 80 } } ], "unless": [ { "state": "Sacrifice" } ] },
@@ -33,8 +32,9 @@
     { "name": "Soul of Honor", "kind": "active", "mp": 13, "tier": "normal",
       "steps": [ { "do": "buff", "to": "self", "stat": "불 속성 공격", "v": 50, "dur": { "turns": 5 } },
                  { "do": "buff", "to": "self", "stat": "그림자 속성 공격", "v": 50, "dur": { "turns": 5 } },
-                 { "do": "other", "text": "Max MP of all party members +40% and MP Regen 10% (5 turns)", "if": [ { "state": "Super Thillelille mode" } ] } ],
-      "notes": "최대 MP +40% 는 심기일체(MP 비례) 대미지에 영향 — 최대 MP 버프가 형식에 없어 other" },
+                 { "do": "buff", "to": "party", "stat": "최대 MP", "v": 40, "dur": { "turns": 5 }, "if": [ { "state": "Super Thillelille mode" } ] },
+                 { "do": "other", "text": "MP Regen 10% (5 turns)", "if": [ { "state": "Super Thillelille mode" } ] } ],
+      "notes": "v1 반영: 최대 MP +40% = stat 최대 MP(심기일체 MP 비례에 닿음). MP Regen 은 형식에 없어 other" },
     { "name": "Void Strike", "kind": "active", "mp": 55, "tier": "normal",
       "steps": [ { "do": "attack", "elem": "그림자", "type": "베기", "dep": "pwr", "target": "one", "hits": 1, "mult": 400, "unless": [ { "state": "Super Thillelille mode" } ] },
                  { "do": "attack", "elem": "그림자", "type": "베기", "dep": "pwr", "target": "one", "hits": 1, "mult": 3200, "if": [ { "state": "Super Thillelille mode" } ] },
@@ -76,5 +76,7 @@
     { "name": "Stellar Burst Gauge Fill Bonus", "kind": "passive",
       "steps": [ { "do": "other", "text": "When there are 3 or more Fire or Shade party members on the front line: User's Stellar Burst Gauge Fill rate increases (S)" } ] }
   ],
-  "notes": [ "Sacrificium 의 최대 HP −15%/스택은 HP 미반영 v0 에서 효과 없음", "Sacrifice(END·SPR → PWR·INT 변환)는 형식에 스탯 변환이 없어 other — v0 대미지에 미반영(큰 누락)", "Sublimation 의 파티 크리 +100%(1 move)는 v0 에서 같은 스킬 공격 뒤 consumeMoves 로 자기 몫이 바로 소모됨(엔진 동작)" ]
+  "notes": [ "Sacrificium 의 최대 HP −15%/스택은 HP 미반영 v0 에서 효과 없음",
+             "Sacrifice(END·SPR → PWR·INT 변환)는 형식에 스탯 변환이 없어 other — v0 대미지에 미반영(큰 누락)",
+             "Sublimation 의 파티 크리 +100%(1 move)는 v0 에서 같은 스킬 공격 뒤 consumeMoves 로 자기 몫이 바로 소모됨(엔진 동작)" ]
 }

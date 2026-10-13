@@ -1,7 +1,7 @@
 {
   "id": "cerius",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {
     "Blast Bolt": { "max": 5 }
   },
@@ -60,22 +60,13 @@
                  { "do": "other", "text": "Inflict 3 stacks of Weapon Break (Piercing)" } ],
       "notes": "Consumes 1 Blast Bolt to increase damage by x8 → 160/1280 쌍" },
     { "name": "Link Ability", "kind": "passive",
-      "steps": [ { "do": "buff", "to": "party", "stat": "크리티컬율", "v": 100, "dur": { "perm": true }, "src": "skill",
-                   "if": [ { "zone": "Piercing Flash Stance" }, { "front": { "traits": [ "Arcadia" ], "gte": 2 } } ] },
-                 { "do": "other", "text": "When 4 Arcadia characters are on the frontline: grants Flexible (Piercing) to all party members",
-                   "if": [ { "zone": "Piercing Flash Stance" }, { "front": { "traits": [ "Arcadia" ], "gte": 4 } } ] } ],
+      "steps": [ { "do": "buff", "to": "party", "stat": "크리티컬율", "v": 100, "dur": { "perm": true }, "src": "skill", "if": [ { "zone": "Piercing Flash Stance" }, { "front": { "traits": [ "Arcadia" ], "gte": 2 } } ] },
+                 { "do": "other", "text": "When 4 Arcadia characters are on the frontline: grants Flexible (Piercing) to all party members", "if": [ { "zone": "Piercing Flash Stance" }, { "front": { "traits": [ "Arcadia" ], "gte": 4 } } ] } ],
       "notes": "「When Piercing Flash Stance is deployed」 — 존이 깔려 있는 동안의 상시 효과로 해석(전개 순간 1회 발동일 수도 있음)" },
     { "name": "Blast Bolt Stacking", "kind": "trigger", "on": "turn_end",
       "steps": [ { "do": "consume", "name": "Blast Bolt", "n": "all" },
-                 { "do": "stack", "name": "Blast Bolt", "n": 1, "to": "self", "if": [ { "used_turn": "Terra Flaug", "rel": 0 } ] },
-                 { "do": "stack", "name": "Blast Bolt", "n": 1, "to": "self", "if": [ { "used_turn": "Triple Rapid Fire", "rel": 0 } ] },
-                 { "do": "stack", "name": "Blast Bolt", "n": 1, "to": "self", "if": [ { "used_turn": "Triple Pierce", "rel": 0 } ] },
-                 { "do": "stack", "name": "Blast Bolt", "n": 1, "to": "self", "if": [ { "used_turn": "Terra Hremsa", "rel": 0 } ] },
-                 { "do": "stack", "name": "Blast Bolt", "n": 1, "to": "self", "if": [ { "used_turn": "Boring Shot", "rel": 0 } ] },
-                 { "do": "stack", "name": "Blast Bolt", "n": 1, "to": "self", "if": [ { "used_turn": "Terra Fifa", "rel": 0 } ] },
-                 { "do": "stack", "name": "Blast Bolt", "n": 1, "to": "self", "if": [ { "used_turn": "Volley Fire", "rel": 0 } ] },
-                 { "do": "stack", "name": "Blast Bolt", "n": 1, "to": "self", "if": [ { "text": "+1 per Piercing type move by other party members during the turn (General Counting Rules, max 5)" } ] } ],
-      "notes": "「Consumes all stacks and + Gain stacks: from number of Piercing type moves during turn」 — 행동 수를 세는 조건이 없어 자기 찌르기 스킬 사용(used_turn)만 1씩 셈, 다른 멤버 · 일반 공격 · Volley Fire 의 3회 수행분은 미반영(과소). 순서: 이 trigger → Reload - EoT → Siege mode - End" },
+                 { "do": "stack", "name": "Blast Bolt", "n": { "count": { "moves": { "type": "찌르기" } } }, "to": "self" } ],
+      "notes": "「Consumes all stacks and + Gain stacks: from number of Piercing type moves during turn」 — v1 반영: 파티 전원의 이번 턴 찌르기 행동 수(count.moves, 일반 공격 · 재행동 포함, 최대 5는 stacks.max). Volley Fire 의 3회 수행분은 perform 미지원이라 1회로 셈. 순서: 이 trigger → Reload - EoT → Siege mode - End" },
     { "name": "Reload - EoT", "kind": "trigger", "on": "turn_end", "need": [ { "used_turn": "Reload", "rel": 0 } ],
       "steps": [ { "do": "stack", "name": "Blast Bolt", "n": 3, "to": "self" } ],
       "notes": "원문 「stack an additional 3 Blast Bolt on user at the end of turn」" },
@@ -94,6 +85,6 @@
     { "name": "Stellar Burst Gauge Fill Bonus", "kind": "passive",
       "steps": [ { "do": "other", "text": "When there are 2 or more Dragon, Dragon Killer, or Arcadia party members on the front line: User's Stellar Burst Gauge Fill rate increases (S)" } ] }
   ],
-  "notes": [ "Siege mode 의 Power +100 은 states.per(flat) — 엔진 v0 미적용",
-             "Blast Bolt 는 원문상 파티 찌르기 행동 수로 매 턴 다시 정해짐 — 엔진에선 자기 행동만 세므로 과소" ]
+  "notes": [ "Siege mode 의 Power +100 은 states.per(flat) — 엔진이 반영(damageOf 의 states flat)",
+             "Blast Bolt 는 원문상 파티 찌르기 행동 수로 매 턴 다시 정해짐 — v1 반영(count.moves)" ]
 }

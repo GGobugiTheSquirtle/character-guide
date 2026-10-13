@@ -1,7 +1,7 @@
 {
   "id": "may",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {},
   "states": {},
   "skills": [
@@ -20,11 +20,9 @@
       "steps": [ { "do": "attack", "elem": "없음", "type": "타격", "dep": "pwr", "target": "one", "hits": 1, "mult": 190 },
                  { "do": "buff", "to": "enemy", "stat": "땅 속성 저항", "v": -25, "dur": { "turns": 3 } } ] },
     { "name": "Giganto Break", "kind": "active", "mp": 52, "tier": "normal",
-      "steps": [ { "do": "other", "text": "Critical rate of skill +50% (이 스킬 한정 크리율 — v0 공격 step 에 필드 없음)" },
-                 { "do": "attack", "elem": "땅", "type": "찌르기", "dep": "pwr", "target": "all", "hits": 1, "mult": 160, "unless": [ { "hp": { "gte": 100 } } ] },
-                 { "do": "attack", "elem": "땅", "type": "찌르기", "dep": "pwr", "target": "all", "hits": 1, "mult": 480, "if": [ { "hp": { "gte": 100 } } ] },
-                 { "do": "other", "text": "Damage +100% when critical (Multiplier: x2) — 위키 CriticalMultiplier 320%-960%" } ],
-      "notes": "Damage +200% when at max HP (x3) → hp gte 100 조건 쌍(v0 는 HP 가 늘 가득이라 늘 480%). 크리 시 x2 · 스킬 크리율 +50% 는 표현 불가라 other — 기대값 과소" },
+      "steps": [ { "do": "attack", "elem": "땅", "type": "찌르기", "dep": "pwr", "target": "all", "hits": 1, "mult": 160, "crit_rate": 50, "crit_x": 2, "unless": [ { "hp": { "gte": 100 } } ] },
+                 { "do": "attack", "elem": "땅", "type": "찌르기", "dep": "pwr", "target": "all", "hits": 1, "mult": 480, "crit_rate": 50, "crit_x": 2, "if": [ { "hp": { "gte": 100 } } ] } ],
+      "notes": "Damage +200% when at max HP (x3) → hp gte 100 조건 쌍(v0 는 HP 가 늘 가득이라 늘 480%). v1 반영: 스킬 크리율 +50% = crit_rate 50 · 크리 시 x2 = crit_x 2(위키 CriticalMultiplier 320%-960%)" },
     { "name": "I'll Crush You!", "kind": "active", "mp": 59, "tier": "normal",
       "steps": [ { "do": "attack", "elem": "땅", "type": "타격", "dep": "pwr", "target": "one", "hits": 2, "mult": 200 },
                  { "do": "buff", "to": "enemy", "stat": "땅 속성 저항", "v": -50, "dur": { "turns": 3 } },

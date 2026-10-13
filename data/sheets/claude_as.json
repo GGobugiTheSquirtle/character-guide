@@ -1,7 +1,7 @@
 {
   "id": "claude_as",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {
     "King's Radiance": { "max": 2, "per": [ { "stat": "물리 저항", "v": 7.5 } ] }
   },
@@ -42,10 +42,9 @@
       "notes": "80% chance 를 디버프마다 따로 굴림(한 번 굴림인지 원문 불명)" },
     { "name": "Freikugel", "kind": "active", "mp": 52, "tier": "normal",
       "steps": [ { "do": "attack", "elem": "바람", "type": "찌르기", "dep": "pwr", "target": "all", "hits": 1, "mult": 160 },
-                 { "do": "buff", "to": "self", "stat": "대미지", "v": 50, "dur": { "turns": 2 } },
-                 { "do": "other", "text": "Bow equipped characters' damage +50% (2 turns) — 자신 외 활 장비 아군(무기 필터 대상은 형식에 없음)" },
+                 { "do": "buff", "to": "party", "stat": "대미지", "v": 50, "dur": { "turns": 2 }, "filter": { "weapon": [ "활" ] } },
                  { "do": "other", "text": "When in Wind King Stance: Give Status immunity to all party members (1 time)", "if": [ { "zone": "Wind King Stance" } ] } ],
-      "notes": "「Bow equipped characters' damage」 를 대미지 그룹으로 가정. 자신(활)에게만 buff, 다른 활 아군은 other" },
+      "notes": "「Bow equipped characters' damage」 를 대미지 그룹으로 가정. v1 반영: 활 장비 아군 전원(자신 포함) = filter.weapon" },
     { "name": "Der Freischütz", "kind": "active", "mp": 52, "tier": "normal",
       "steps": [ { "do": "stack", "name": "King's Radiance", "n": 1, "to": "self", "if": [ { "zone": "Wind King Stance" } ] },
                  { "do": "attack", "elem": "바람", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 1, "mult": 200,
@@ -54,11 +53,11 @@
                  { "do": "consume", "name": "King's Radiance", "n": "all", "if": [ { "stack": "King's Radiance", "gte": 2 } ] } ],
       "notes": "+100% to multiplier per King's Radiance (max +200%) → 200 × (1 + n/2) = 200/300/400(위키 200-400%). 위키 범위 상한이 400 이므로 쌓기 → 공격 → 2스택이면 전부 소모 순서로 둠. 존이 바뀐 뒤 남은 스택에도 배율이 붙는지는 원문 불명" },
     { "name": "Pwr buff - Wind Stance - Wi.", "kind": "trigger", "on": "turn_end", "need": [ { "zone": "Wind King Stance" } ],
-      "steps": [ { "do": "buff", "to": "party", "stat": "힘", "v": 10, "dur": { "turns": 1 }, "if": [ { "text": "Wind type moves used during the turn = 1" } ] },
-                 { "do": "buff", "to": "party", "stat": "힘", "v": 20, "dur": { "turns": 1 }, "if": [ { "text": "Wind type moves used during the turn = 2" } ] },
-                 { "do": "buff", "to": "party", "stat": "힘", "v": 30, "dur": { "turns": 1 }, "if": [ { "text": "Wind type moves used during the turn = 3" } ] },
-                 { "do": "buff", "to": "party", "stat": "힘", "v": 40, "dur": { "turns": 1 }, "if": [ { "text": "Wind type moves used during the turn >= 4" } ] } ],
-      "notes": "행동 수 세기: Copy 이중 행동은 2회, Attack again 은 각각, End-of-Turn · 반격 · 넉백 · 전투불능 아군 행동은 제외 — 「이번 턴 X 속성 행동 수」 조건이 형식에 없어 text 조건" }
+      "steps": [ { "do": "buff", "to": "party", "stat": "힘", "v": 10, "dur": { "turns": 1 }, "if": [ { "count": { "moves": { "elem": "바람" } }, "eq": 1 } ] },
+                 { "do": "buff", "to": "party", "stat": "힘", "v": 20, "dur": { "turns": 1 }, "if": [ { "count": { "moves": { "elem": "바람" } }, "eq": 2 } ] },
+                 { "do": "buff", "to": "party", "stat": "힘", "v": 30, "dur": { "turns": 1 }, "if": [ { "count": { "moves": { "elem": "바람" } }, "eq": 3 } ] },
+                 { "do": "buff", "to": "party", "stat": "힘", "v": 40, "dur": { "turns": 1 }, "if": [ { "count": { "moves": { "elem": "바람" } }, "gte": 4 } ] } ],
+      "notes": "v1 반영: 이번 턴 바람 속성 행동 수(count.moves). Attack again 각각 · End-of-Turn · 반격 제외는 엔진 규칙과 같음. Copy 이중 행동 2회 · 넉백 · 전투불능 아군 제외는 엔진 밖" }
   ],
   "notes": [ "전개 존 없음 — Wind King Stance 는 다른 멤버가 전개", "King's Radiance 의 물리 저항은 피격 대미지가 없는 v0 에서 효과 없음" ]
 }

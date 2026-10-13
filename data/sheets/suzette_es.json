@@ -1,7 +1,7 @@
 {
   "id": "suzette_es",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {},
   "states": {
     "Multi-upgrade": {}
@@ -43,8 +43,8 @@
                  { "do": "buff", "to": "enemies", "stat": "힘", "v": -30, "dur": {"turns": 3} },
                  { "do": "buff", "to": "enemies", "stat": "지능", "v": -30, "dur": {"turns": 3} },
                  { "do": "buff", "to": "party", "stat": "물리 저항", "v": 50, "dur": {"turns": 3}, "if": [{"turn": {"lte": 3}}] },
-                 { "do": "other", "text": "MP consumption of all party members -70% (3 turns)", "if": [{"turn": {"lte": 3}}] } ],
-      "notes": "MP 소모 −70% 는 형식에 없음 → other" },
+                 { "do": "buff", "to": "party", "stat": "MP 소모", "v": -70, "dur": {"turns": 3}, "if": [{"turn": {"lte": 3}}] } ],
+      "notes": "MP consumption of all party members -70% (3 turns) → stat 「MP 소모」(v1 반영)" },
     { "name": "Shatterspark", "kind": "active", "mp": 37, "tier": "normal",
       "steps": [
                  { "do": "attack", "elem": "불", "type": "타격", "dep": "pwr", "target": "all", "hits": 4, "mult": 156, "if": [{"hp": {"lte": 79.9}}], "unless": [{"front": {"traits": ["망치", "권갑"], "gte": 2}}] },

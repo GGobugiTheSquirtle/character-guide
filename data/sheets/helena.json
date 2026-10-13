@@ -1,7 +1,7 @@
 {
   "id": "helena",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {},
   "states": { "Vesper Mode": {} },
   "skills": [
@@ -30,9 +30,9 @@
       "steps": [ { "do": "attack", "elem": "없음", "type": "마법", "dep": "magic", "target": "one", "hits": 3, "mult": 180 },
                  { "do": "buff", "to": "enemy", "stat": "물리 저항", "v": -25, "dur": { "turns": 3 } } ] },
     { "name": "Earthy Casket", "kind": "active", "mp": 47, "tier": "normal",
-      "steps": [ { "do": "attack", "elem": "땅", "type": "마법", "dep": "magic", "target": "all", "hits": 1, "mult": 150 },
+      "steps": [ { "do": "attack", "elem": "땅", "type": "마법", "dep": "magic", "target": "all", "hits": 1, "mult": 150, "scale": { "count": { "streak": true }, "table": [ 150, 375, 750, 1200 ] } },
                  { "do": "buff", "to": "enemies", "stat": "땅 속성 저항", "v": -50, "dur": { "turns": 3 }, "max_stack": 3 } ],
-      "notes": "연속 사용 시 배율 375% → 750% → 1200%(위키 150~1200) — 형식에 연속 사용 횟수 조건이 없어 기본 150% 만. max stacks x3: -100% = halfStack(50,3)" },
+      "notes": "연속 사용 시 배율 375% → 750% → 1200%(위키 150~1200) = scale count streak table(v1 반영 — 직전까지 연속 0 · 1 · 2 · 3+회). max stacks x3: -100% = halfStack(50,3)" },
     { "name": "Star Burst", "kind": "active", "mp": 55, "tier": "normal",
       "steps": [ { "do": "attack", "elem": "없음", "type": "마법", "dep": "magic", "target": "one", "hits": 3, "mult": 200 },
                  { "do": "buff", "to": "enemy", "stat": "물리 저항", "v": -35, "dur": { "turns": 3 } },
@@ -40,8 +40,10 @@
     { "name": "Hold Ground", "kind": "trigger", "on": "battle_start", "need": [ { "text": "When Galliard is in the party" } ],
       "steps": [ { "do": "other", "text": "Apply Hold Ground on self: when character's HP reduces to 0, stop at 1 HP instead (1 time)" } ] },
     { "name": "Comet Tail", "kind": "active", "mp": 80, "tier": "normal",
-      "steps": [ { "do": "attack", "elem": "땅", "type": "마법", "dep": "magic", "target": "all", "hits": 1, "mult": 200, "unless": [ { "state": "Vesper Mode" } ] },
-                 { "do": "attack", "elem": "땅", "type": "마법", "dep": "magic", "target": "all", "hits": 1, "mult": 600, "if": [ { "state": "Vesper Mode" } ] },
+      "steps": [ { "do": "attack", "elem": "땅", "type": "마법", "dep": "magic", "target": "all", "hits": 1, "mult": 200, "unless": [ { "any": [ { "state": "Vesper Mode" }, { "sb": true } ] } ] },
+                 { "do": "attack", "elem": "땅", "type": "마법", "dep": "magic", "target": "all", "hits": 1, "mult": 600, "if": [ { "state": "Vesper Mode" } ], "unless": [ { "sb": true } ] },
+                 { "do": "attack", "elem": "땅", "type": "마법", "dep": "magic", "target": "all", "hits": 1, "mult": 200, "scale": { "count": { "distinct_debuffs": true }, "max_n": 5, "max_x": 6 }, "if": [ { "sb": true } ], "unless": [ { "state": "Vesper Mode" } ] },
+                 { "do": "attack", "elem": "땅", "type": "마법", "dep": "magic", "target": "all", "hits": 1, "mult": 600, "scale": { "count": { "distinct_debuffs": true }, "max_n": 5, "max_x": 6 }, "if": [ { "state": "Vesper Mode" }, { "sb": true } ] },
                  { "do": "other", "text": "Inflict 3 stacks of Elemental Break (Earth)" },
                  { "do": "buff", "to": "party", "stat": "힘", "v": 25, "dur": { "turns": 2 }, "unless": [ { "state": "Vesper Mode" } ] },
                  { "do": "buff", "to": "party", "stat": "지능", "v": 25, "dur": { "turns": 2 }, "unless": [ { "state": "Vesper Mode" } ] },
@@ -51,9 +53,9 @@
                  { "do": "buff", "to": "party", "stat": "지능", "v": 50, "dur": { "turns": 4 }, "if": [ { "state": "Vesper Mode" } ] },
                  { "do": "buff", "to": "party", "stat": "속도", "v": 50, "dur": { "turns": 4 }, "if": [ { "state": "Vesper Mode" } ] },
                  { "do": "buff", "to": "party", "stat": "대미지", "v": 50, "dur": { "turns": 4 }, "if": [ { "state": "Vesper Mode" } ] },
-                 { "do": "other", "text": "When used during Stellar Burst: Damage increases based on number of distinct debuff on enemy (Max 5, Multiplier x6) and activate Earthy Casket at max strength (Only if Earthy Casket is learned)", "if": [ { "sb": true } ] },
+                 { "do": "other", "text": "When used during Stellar Burst: activate Earthy Casket at max strength (Only if Earthy Casket is learned)", "if": [ { "sb": true } ] },
                  { "do": "zone", "name": "Torn Earth Stance", "if": [ { "sb": true } ] } ],
-      "notes": "원문 「Vespers Mode」 = Vesper Mode 로 봄. Vesper 「+200% increased damage (Multiplier x3)」 → 600%. 「any weapon equipped characters' damage」 = 무기 낀 전원 → 파티 대미지. 위키 위값 4800% 는 SB 디버프 수 배율까지 합친 값으로 보임" },
+      "notes": "원문 「Vespers Mode」 = Vesper Mode 로 봄. Vesper 「+200% increased damage (Multiplier x3)」 → 600%. 「any weapon equipped characters' damage」 = 무기 낀 전원 → 파티 대미지. SB 「distinct debuff 수(최대 5, x6)」 = scale count distinct_debuffs(v1 반영, 선형 가정) — sb 조건은 엔진이 거짓으로 봐서 SB 지원 전까지 미발동. Vesper x3 과 곱으로 두면 최대 3600% 로 위키 위값 4800% 와 어긋남(원문으로 못 가림)" },
     { "name": "Vesper Mode", "kind": "trigger", "on": "battle_start",
       "steps": [ { "do": "state", "name": "Vesper Mode", "to": "self", "dur": { "turns": 3 }, "unless": [ { "front": { "traits": [ "Synth Human" ], "gte": 2 } } ] },
                  { "do": "buff", "to": "self", "stat": "지능", "flat": 50, "dur": { "turns": 3 }, "unless": [ { "front": { "traits": [ "Synth Human" ], "gte": 2 } } ] },
@@ -65,5 +67,5 @@
     { "name": "Stellar Burst Gauge Fill Bonus", "kind": "passive",
       "steps": [ { "do": "other", "text": "When there are 2 or more Synth Human party members on the front line: User's Stellar Burst Gauge Fill rate increases (S)" } ] }
   ],
-  "notes": [ "Earthy Casket 연속 사용 배율(375/750/1200%)은 형식 밖 — 기본 배율만", "Hold Ground(갈리아드 동행 시 HP 1 버팀)는 HP 미반영 v0 에서 효과 없음", "Stellar Burst 보너스 · 게이지 보너스 · Comet Tail 의 SB 효과는 v0 범위 밖" ]
+  "notes": [ "Hold Ground(갈리아드 동행 시 HP 1 버팀)는 HP 미반영 v0 에서 효과 없음", "Stellar Burst 보너스 · 게이지 보너스 · Comet Tail 의 Earthy Casket 발동은 범위 밖. Comet Tail SB 디버프 수 배율은 v1 로 적었으나 sb 조건이라 미발동" ]
 }

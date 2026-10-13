@@ -1,7 +1,7 @@
 {
   "id": "curio",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {},
   "states": { "Lunatic": {} },
   "skills": [
@@ -15,7 +15,8 @@
       "steps": [ { "do": "attack", "elem": "그림자", "type": "베기", "dep": "pwr", "target": "one", "hits": 1, "mult": 140 },
                  { "do": "buff", "to": "party", "stat": "힘", "v": 15, "dur": { "turns": 3 } },
                  { "do": "buff", "to": "party", "stat": "지능", "v": 15, "dur": { "turns": 3 } },
-                 { "do": "other", "text": "When in any Attack Type Zone: Sword/Katana/Ax equipped characters' damage +30% (3 turns)" },
+                 { "do": "buff", "to": "party", "stat": "대미지", "v": 30, "dur": { "turns": 3 }, "filter": { "weapon": [ "검", "도", "도끼" ] },
+                   "if": [ { "any": [ { "zone": "Dazzling Slash Stance" }, { "zone": "Piercing Flash Stance" }, { "zone": "Roaring Bash Stance" }, { "zone": "Magic Fates Stance" } ] } ] },
                  { "do": "buff", "to": "party", "stat": "바람 속성 공격", "v": 30, "dur": { "turns": 3 },
                    "if": [ { "any": [ { "zone": "Raging Fire Stance" }, { "zone": "Sacred Water Stance" }, { "zone": "Torn Earth Stance" }, { "zone": "Wind King Stance" }, { "zone": "Thundering Stance" }, { "zone": "Crystalline Stance" }, { "zone": "Biting Shade Stance" } ] } ] },
                  { "do": "buff", "to": "party", "stat": "그림자 속성 공격", "v": 30, "dur": { "turns": 3 },
@@ -40,7 +41,8 @@
       "steps": [ { "do": "attack", "elem": "그림자", "type": "베기", "dep": "pwr", "target": "one", "hits": 1, "mult": 180 },
                  { "do": "buff", "to": "party", "stat": "힘", "v": 20, "dur": { "turns": 3 } },
                  { "do": "buff", "to": "party", "stat": "지능", "v": 20, "dur": { "turns": 3 } },
-                 { "do": "other", "text": "When in any Attack Type Zone: Sword/Katana/Ax equipped characters' damage +40% (3 turns)" },
+                 { "do": "buff", "to": "party", "stat": "대미지", "v": 40, "dur": { "turns": 3 }, "filter": { "weapon": [ "검", "도", "도끼" ] },
+                   "if": [ { "any": [ { "zone": "Dazzling Slash Stance" }, { "zone": "Piercing Flash Stance" }, { "zone": "Roaring Bash Stance" }, { "zone": "Magic Fates Stance" } ] } ] },
                  { "do": "buff", "to": "party", "stat": "바람 속성 공격", "v": 40, "dur": { "turns": 3 },
                    "if": [ { "any": [ { "zone": "Raging Fire Stance" }, { "zone": "Sacred Water Stance" }, { "zone": "Torn Earth Stance" }, { "zone": "Wind King Stance" }, { "zone": "Thundering Stance" }, { "zone": "Crystalline Stance" }, { "zone": "Biting Shade Stance" } ] } ] },
                  { "do": "buff", "to": "party", "stat": "그림자 속성 공격", "v": 40, "dur": { "turns": 3 },
@@ -50,12 +52,13 @@
                    "scale": { "by_front": { "traits": [ "IDA 스쿨", "로스트 랩" ] }, "table": [ 525, 525, 630, 735, 840 ] } },
                  { "do": "other", "text": "Another Force Combo gain +20% (x1.2) (AF v0 제외)" },
                  { "do": "buff", "to": "party", "stat": "크리티컬율", "v": 100, "dur": { "moves": 1 }, "if": [ { "state": "Lunatic" } ] } ],
-      "notes": "+105%p/추가 IDA School · Lost Laboratory 캐릭터(최대 3) — by_front 는 큐리오 본인도 세므로 table[1] = 525(추가 0). 위키 525~840 = 525 + 3×105 와 일치. 원문 「party」 → v0 은 전방만. ⚠ 원문의 연속 사용 배율(x3 225% / x4 320% / x5 420%, 4번째부터)은 위키 기본 525% 와 맞지 않고 형식에 연속 사용 횟수 조건도 없어 미반영" },
+      "notes": "+105%p/추가 IDA School · Lost Laboratory 캐릭터(최대 3) — by_front 는 큐리오 본인도 세므로 table[1] = 525(추가 0). 위키 525~840 = 525 + 3×105 와 일치. 원문 「party」 → v0 은 전방만. ⚠ 원문의 연속 사용 배율(x3 225% / x4 320% / x5 420%, 4번째부터)은 위키 기본 525% 와 맞지 않아 미반영(연속 사용 횟수는 v1 count.streak 로 표현 가능 — 수치 모순이 남은 이유)" },
     { "name": "Transient Glory", "kind": "active", "mp": 55, "tier": "normal",
       "steps": [ { "do": "attack", "elem": "그림자", "type": "베기", "dep": "pwr", "target": "one", "hits": 1, "mult": 200 },
                  { "do": "buff", "to": "party", "stat": "힘", "v": 25, "dur": { "turns": 3 } },
                  { "do": "buff", "to": "party", "stat": "지능", "v": 25, "dur": { "turns": 3 } },
-                 { "do": "other", "text": "When in any Attack Type Zone: Sword/Katana/Ax equipped characters' damage +50% (3 turns)" },
+                 { "do": "buff", "to": "party", "stat": "대미지", "v": 50, "dur": { "turns": 3 }, "filter": { "weapon": [ "검", "도", "도끼" ] },
+                   "if": [ { "any": [ { "zone": "Dazzling Slash Stance" }, { "zone": "Piercing Flash Stance" }, { "zone": "Roaring Bash Stance" }, { "zone": "Magic Fates Stance" } ] } ] },
                  { "do": "buff", "to": "party", "stat": "바람 속성 공격", "v": 50, "dur": { "turns": 3 },
                    "if": [ { "any": [ { "zone": "Raging Fire Stance" }, { "zone": "Sacred Water Stance" }, { "zone": "Torn Earth Stance" }, { "zone": "Wind King Stance" }, { "zone": "Thundering Stance" }, { "zone": "Crystalline Stance" }, { "zone": "Biting Shade Stance" } ] } ] },
                  { "do": "buff", "to": "party", "stat": "그림자 속성 공격", "v": 50, "dur": { "turns": 3 },
@@ -75,6 +78,6 @@
       "notes": "「applicable Zone」 = Another Zone 원문의 속성 존 · 공격 종류 존 · Double Strike · Moonlight. Flash Strike Stance(전 종류 +30%) 포함 여부 불명 — 뺌" }
   ],
   "notes": [ "「any Elemental Zone」 = zones.json type Elemental 7개를 any 로. Moonlight · Chaos(Other 분류 속성 존) 포함 여부 불명 — 뺌",
-             "「Sword/Katana/Ax equipped characters' damage」 는 무기 종류 한정 대상이라 형식 밖(other)",
+             "「Sword/Katana/Ax equipped characters' damage」 → v1 filter.weapon(검 · 도 · 도끼). 「any Attack Type Zone」 = zones.json type Attack type 4개(Dazzling Slash · Piercing Flash · Roaring Bash · Magic Fates)",
              "Lunatic - Sacrifice 의 END/SPR → PWR/INT 전환은 형식 밖(other)" ]
 }

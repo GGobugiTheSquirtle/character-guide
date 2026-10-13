@@ -1,7 +1,7 @@
 {
   "id": "noahxis",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {
     "Detonator": { "max": 10 }
   },
@@ -35,11 +35,10 @@
       "notes": "Wind type attack +40% 의 지속 · 대상 원문 없음 — 자신 · 3턴으로 가정" },
     { "name": "Enlil Cycle", "kind": "active", "mp": 57, "tier": "normal",
       "steps": [ { "do": "attack", "elem": "바람", "type": "타격", "dep": "pwr", "target": "one", "hits": 1, "mult": 200,
-                   "scale": { "by": "Detonator", "max_n": 10, "max_x": 5 } },
-                 { "do": "other", "text": "+40% damage when critical (Multiplier: x1.4) — 위키 크리 배율 280-1400%" },
+                   "scale": { "by": "Detonator", "max_n": 10, "max_x": 5 }, "crit_x": 1.4 },
                  { "do": "buff", "to": "self", "stat": "힘", "v": 30, "dur": { "turns": 3 }, "max_stack": 3 },
                  { "do": "buff", "to": "self", "stat": "속도", "v": 30, "dur": { "turns": 3 }, "max_stack": 3 } ],
-      "notes": "+80% to skill multiplier per Detonator in inventory (max x10, Multiplier x5) → 200 × (1 + 4n/10) = 200~1000%. Power · Speed 버프 대상 원문 없음 — 자신으로 가정" },
+      "notes": "+80% to skill multiplier per Detonator in inventory (max x10, Multiplier x5) → 200 × (1 + 4n/10) = 200~1000%. 「+40% damage when critical (Multiplier: x1.4)」 = crit_x 1.4(위키 크리 배율 280-1400%, v1 반영). Power · Speed 버프 대상 원문 없음 — 자신으로 가정" },
     { "name": "Blessed Tempest", "kind": "active", "mp": 40, "tier": "normal",
       "steps": [ { "do": "buff", "to": "self", "stat": "크리티컬율", "v": 100, "dur": { "moves": 3 } },
                  { "do": "buff", "to": "self", "stat": "바람 속성 공격", "v": 50, "dur": { "turns": 3 } } ],

@@ -1,7 +1,7 @@
 {
   "id": "rufus_as",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 기준 시트(손 작성)",
+  "src": "wiki-en 2026-10-07 · 기준 시트(손 작성) · v1 2026-10-13",
   "stacks": {
     "Blazing": { "max": 10, "decay": { "turn_end": 1 },
       "per": [ { "stat": "힘", "flat": 20 }, { "stat": "지능", "flat": 20 }, { "stat": "행운", "flat": 20 },

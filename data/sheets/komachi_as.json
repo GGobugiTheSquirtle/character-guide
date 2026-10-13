@@ -1,7 +1,7 @@
 {
   "id": "komachi_as",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {
     "Dancing Heart": { "max": 4 }
   },
@@ -80,5 +80,6 @@
     { "name": "Stellar Burst Gauge Fill Bonus", "kind": "passive",
       "steps": [ { "do": "other", "text": "When there are 3 or more Earth or Eastern party members on the front line: User's Stellar Burst Gauge Fill rate increases (S)" } ] }
   ],
-  "notes": [ "Warrior Princess mode 의 크리율 +100% · Lunatic 의 확정 크리는 states.per — 엔진 v0 는 states.per 의 대미지 배율(x1.7)만 읽음" ]
+  "notes": [ "Warrior Princess mode 의 크리율 +100% · Lunatic 의 확정 크리는 states.per — 엔진은 states.per 의 대미지 배율(x1.7) · 크리티컬율은 읽지만 「크리티컬 확정」은 buff 칸에서만 찾아 states.per 의 것은 안 읽힘(2026-10-13 확인)",
+             "v1 검토(2026-10-13): 바꿀 것 없음 — 남은 other/text 는 Elemental Break(수치 없음) · Barrier Pierce · Singular Focus(계수 없음) · Valor Chant · SB(모델 밖)" ]
 }

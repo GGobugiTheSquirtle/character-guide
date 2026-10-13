@@ -1,9 +1,9 @@
 {
   "id": "milsha",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {
-    "Steidi": { "max": 3 },
+    "Steidi": { "max": 3, "per": [ { "stat": "MP 소모", "flat": -3 } ] },
     "Delfini": {}
   },
   "states": {
@@ -67,5 +67,5 @@
                  { "do": "attack", "elem": "그림자", "type": "찌르기", "dep": "pwr", "target": "all", "hits": 1, "mult": 100, "sure_crit": true } ],
       "notes": "배율 = 마지막으로 쓴 Adis-Veloni / Adis-Dory 의 배율(그때 Steidi · Lunatic 기준으로 고정, 100~360%) — 「마지막 사용 배율 기억」은 형식에 없어 기본 100% 로 둠. Adis-Triana 는 원문 목록에 없음" }
   ],
-  "notes": [ "Steidi: MP 소모 −3/스택(최대 3) — MP 비용 감소는 형식에 없어 미반영", "Delfini 최대 스택 원문 없음 — max 생략", "Sacrifice(END·SPR → PWR·INT 변환)는 형식에 스탯 변환이 없어 other — v0 대미지에 미반영" ]
+  "notes": [ "v1 반영: Steidi: MP 소모 −3/스택(최대 3) = stacks.per 「MP 소모」 flat −3. 원문이 Adis 스킬 설명 아래에 있으나 대상 스킬 한정이 없어 모든 스킬 MP 에 적용(엔진 mpCost 는 소모 step 전 보유 수로 계산)", "Delfini 최대 스택 원문 없음 — max 생략", "Sacrifice(END·SPR → PWR·INT 변환)는 형식에 스탯 변환이 없어 other — v0 대미지에 미반영" ]
 }

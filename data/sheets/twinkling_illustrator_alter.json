@@ -1,7 +1,7 @@
 {
   "id": "twinkling_illustrator_alter",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {
     "Multicoloration": {}
   },
@@ -37,7 +37,8 @@
     { "name": "Multicolored Guard", "kind": "active", "mp": 38, "tier": "normal",
       "steps": [ { "do": "other", "text": "Give status immunity and Knockback Immunity to all party members (1 time) and Barrier 80% damage reduction to Fire Type Attacks (1 time); times +2 based on Multicoloration (max 2 stacks); barrier element changes to type of deployed zone" } ] },
     { "name": "Tri Chroma", "kind": "active", "mp": 50, "tier": "pre",
-      "steps": [ { "do": "other", "text": "Max HP and Max MP of all party members +20% (3 turns)" },
+      "steps": [ { "do": "buff", "to": "party", "stat": "최대 MP", "v": 20, "dur": { "turns": 3 } },
+                 { "do": "other", "text": "Max HP of all party members +20% (3 turns)" },
                  { "do": "zone", "name": "Raging Fire Stance" },
                  { "do": "zone", "name": "Sacred Water Stance", "if": [ { "front": { "traits": [ "불" ], "eq": 1 } }, { "front": { "traits": [ "물" ], "gte": 2 } }, { "front": { "traits": [ "번개" ], "lte": 2 } } ] },
                  { "do": "zone", "name": "Sacred Water Stance", "if": [ { "front": { "traits": [ "불" ], "eq": 2 } }, { "front": { "traits": [ "물" ], "gte": 3 } } ] },
@@ -45,7 +46,7 @@
                  { "do": "zone", "name": "Thundering Stance", "if": [ { "front": { "traits": [ "불" ], "eq": 1 } }, { "front": { "traits": [ "물" ], "eq": 2 } }, { "front": { "traits": [ "번개" ], "eq": 3 } } ] },
                  { "do": "zone", "name": "Thundering Stance", "if": [ { "front": { "traits": [ "불" ], "eq": 2 } }, { "front": { "traits": [ "물" ], "eq": 1 } }, { "front": { "traits": [ "번개" ], "eq": 3 } } ] },
                  { "do": "awaken", "turns": 2, "once": true, "if": [ { "zone": "any" } ] } ],
-      "notes": "존 고르기 = 「존 고르기 표」. 「When in an Elemental Type Stance」 → zone any 로 근사, 판정은 전개 후로 둠" },
+      "notes": "원문 「Max HP and Max MP … +20%」 → 최대 MP 는 v1 buff, Max HP 는 other(HP 미반영). 존 고르기 = 「존 고르기 표」. 「When in an Elemental Type Stance」 → zone any 로 근사, 판정은 전개 후로 둠" },
     { "name": "Infernal Finalization", "kind": "active", "mp": 35, "tier": "normal",
       "steps": [ { "do": "attack", "elem": "없음", "type": "찌르기", "dep": "pwr", "target": "all", "hits": 1, "mult": 130 },
                  { "do": "buff", "to": "enemies", "stat": "불 속성 공격", "v": -30, "dur": { "turns": 3 } },
@@ -104,8 +105,8 @@
                  { "do": "zone", "name": "Thundering Stance", "if": [ { "front": { "traits": [ "불" ], "eq": 1 } }, { "front": { "traits": [ "물" ], "eq": 1 } }, { "front": { "traits": [ "번개" ], "gte": 2 } } ] },
                  { "do": "zone", "name": "Thundering Stance", "if": [ { "front": { "traits": [ "불" ], "eq": 1 } }, { "front": { "traits": [ "물" ], "eq": 2 } }, { "front": { "traits": [ "번개" ], "eq": 3 } } ] },
                  { "do": "zone", "name": "Thundering Stance", "if": [ { "front": { "traits": [ "불" ], "eq": 2 } }, { "front": { "traits": [ "물" ], "eq": 1 } }, { "front": { "traits": [ "번개" ], "eq": 3 } } ] },
-                 { "do": "other", "text": "MP consumption of all party members -100% (1 turn)" } ],
-      "notes": "존 고르기 = 「존 고르기 표」(If equal number of personalities: Fire → Water → Thunder)" },
+                 { "do": "buff", "to": "party", "stat": "MP 소모", "v": -100, "dur": { "turns": 1 } } ],
+      "notes": "MP consumption -100% (1 turn) → v1 stat MP 소모(전투 시작 = 1턴째만). 존 고르기 = 「존 고르기 표」(If equal number of personalities: Fire → Water → Thunder)" },
     { "name": "Stellar Burst Activation Bonus", "kind": "passive",
       "steps": [ { "do": "buff", "to": "party", "stat": "속도", "v": 50, "dur": { "until": "turn_end" }, "if": [ { "sb": true }, { "text": "Stellar Burst activated with user and Gauge has majority shadow" } ] } ] },
     { "name": "Stellar Burst Gauge Fill Bonus", "kind": "passive",

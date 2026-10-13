@@ -1,7 +1,7 @@
 {
   "id": "porcelain_pixie_alter",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 보조 생성",
+  "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {
     "Caretaking": { "decay": { "turn_end": 1 } },
     "Spoiling": { "decay": { "turn_end": 1 } }
@@ -59,7 +59,9 @@
       "steps": [ { "do": "zone", "name": "Torn Earth Stance", "unless": [ { "front": { "traits": [ "지팡이" ], "gte": 3 } } ] },
                  { "do": "zone", "name": "Magic Fates Stance", "if": [ { "front": { "traits": [ "지팡이" ], "gte": 3 } } ] } ] },
     { "name": "Loyal Tea", "kind": "active", "mp": 30, "tier": "normal",
-      "steps": [ { "do": "other", "text": "Give Status immunity and Knockback immunity to all party members (1 time) and MP consumption of all party members -30% (3 turns)" } ] },
+      "steps": [ { "do": "other", "text": "Give Status immunity and Knockback immunity to all party members (1 time)" },
+                 { "do": "buff", "to": "party", "stat": "MP 소모", "v": -30, "dur": { "turns": 3 } } ],
+      "notes": "MP consumption of all party members -30% (3 turns) → v1 stat MP 소모. 면역은 other" },
     { "name": "Keep Me Safe...", "kind": "active", "mp": 45, "tier": "pre",
       "steps": [ { "do": "buff", "to": "party", "stat": "물리 저항", "v": 30, "dur": { "turns": 3 } },
                  { "do": "buff", "to": "party", "stat": "속성 저항", "v": 30, "dur": { "turns": 3 } },

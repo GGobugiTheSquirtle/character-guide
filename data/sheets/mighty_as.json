@@ -1,7 +1,7 @@
 {
   "id": "mighty_as",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 기준 시트(손 작성)",
+  "src": "wiki-en 2026-10-07 · 기준 시트(손 작성) · v1 2026-10-13",
   "stacks": {
     "Hypnosis": { "max": 3, "on_attack": { "type": "마법", "consume": 1, "sure_crit": true } }
   },
@@ -14,7 +14,10 @@
       "steps": [ { "do": "attack", "elem": "물", "type": "마법", "dep": "magic", "target": "one", "hits": 1, "mult": 130 },
                  { "do": "buff", "to": "enemy", "stat": "물리 저항", "v": -30, "dur": { "turns": 3 } } ] },
     { "name": "Aqua Wall", "kind": "active", "mp": 28, "tier": "normal",
-      "steps": [ { "do": "other", "text": "Physical resistance of all party members +30% and Fire type resistance +50% (3 turns) and Barrier 30% (3 times, 3 turns)" } ] },
+      "steps": [ { "do": "buff", "to": "party", "stat": "물리 저항", "v": 30, "dur": { "turns": 3 } },
+                 { "do": "buff", "to": "party", "stat": "불 속성 저항", "v": 50, "dur": { "turns": 3 } },
+                 { "do": "other", "text": "Give a Barrier to all party members with 30% damage reduction (3 times, 3 turns)" } ],
+      "notes": "저항 버프 2개는 v0 형식으로도 되던 것 — v1 검토 때 옮김. 배리어는 형식 밖 other" },
     { "name": "Aqua Spread", "kind": "active", "mp": 17, "tier": "normal",
       "steps": [ { "do": "attack", "elem": "물", "type": "마법", "dep": "magic", "target": "all", "hits": 1, "mult": 90 },
                  { "do": "buff", "to": "enemies", "stat": "물 속성 저항", "v": -30, "dur": { "turns": 3 }, "unless": [ { "front": { "traits": [ "물" ], "gte": 2 } } ] },

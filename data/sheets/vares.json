@@ -1,7 +1,7 @@
 {
   "id": "vares",
   "verified": false,
-  "src": "wiki-en 2026-10-07 · 기준 시트(손 작성)",
+  "src": "wiki-en 2026-10-07 · 기준 시트(손 작성) · v1 2026-10-13",
   "stacks": {
     "Beastfire": { "max": 5 }
   },
@@ -53,8 +53,12 @@
                  { "do": "attack", "elem": "그림자", "type": "베기", "dep": "pwr", "target": "one", "hits": 1, "mult": 6400, "if": [ { "state_turn": "Countdown mode", "eq": 4 } ] },
                  { "do": "stack", "name": "Beastfire", "n": 1, "to": "self", "if": [ { "state_turn": "Countdown mode", "eq": 4 } ] } ] },
     { "name": "Howling Smash", "kind": "active", "mp": 95, "tier": "normal",
-      "steps": [ { "do": "attack", "elem": "그림자", "type": "베기", "dep": "pwr", "target": "all", "hits": 1, "mult": 210 },
-                 { "do": "other", "text": "성도 스킬 — 원문 조건(위값 4200%) 확인 전" } ] }
+      "steps": [ { "do": "attack", "elem": "그림자", "type": "베기", "dep": "pwr", "target": "all", "hits": 1, "mult": 210, "unless": [ { "sb": true } ] },
+                 { "do": "attack", "elem": "그림자", "type": "베기", "dep": "pwr", "target": "all", "hits": 1, "mult": 4200, "if": [ { "sb": true } ] },
+                 { "do": "stack", "name": "Beastfire", "n": 1, "to": "self", "unless": [ { "sb": true } ] },
+                 { "do": "stack", "name": "Beastfire", "n": 3, "to": "self", "if": [ { "sb": true } ] },
+                 { "do": "other", "text": "Max HP of user +50% and apply Singular Focus on user (3 turns); Based on number of attacks, restore user's HP by 10% of damage dealt; Restores all statues of user" } ],
+      "notes": "원문 채움(v0 형식으로도 되던 것 — v1 검토 때 옮김): SB 시 +1900% (x20) = 4200%(위키 위값). SB 의 「Stack 3 Beastfire」 는 1 대신 3 으로 읽음(추가 3 일 수도 — 원문 불명). Singular Focus 는 MP당 계수가 원문에 없어 other(수치 추정 금지)" }
   ],
   "notes": [ "Beastfire 의 최대 HP +600/스택은 HP 미반영 v0 에서 생략" ]
 }

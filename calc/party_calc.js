@@ -153,6 +153,7 @@
       for (const f of [...(it.fx || []).filter(f => f.k !== "etc"), ...(it.calc || [])]) {
         if (f.zone && !(opt.zone && opt.zone.name.includes(f.zone))) continue;
         if (f.env && !envOk(f.env, opt.env)) continue;
+        if (f.loc && f.loc !== opt.loc) continue;                       // 지역 한정(wyrmrest_isle · wyrmrest_isle/darkrealm) — opt.loc 이 같을 때만
         const v = (f.v || 0) / 100;
         if (f.k === "stat") out.stats[f.stat] = (out.stats[f.stat] || 0) + f.v;
         else if (f.k === "dmg") {

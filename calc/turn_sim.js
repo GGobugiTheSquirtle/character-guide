@@ -1,4 +1,4 @@
-// 원작 어나더에덴 턴 시뮬레이터 v0 (2026-10-08) — 규칙 명세 · 시트 형식: docs/ae-turn-sim.md
+// 원작 어나더에덴 턴 시뮬레이터 v0 (2026-10-08) · 형식 v1 (10-13: 셈 변수 count · 대상 필터 · 스킬 한정 버프 · 크리 연동 · MP 소모) — 규칙 명세 · 시트 형식: docs/ae-turn-sim.md
 //   행동 시트(data/sheets/<id>.json)를 턴 순서대로 실행한다: 전투 시작 → (턴 시작 좌→우 → 선제/보통/후공 속도순 ±10% → 턴 종료 → 지속 감소) 반복
 //   대미지는 ae_calc.damage, 장비 효과는 party_calc.equipFor 그대로(정적 계산과 같은 식). HP · AF · SB · 교대는 v0 밖
 //   브라우저(window.AETurn) · node 공용. 테스트: _tools/character/tests/test_turn_sim.cjs
@@ -28,10 +28,12 @@
     return { left: d.turns != null ? d.turns : 0 };
   }
   // 그룹 순효과 — 스킬 · VC 칸 체감, 장비 가산, 이름 붙은 % 축적 가산 → ae_calc.groupNet (상한 100%)
+  // only = 그 스킬로 공격할 때만 효과(「Guiding Light only」) — 공격 계산 중인 스킬은 sim.cur
+  const live = (sim, b) => !b.only || (sim && sim.cur === b.only);
   function net(unit, stats, sim) {
     const g = { buffs: [], debuffs: [], named: [], equip: [] };
     for (const b of unit.buffs.values()) {
-      if (!stats.includes(b.stat) || b.flat) continue;
+      if (!stats.includes(b.stat) || b.flat || !live(sim, b)) continue;
       const v = slotV(b);
       if (b.src === "equip") g.equip.push(v / 100);
       else if (v >= 0) g.buffs.push(v / 100); else g.debuffs.push(-v / 100);
@@ -44,8 +46,35 @@
       for (const p of (sim.stateDef[name] || {}).per || []) if (stats.includes(p.stat) && p.v) g.named.push(p.v / 100);
     return C.groupNet(g);
   }
-  const sumBuff = (unit, stat, sim) => [...unit.buffs.values()].filter(b => b.stat === stat).reduce((s, b) => s + (b.flat ? 0 : b.v), 0)
+  const sumBuff = (unit, stat, sim) => [...unit.buffs.values()].filter(b => b.stat === stat && live(sim, b)).reduce((s, b) => s + (b.flat ? 0 : b.v), 0)
     + (sim ? Object.keys(unit.states || {}).reduce((s, n) => s + ((sim.stateDef[n] || {}).per || []).filter(p => p.stat === stat && p.v).reduce((t, p) => t + p.v, 0), 0) : 0);
+
+  // ── 셈 변수(count) — 조건 · scale · stack n 이 같이 쓴다(형식 v1) ──
+  //   moves: 이번 턴 행동 수({elem?, type?, magic?, who?: party|self|others}) · distinct_debuffs: 적에 걸린 서로 다른 디버프 수
+  //   distinct_buffs: 자신의 서로 다른 버프 수 · enemies: 적 수 · stat: 현재 스탯 · uses: 이 스킬 이전 사용 수 · streak: 직전까지 연속 사용 수 · mp_cost: 이 스킬 MP
+  function countOf(q, sim, a, ctx = {}) {
+    if (q.moves) {
+      const f = q.moves, who = f.who || "party";
+      return sim.moves.filter(m => (who === "party" || (who === "self") === (m.who === a.id))
+        && (!f.elem || m.elem === f.elem) && (!f.type || m.type === f.type) && (f.magic == null || (m.type === "마법") === f.magic)).length;
+    }
+    if (q.distinct_debuffs) return new Set([...[...sim.enemy.buffs.values()].filter(b => b.v < 0).map(b => b.stat), ...Object.keys(sim.enemy.statuses)]).size;
+    if (q.distinct_buffs) return new Set([...a.buffs.values()].filter(b => b.v > 0 && b.src !== "equip").map(b => b.stat)).size;
+    if (q.enemies) return sim.enemies;
+    if (q.stat) return a.stats[KEY[q.stat] || q.stat] || 0;
+    const sk = q.uses === true || q.streak === true || q.mp_cost ? ctx.skill : q.uses || q.streak;
+    if (q.uses) return a.used[sk] || 0;
+    if (q.streak) return a.streak && a.streak.name === sk ? a.streak.n : 0;
+    if (q.mp_cost) return ctx.mpCost || 0;
+    return 0;
+  }
+  // 이 스킬의 실제 MP — 「MP 소모」 % · 고정치 버프와 축적(Blue Chalcedony −5/개)
+  function mpCost(sim, a, sk) {
+    let pct = 0, flat = 0;
+    for (const b of a.buffs.values()) if (b.stat === "MP 소모") b.flat ? (flat += b.v) : (pct += b.v);
+    for (const [n, k] of Object.entries(a.stacks)) for (const p of (sim.stackDef[n] || {}).per || []) if (p.stat === "MP 소모") p.flat ? (flat += p.flat * k) : (pct += (p.v || 0) * k);
+    return Math.max(0, Math.round((sk.mp || 0) * (1 + pct / 100) + flat));
+  }
 
   // ── 조건 ──
   function check(conds, sim, a, ctx = {}) {
@@ -73,27 +102,30 @@
     if (c.consumed) return cmp((ctx.consumed || {})[c.consumed] || 0, c);
     if (c.target_status) return !!sim.enemy.statuses[c.target_status];
     if (c.hp) return c.hp.gte != null ? c.hp.gte <= 100 : c.hp.lte >= 100;      // v0: HP 는 늘 가득
-    if (c.enemies) return cmp(1, c.enemies);
+    if (c.enemies) return cmp(sim.enemies, c.enemies);
     if (c.attacked_this_turn) return c.attacked_this_turn === "self" ? sim.attacked.has(a.id) : sim.attacked.size > 0;
     if (c.chance != null) return sim.rand() < c.chance;
+    if (c.count) return cmp(countOf(c.count, sim, a, ctx), c);
+    if (c.crit) return ctx.lastP != null && sim.rand() < ctx.lastP;               // 이 스킬 직전 공격이 크리였나 — 기대 확률로 추첨
     return false;                                                                // af · sb · text — 모델 밖
   }
   const stepOk = (s, sim, a, ctx) => check(s.if, sim, a, ctx) && !(s.unless && s.unless.length && check(s.unless, sim, a, ctx));
 
   // ── 대상 ──
-  function targets(sim, a, to) {
+  function targets(sim, a, to, filter) {
     if (to === "enemy" || to === "enemies") return [sim.enemy];
-    if (to === "party") return sim.party;
     const i = sim.party.indexOf(a);
-    if (to === "right") return sim.party.slice(i + 1, i + 2);
-    if (to === "left") return i > 0 ? [sim.party[i - 1]] : [];
-    if (to === "sides") return [sim.party[i - 1], sim.party[i + 1]].filter(Boolean);
-    return [a];
+    const us = to === "party" ? sim.party : to === "right" ? sim.party.slice(i + 1, i + 2) : to === "left" ? (i > 0 ? [sim.party[i - 1]] : [])
+      : to === "sides" ? [sim.party[i - 1], sim.party[i + 1]].filter(Boolean) : [a];
+    if (!filter) return us;                                                      // 대상 필터(형식 v1) — 무기 · 특성 · 자신 제외
+    return us.filter(u => (!filter.weapon || filter.weapon.includes(u.weaponType)) && (!filter.traits || (u.traits || []).some(t => filter.traits.includes(t)))
+      && !(filter.not_self && u === a));
   }
 
   // ── 대미지 — 지금 상태로 공격 step 한 번의 기대값 ──
   const ATK_OF = { 검: "베기", 도: "베기", 도끼: "베기", 창: "찌르기", 활: "찌르기", 권갑: "타격", 망치: "타격", 지팡이: "마법" };
   function damageOf(sim, a, step, ctx = {}) {
+    sim.cur = ctx.skill;
     const elem = step.elem && step.elem !== "없음" ? step.elem : null, type = step.type || "베기";
     const dep = step.dep || (type === "마법" ? "magic" : "pwr");
     const magic = dep === "magic" || dep === "magicpwr";
@@ -106,22 +138,25 @@
     for (const [name, n] of Object.entries(a.stacks)) for (const p of (sim.stackDef[name] || {}).per || []) if (p.flat) st[KEY[p.stat] || p.stat] = (st[KEY[p.stat] || p.stat] || 0) + p.flat * n;
     for (const b of a.buffs.values()) if (b.flat) st[KEY[b.stat] || b.stat] = (st[KEY[b.stat] || b.stat] || 0) + b.v;
     for (const n of Object.keys(a.states)) for (const p of (sim.stateDef[n] || {}).per || []) if (p.flat) st[KEY[p.stat] || p.stat] = (st[KEY[p.stat] || p.stat] || 0) + p.flat;
+    const maxMp = sumBuff(a, "최대 MP", sim);                                      // 정신 통일 · 심기일체(MP 비례)에 닿는다
+    if (maxMp) st.mp = (st.mp || 0) * (1 + maxMp / 100);
     const typeStats = ["속성 공격", ...(elem ? [elem + " 속성 공격"] : [])];
     const groups = [net(a, typeStats, sim), net(a, ["대미지"], sim)];
-    const focus = [...a.buffs.values()].filter(b => b.stat === (magic ? "정신 통일" : "심기일체"));
+    const focus = [...a.buffs.values()].filter(b => b.stat === (magic ? "정신 통일" : "심기일체") && live(sim, b));
     const special = [];
     if (focus.length) special.push(C.mentalFocus(st.mp || 0, [Math.max(...focus.map(b => b.v / 100))]));
     if ([...a.buffs.values()].some(b => b.stat === "하극상") && en.data.lv) special.push(Math.min(1, en.data.lv * en.data.lv / 200 / 100));
     if (special.length) groups.push(C.focusGroup(special));
     const skillFx = [...eq.skillFx];
     for (const [name, s] of Object.entries(a.states)) for (const p of (sim.stateDef[name] || {}).per || []) if (p.stat === "대미지 배율" && p.x) skillFx.push(p.x - 1);
-    for (const b of a.buffs.values()) if (b.stat === "대미지 배율") skillFx.push(b.v / 100);
+    for (const b of a.buffs.values()) if (b.stat === "대미지 배율" && live(sim, b)) skillFx.push(b.v / 100);
     let zone = P.zoneMult(sim.zone, atk);
     if (sim.zone && sim.zone.awakened && zone > 0) zone *= 2;                                // 각성 = 증가 효과 2배
     const physStats = ["물리 저항", type + " 저항"], typeRes = ["속성 저항", ...(elem ? [elem + " 속성 저항"] : [])];
     let mult = step.mult || 0;
     if (step.scale) {
-      const n = step.scale.by_front ? sim.party.filter(m => (m.traits || []).some(t => step.scale.by_front.traits.includes(t))).length
+      const n = step.scale.count ? countOf(step.scale.count, sim, a, ctx)
+        : step.scale.by_front ? sim.party.filter(m => (m.traits || []).some(t => step.scale.by_front.traits.includes(t))).length
         : ctx.consumed && ctx.consumed[step.scale.by] != null ? ctx.consumed[step.scale.by] : (a.stacks[step.scale.by] || 0);
       if (step.scale.table) mult = step.scale.table[Math.min(n, step.scale.table.length - 1)];
       else mult *= 1 + ((step.scale.max_x || 1) - 1) * Math.min(1, n / step.scale.max_n);
@@ -134,11 +169,12 @@
       resDown: { phys: -net(en, physStats, sim), type: -net(en, typeRes, sim), magic: -net(en, ["마법 저항"], sim) },
       groups, punish: eq.punish, equip: eq.equip, single: step.target === "one" || step.target === "random", rand: "avg",
     };
-    const critDmg = (magic ? sumBuff(a, "마법 크리티컬 대미지", sim) : sumBuff(a, "크리티컬 대미지", sim)) / 100 + (magic ? eq.mcritDmg : eq.critDmg);
-    const critRate = (magic ? sumBuff(a, "마법 크리티컬율", sim) : sumBuff(a, "크리티컬율", sim)) / 100 + (magic ? eq.mcrit : eq.crit)
+    // 크리 연동(형식 v1): crit_dmg = 이 스킬 크리 대미지 +%, crit_rate = 이 스킬 크리율 +%p, crit_x = 크리일 때 대미지 배수(「+400% when critical (x5)」)
+    const critDmg = (magic ? sumBuff(a, "마법 크리티컬 대미지", sim) : sumBuff(a, "크리티컬 대미지", sim)) / 100 + (magic ? eq.mcritDmg : eq.critDmg) + (step.crit_dmg || 0) / 100;
+    const critRate = (magic ? sumBuff(a, "마법 크리티컬율", sim) : sumBuff(a, "크리티컬율", sim)) / 100 + (magic ? eq.mcrit : eq.crit) + (step.crit_rate || 0) / 100
       + Object.entries(a.stacks).reduce((s, [n, k]) => s + ((sim.stackDef[n] || {}).per || []).filter(p => p.stat === (magic ? "마법 크리티컬율" : "크리티컬율") && p.v).reduce((t, p) => t + p.v * k / 100, 0), 0);
     const sure = step.sure_crit || [...a.buffs.values()].some(b => b.stat === "크리티컬 확정") || onAttackStack(sim, a, step).some(d => d.sure_crit);
-    const normal = C.damage({ ...o, crit: false }).total, crit = C.damage({ ...o, crit: true, critDmg }).total;
+    const normal = C.damage({ ...o, crit: false }).total, crit = C.damage({ ...o, crit: true, critDmg }).total * (step.crit_x || 1);
     const p = sure ? 1 : magic ? Math.min(1, Math.max(0, critRate)) : C.critChance({ lck: st.lck, critRate });
     return { expected: p * crit + (1 - p) * normal, p, aff, zone, o };
   }
@@ -161,6 +197,7 @@
   // ── step 실행 ──
   function runSteps(sim, a, skill, ctx) {
     ctx.consumed = {};
+    ctx.skill = skill.name;
     let dmg = 0, attacked = false, moved = !!ctx.noMove;            // noMove: 반격 — 소모 안 함
     for (const s of skill.steps || []) {
       if (!stepOk(s, sim, a, { ...ctx, skill: skill.name, consumed: ctx.consumed })) continue;
@@ -172,6 +209,8 @@
         for (let i = 0; i < (s.do === "repeat" ? s.n || 1 : 1); i++) {
           const r = damageOf(sim, a, st, ctx);
           dmg += r.expected;
+          ctx.lastP = r.p;
+          if (s.do === "repeat" && ctx.main) sim.moves.push(moveOf(a, skill));    // 재행동(Attack again)은 따로 센다
           sim.log.push({ t: sim.turn, who: a.name, skill: skill.name + (s.do === "repeat" ? " (재행동)" : ""), dmg: Math.round(r.expected), aff: r.aff, zone: r.zone, p: +r.p.toFixed(2) });
           for (const d of onAttackStack(sim, a, st)) { a.stacks[d.n] -= d.consume; if (a.stacks[d.n] <= 0) delete a.stacks[d.n]; }
         }
@@ -179,11 +218,13 @@
         attacked = true;
         if (!moved) { consumeMoves(a, st); moved = true; }
       } else if (s.do === "buff") {
-        for (const u of targets(sim, a, s.to)) putBuff(u, { stat: s.stat, v: s.v ?? s.flat, flat: s.flat != null, caster: a.id, src: s.src || "skill", max_stack: s.max_stack, ...d });
+        for (const u of targets(sim, a, s.to, s.filter)) putBuff(u, { stat: s.stat, v: s.v ?? s.flat, flat: s.flat != null, caster: a.id, src: s.src || "skill", max_stack: s.max_stack, only: s.only, ...d });
       } else if (s.do === "stack") {
-        for (const u of targets(sim, a, s.to)) {
+        const k = s.n && s.n.count ? countOf(s.n.count, sim, a, ctx) : (s.n || 1);  // 「from number of Piercing type moves」
+        for (const u of targets(sim, a, s.to, s.filter)) {
           const max = (sim.stackDef[s.name] || {}).max || Infinity;
-          u.stacks[s.name] = Math.min(max, (u.stacks[s.name] || 0) + (s.n || 1));
+          u.stacks[s.name] = Math.min(max, (u.stacks[s.name] || 0) + k);
+          if (!u.stacks[s.name]) delete u.stacks[s.name];
         }
       } else if (s.do === "consume") {
         const have = a.stacks[s.name] || 0, n = s.n === "all" ? have : Math.min(have, s.n || 1);
@@ -191,7 +232,7 @@
         a.stacks[s.name] = have - n;
         if (!a.stacks[s.name]) delete a.stacks[s.name];
       } else if (s.do === "state") {
-        for (const u of targets(sim, a, s.to)) {
+        for (const u of targets(sim, a, s.to, s.filter)) {
           if (s.end) delete u.states[s.name];
           else u.states[s.name] = { ...(d || durOf({ perm: true })), age: 1 };
         }
@@ -208,6 +249,11 @@
     }
     return { dmg, attacked };
   }
+  // 행동 1회의 종류 — 스킬 머리의 elem/type(지원 스킬의 속성 표기) 또는 첫 공격 step
+  function moveOf(a, sk) {
+    const at = (sk.steps || []).find(s => s.do === "attack") || {};
+    return { who: a.id, elem: sk.elem || (at.elem !== "없음" ? at.elem : null) || null, type: sk.type || at.type || null };
+  }
 
   // ── 행동 고르기 ──
   // 준비 스킬 = 공격 없이 대미지에 닿는 것을 거는 스킬 — 아군 공격 버프 · 적 저항/방어 디버프 · 존 · 각성 · 축적 · 모드 · 페인/독.
@@ -219,12 +265,12 @@
     || (s.do === "state" && !s.end) || (s.do === "status" && /^(Pain|Poison)$/.test(s.name));
   const isSetup = sk => (sk.steps || []).every(s => s.do !== "attack") && (sk.steps || []).some(helpsDamage);
   function usable(sim, a, sk) {
-    return sk.kind === "active" && (sk.mp || 0) <= a.mp && check(sk.need, sim, a, { skill: sk.name });
+    return sk.kind === "active" && mpCost(sim, a, sk) <= a.mp && check(sk.need, sim, a, { skill: sk.name });
   }
   function estimate(sim, a, sk) {
     let v = 0;
     for (const s of sk.steps || []) if (s.do === "attack" && stepOk(s, sim, a, { skill: sk.name })) {
-      const ctx = { consumed: {} };
+      const ctx = { consumed: {}, skill: sk.name, mpCost: mpCost(sim, a, sk) };
       for (const t of sk.steps) if (t.do === "consume" && stepOk(t, sim, a, { skill: sk.name })) ctx.consumed[t.name] = t.n === "all" ? (a.stacks[t.name] || 0) : Math.min(a.stacks[t.name] || 0, t.n || 1);
       v += damageOf(sim, a, s, ctx).expected * (s.repeat || 1);
     }
@@ -246,7 +292,7 @@
   // members: [{ id, name, traits, stats(장비 제외), weapon, gear[], sheet, rotation? }] (전방 왼쪽부터), enemy: data/calc enemies 행
   function simulate(members, enemy, opt = {}) {
     const turns = opt.turns || 5, rand = rng(opt.seed || 1);
-    const sim = { turn: 0, rand, zone: null, zoneDb: opt.zoneDb || [], log: [], order: [], stackDef: {}, stateDef: {}, attacked: new Set() };
+    const sim = { turn: 0, rand, zone: null, zoneDb: opt.zoneDb || [], log: [], order: [], stackDef: {}, stateDef: {}, attacked: new Set(), moves: [], enemies: opt.enemies || 1 };
     sim.enemy = { id: "enemy", name: enemy.name, data: enemy, buffs: new Map(), stacks: {}, states: {}, statuses: {},
       immune: new Set(opt.immune || (/Boss|Horror/.test(enemy.type || "") ? ["Stun", "Sleep", "Paralysis", "Freeze"] : [])) };
     sim.party = members.map((m, i) => {
@@ -277,6 +323,7 @@
     for (sim.turn = 1; sim.turn <= turns; sim.turn++) {
       const before = total;
       sim.attacked = new Set();
+      sim.moves = [];
       for (const a of sim.party) fire(a, "turn_start");                         // 3. 턴 시작 — 왼쪽부터
       // 5~7. 행동 — 계층(선제 · 보통 · 후공) → 속도(±10%) 순
       const tierOf = (a, sk) => {
@@ -324,10 +371,13 @@
           continue;
         }
         const { a, sk } = x;
-        a.mp -= sk.mp || 0;
-        const r = runSteps(sim, a, sk, {});
+        const cost = mpCost(sim, a, sk);
+        a.mp -= cost;
+        const r = runSteps(sim, a, sk, { main: true, mpCost: cost });
+        sim.moves.push(moveOf(a, sk));
         a.used[sk.name] = (a.used[sk.name] || 0) + 1;
         a.usedTurn[sk.name] = sim.turn;
+        a.streak = a.streak && a.streak.name === sk.name ? { name: sk.name, n: a.streak.n + 1 } : { name: sk.name, n: 1 };
         byMember[a.id] += r.dmg; total += r.dmg;
         for (const t of a.sheet.skills) if (t.kind === "trigger" && t.on === "on_use:" + sk.name && check(t.need, sim, a, { skill: t.name })) { const q = runSteps(sim, a, t, {}); byMember[a.id] += q.dmg; total += q.dmg; }
       }

@@ -180,6 +180,9 @@
     const mult = (it, label, x, slot = "condE", raw = x) => {
       if (x > 0) { out.groups.push(x / 100); (out.slots[slot] = out.slots[slot] || []).push(raw); out.src.push(`${it.name}: ${label} +${+x.toFixed(2)}%`); }
     };
+    // 효과 중복 불가(위키 광석 「Not stackable」 — 겨누어 쏘기 · MP 소비 공격 · 봉인 인핸스 · 적 수 · 약점 강화): 장비 전체에서 종류별 최댓값 하나만 (2026-10-13)
+    const once = {};
+    const uniq = (key, it, label, x, slot, raw) => { if (x > 0 && !(once[key] && once[key].x >= x)) once[key] = { it, label, x, slot, raw }; };
     for (const it of items) {
       if (!it) continue;
       for (const [k, v] of Object.entries(it.stats || {})) out.stats[k] = (out.stats[k] || 0) + v;
@@ -197,23 +200,27 @@
           if (ok) { out.equip.push(v); out.src.push(`${it.name}: ${f.when} +${f.v}%`); }
         } else if (f.k === "punish" && opt.punish && opt.punish.includes(f.when)) { out.punish++; out.src.push(`${it.name}: ${f.when} ×1.3`); }
         else if (f.k === "skillfx" && f.when === "weak" && opt._weak) { out.skillFx.push(v); out.src.push(`${it.name}: 약점 +${f.v}%`); }
-        else if (f.k === "weak" && opt._weak) { out.weak += v; out.src.push(`${it.name}: 약점 배율 +${f.v}%`); }
+        else if (f.k === "weak" && opt._weak) uniq("weak", it, "약점 배율", f.v);
         else if (f.k === "crit_rate") out[f.magic ? "mcrit" : "crit"] += v;
         else if (f.k === "crit_dmg") out[f.magic ? "mcritDmg" : "critDmg"] += v;
         else if (f.k === "growth") mult(it, "성장", Math.min(f.per * (opt.turns || 0), f.max), "growthAtk");
-        else if (f.k === "aim" && !opt.af) mult(it, "겨누어 쏘기", f.v, "aim");
-        else if (f.k === "mpatk" && atk.mp > 0 && !opt.normalAtk) mult(it, "MP 소비 공격", f.v);
+        else if (f.k === "aim" && !opt.af) uniq("aim", it, "겨누어 쏘기", f.v, "aim");
+        else if (f.k === "mpatk" && atk.mp > 0 && !opt.normalAtk) uniq("mpatk", it, "MP 소비 공격", f.v);
         else if (f.k === "overthrow" && opt.enemy && opt.enemy.lv) mult(it, "하극상", Math.floor(opt.enemy.lv * opt.enemy.lv / f.d * 100) / 100, "overthrowE", f.d);
         else if (f.k === "zonedmg" && opt.zoneAwake) mult(it, "ZONE 각성", f.v, "zoneAwake");
         else if (f.k === "wins" && opt.wins) mult(it, "누계 승리", f.v, "wins");
         else if (f.k === "lsally") mult(it, f.side === "light" ? "천 아군" : "명 아군", f.per * ((f.side === "light" ? opt.lightAllies : opt.shadowAllies) || 0), "lsAlly");
-        else if (f.k === "seal" && opt.sealed) mult(it, "봉인 인핸스", f.v, "enhance");
-        else if (f.k === "enemies") mult(it, "적 수", f.per * Math.max(0, (opt.enemyCount || 1) - 1));
+        else if (f.k === "seal" && opt.sealed) uniq("seal", it, "봉인 인핸스", f.v, "enhance");
+        else if (f.k === "enemies") uniq("enemies", it, "적 수", f.per * Math.max(0, (opt.enemyCount || 1) - 1));
         else if (f.k === "fallen") mult(it, "쓰러진 아군", f.per * (opt.fallen || 0), "fallen");
         else if (f.k === "tstat" && opt.punish && opt.punish.includes(f.when)) mult(it, `대상 ${f.when === "pain" ? "페인" : "독"}`, f.v, "statusE");
         // 전용 무기 스킬 강화 「<스킬> MOD+ 50% · 250% total」 = 기본 배율 +50%p → 배율 × total/(total−v) (스킬 자체 배수 보존)
         else if (f.k === "skillmod" && f.total && atk.skill === f.skill) { out.skillMul *= f.total / (f.total - f.v); out.src.push(`${it.name}: ${f.skill} 배율 +${f.v}%p`); }
       }
+    }
+    for (const [key, u] of Object.entries(once)) {
+      if (key === "weak") { out.weak += u.x / 100; out.src.push(`${u.it.name}: 약점 배율 +${u.x}%`); }
+      else mult(u.it, u.label, u.x, u.slot, u.raw);
     }
     return out;
   }

@@ -1,0 +1,1348 @@
+{
+ "terms": [
+  {
+   "id": "grasta",
+   "cat": "system",
+   "en": "Grasta",
+   "ko": "글래스터",
+   "src": "notice",
+   "n_ko": 71,
+   "n_en": 3,
+   "note": "코드 · DB 키는 grasta",
+   "aliases_ko": [
+    "그라스타"
+   ]
+  },
+  {
+   "id": "grasta_attack",
+   "cat": "grasta_type",
+   "en": "Attack Grasta",
+   "ko": "공격 글래스터",
+   "src": "notice",
+   "n_ko": 26,
+   "n_en": 0,
+   "note": "공지는 글래스터 「공격」 꼴"
+  },
+  {
+   "id": "grasta_support",
+   "cat": "grasta_type",
+   "en": "Support Grasta",
+   "ko": "지원 글래스터",
+   "src": "notice",
+   "n_ko": 26,
+   "n_en": 0,
+   "note": "공지는 글래스터 「지원」 꼴"
+  },
+  {
+   "id": "grasta_life",
+   "cat": "grasta_type",
+   "en": "Life Grasta",
+   "ko": "생명 글래스터",
+   "src": "notice",
+   "n_ko": 26,
+   "n_en": 0,
+   "note": "공지는 글래스터 「생명」 꼴"
+  },
+  {
+   "id": "grasta_special",
+   "cat": "grasta_type",
+   "en": "Special Grasta",
+   "ko": "특수 글래스터",
+   "src": "notice",
+   "n_ko": 1,
+   "n_en": 0
+  },
+  {
+   "id": "grasta_vc",
+   "cat": "grasta_type",
+   "en": "Valor Chant Grasta",
+   "ko": "증표 글래스터",
+   "src": "notice",
+   "n_ko": 7,
+   "n_en": 0,
+   "note": "공지 「증표 글래스터」",
+   "aliases_ko": [
+    "VC 글래스터"
+   ]
+  },
+  {
+   "id": "grasta_activate",
+   "cat": "system",
+   "en": "Activate (Grasta)",
+   "ko": "활성화",
+   "src": "notice",
+   "n_ko": 26,
+   "n_en": 0,
+   "note": "글래스터 강화 1단계 — 스탯"
+  },
+  {
+   "id": "grasta_awaken",
+   "cat": "system",
+   "en": "Awaken (Grasta)",
+   "ko": "각성",
+   "src": "notice",
+   "n_ko": 195,
+   "n_en": 0,
+   "note": "글래스터 강화 2단계 — 특수 효과"
+  },
+  {
+   "id": "grasta_enhance",
+   "cat": "system",
+   "en": "Enhance (Grasta)",
+   "ko": "연성",
+   "src": "notice",
+   "n_ko": 7,
+   "n_en": 0,
+   "note": "글래스터 강화 3단계 — 광석"
+  },
+  {
+   "id": "ore",
+   "cat": "ore",
+   "en": "Grasta Ore",
+   "ko": "연성 광석",
+   "src": "notice",
+   "n_ko": 6,
+   "n_en": 0,
+   "aliases_ko": [
+    "광석"
+   ]
+  },
+  {
+   "id": "ore_dormant",
+   "cat": "ore",
+   "en": "Dormant Ore",
+   "ko": "잠재 광석",
+   "src": "notice",
+   "n_ko": 3,
+   "n_en": 0,
+   "note": "글래스터 자체 효과 강화"
+  },
+  {
+   "id": "ore_special",
+   "cat": "ore",
+   "en": "Specialized Ore",
+   "ko": "특수 광석",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 0,
+   "note": "광석의 효과를 글래스터에 추가",
+   "aliases_en": [
+    "Augmented Ore",
+    "Add Effect Ore"
+   ]
+  },
+  {
+   "id": "ore_reversion",
+   "cat": "ore",
+   "en": "Reversion Ore",
+   "ko": "복원 광석",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 0,
+   "note": "연성한 광석을 회수"
+  },
+  {
+   "id": "sidekick",
+   "cat": "system",
+   "en": "Sidekick",
+   "ko": "버디",
+   "src": "notice",
+   "n_ko": 39,
+   "n_en": 6,
+   "note": "코드 · DB 키는 sidekick",
+   "aliases_ko": [
+    "사이드킥"
+   ]
+  },
+  {
+   "id": "sidekick_equip",
+   "cat": "system",
+   "en": "Sidekick Equipment",
+   "ko": "버디 장비",
+   "src": "notice",
+   "n_ko": 2,
+   "n_en": 0
+  },
+  {
+   "id": "badge",
+   "cat": "system",
+   "en": "Badge",
+   "ko": "배지",
+   "src": "notice",
+   "n_ko": 67,
+   "n_en": 4,
+   "aliases_ko": [
+    "뱃지"
+   ]
+  },
+  {
+   "id": "valor_chant",
+   "cat": "system",
+   "en": "Valor Chant",
+   "ko": "VC",
+   "src": "notice",
+   "n_ko": 1,
+   "n_en": 3,
+   "note": "공지 「스킬 및 VC」"
+  },
+  {
+   "id": "another_force",
+   "cat": "system",
+   "en": "Another Force",
+   "ko": "어나더 포스",
+   "src": "notice",
+   "n_ko": 59,
+   "n_en": 16,
+   "aliases_en": [
+    "AF"
+   ]
+  },
+  {
+   "id": "stellar_burst",
+   "cat": "system",
+   "en": "Stellar Burst",
+   "ko": "스텔라 버스트",
+   "src": "notice",
+   "n_ko": 75,
+   "n_en": 38,
+   "aliases_en": [
+    "SB"
+   ]
+  },
+  {
+   "id": "zone",
+   "cat": "system",
+   "en": "Zone",
+   "ko": "ZONE",
+   "src": "notice",
+   "n_ko": 63,
+   "n_en": 32,
+   "note": "공지는 영문 대문자 ZONE",
+   "aliases_ko": [
+    "존"
+   ]
+  },
+  {
+   "id": "another_zone",
+   "cat": "system",
+   "en": "Another Zone",
+   "ko": "ANOTHER ZONE",
+   "src": "notice",
+   "n_ko": 20,
+   "n_en": 11,
+   "aliases_ko": [
+    "존 각성",
+    "각성 존"
+   ]
+  },
+  {
+   "id": "light",
+   "cat": "system",
+   "en": "Light",
+   "ko": "천의 힘",
+   "src": "notice",
+   "n_ko": 9,
+   "n_en": 17,
+   "note": "명암 — 천",
+   "aliases_ko": [
+    "천"
+   ]
+  },
+  {
+   "id": "shadow",
+   "cat": "system",
+   "en": "Shadow",
+   "ko": "명의 힘",
+   "src": "notice",
+   "n_ko": 15,
+   "n_en": 20,
+   "note": "명암 — 명",
+   "aliases_ko": [
+    "명"
+   ]
+  },
+  {
+   "id": "manifest",
+   "cat": "system",
+   "en": "Manifest",
+   "ko": "현현",
+   "src": "notice",
+   "n_ko": 103,
+   "n_en": 23
+  },
+  {
+   "id": "personality",
+   "cat": "system",
+   "en": "Personality",
+   "ko": "성격",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 1,
+   "note": "글래스터 장착 조건 · 공유 범위",
+   "aliases_ko": [
+    "특성"
+   ]
+  },
+  {
+   "id": "environment",
+   "cat": "system",
+   "en": "Environmental Effect",
+   "ko": "환경 효과",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 1,
+   "aliases_ko": [
+    "환경"
+   ]
+  },
+  {
+   "id": "lunatic",
+   "cat": "system",
+   "en": "Lunatic",
+   "ko": "루나틱",
+   "src": "notice",
+   "n_ko": 57,
+   "n_en": 21
+  },
+  {
+   "id": "break",
+   "cat": "system",
+   "en": "Break",
+   "ko": "브레이크",
+   "src": "notice",
+   "n_ko": 37,
+   "n_en": 24
+  },
+  {
+   "id": "w_sword",
+   "cat": "weapon",
+   "en": "Sword",
+   "ko": "검",
+   "src": "notice",
+   "n_ko": 261,
+   "n_en": 10
+  },
+  {
+   "id": "w_katana",
+   "cat": "weapon",
+   "en": "Katana",
+   "ko": "도",
+   "src": "notice",
+   "n_ko": 459,
+   "n_en": 3
+  },
+  {
+   "id": "w_axe",
+   "cat": "weapon",
+   "en": "Axe",
+   "ko": "도끼",
+   "src": "notice",
+   "n_ko": 82,
+   "n_en": 1
+  },
+  {
+   "id": "w_lance",
+   "cat": "weapon",
+   "en": "Lance",
+   "ko": "창",
+   "src": "notice",
+   "n_ko": 160,
+   "n_en": 10
+  },
+  {
+   "id": "w_bow",
+   "cat": "weapon",
+   "en": "Bow",
+   "ko": "활",
+   "src": "notice",
+   "n_ko": 98,
+   "n_en": 8
+  },
+  {
+   "id": "w_fist",
+   "cat": "weapon",
+   "en": "Fists",
+   "ko": "권갑",
+   "src": "notice",
+   "n_ko": 75,
+   "n_en": 1
+  },
+  {
+   "id": "w_hammer",
+   "cat": "weapon",
+   "en": "Hammer",
+   "ko": "망치",
+   "src": "notice",
+   "n_ko": 75,
+   "n_en": 3
+  },
+  {
+   "id": "w_staff",
+   "cat": "weapon",
+   "en": "Staff",
+   "ko": "지팡이",
+   "src": "notice",
+   "n_ko": 88,
+   "n_en": 4
+  },
+  {
+   "id": "a_bangle",
+   "cat": "armor",
+   "en": "Bangle",
+   "ko": "팔찌",
+   "src": "notice",
+   "n_ko": 1,
+   "n_en": 0
+  },
+  {
+   "id": "a_necklace",
+   "cat": "armor",
+   "en": "Necklace",
+   "ko": "목걸이",
+   "src": "notice",
+   "n_ko": 1,
+   "n_en": 0
+  },
+  {
+   "id": "a_ring",
+   "cat": "armor",
+   "en": "Ring",
+   "ko": "반지",
+   "src": "notice",
+   "n_ko": 6,
+   "n_en": 0
+  },
+  {
+   "id": "e_fire",
+   "cat": "element",
+   "en": "Fire",
+   "ko": "불",
+   "src": "notice",
+   "n_ko": 235,
+   "n_en": 14
+  },
+  {
+   "id": "e_water",
+   "cat": "element",
+   "en": "Water",
+   "ko": "물",
+   "src": "notice",
+   "n_ko": 273,
+   "n_en": 10
+  },
+  {
+   "id": "e_earth",
+   "cat": "element",
+   "en": "Earth",
+   "ko": "땅",
+   "src": "notice",
+   "n_ko": 72,
+   "n_en": 10
+  },
+  {
+   "id": "e_wind",
+   "cat": "element",
+   "en": "Wind",
+   "ko": "바람",
+   "src": "notice",
+   "n_ko": 26,
+   "n_en": 19
+  },
+  {
+   "id": "e_thunder",
+   "cat": "element",
+   "en": "Thunder",
+   "ko": "번개",
+   "src": "notice",
+   "n_ko": 48,
+   "n_en": 7
+  },
+  {
+   "id": "e_shade",
+   "cat": "element",
+   "en": "Shade",
+   "ko": "그림자",
+   "src": "notice",
+   "n_ko": 36,
+   "n_en": 8
+  },
+  {
+   "id": "e_crystal",
+   "cat": "element",
+   "en": "Crystal",
+   "ko": "결정",
+   "src": "notice",
+   "n_ko": 108,
+   "n_en": 18
+  },
+  {
+   "id": "t_slash",
+   "cat": "attack_type",
+   "en": "Slash",
+   "ko": "베기",
+   "src": "notice",
+   "n_ko": 41,
+   "n_en": 14,
+   "note": "비긴즈 옛 표기 참격",
+   "aliases_ko": [
+    "참격"
+   ]
+  },
+  {
+   "id": "t_pierce",
+   "cat": "attack_type",
+   "en": "Pierce",
+   "ko": "찌르기",
+   "src": "notice",
+   "n_ko": 41,
+   "n_en": 17,
+   "aliases_ko": [
+    "자격"
+   ],
+   "aliases_en": [
+    "Piercing"
+   ]
+  },
+  {
+   "id": "t_blunt",
+   "cat": "attack_type",
+   "en": "Blunt",
+   "ko": "타격",
+   "src": "notice",
+   "n_ko": 21,
+   "n_en": 6
+  },
+  {
+   "id": "t_magic",
+   "cat": "attack_type",
+   "en": "Magic",
+   "ko": "마법",
+   "src": "notice",
+   "n_ko": 53,
+   "n_en": 23
+  },
+  {
+   "id": "k_crit_rate",
+   "cat": "calc",
+   "en": "Critical Rate",
+   "ko": "크리티컬율",
+   "src": "notice",
+   "n_ko": 39,
+   "n_en": 0,
+   "aliases_en": [
+    "Crit Rate"
+   ]
+  },
+  {
+   "id": "k_crit_dmg",
+   "cat": "calc",
+   "en": "Critical Damage",
+   "ko": "크리티컬 대미지",
+   "src": "notice",
+   "n_ko": 29,
+   "n_en": 0
+  },
+  {
+   "id": "k_type_atk",
+   "cat": "calc",
+   "en": "Type Attack",
+   "ko": "속성 공격",
+   "src": "notice",
+   "n_ko": 52,
+   "n_en": 0,
+   "aliases_en": [
+    "Elemental Attack"
+   ]
+  },
+  {
+   "id": "k_weak",
+   "cat": "calc",
+   "en": "Weakness Multiplier",
+   "ko": "약점 배율",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 0
+  },
+  {
+   "id": "k_skillmod",
+   "cat": "calc",
+   "en": "Skill MOD+",
+   "ko": "스킬 위력",
+   "src": "notice",
+   "n_ko": 12,
+   "n_en": 0,
+   "note": "전용 무기 「<스킬> MOD+」"
+  },
+  {
+   "id": "k_bullseye",
+   "cat": "calc",
+   "en": "Bull's Eye",
+   "ko": "겨누어 쏘기",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 0
+  },
+  {
+   "id": "k_overthrow",
+   "cat": "calc",
+   "en": "Overthrow",
+   "ko": "하극상",
+   "src": "notice",
+   "n_ko": 8,
+   "n_en": 6
+  },
+  {
+   "id": "k_mental_focus",
+   "cat": "calc",
+   "en": "Mental Focus",
+   "ko": "정신 통일",
+   "src": "notice",
+   "n_ko": 11,
+   "n_en": 9
+  },
+  {
+   "id": "k_singular_focus",
+   "cat": "calc",
+   "en": "Singular Focus",
+   "ko": "심기일체",
+   "src": "notice",
+   "n_ko": 23,
+   "n_en": 23
+  },
+  {
+   "id": "s_power",
+   "cat": "stat",
+   "en": "Power",
+   "ko": "힘",
+   "src": "pair",
+   "n_ko": 110,
+   "n_en": 4,
+   "aliases_en": [
+    "Pwr",
+    "Strength"
+   ]
+  },
+  {
+   "id": "s_intelligence",
+   "cat": "stat",
+   "en": "Intelligence",
+   "ko": "지능",
+   "src": "pair",
+   "n_ko": 82,
+   "n_en": 0,
+   "aliases_en": [
+    "Int"
+   ]
+  },
+  {
+   "id": "s_speed",
+   "cat": "stat",
+   "en": "Speed",
+   "ko": "속도",
+   "src": "pair",
+   "n_ko": 80,
+   "n_en": 1,
+   "aliases_en": [
+    "Spd"
+   ]
+  },
+  {
+   "id": "s_endurance",
+   "cat": "stat",
+   "en": "Endurance",
+   "ko": "내구",
+   "src": "pair",
+   "n_ko": 8,
+   "n_en": 0,
+   "aliases_en": [
+    "End"
+   ]
+  },
+  {
+   "id": "s_spirit",
+   "cat": "stat",
+   "en": "Spirit",
+   "ko": "정신",
+   "src": "pair",
+   "n_ko": 18,
+   "n_en": 5,
+   "aliases_en": [
+    "Spr"
+   ]
+  },
+  {
+   "id": "s_luck",
+   "cat": "stat",
+   "en": "Luck",
+   "ko": "행운",
+   "src": "pair",
+   "n_ko": 5,
+   "n_en": 1,
+   "aliases_en": [
+    "Lck"
+   ]
+  },
+  {
+   "id": "s_max_hp",
+   "cat": "stat",
+   "en": "Max HP",
+   "ko": "HP 최대치",
+   "src": "pair",
+   "n_ko": 22,
+   "n_en": 0,
+   "aliases_en": [
+    "Maxhp",
+    "HP"
+   ]
+  },
+  {
+   "id": "s_max_mp",
+   "cat": "stat",
+   "en": "Max MP",
+   "ko": "MP 최대치",
+   "src": "pair",
+   "n_ko": 31,
+   "n_en": 0,
+   "aliases_en": [
+    "MP"
+   ]
+  },
+  {
+   "id": "s_physical_resistance",
+   "cat": "stat",
+   "en": "Physical Resistance",
+   "ko": "물리 저항",
+   "src": "pair",
+   "n_ko": 37,
+   "n_en": 0,
+   "aliases_en": [
+    "Physical Resist"
+   ]
+  },
+  {
+   "id": "s_magic_resistance",
+   "cat": "stat",
+   "en": "Magic Resistance",
+   "ko": "마법 저항",
+   "src": "pair",
+   "n_ko": 25,
+   "n_en": 0,
+   "aliases_en": [
+    "Magical Resistance"
+   ]
+  },
+  {
+   "id": "s_type_resistance",
+   "cat": "stat",
+   "en": "Type Resistance",
+   "ko": "속성 저항",
+   "src": "pair",
+   "n_ko": 42,
+   "n_en": 0,
+   "aliases_en": [
+    "Elemental Resistance"
+   ]
+  },
+  {
+   "id": "s_slash_resistance",
+   "cat": "stat",
+   "en": "Slash Resistance",
+   "ko": "베기 저항",
+   "src": "pair",
+   "n_ko": 10,
+   "n_en": 0
+  },
+  {
+   "id": "s_blunt_resistance",
+   "cat": "stat",
+   "en": "Blunt Resistance",
+   "ko": "타격 저항",
+   "src": "pair",
+   "n_ko": 5,
+   "n_en": 0
+  },
+  {
+   "id": "s_piercing_resistance",
+   "cat": "stat",
+   "en": "Piercing Resistance",
+   "ko": "찌르기 저항",
+   "src": "pair",
+   "n_ko": 9,
+   "n_en": 0,
+   "aliases_en": [
+    "Pierce Resistance"
+   ]
+  },
+  {
+   "id": "s_magic_critical_rate",
+   "cat": "stat",
+   "en": "Magic Critical Rate",
+   "ko": "마법 크리티컬율",
+   "src": "pair",
+   "n_ko": 20,
+   "n_en": 0
+  },
+  {
+   "id": "s_magic_critical_damage",
+   "cat": "stat",
+   "en": "Magic Critical Damage",
+   "ko": "마법 크리티컬 대미지",
+   "src": "pair",
+   "n_ko": 12,
+   "n_en": 0
+  },
+  {
+   "id": "s_accuracy",
+   "cat": "stat",
+   "en": "Accuracy",
+   "ko": "명중률",
+   "src": "pair",
+   "n_ko": 0,
+   "n_en": 0
+  },
+  {
+   "id": "s_evasion",
+   "cat": "stat",
+   "en": "Evasion",
+   "ko": "회피율",
+   "src": "pair",
+   "n_ko": 2,
+   "n_en": 0,
+   "aliases_en": [
+    "Evasion Rate"
+   ]
+  },
+  {
+   "id": "s_another_force_combo_rate",
+   "cat": "stat",
+   "en": "Another Force Combo Rate",
+   "ko": "어나더 포스 콤보 배율",
+   "src": "pair",
+   "n_ko": 13,
+   "n_en": 0
+  },
+  {
+   "id": "st_overcritical",
+   "cat": "state_buff",
+   "en": "Overcritical",
+   "ko": "오버 크리티컬",
+   "src": "pair",
+   "n_ko": 14,
+   "n_en": 10
+  },
+  {
+   "id": "st_magic_overcritical",
+   "cat": "state_buff",
+   "en": "Magic Overcritical",
+   "ko": "마법 오버 크리티컬",
+   "src": "pair",
+   "n_ko": 2,
+   "n_en": 2
+  },
+  {
+   "id": "st_link",
+   "cat": "state_buff",
+   "en": "Link",
+   "ko": "연계",
+   "src": "pair",
+   "n_ko": 34,
+   "n_en": 14
+  },
+  {
+   "id": "st_resonance",
+   "cat": "state_buff",
+   "en": "Resonance",
+   "ko": "공명",
+   "src": "pair",
+   "n_ko": 19,
+   "n_en": 11
+  },
+  {
+   "id": "st_counter",
+   "cat": "state_buff",
+   "en": "Counter",
+   "ko": "요격",
+   "src": "pair",
+   "n_ko": 19,
+   "n_en": 6
+  },
+  {
+   "id": "st_hold_ground",
+   "cat": "state_buff",
+   "en": "Hold Ground",
+   "ko": "버티기",
+   "src": "pair",
+   "n_ko": 11,
+   "n_en": 10
+  },
+  {
+   "id": "st_multi_upgrade",
+   "cat": "state_buff",
+   "en": "Multi-Upgrade",
+   "ko": "다단 강화",
+   "src": "pair",
+   "n_ko": 6,
+   "n_en": 6
+  },
+  {
+   "id": "st_barrier_pierce",
+   "cat": "state_buff",
+   "en": "Barrier Pierce",
+   "ko": "배리어 관통",
+   "src": "pair",
+   "n_ko": 31,
+   "n_en": 7,
+   "aliases_en": [
+    "Barrier Piercing"
+   ]
+  },
+  {
+   "id": "st_buff_reversal",
+   "cat": "state_buff",
+   "en": "Buff Reversal",
+   "ko": "버프 리버설",
+   "src": "pair",
+   "n_ko": 11,
+   "n_en": 5
+  },
+  {
+   "id": "st_debuff_reversal",
+   "cat": "state_buff",
+   "en": "Debuff Reversal",
+   "ko": "디버프 리버설",
+   "src": "pair",
+   "n_ko": 8,
+   "n_en": 6
+  },
+  {
+   "id": "st_guard",
+   "cat": "state_buff",
+   "en": "Guard",
+   "ko": "수호",
+   "src": "pair",
+   "n_ko": 51,
+   "n_en": 6
+  },
+  {
+   "id": "st_cover",
+   "cat": "state_buff",
+   "en": "Cover",
+   "ko": "방패막이",
+   "src": "pair",
+   "n_ko": 3,
+   "n_en": 3
+  },
+  {
+   "id": "st_critical_guard",
+   "cat": "state_buff",
+   "en": "Critical Guard",
+   "ko": "크리티컬 가드",
+   "src": "pair",
+   "n_ko": 5,
+   "n_en": 3
+  },
+  {
+   "id": "st_regen",
+   "cat": "state_buff",
+   "en": "Regen",
+   "ko": "치유",
+   "src": "pair",
+   "n_ko": 25,
+   "n_en": 14,
+   "aliases_en": [
+    "MP Regen"
+   ]
+  },
+  {
+   "id": "st_mind_s_eye",
+   "cat": "state_buff",
+   "en": "Mind'S Eye",
+   "ko": "심안",
+   "src": "pair",
+   "n_ko": 7,
+   "n_en": 0
+  },
+  {
+   "id": "st_another_sense",
+   "cat": "state_buff",
+   "en": "Another Sense",
+   "ko": "어나더 센스",
+   "src": "pair",
+   "n_ko": 11,
+   "n_en": 4
+  },
+  {
+   "id": "st_prayer",
+   "cat": "state_buff",
+   "en": "Prayer",
+   "ko": "기도",
+   "src": "pair",
+   "n_ko": 26,
+   "n_en": 1
+  },
+  {
+   "id": "st_song",
+   "cat": "state_buff",
+   "en": "Song",
+   "ko": "가창",
+   "src": "pair",
+   "n_ko": 15,
+   "n_en": 3
+  },
+  {
+   "id": "st_stealth",
+   "cat": "state_buff",
+   "en": "Stealth",
+   "ko": "은신",
+   "src": "pair",
+   "n_ko": 1,
+   "n_en": 1
+  },
+  {
+   "id": "st_evasion",
+   "cat": "state_buff",
+   "en": "Evasion",
+   "ko": "회피",
+   "src": "pair",
+   "n_ko": 6,
+   "n_en": 0
+  },
+  {
+   "id": "st_pain",
+   "cat": "state_ailment",
+   "en": "Pain",
+   "ko": "페인",
+   "src": "pair",
+   "n_ko": 324,
+   "n_en": 12
+  },
+  {
+   "id": "st_poison",
+   "cat": "state_ailment",
+   "en": "Poison",
+   "ko": "독",
+   "src": "pair",
+   "n_ko": 43,
+   "n_en": 8
+  },
+  {
+   "id": "st_stun",
+   "cat": "state_ailment",
+   "en": "Stun",
+   "ko": "기절",
+   "src": "pair",
+   "n_ko": 15,
+   "n_en": 9
+  },
+  {
+   "id": "st_sleep",
+   "cat": "state_ailment",
+   "en": "Sleep",
+   "ko": "수면",
+   "src": "pair",
+   "n_ko": 7,
+   "n_en": 4
+  },
+  {
+   "id": "st_paralysis",
+   "cat": "state_ailment",
+   "en": "Paralysis",
+   "ko": "마비",
+   "src": "pair",
+   "n_ko": 1,
+   "n_en": 0,
+   "aliases_en": [
+    "Paralyze"
+   ]
+  },
+  {
+   "id": "st_petrification",
+   "cat": "state_ailment",
+   "en": "Petrification",
+   "ko": "석화",
+   "src": "pair",
+   "n_ko": 14,
+   "n_en": 0,
+   "aliases_en": [
+    "Petrify"
+   ]
+  },
+  {
+   "id": "st_fear",
+   "cat": "state_ailment",
+   "en": "Fear",
+   "ko": "공포",
+   "src": "pair",
+   "n_ko": 0,
+   "n_en": 1
+  },
+  {
+   "id": "st_confusion",
+   "cat": "state_ailment",
+   "en": "Confusion",
+   "ko": "혼란",
+   "src": "pair",
+   "n_ko": 8,
+   "n_en": 0
+  },
+  {
+   "id": "st_seal",
+   "cat": "state_ailment",
+   "en": "Seal",
+   "ko": "봉인",
+   "src": "pair",
+   "n_ko": 19,
+   "n_en": 0
+  },
+  {
+   "id": "st_rage",
+   "cat": "state_ailment",
+   "en": "Rage",
+   "ko": "도발",
+   "src": "pair",
+   "n_ko": 7,
+   "n_en": 6,
+   "aliases_en": [
+    "Taunt"
+   ]
+  },
+  {
+   "id": "st_exposed",
+   "cat": "state_ailment",
+   "en": "Exposed",
+   "ko": "약점 간파",
+   "src": "pair",
+   "n_ko": 12,
+   "n_en": 8,
+   "aliases_en": [
+    "Weakness"
+   ]
+  },
+  {
+   "id": "st_shield",
+   "cat": "state_guard",
+   "en": "Shield",
+   "ko": "실드",
+   "src": "pair",
+   "n_ko": 44,
+   "n_en": 13
+  },
+  {
+   "id": "st_barrier",
+   "cat": "state_guard",
+   "en": "Barrier",
+   "ko": "배리어",
+   "src": "pair",
+   "n_ko": 63,
+   "n_en": 15
+  },
+  {
+   "id": "st_status_immunity",
+   "cat": "state_guard",
+   "en": "Status Immunity",
+   "ko": "상태 이상 무효",
+   "src": "pair",
+   "n_ko": 25,
+   "n_en": 0
+  },
+  {
+   "id": "st_knockback_immunity",
+   "cat": "state_guard",
+   "en": "Knockback Immunity",
+   "ko": "날리기 무효",
+   "src": "pair",
+   "n_ko": 16,
+   "n_en": 0
+  },
+  {
+   "id": "z_double_strike_stance_magic_slash",
+   "cat": "zone",
+   "en": "Double Strike Stance: Magic Slash",
+   "ko": "쌍격진 참마",
+   "src": "self",
+   "n_ko": 6,
+   "n_en": 0,
+   "note": "공지 짝 1건뿐(1/1) — 확인 필요"
+  },
+  {
+   "id": "z_flash_strike_stance",
+   "cat": "zone",
+   "en": "Flash Strike Stance",
+   "ko": "Flash Strike Stance",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 0,
+   "note": "공지 근거 없음 — 영어 유지"
+  },
+  {
+   "id": "z_moonlight_stance",
+   "cat": "zone",
+   "en": "Moonlight Stance",
+   "ko": "월광진",
+   "src": "notice",
+   "n_ko": 2,
+   "n_en": 2,
+   "note": "공지 짝 동시 출현 2/2"
+  },
+  {
+   "id": "z_roaring_bash_stance",
+   "cat": "zone",
+   "en": "Roaring Bash Stance",
+   "ko": "굉타진",
+   "src": "notice",
+   "n_ko": 6,
+   "n_en": 3,
+   "note": "공지 짝 동시 출현 3/3"
+  },
+  {
+   "id": "z_chaos_stance",
+   "cat": "zone",
+   "en": "Chaos Stance",
+   "ko": "Chaos Stance",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 0,
+   "note": "공지 근거 없음 — 영어 유지"
+  },
+  {
+   "id": "z_sea_of_stars_stance",
+   "cat": "zone",
+   "en": "Sea of Stars Stance",
+   "ko": "성해진",
+   "src": "self",
+   "n_ko": 1,
+   "n_en": 1,
+   "note": "공지 짝 1건뿐(1/1) — 확인 필요"
+  },
+  {
+   "id": "z_crystalline_stance",
+   "cat": "zone",
+   "en": "Crystalline Stance",
+   "ko": "휘정진",
+   "src": "notice",
+   "n_ko": 4,
+   "n_en": 4,
+   "note": "공지 짝 동시 출현 3/3"
+  },
+  {
+   "id": "z_defense_wall",
+   "cat": "zone",
+   "en": "Defense Wall",
+   "ko": "견수진",
+   "src": "self",
+   "n_ko": 1,
+   "n_en": 1,
+   "note": "공지 짝 1건뿐(1/1) — 확인 필요"
+  },
+  {
+   "id": "z_torn_earth_stance",
+   "cat": "zone",
+   "en": "Torn Earth Stance",
+   "ko": "지열진",
+   "src": "notice",
+   "n_ko": 6,
+   "n_en": 5,
+   "note": "공지 짝 동시 출현 5/5"
+  },
+  {
+   "id": "z_raging_fire_stance",
+   "cat": "zone",
+   "en": "Raging Fire Stance",
+   "ko": "열화진",
+   "src": "notice",
+   "n_ko": 11,
+   "n_en": 7,
+   "note": "공지 짝 동시 출현 6/6"
+  },
+  {
+   "id": "z_magic_fates_stance",
+   "cat": "zone",
+   "en": "Magic Fates Stance",
+   "ko": "환마진",
+   "src": "notice",
+   "n_ko": 7,
+   "n_en": 4,
+   "note": "공지 짝 동시 출현 3/3"
+  },
+  {
+   "id": "z_null_stance",
+   "cat": "zone",
+   "en": "Null Stance",
+   "ko": "Null Stance",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 0,
+   "note": "공지 근거 없음 — 영어 유지"
+  },
+  {
+   "id": "z_piercing_flash_stance",
+   "cat": "zone",
+   "en": "Piercing Flash Stance",
+   "ko": "순돌진",
+   "src": "notice",
+   "n_ko": 5,
+   "n_en": 5,
+   "note": "공지 짝 동시 출현 5/5"
+  },
+  {
+   "id": "z_biting_shade_stance",
+   "cat": "zone",
+   "en": "Biting Shade Stance",
+   "ko": "각음진",
+   "src": "notice",
+   "n_ko": 8,
+   "n_en": 4,
+   "note": "공지 짝 동시 출현 4/4"
+  },
+  {
+   "id": "z_double_strike_stance_piercing_slash",
+   "cat": "zone",
+   "en": "Double Strike Stance: Piercing Slash",
+   "ko": "쌍격진 참돌",
+   "src": "notice",
+   "n_ko": 6,
+   "n_en": 0,
+   "note": "공지 짝 동시 출현 5/5"
+  },
+  {
+   "id": "z_dazzling_slash_stance",
+   "cat": "zone",
+   "en": "Dazzling Slash Stance",
+   "ko": "황참진",
+   "src": "notice",
+   "n_ko": 4,
+   "n_en": 3,
+   "note": "공지 짝 동시 출현 3/3"
+  },
+  {
+   "id": "z_thundering_stance",
+   "cat": "zone",
+   "en": "Thundering Stance",
+   "ko": "초뢰진",
+   "src": "notice",
+   "n_ko": 2,
+   "n_en": 2,
+   "note": "공지 짝 동시 출현 2/2"
+  },
+  {
+   "id": "z_sacred_water_stance",
+   "cat": "zone",
+   "en": "Sacred Water Stance",
+   "ko": "수천진",
+   "src": "notice",
+   "n_ko": 8,
+   "n_en": 5,
+   "note": "공지 짝 동시 출현 5/5"
+  },
+  {
+   "id": "z_wind_king_stance",
+   "cat": "zone",
+   "en": "Wind King Stance",
+   "ko": "풍왕진",
+   "src": "notice",
+   "n_ko": 8,
+   "n_en": 2,
+   "note": "공지 짝 동시 출현 2/2"
+  }
+ ]
+}

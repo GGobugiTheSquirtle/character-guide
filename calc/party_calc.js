@@ -139,23 +139,40 @@
   }
 
   // 장비 효과 중 이 공격에 맞는 것 — 대미지 가산 · 곱(페인/독 · 약점) · 크리 · 고정 스탯
+  //   조건부 곱(2026-10-13, 위키 「Damage+ (Multiplier)」 계열 — 각자 (1+x)): 성장 opt.turns · 겨누어 쏘기(opt.af 아닐 때) · MP 소비 공격(MP 쓰는 스킬)
+  //   · ZONE 각성 opt.zoneAwake · 누계 승리 opt.wins · 천/명 아군 opt.lightAllies/shadowAllies · 봉인 인핸스 opt.sealed
+  //   · 적 수 opt.enemyCount · 쓰러진 아군 opt.fallen · 대상 페인/독 opt.punish. 하극상 = 대상 Lv²/d %. 환경 조건(env)은 opt.env 와 같을 때만
   function equipFor(items, atk, opt) {
-    const out = { equip: [], punish: 0, skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, src: [] };
+    const out = { equip: [], punish: 0, skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, groups: [], weak: 0, src: [] };
+    const mult = (it, label, x) => { if (x > 0) { out.groups.push(x / 100); out.src.push(`${it.name}: ${label} +${+x.toFixed(2)}%`); } };
     for (const it of items) {
       if (!it) continue;
       for (const [k, v] of Object.entries(it.stats || {})) out.stats[k] = (out.stats[k] || 0) + v;
       for (const f of [...(it.fx || []).filter(f => f.k !== "etc"), ...(it.calc || [])]) {
         if (f.zone && !(opt.zone && opt.zone.name.includes(f.zone))) continue;
+        if (f.env && f.env !== opt.env) continue;
         const v = (f.v || 0) / 100;
         if (f.k === "stat") out.stats[f.stat] = (out.stats[f.stat] || 0) + f.v;
         else if (f.k === "dmg") {
           const ok = f.when === "type" || f.when === "all" || (f.when === "nontype" && !atk.element) || f.when === atk.element
-            || (f.when === "maxhp" && opt.maxHp);
+            || (f.when === "maxhp" && opt.maxHp) || (f.when === "lowhp" && opt.lowHp);
           if (ok) { out.equip.push(v); out.src.push(`${it.name}: ${f.when} +${f.v}%`); }
         } else if (f.k === "punish" && opt.punish && opt.punish.includes(f.when)) { out.punish++; out.src.push(`${it.name}: ${f.when} ×1.3`); }
         else if (f.k === "skillfx" && f.when === "weak" && opt._weak) { out.skillFx.push(v); out.src.push(`${it.name}: 약점 +${f.v}%`); }
+        else if (f.k === "weak" && opt._weak) { out.weak += v; out.src.push(`${it.name}: 약점 배율 +${f.v}%`); }
         else if (f.k === "crit_rate") out[f.magic ? "mcrit" : "crit"] += v;
         else if (f.k === "crit_dmg") out[f.magic ? "mcritDmg" : "critDmg"] += v;
+        else if (f.k === "growth") mult(it, "성장", Math.min(f.per * (opt.turns || 0), f.max));
+        else if (f.k === "aim" && !opt.af) mult(it, "겨누어 쏘기", f.v);
+        else if (f.k === "mpatk" && atk.mp > 0 && !opt.normalAtk) mult(it, "MP 소비 공격", f.v);
+        else if (f.k === "overthrow" && opt.enemy && opt.enemy.lv) mult(it, "하극상", Math.floor(opt.enemy.lv * opt.enemy.lv / f.d * 100) / 100);
+        else if (f.k === "zonedmg" && opt.zoneAwake) mult(it, "ZONE 각성", f.v);
+        else if (f.k === "wins" && opt.wins) mult(it, "누계 승리", f.v);
+        else if (f.k === "lsally") mult(it, f.side === "light" ? "천 아군" : "명 아군", f.per * ((f.side === "light" ? opt.lightAllies : opt.shadowAllies) || 0));
+        else if (f.k === "seal" && opt.sealed) mult(it, "봉인 인핸스", f.v);
+        else if (f.k === "enemies") mult(it, "적 수", f.per * Math.max(0, (opt.enemyCount || 1) - 1));
+        else if (f.k === "fallen") mult(it, "쓰러진 아군", f.per * (opt.fallen || 0));
+        else if (f.k === "tstat" && opt.punish && opt.punish.includes(f.when)) mult(it, `대상 ${f.when === "pain" ? "페인" : "독"}`, f.v);
       }
     }
     return out;
@@ -190,7 +207,7 @@
     const magic = atk.dep === "magic" || atk.dep === "magicpwr";
     const typeKey = atk.element || null;
     const typeNet = net(ag, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(ag.type["*"] || []), ...(ag.type[typeKey] || [])] : (ag.type["*"] || []) }));
-    const groups = [typeNet, net(ag, "dmg", () => C.groupNet(ag.dmg))];
+    const groups = [typeNet, net(ag, "dmg", () => C.groupNet(ag.dmg)), ...eq.groups];
     const focus = magic ? ag.focusMag : ag.focusPhys;
     if (focus.length) groups.push(C.focusGroup([C.mentalFocus(st.mp || 0, focus)]));
     if (ag.overthrow && opt.enemy && opt.enemy.lv) groups.push(Math.min(1, opt.enemy.lv * opt.enemy.lv / 200 / 100));
@@ -205,7 +222,7 @@
       resDown: { phys: net(eg, "p" + atk.atk, () => C.groupNet({ buffs: [...eg.phys, ...(eg.atk[atk.atk] || [])] })),
         type: net(eg, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(eg.type["*"] || []), ...(eg.type[typeKey] || [])] : [] })),
         magic: net(eg, "magic", () => C.groupNet({ buffs: eg.magic })) },
-      groups, punish: eq.punish, equip: eq.equip, single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
+      groups, punish: eq.punish, equip: eq.equip, weakBuff: eq.weak, single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
     };
     const normal = C.damage({ ...o, crit: false }).total;
     const crit = C.damage({ ...o, crit: true, critDmg: magic ? C.additive([...ag.mcritDmg, eq.mcritDmg]) : C.additive([...ag.critDmg, eq.critDmg]) }).total;

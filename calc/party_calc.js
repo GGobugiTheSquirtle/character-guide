@@ -291,13 +291,16 @@
       brk: brk && eg.breaks.some(b => b === "*" || b === "e:" + atk.element || b === "a:" + atk.atk) ? 1 : 0 };
     for (const x of [sx.shingan, sx.kesshi, sx.brk]) if (x) groups.push(x);
     const en = opt.enemy || { end: 0, spr: 0 };
-    // skillMult — 범위 배율(150~18000%)의 위값(multMax)은 조건부(스택 · HP 소모 · 모드)라 opt.cond 일 때만
+    // skillMult — 범위 배율(150~18000%)의 위값(multMax)은 조건부(스택 · HP 소모 · 모드)라 opt.cond 일 때만.
+    // 「약점이면 ×N」(weakX) · 「내성이면 ×N」(resistX)은 적 상성으로 판정 — 위값을 넘지 않는다
+    const affX = (aff === "weak" && atk.weakX) || (aff === "resist" && atk.resistX) || 1;
+    const baseMult = (opt.cond && atk.multMax) || Math.min(atk.multMax || Infinity, (atk.mult || 0) * affX);
     const o = {
       dep: atk.dep, elemental: !!atk.element, stat: st, weapon: { atk: (m.weapon || {}).atk || 0, matk: (m.weapon || {}).matk || 0 },
       buff: { pwr: net(ag, "pwr", () => C.groupNet(ag.pwr)), int: net(ag, "int", () => C.groupNet(ag.int)), spd: net(ag, "spd", () => C.groupNet(ag.spd)) },
       enemy: { def: (en.end || 0) * (1 - net(eg, "def", () => C.groupNet({ buffs: eg.def }))),
         mdef: (en.spr || 0) * (1 - net(eg, "mdef", () => C.groupNet({ buffs: eg.mdef }))) },
-      affinity: aff, skillMult: ((opt.cond && atk.multMax) || atk.mult) / 100 * eq.skillMul, skillFx: eq.skillFx, zone: zoneMult(opt.zone, atk),
+      affinity: aff, skillMult: baseMult / 100 * eq.skillMul, skillFx: eq.skillFx, zone: zoneMult(opt.zone, atk),
       resDown: { phys: net(eg, "p" + atk.atk, () => C.groupNet({ buffs: [...eg.phys, ...(eg.atk[atk.atk] || [])] })),
         type: net(eg, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(eg.type["*"] || []), ...(eg.type[typeKey] || [])] : [] })),
         magic: net(eg, "magic", () => C.groupNet({ buffs: eg.magic })) },

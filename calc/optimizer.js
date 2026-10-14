@@ -160,10 +160,34 @@
     const total = () => { const pre = P.prepare(team, opt); return team.reduce((s, x) => s + wt(x) * ((P.memberDamage(x, team, opt, pre) || {}).perUse || 0), 0); };
     let evals = 0, best = -Infinity;
     const hist = [];
-    for (let pass = 0; pass < (conf.passes ?? 3); pass++) {
+    // 그라스타 가지치기(conf.pruneGrasta, 기본 80) — 광석 조합까지 ~5,300개라 멤버마다 「혼자 꼈을 때 1회 사용 대미지」 상위 N 만 남긴다.
+    //   공유 그라스타(남에게 주는 몫은 이 값에 안 잡힌다)는 항상 남김. 효과 대부분이 같은 그룹 가산이라 한 개 이득 순위 ≈ 조합 순위
+    const N = conf.pruneGrasta ?? 80, pruned = new Map();
+    const poolsFor = x => {
+      if (pruned.has(x.c.id)) return pruned.get(x.c.id);
+      const p = poolsOf(x);
+      let out = p;
+      if (N && p.grasta.length > N) {
+        const pre = P.prepare(team, opt), solo = { ...x, grasta: [] };
+        const t = swapIn(team, solo);
+        const val = g => { solo.grasta = [g]; evals++; return (P.memberDamage(solo, t, opt, pre) || {}).perUse || 0; };
+        const ranked = p.grasta.map(g => [g, val(g)]).sort((a, b) => b[1] - a[1]).map(([g]) => g);
+        const keep = new Set(ranked.slice(0, N));
+        for (const g of p.grasta) if (g.share && !g.ore) keep.add(g);
+        out = { ...p, grasta: p.grasta.filter(g => keep.has(g)) };
+      }
+      pruned.set(x.c.id, out);
+      return out;
+    };
+    // 마지막 다듬기(conf.polish, 기본 켬) — 가지치기 목록이 혼자 기준이라 존 · 공유 시너지로만 크는 그라스타를 놓친다(4인 실측 −5.7%).
+    //   가지치기 반복이 수렴한 뒤 전체 후보로 한 바퀴 더 — 시작점이 좋아 전체 후보 반복보다 빠르다
+    const polish = N && conf.polish !== false;
+    for (let pass = 0, full = false; pass < (conf.passes ?? 3) + (polish ? 1 : 0); pass++) {
       for (const x of order) {
         const others = team.filter(o => o !== x).map(o => ({ m: o, w: wt(o) }));
-        const r = gearOptimize({ ...x, grasta: x.gear.grasta, special: x.gear.special }, team, opt, poolsOf(x),
+        // 지금 낀 그라스타는 후보에 꼭 둔다 — 맞바꾸기로 받은 것이 이 멤버의 가지치기 목록 밖이면 버려져 목표가 내려갔다(2026-10-15)
+        const pf = full ? poolsOf(x) : poolsFor(x), extra = x.gear.grasta.filter(g => g && !pf.grasta.includes(g));
+        const r = gearOptimize({ ...x, grasta: x.gear.grasta, special: x.gear.special }, team, opt, extra.length ? { ...pf, grasta: [...pf.grasta, ...extra] } : pf,
           { ...conf, taken: usage(x), others, selfWeight: wt(x) });
         evals += r.evals;
         Object.assign(x, { weapon: r.gear.weapon, armor: r.gear.armor, badges: r.gear.badges, gear: { grasta: r.gear.grasta, special: r.gear.special || [] },
@@ -189,8 +213,10 @@
         }
       }
       hist.push(v);
-      if (v <= best * (1 + 1e-9)) break;
-      best = v;
+      const stuck = v <= best * (1 + 1e-9);
+      if (!stuck) best = v;
+      if (full) { if (stuck) break; continue; }   // 다듬기에서 올랐으면 전체 후보로 계속
+      if (stuck || pass === (conf.passes ?? 3) - 1) { if (!polish) break; full = true; }
     }
     const pre = P.prepare(team, opt);
     return { team, value: best, hist, evals,
@@ -312,7 +338,28 @@
     return { list, evals, pool: pool.length };
   }
 
-  const api = { baseId, canGrasta, damagePools, grantAttacks, attackPool, gearOptimize, partyGear, bestSetup, bestAttack, scoreParty, partySearch };
+  // 파티 탐색 2단계(2026-10-15) — ① partySearch(지금 · 기본 장비)로 상위 후보 ② 상위 gearTop 개만 partyGear 로 장비를 함께 맞추고
+  //   ③ 장비 낀 점수로 다시 줄 세운다. 장비 탐색은 파티당 수십 초라 전부에 돌릴 수 없다 — 기본 장비 순위가 장비 후 순위와 크게 어긋나지 않는다는 가정
+  //   conf = partySearch conf + { gearTop: 3, poolsOf(member) → 후보, gear: partyGear conf }. objective 'carry' 면 각 파티의 1위 딜러를 carry 로
+  async function partySearchGeared(cands, opt, conf = {}) {
+    const r1 = await partySearch(cands, opt, conf);
+    const byId = new Map(cands.map(m => [m.c.id, m]));
+    const list = [];
+    let evals = r1.evals;
+    for (const p of r1.list.slice(0, conf.gearTop ?? 3)) {
+      const team = p.per.map(x => ({ ...byId.get(x.id), attack: x.attack }));
+      const carry = conf.objective === "carry" ? [...p.per].sort((a, b) => b.expected - a.expected)[0].id : undefined;
+      const g = partyGear(team, { ...opt, zone: p.zone }, conf.poolsOf, { ...(conf.gear || {}), objective: conf.objective === "carry" ? "carry" : "sum", carry });
+      evals += g.evals;
+      const score = carry ? g.per.find(x => x.id === carry).expected : g.value;
+      list.push({ ids: p.ids, zone: p.zone, base: p.score, score, carry, per: g.per });
+      if (conf.tick) await conf.tick(evals);
+    }
+    list.sort((a, b) => b.score - a.score);
+    return { list, stage1: r1.list, evals, pool: r1.pool };
+  }
+
+  const api = { baseId, canGrasta, damagePools, grantAttacks, attackPool, gearOptimize, partyGear, partySearchGeared, bestSetup, bestAttack, scoreParty, partySearch };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEOpt = api;
 })(typeof window !== "undefined" ? window : globalThis);

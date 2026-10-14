@@ -190,11 +190,11 @@
       for (const [k, v] of Object.entries(it.stats || {})) out.stats[k] = (out.stats[k] || 0) + v;
       // 잠재 광석 연성(calc_ore — 같은 종류 효과 값 교체 · 없던 효과 추가)은 opt.ore !== false 일 때(최대 강화 기준, 2026-10-13)
       const own = it.calc_ore && opt.ore !== false ? it.calc_ore : it.calc;
-      // 특수 광석 효과(f.ore)는 글래스터 자체 효과가 지금 조건에서 발동할 때만 — 가정(2026-10-14 사용자 승인, 근거 1쌍):
-      //   태어난 생명 HARD 알마 페인 전/후 ×2.79 = 페인 1.3² × 겨누어 쏘기 1.5 × 장미 1.15(×2.915) 에 가깝고 항상 켜짐(×1.69)과 멀다.
-      //   자체 효과가 스탯뿐(계산 키 없음)이면 조건 없음 → 늘 켬. opt.oreGate === false 면 끈다(항상 켜짐 모델)
+      // 특수 광석 효과(f.ore) — 기본 = 항상 켬(위키 Grasta Enhancements 에 조건 연동 서술 없음).
+      //   opt.oreGate === true 면 글래스터 자체 계산 효과(스탯 제외)가 지금 조건에서 발동할 때만 켠다 — 미확인 가설(2026-10-14):
+      //   태어난 생명 HARD 알마 페인 전/후 ×2.79 는 3턴에만 든 소울 컬랩스(크리 대미지 +25%)를 넣으면 항상 켬 ×2.11 · 연동 ×3.64 — 판정 불가
       const base = (own || []).filter(f => !f.ore && f.k !== "stat");
-      const oreOn = opt.oreGate === false || !base.length || !(own || []).some(f => f.ore) || (() => {
+      const oreOn = opt.oreGate !== true || !base.length || !(own || []).some(f => f.ore) || (() => {
         const t = equipFor([{ name: it.name, calc: base }], atk, opt);
         return t.src.length > 0 || t.crit + t.mcrit + t.critDmg + t.mcritDmg > 0;
       })();

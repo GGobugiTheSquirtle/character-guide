@@ -378,7 +378,9 @@
     const normal = C.damage({ ...o, crit: false }).total;
     const crit = C.damage({ ...o, crit: true, critDmg }).total * (1 + oc) * critX;
     const p = (ag.sureCrit || sx.kesshi) ? 1 : Math.max(0, Math.min(1, rate));
-    const res = { normal, crit, p, expected: p * crit + (1 - p) * normal, o, conds: cx.on, get why() { return [...ag.src, ...eg.src, ...eq.src, ...ev.src, ...cx.on.map(c => `조건: ${c.label} ×${c.x}`)]; } };
+    // perUse = 1회 사용 기대 대미지(1타 × 타수) — 스킬 · 장비 · 파티 비교는 이걸로(1타끼리 비교하면 다단 히트가 저평가된다, 2026-10-15)
+    const hits = Math.max(1, atk.hits || 1), exp1 = p * crit + (1 - p) * normal;
+    const res = { normal, crit, p, expected: exp1, hits, perUse: exp1 * hits, o, conds: cx.on, get why() { return [...ag.src, ...eg.src, ...eq.src, ...ev.src, ...cx.on.map(c => `조건: ${c.label} ×${c.x}`)]; } };
     // 정밀값(ae_pipeline — 딩님 계산기와 정수 일치 엔진): 난수 전 구간 평균. 근사보다 0~0.4% 낮다(단계마다 버림)
     Object.defineProperty(res, "precise", { enumerable: false, get() {
       const P = root.AEPipe || (typeof require === "function" ? require("./ae_pipeline.js") : null);

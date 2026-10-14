@@ -97,10 +97,10 @@
       w.grasta = [...s.grasta, ...(s.special || [])].filter(Boolean); w.badges = s.badges.filter(Boolean);
       evals++;
       const d = P.memberDamage(w, team, opt, pre);
-      const own = (conf.selfWeight ?? 1) * (d ? d.expected : 0);
+      const own = (conf.selfWeight ?? 1) * (d ? d.perUse : 0);
       if (!conf.others || !conf.others.length) return own;
       const sig = w.grasta.filter(g => g.share && !g.ore).map(g => g.name).sort().join("|");   // 남에게 닿는 건 공유 그라스타뿐 — 그 집합이 같으면 다시 안 잰다
-      if (sig !== othersSig) { othersSig = sig; othersV = conf.others.reduce((t, o) => t + o.w * ((P.memberDamage(o.m, team, opt, pre) || {}).expected || 0), 0); }
+      if (sig !== othersSig) { othersSig = sig; othersV = conf.others.reduce((t, o) => t + o.w * ((P.memberDamage(o.m, team, opt, pre) || {}).perUse || 0), 0); }
       return own + othersV;
     };
     let othersSig = null, othersV = 0;
@@ -157,7 +157,7 @@
       }
       return t;
     };
-    const total = () => { const pre = P.prepare(team, opt); return team.reduce((s, x) => s + wt(x) * ((P.memberDamage(x, team, opt, pre) || {}).expected || 0), 0); };
+    const total = () => { const pre = P.prepare(team, opt); return team.reduce((s, x) => s + wt(x) * ((P.memberDamage(x, team, opt, pre) || {}).perUse || 0), 0); };
     let evals = 0, best = -Infinity;
     const hist = [];
     for (let pass = 0; pass < (conf.passes ?? 3); pass++) {
@@ -194,7 +194,7 @@
     }
     const pre = P.prepare(team, opt);
     return { team, value: best, hist, evals,
-      per: team.map(x => ({ id: x.c.id, expected: (P.memberDamage(x, team, opt, pre) || {}).expected || 0, gear: { weapon: x.weapon, armor: x.armor, badges: x.badges, ...x.gear } })) };
+      per: team.map(x => ({ id: x.c.id, expected: (P.memberDamage(x, team, opt, pre) || {}).perUse || 0, gear: { weapon: x.weapon, armor: x.armor, badges: x.badges, ...x.gear } })) };
   }
 
   // 공격까지 고르는 장비 최적화 — attacks 각각에 장비를 맞춰 보고 가장 큰 것
@@ -225,7 +225,7 @@
     for (const a of m.atks) {
       m.attack = a;
       const d = P.memberDamage(m, team, opt, pre);
-      if (d && (!best || d.expected > best.expected)) best = { attack: a, expected: d.expected };
+      if (d && (!best || d.perUse > best.expected)) best = { attack: a, expected: d.perUse, perHit: d.expected };   // expected = 1회 사용(1타 × 타수)
     }
     if (best) m.attack = best.attack;
     return best || { attack: null, expected: 0 };

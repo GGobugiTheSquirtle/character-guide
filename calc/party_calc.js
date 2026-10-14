@@ -120,6 +120,8 @@
         } else hit = false;
         if (hit) g.src.push(`${s.c.nameKo}: ${st} +${u.value}%`);
       }
+    } else if (u.k === "dmg" && u.dir === "UP" && /크리티컬 대미지$/.test(u.what || "")) {   // 한국어 해석기는 크리 대미지를 dmg 로 낸다 — 일반 대미지가 아님(2026-10-15)
+      (/마법 크리티컬/.test(u.what) ? g.mcritDmg : g.critDmg).push(v); g.src.push(`${s.c.nameKo}: ${u.what} +${u.value}%`);
     } else if (u.k === "dmg" && u.dir === "UP" && !/받는|피격/.test(u.what || "") && u.what !== "약점 시 대미지") {
       g.dmg.buffs.push(v); g.src.push(`${s.c.nameKo}: ${u.what} +${u.value}%`);
     } else if (u.k === "buff") {

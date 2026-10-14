@@ -15,7 +15,8 @@
   const ENGINE_KEYS = new Set(["stat", "dmg", "punish", "skillfx", "weak", "crit_rate", "crit_dmg", "growth", "aim", "mpatk", "overthrow", "zonedmg", "wins", "lsally", "seal", "enemies", "fallen", "tstat"]);
   const oreUseful = o => o.kind === "special" && (o.calc || []).length && o.calc.every(f => ENGINE_KEYS.has(f.k) && !f.rank);
   // 글래스터 + 특수 광석 한 덩어리 — 글래스터 하나엔 연성 하나라 잠재 광석 강화(calc_ore)는 빠진다(위키 Grasta Enhancements)
-  const withOre = (g, o) => ({ ...g, name: `${g.name} + ${o.name}`, calc: [...(g.calc || []), ...o.calc], calc_ore: undefined, base: g.name, ore: o.name });
+  const withOre = (g, o) => ({ ...g, name: `${g.name} + ${o.name}`, calc: [...(g.calc || []), ...o.calc], calc_ore: undefined, base: g.name, ore: o.name,
+    oreLimit: o.limit ?? Infinity });
   function damagePools(db, cc, traits, conf = {}) {
     const touches = it => (it.fx || []).some(f => f.k !== "etc" && f.k !== "res") || [...(it.calc || []), ...(it.calc_ore || [])].some(f => f.k !== "res")
       || DMG_STATS.some(k => (it.stats || {})[k]);
@@ -54,9 +55,11 @@
     const gs = conf.grastaSlots ?? 4, bs = conf.badgeSlots ?? 2;
     const w = { ...m };
     const team = swapIn(members, w);
+    // 획득 가능 수(2026-10-14 SV — 1회성 보상 글래스터 · 광석을 여러 개 끼우던 것): 글래스터 = 기본 이름별 limit(위키 획득처, null = 반복 획득),
+    //   특수 광석 = 광석별 oreLimit. 보유 모드(conf.counts)는 보유 수
     const limit = (it, kind) => {
-      if (conf.counts) return conf.counts[it.name] || 0;
-      if (kind === "g") return conf.dupGrasta === false ? 1 : Infinity;
+      if (conf.counts) return conf.counts[kind === "g" ? it.base || it.name : it.name] || 0;
+      if (kind === "g") return conf.dupGrasta === false ? 1 : it.limit ?? Infinity;
       if (kind === "b") return it.kind === "random" ? Infinity : 1;
       return 1;
     };
@@ -84,10 +87,11 @@
         const [key, i] = Array.isArray(sl) ? sl : [sl, -1];
         const pool = key === "weapon" ? pools.weapons : key === "armor" ? pools.armor : key === "grasta" ? pools.grasta : pools.badges;
         const kind = key === "grasta" ? "g" : key === "badges" ? "b" : "e";
-        const used = it => (i < 0 ? 0 : state[key].filter((x, j) => j !== i && x === it).length);
+        const used = it => (i < 0 ? 0 : state[key].filter((x, j) => j !== i && x && (key === "grasta" ? (x.base || x.name) === (it.base || it.name) : x === it)).length);
+        const oreFull = it => key === "grasta" && it.ore && state.grasta.filter((x, j) => j !== i && x && x.ore === it.ore).length >= (it.oreLimit ?? Infinity);
         for (const it of [null, ...pool]) {
           if (it === null && key === "weapon" && pools.weapons.length) continue;
-          if (it && used(it) >= limit(it, kind)) continue;
+          if (it && (used(it) >= limit(it, kind) || oreFull(it))) continue;
           const s2 = { ...state, grasta: [...state.grasta], badges: [...state.badges] };
           if (i < 0) s2[key] = it; else s2[key][i] = it;
           const v = score(s2);

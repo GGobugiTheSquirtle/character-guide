@@ -34,7 +34,7 @@
 
   // 효과 기여 — 멤버마다 효과 단위를 한 번만 분류해 s._contrib 에 둔다(파티 탐색은 같은 멤버를 수십만 번 합친다).
   //   s.fx 를 바꾸면 s._contrib 를 지울 것
-  const newAG = () => ({ pwr: { buffs: [] }, int: { buffs: [] }, spd: { buffs: [] }, type: {}, dmg: { buffs: [] },
+  const newAG = () => ({ pwr: { buffs: [] }, int: { buffs: [] }, spd: { buffs: [] }, type: {}, dmg: { buffs: [] }, wdmg: {},
     crit: [], mcrit: [], critDmg: [], mcritDmg: [], focusPhys: [], focusMag: [], sureCrit: false, overthrow: false,
     mindseye: false, risktaker: false, overcrit: false, movercrit: false, hawk: [], src: [] });
   const newEG = () => ({ phys: [], magic: [], type: {}, atk: {}, def: [], mdef: [], breaks: [], src: [] });
@@ -102,6 +102,9 @@
     if ((m = n.match(/^웨폰 브레이크\((.+)\)$/))) return { id: "wbreak", which: m[1].split(/\s+/).map(x => ATK_EN[x.toLowerCase()] || x) };
     return null;
   }
+  const WEAPON_WORDS = [["검", /(?<![가-힣])검|sword/i], ["도끼", /도끼|ax(?:e)?/i], ["도", /(?<![가-힣])도(?![끼가-힣])|katana/i], ["창", /(?<![가-힣])창|lance|spear/i],
+    ["활", /(?<![가-힣])활|bow/i], ["권갑", /권갑|fist/i], ["망치", /망치|hammer/i], ["지팡이", /지팡이|staff/i]];
+  const weaponsOf = t => (/장착자|equipped/i.test(t) && !/모든 무기|any weapon|all weapon/i.test(t) ? WEAPON_WORDS.filter(([, r]) => r.test(t)).map(([w]) => w) : []);
   function addAlly(g, u, s) {
     const v = (u.value || 0) / 100;
     if ((u.k === "stat_pct") && u.dir === "UP") {
@@ -123,7 +126,11 @@
     } else if (u.k === "dmg" && u.dir === "UP" && /크리티컬 대미지$/.test(u.what || "")) {   // 한국어 해석기는 크리 대미지를 dmg 로 낸다 — 일반 대미지가 아님(2026-10-15)
       (/마법 크리티컬/.test(u.what) ? g.mcritDmg : g.critDmg).push(v); g.src.push(`${s.c.nameKo}: ${u.what} +${u.value}%`);
     } else if (u.k === "dmg" && u.dir === "UP" && !/받는|피격/.test(u.what || "") && u.what !== "약점 시 대미지") {
-      g.dmg.buffs.push(v); g.src.push(`${s.c.nameKo}: ${u.what} +${u.value}%`);
+      // 「검 장착자 대미지」 「Lance and Bow equipped characters」 — 그 무기를 든 멤버만(2026-10-15, 전에는 무기 무관하게 모두)
+      const ws = weaponsOf(`${u.what || ""} ${u.scope || ""} ${u.tc || ""}`);
+      if (ws.length) for (const w of ws) (g.wdmg[w] = g.wdmg[w] || []).push(v);
+      else g.dmg.buffs.push(v);
+      g.src.push(`${s.c.nameKo}: ${u.what} +${u.value}%`);
     } else if (u.k === "buff") {
       if (u.name === "정신 통일") { g.focusMag.push(0.0023); g.src.push(`${s.c.nameKo}: 정신 통일`); }
       else if (u.name === "심기일체") { g.focusPhys.push(0.0023); g.src.push(`${s.c.nameKo}: 심기일체`); }
@@ -311,7 +318,9 @@
     const magic = atk.dep === "magic" || atk.dep === "magicpwr";
     const typeKey = atk.element || null;
     const typeNet = net(ag, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(ag.type["*"] || []), ...(ag.type[typeKey] || [])] : (ag.type["*"] || []) }));
-    const groups = [typeNet, net(ag, "dmg", () => C.groupNet(ag.dmg)), ...eq.groups, ...ev.groups];
+    const wt = (m.weapon && m.weapon.type) || (m.cc && m.cc.weapon) || "";
+    const dmgNet = net(ag, "dmg" + wt, () => C.groupNet({ buffs: [...ag.dmg.buffs, ...(ag.wdmg[wt] || [])] }));
+    const groups = [typeNet, dmgNet, ...eq.groups, ...ev.groups];
     const focus = magic ? ag.focusMag : ag.focusPhys;
     // 정신 통일 · 심기일체 · 호시탐탐 · 하극상(스킬) — 한 감쇠 그룹(각 상한: 정신 통일 250% · 하극상 100%, 합 350%). 딩님 계산기 행 30~32 (2026-10-13)
     const fv = [...(focus.length ? [C.mentalFocus(st.mp || 0, focus)] : []), ...ev.focus,
@@ -364,7 +373,7 @@
         enemy: { lv: (opt.enemy && opt.enemy.lv) || 0, def: en.end || 0, mdef: en.spr || 0 },
         fx: { pct: { pwr: pct(o.buff.pwr), int: pct(o.buff.int), spd: pct(o.buff.spd), def: negPct(defNet), mdef: negPct(mdefNet) },
           resPhysMag: negPct(magic ? o.resDown.magic : o.resDown.phys), resType: negPct(o.resDown.type),
-          typeNE: pct(typeNet), wielder: pct(net(ag, "dmg", () => C.groupNet(ag.dmg))), hawk: focusV ? [focusV * 100, 0] : [],
+          typeNE: pct(typeNet), wielder: pct(dmgNet), hawk: focusV ? [focusV * 100, 0] : [],
           weak: o.weakBuff ? [o.weakBuff * 100] : [], typeE: eq.equip.map(x => x * 100), statusE: [...eq.punishV, ...(sl.statusE || [])],
           enhance: sl.enhance, fallen: sl.fallen, condE: sl.condE, kesshi: sx.kesshi * 100 || undefined, shingan: sx.shingan * 100 || undefined,
           condNB: o.skillFx.map(x => x * 100), critDmg: pct(critDmg), overCrit: oc * 100 || undefined, aim: sum(sl.aim) || undefined,

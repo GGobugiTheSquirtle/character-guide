@@ -71,14 +71,14 @@
         "recover": 1,
         "zone": 1
       },
-      "skills_en": true,
       "traits": [
         "검",
         "바람",
         "엘프",
         "Nicknamer",
         "Arcadia"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "kuchinawa_as",
@@ -142,12 +142,12 @@
         "mode": 2,
         "dot": 1
       },
-      "skills_en": true,
       "traits": [
         "지팡이",
         "땅",
         "Arcadia"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "noble_blossom_alter_as",
@@ -307,7 +307,6 @@
         "atk_debuff": 3,
         "mode": 1
       },
-      "skills_en": true,
       "traits": [
         "Clergy",
         "검",
@@ -316,7 +315,8 @@
         "물",
         "Demon Sword",
         "바르오키"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ruvi",
@@ -345,7 +345,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%eb%a5%f4%a5%a3",
         "ae_wiki": "https://anothereden.wiki/w/Ruvi"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 최대치 UP",
@@ -374,7 +373,8 @@
         "검",
         "Scientist",
         "고양이 애호가"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "eleanor",
@@ -448,13 +448,13 @@
         "atk_buff": 4,
         "atk_state": 1
       },
-      "skills_en": true,
       "traits": [
         "검",
         "결정",
         "Clergy",
         "Glutton"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "dark_devourer_alter",
@@ -522,7 +522,6 @@
         "atk_debuff": 1,
         "atk_buff": 6
       },
-      "skills_en": true,
       "traits": [
         "Sweet tooth",
         "지팡이",
@@ -530,7 +529,8 @@
         "Napper",
         "Future Revolutionary",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "mare",
@@ -586,7 +586,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a1%bc%a5%c1%a5%a7%a5%ea%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Spirika"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 회복",
@@ -629,7 +628,8 @@
         "Dog lover",
         "Estrangement",
         "Star"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "violet_lancer_as",
@@ -726,7 +726,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b0%a5%ec%a5%f3",
         "ae_wiki": "https://anothereden.wiki/w/Glenn"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -771,7 +770,8 @@
         "용",
         "Cursed",
         "Scars of the Wheel of Time"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "noble_specturr",
@@ -840,7 +840,6 @@
         "atk_buff": 2,
         "enemy_utility": 1
       },
-      "skills_en": true,
       "traits": [
         "지팡이",
         "번개",
@@ -850,7 +849,8 @@
         "Spirit Talker",
         "Fairy",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "lovinia_as",
@@ -917,7 +917,6 @@
         "surv_debuff": 2,
         "enemy_utility": 1
       },
-      "skills_en": true,
       "traits": [
         "고양이 애호가",
         "Minstrel",
@@ -925,7 +924,8 @@
         "Spirit Talker",
         "바람",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "meryt",
@@ -979,13 +979,13 @@
         "surv_buff": 1,
         "surv_state": 1
       },
-      "skills_en": true,
       "traits": [
         "권갑",
         "불",
         "Royalty",
         "고양이 애호가"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "cerius_as",
@@ -1035,14 +1035,14 @@
         "attack": 7,
         "atk_debuff": 6
       },
-      "skills_en": true,
       "traits": [
         "활",
         "땅",
         "Dragon Killer",
         "Arcadia",
         "Spicy Lover"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "hismena_es",
@@ -1097,12 +1097,12 @@
         "zone": 1,
         "state_unknown": 1
       },
-      "skills_en": true,
       "traits": [
         "IDA 스쿨",
         "검",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "porcelain_pixie_as",
@@ -1200,7 +1200,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ac%a1%bc%a5%cd%a5%c3%a5%c8",
         "ae_wiki": "https://anothereden.wiki/w/Garnet"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -1235,7 +1234,8 @@
         "Royalty",
         "Amnesia",
         "FFIX"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "steiner",
@@ -1264,7 +1264,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b9%a5%bf%a5%a4%a5%ca%a1%bc",
         "ae_wiki": "https://anothereden.wiki/w/Steiner"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "날리기 무효",
@@ -1295,7 +1294,8 @@
         "검",
         "Weapons",
         "FFIX"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "verdanta",
@@ -1350,7 +1350,6 @@
         "resource": 1,
         "atk_debuff": 1
       },
-      "skills_en": true,
       "traits": [
         "검",
         "물",
@@ -1358,7 +1357,8 @@
         "Spicy Lover",
         "Avenger",
         "Outlaw"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "vivi",
@@ -1387,7 +1387,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d3%a5%d3",
         "ae_wiki": "https://anothereden.wiki/w/Vivi"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 회복",
@@ -1420,7 +1419,8 @@
         "불",
         "물",
         "번개"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "zidane",
@@ -1449,7 +1449,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b8%a5%bf%a5%f3",
         "ae_wiki": "https://anothereden.wiki/w/Zidane"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -1491,7 +1490,8 @@
         "Outlaw",
         "Lovesick",
         "FFIX"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "silver_striker_as",
@@ -1615,13 +1615,13 @@
         "atk_buff": 1,
         "atk_debuff": 1
       },
-      "skills_en": true,
       "traits": [
         "창",
         "그림자",
         "Future Revolutionary",
         "Bookworm"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "mildy",
@@ -1694,13 +1694,13 @@
         "atk_state": 1,
         "surv_state": 1
       },
-      "skills_en": true,
       "traits": [
         "지팡이",
         "결정",
         "Future Revolutionary",
         "Minstrel"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "dream_weaver_as",
@@ -1833,7 +1833,6 @@
         "atk_state": 4,
         "zone": 1
       },
-      "skills_en": true,
       "traits": [
         "지팡이",
         "결정",
@@ -1841,7 +1840,8 @@
         "Estrangement",
         "Art",
         "Napper"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "vares",
@@ -1900,13 +1900,13 @@
         "recover": 2,
         "atk_state": 1
       },
-      "skills_en": true,
       "traits": [
         "도끼",
         "그림자",
         "Beast",
         "Glasses"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "myrus_es",
@@ -1956,13 +1956,13 @@
         "zone": 1,
         "atk_state": 1
       },
-      "skills_en": true,
       "traits": [
         "Beast",
         "도끼",
         "Lovesick",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "black_clad_sw_as",
@@ -2076,14 +2076,14 @@
         "zone": 1,
         "atk_debuff": 1
       },
-      "skills_en": true,
       "traits": [
         "Mask",
         "지팡이",
         "Hood",
         "Amnesia",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ruby_sleeved_merchant_alter",
@@ -2141,7 +2141,6 @@
         "surv_state": 2,
         "power": 2
       },
-      "skills_en": true,
       "traits": [
         "검",
         "땅",
@@ -2150,7 +2149,8 @@
         "Scallywag",
         "Spicy Lover",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "cyan_scyther_as",
@@ -2273,13 +2273,13 @@
         "recover": 1,
         "mode": 2
       },
-      "skills_en": true,
       "traits": [
         "검",
         "불",
         "COA",
         "IDA 스쿨"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "selfless_seeker_alter",
@@ -2339,13 +2339,13 @@
         "surv_state": 1,
         "recover": 1
       },
-      "skills_en": true,
       "traits": [
         "활",
         "땅",
         "Outlaw",
         "Gun"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "red_clad_flam_as",
@@ -2460,14 +2460,14 @@
         "attack": 1,
         "power": 1
       },
-      "skills_en": true,
       "traits": [
         "망치",
         "번개",
         "Miner",
         "Chronos Empire",
         "Glasses"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "gunce_as",
@@ -2523,7 +2523,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%eb%a5%c9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Aldo_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -2574,7 +2573,8 @@
         "Arcadia",
         "Itto-Ryu",
         "Demon Sword"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "nilya",
@@ -2603,7 +2603,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%cb%a5%eb%a5%e4",
         "ae_wiki": "https://anothereden.wiki/w/Nilya"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -2642,7 +2641,8 @@
         "Dog lover",
         "Forager",
         "MMA"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "jilya",
@@ -2698,7 +2698,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%aa%a5%f3%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Shion_(Extra_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -2740,7 +2739,8 @@
         "Itto-Ryu",
         "번개",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "laika",
@@ -2796,7 +2796,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bb%a5%f3%a5%e4%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Senya_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -2842,7 +2841,8 @@
         "Fairy",
         "Itto-Ryu",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "jet_tactician_as",
@@ -2871,7 +2871,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%cb%cf%c0%f7%a4%ce%b7%b3%bb%d5%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Shion_(Alter)_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 회복",
@@ -2895,7 +2894,8 @@
         "atk_buff": 2,
         "tempo": 1,
         "atk_state": 1
-      }
+      },
+      "skills_en": true
     },
     {
       "id": "kuramaru",
@@ -2951,7 +2951,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b3%a5%de%a5%c1%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Komachi_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -2982,7 +2981,8 @@
         "창",
         "땅",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "hoarfrost_songstress_alter",
@@ -3011,7 +3011,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%c9%b9%bf%d0%a4%ce%b2%ce%c9%b1",
         "ae_wiki": "https://anothereden.wiki/w/Yukino_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -3056,7 +3055,8 @@
         "동방",
         "Fairy",
         "Minstrel"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "krervo_as",
@@ -3085,7 +3085,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%ec%a5%eb%a5%f4%a5%a9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Krervo_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP (수치)",
@@ -3130,7 +3129,8 @@
         "지팡이",
         "KMS",
         "IDA 스쿨"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "kagurame",
@@ -3159,7 +3159,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ab%a5%b0%a5%e9%a5%e1",
         "ae_wiki": "https://anothereden.wiki/w/Kagurame"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -3204,7 +3203,8 @@
         "Fairy",
         "Sharp Ears",
         "Funeral"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "forlorn_thespian_alter",
@@ -3233,7 +3233,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%bc%e4%d5%eb%a4%ce%c9%f1%c2%e6%bf%cd",
         "ae_wiki": "https://anothereden.wiki/w/Lokido_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -3269,7 +3268,8 @@
         "땅",
         "Beast",
         "Bookworm"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "necoco_es",
@@ -3298,7 +3298,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a4%cd%a4%b3%a4%b3%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Necoco_(Extra_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -3346,7 +3345,8 @@
         "바람",
         "Land of Mi",
         "Spirit Talker"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "elseal_as",
@@ -3375,7 +3375,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a8%a5%eb%a5%b7%a1%bc%a5%eb%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Elseal_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -3417,7 +3416,8 @@
         "물",
         "Bookworm",
         "Weapons"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "empel",
@@ -3446,7 +3446,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%f3%a5%da%a5%eb",
         "ae_wiki": "https://anothereden.wiki/w/Empel"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -3496,7 +3495,8 @@
         "Glasses",
         "Atelier",
         "Bookworm"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "id",
@@ -3525,7 +3525,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%c9",
         "ae_wiki": "https://anothereden.wiki/w/Id"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 최대치 UP",
@@ -3568,7 +3567,8 @@
         "권갑",
         "땅",
         "연옥계"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "hazama",
@@ -3624,7 +3624,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%e9%a5%a6%a5%c7%a5%a3%a5%a2",
         "ae_wiki": "https://anothereden.wiki/w/Klaudia"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -3675,7 +3674,8 @@
         "물",
         "Atelier",
         "Cooking"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ryza",
@@ -3704,7 +3704,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%a4%a5%b6",
         "ae_wiki": "https://anothereden.wiki/w/Ryza"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -3756,7 +3755,8 @@
         "Atelier",
         "Forager",
         "Miner"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "izuna",
@@ -3785,7 +3785,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%c5%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Izuna"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -3824,7 +3823,8 @@
         "Mask",
         "Estrangement",
         "Amnesia"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "rufus_as",
@@ -3853,7 +3853,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%eb%a1%bc%a5%d5%a5%b9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Rufus_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 회복",
@@ -3889,7 +3888,8 @@
         "권갑",
         "Bookworm",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "nocturne_ninja_alter",
@@ -3918,7 +3918,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%b1%a8%cc%eb%a4%ce%b1%a3%cc%a9",
         "ae_wiki": "https://anothereden.wiki/w/Tsubame_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -3958,7 +3957,8 @@
         "고양이 애호가",
         "Glutton",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "sesta_as",
@@ -3987,7 +3987,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bb%a5%b9%a5%bf%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Sesta_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -4027,7 +4026,8 @@
         "도",
         "바람",
         "Avenger"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "senya",
@@ -4056,7 +4056,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bb%a5%f3%a5%e4",
         "ae_wiki": "https://anothereden.wiki/w/Senya"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -4095,7 +4094,8 @@
         "Hood",
         "Fairy",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "shigure_es",
@@ -4124,7 +4124,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%b0%a5%ec%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Shigure_(Extra_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -4177,7 +4176,8 @@
         "Itto-Ryu",
         "바람",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "lingli_as",
@@ -4206,7 +4206,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ea%a5%f3%a5%ea%a1%bc%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Lingli_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "대미지 UP",
@@ -4236,7 +4235,8 @@
         "불",
         "Land of Shin",
         "MMA"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "kula",
@@ -4265,7 +4265,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a1%bc%a5%e9",
         "ae_wiki": "https://anothereden.wiki/w/Kula"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -4303,7 +4302,8 @@
         "KOF",
         "Sweet tooth",
         "MMA"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "kyo",
@@ -4332,7 +4332,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%b5%fe",
         "ae_wiki": "https://anothereden.wiki/w/Kyo"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -4363,7 +4362,8 @@
         "Mounted",
         "KOF",
         "MMA"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "mai",
@@ -4392,7 +4392,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%c9%f1",
         "ae_wiki": "https://anothereden.wiki/w/Mai"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -4425,7 +4424,8 @@
         "Lovesick",
         "KOF",
         "MMA"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "thornbound_witch_alter",
@@ -4454,7 +4454,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%b0%f1%bc%f6%a4%ce%b1%f0%bd%f7",
         "ae_wiki": "https://anothereden.wiki/w/Shanie_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -4504,7 +4503,8 @@
         "고양이 애호가",
         "Lovesick",
         "Hood"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "terry",
@@ -4533,7 +4533,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c6%a5%ea%a1%bc",
         "ae_wiki": "https://anothereden.wiki/w/Terry"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -4563,7 +4562,8 @@
         "땅",
         "KOF",
         "MMA"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "zilva_as",
@@ -4592,7 +4592,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b8%a5%eb%a5%d0%a1%bc%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Zilva_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "대미지 UP",
@@ -4632,7 +4631,8 @@
         "Art",
         "땅",
         "Outlaw"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "utpalaka",
@@ -4661,7 +4661,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a6%a5%c4%a5%cf%a5%e9",
         "ae_wiki": "https://anothereden.wiki/w/Utpalaka"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -4704,7 +4703,8 @@
         "Dragon Killer",
         "연옥계",
         "Arcadia"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "undercover_scribe_alter",
@@ -4733,7 +4733,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%f0%eb%b3%a2%a4%ce%c6%a4%bc%ea",
         "ae_wiki": "https://anothereden.wiki/w/Renri_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -4778,7 +4777,8 @@
         "Outlaw",
         "Bookworm",
         "Gun"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "minalca_as",
@@ -4807,7 +4807,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%ca%a5%eb%a5%ab%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Minalca_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -4849,7 +4848,8 @@
         "Chronos Empire",
         "불",
         "Outlaw"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "tetra_as",
@@ -4905,7 +4905,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a3%a1%bc%a5%cd%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Feinne_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -4950,7 +4949,8 @@
         "바르오키",
         "Geo",
         "Demon Sword"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "jillfunny",
@@ -4979,7 +4979,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b8%a5%eb%a5%d5%a5%a1%a5%cb%a1%bc",
         "ae_wiki": "https://anothereden.wiki/w/Jillfunny"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -5025,7 +5024,8 @@
         "고양이 애호가",
         "Hood",
         "Amnesia"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "pyggie",
@@ -5108,7 +5108,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%de%a5%c4%a5%ea%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Mazrika"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -5157,7 +5156,8 @@
         "Hood",
         "연옥계",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "yakumo_as",
@@ -5186,7 +5186,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e4%a5%af%a5%e2%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Yakumo_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 최대치 UP",
@@ -5238,7 +5237,8 @@
         "Estrangement",
         "그림자",
         "Glasses"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "kumos_as",
@@ -5293,7 +5293,6 @@
         "namu": "https://namu.wiki/w/%EC%A0%84%EC%98%81%EC%9D%98%20%EC%83%9B%EB%B3%84",
         "ae_wiki": "https://anothereden.wiki/w/Ciel_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -5338,7 +5337,8 @@
         "Mask",
         "Sweet tooth",
         "Hood"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "anabel_es",
@@ -5367,7 +5367,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%ca%a5%d9%a5%eb%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Anabel_(Extra_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -5424,7 +5423,8 @@
         "Mounted",
         "Shield",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "xianhua",
@@ -5453,7 +5453,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%a7%a5%f3%a5%d5%a5%a1",
         "ae_wiki": "https://anothereden.wiki/w/Xianhua"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 최대치 UP",
@@ -5483,7 +5482,8 @@
         "Scientist",
         "동방",
         "Synth Human"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "kuchinawa",
@@ -5512,7 +5512,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%c1%a5%ca%a5%ef",
         "ae_wiki": "https://anothereden.wiki/w/Kuchinawa"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -5554,7 +5553,8 @@
         "지팡이",
         "땅",
         "Arcadia"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "daisy_as",
@@ -5583,7 +5583,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d2%a5%ca%a5%ae%a5%af%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Daisy_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP (수치)",
@@ -5627,7 +5626,8 @@
         "Dog lover",
         "연옥계",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ewella_as",
@@ -5656,7 +5656,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%a6%a5%a7%a5%e9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Ewella_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -5703,7 +5702,8 @@
         "창",
         "물",
         "결정"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "sazanca",
@@ -5732,7 +5732,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b5%a5%b6%a5%f3%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Sazanca"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -5790,7 +5789,8 @@
         "Dragon Killer",
         "Glutton",
         "Forager"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "melpiphia",
@@ -5819,7 +5819,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%eb%a5%d4%a5%d4%a5%a2",
         "ae_wiki": "https://anothereden.wiki/w/Melpiphia"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -5861,7 +5860,8 @@
         "엘프",
         "Nicknamer",
         "Arcadia"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "iridian_attack",
@@ -5970,7 +5970,6 @@
         "namu": "https://namu.wiki/w/%EA%B5%AD%ED%99%94%EC%9D%98%EA%B2%80%EC%83%89%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Akane_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -6010,7 +6009,8 @@
         "동방",
         "Itto-Ryu",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "thillelille_es",
@@ -6039,7 +6039,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c1%a5%eb%a5%ea%a5%eb%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Thillelille_(Extra_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 최대치 UP",
@@ -6081,7 +6080,8 @@
         "서방",
         "검",
         "결정"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "moke",
@@ -6137,7 +6137,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%eb%a5%de%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Alma_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -6187,7 +6186,8 @@
         "Alchemist",
         "결정",
         "Glasses"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "wenefica",
@@ -6216,7 +6216,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Wenefica",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a6%a5%a7%a5%cd%a1%bc%a5%d5%a5%a3%a5%ab"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 DOWN",
@@ -6256,7 +6255,8 @@
         "Cursed",
         "바르오키",
         "Avenger"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "cyrus_albright",
@@ -6285,7 +6285,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b5%a5%a4%a5%e9%a5%b9%a1%a6%a5%aa%a5%eb%a5%d6%a5%e9%a5%a4%a5%c8",
         "ae_wiki": "https://anothereden.wiki/w/Cyrus_Albright"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 회복",
@@ -6317,7 +6316,8 @@
         "번개",
         "Bookworm",
         "Traveler"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "oboro",
@@ -6346,7 +6346,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%aa%a5%dc%a5%ed",
         "ae_wiki": "https://anothereden.wiki/w/Oboro"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -6386,7 +6385,8 @@
         "KMS",
         "고양이 애호가",
         "Lovesick"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "partitio",
@@ -6415,7 +6415,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d1%a5%eb%a5%c6%a5%c6%a5%a3%a5%aa",
         "ae_wiki": "https://anothereden.wiki/w/Partitio"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -6449,7 +6448,8 @@
         "활",
         "불",
         "Traveler"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "tithi",
@@ -6478,7 +6478,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c6%a5%a3%a5%c6%a5%a3",
         "ae_wiki": "https://anothereden.wiki/w/Tithi"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "가창",
@@ -6512,7 +6511,8 @@
         "권갑",
         "번개",
         "Traveler"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "cerius",
@@ -6540,7 +6540,6 @@
         "namu": "https://namu.wiki/w/%EC%84%B8%EB%A6%AC%EC%97%90%EC%8A%A4",
         "ae_wiki": "https://anothereden.wiki/w/Cerius"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -6577,7 +6576,8 @@
         "Dragon Killer",
         "Arcadia",
         "Spicy Lover"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "wryz",
@@ -6606,7 +6606,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ea%a5%e5%a5%bc",
         "ae_wiki": "https://anothereden.wiki/w/Wryz"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 회복",
@@ -6640,7 +6639,8 @@
         "Dragon Killer",
         "Arcadia",
         "용"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "pom_as",
@@ -6669,7 +6669,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%dd%a5%e0%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Pom_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -6704,7 +6703,8 @@
         "지팡이",
         "Gun",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "orleya_as",
@@ -6733,7 +6733,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Orleya_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%aa%a5%eb%a5%ec%a5%a4%a5%a2%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -6775,7 +6774,8 @@
         "Estrangement",
         "불",
         "번개"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "porcelain_pixie_alter",
@@ -6803,7 +6803,6 @@
         "namu": "https://namu.wiki/w/%EB%B0%B1%EC%9E%90%EC%9D%98%20%EB%A7%88%EC%9D%B8",
         "ae_wiki": "https://anothereden.wiki/w/Myunfa_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -6855,7 +6854,8 @@
         "Lovesick",
         "Cat Hater",
         "Land of Shin"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "kamlanage",
@@ -6884,7 +6884,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ab%a5%e0%a5%e9%a5%ca%a1%bc%a5%b8%a5%e5",
         "ae_wiki": "https://anothereden.wiki/w/Kamlanage"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -6924,7 +6923,8 @@
         "Prince of Time",
         "Paradoxical Dreamers' Leader",
         "Future Revolutionary"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "velette",
@@ -6953,7 +6953,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%f4%a5%a7%a5%ec%a5%c3%a5%c8",
         "ae_wiki": "https://anothereden.wiki/w/Velette"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 최대치 UP",
@@ -6992,7 +6991,8 @@
         "번개",
         "Miner",
         "Chronos Empire"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "gunce",
@@ -7075,7 +7075,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d1%a5%ea%a5%b5%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Parisa_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -7103,7 +7102,8 @@
         "활",
         "Cursed",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "dream_weaver_alter",
@@ -7131,7 +7131,6 @@
         "namu": "https://namu.wiki/w/%EA%BF%88%EC%9D%98%20%EC%9D%8C%EC%9C%A0%20%EC%8B%9C%EC%9D%B8",
         "ae_wiki": "https://anothereden.wiki/w/Dunarith_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -7175,7 +7174,8 @@
         "Minstrel",
         "Spicy Lover",
         "연옥계"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "melody_as",
@@ -7204,7 +7204,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%ed%a5%c7%a5%a3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Melody_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 최대치 UP",
@@ -7243,7 +7242,8 @@
         "지팡이",
         "Estrangement",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "noahxis_as",
@@ -7272,7 +7272,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ce%a5%af%a5%b7%a5%b9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Noahxis_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "기절",
@@ -7304,7 +7303,8 @@
         "망치",
         "Scientist",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "felmina_es",
@@ -7333,7 +7333,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a7%a5%eb%a5%df%a5%ca%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Felmina_(Extra_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "ZONE 기타",
         "날리기 무효",
@@ -7374,7 +7373,8 @@
         "Ninja",
         "물",
         "Hood"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "elseal",
@@ -7403,7 +7403,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a8%a5%eb%a5%b7%a1%bc%a5%eb",
         "ae_wiki": "https://anothereden.wiki/w/Elseal"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -7437,7 +7436,8 @@
         "물",
         "Bookworm",
         "Weapons"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "premaya_as",
@@ -7466,7 +7466,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d7%a5%ec%a5%e1%a5%a2%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Premaya_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 최대치 UP",
         "MP 회복",
@@ -7503,7 +7502,8 @@
         "Machinery",
         "로스트 랩",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "crimson_reaper_alter",
@@ -7531,7 +7531,6 @@
         "namu": "https://namu.wiki/w/%EC%8B%AC%ED%99%8D%EC%9D%98%20%EC%82%AC%EC%9E%90",
         "ae_wiki": "https://anothereden.wiki/w/Ilulu_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "ZONE 기타",
         "기절",
@@ -7561,7 +7560,8 @@
         "도끼",
         "연옥계",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "limil",
@@ -7617,7 +7617,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d4%a5%c1%a5%ab%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Pizzica_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -7650,7 +7649,8 @@
         "Northern",
         "활",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "pisce",
@@ -7706,7 +7706,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Nona_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ce%a1%bc%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -7740,7 +7739,8 @@
         "Hood",
         "물",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "sesta",
@@ -7769,7 +7769,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bb%a5%b9%a5%bf",
         "ae_wiki": "https://anothereden.wiki/w/Sesta"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "ZONE 기타",
@@ -7802,7 +7801,8 @@
         "도",
         "바람",
         "Avenger"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "toova_es",
@@ -7831,7 +7831,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Toova_(Extra_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c8%a5%a5%a1%bc%a5%f4%a5%a1%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -7877,7 +7876,8 @@
         "Funeral",
         "물",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "lovely_as",
@@ -7906,7 +7906,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Lovely_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%d6%a5%ea%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -7943,7 +7942,8 @@
         "Dwarf",
         "Nicknamer",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "cerrine_as",
@@ -7972,7 +7972,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%a7%a5%ea%a1%bc%a5%cc%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Cerrine_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "ZONE 기타",
         "기절",
@@ -7999,7 +7998,8 @@
         "Outlaw",
         "권갑",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "beautiful_stranger_alter",
@@ -8027,7 +8027,6 @@
         "namu": "https://namu.wiki/w/%EC%9E%94%EC%98%81%EC%9D%98%20%EA%B0%80%EC%9D%B8",
         "ae_wiki": "https://anothereden.wiki/w/Shannon_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "ZONE 기타",
         "공격 대미지 흡수",
@@ -8060,7 +8059,8 @@
         "Dog lover",
         "Amnesia",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "yakumo",
@@ -8089,7 +8089,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e4%a5%af%a5%e2",
         "ae_wiki": "https://anothereden.wiki/w/Yakumo"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 회복",
@@ -8125,7 +8124,8 @@
         "KMS",
         "Estrangement",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "kumos",
@@ -8181,7 +8181,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c7%a5%e5%a1%bc%a5%a4%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Dewey_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "ZONE 기타",
         "다단 강화",
@@ -8223,7 +8222,8 @@
         "Gun",
         "로스트 랩",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "vermillion_whip_alter",
@@ -8251,7 +8251,6 @@
         "namu": "https://namu.wiki/w/%EC%9D%80%EC%A3%BC%EC%9D%98%20%EA%B5%AC%EB%AF%B8%ED%98%B8",
         "ae_wiki": "https://anothereden.wiki/w/Hozuki_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -8286,7 +8285,8 @@
         "Fairy",
         "불",
         "Land of Shin"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "mariel_es",
@@ -8315,7 +8315,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%de%a5%ea%a5%a8%a5%eb%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Mariel_(Extra_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -8355,7 +8354,8 @@
         "Clergy",
         "권갑",
         "결정"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "heena_as",
@@ -8384,7 +8384,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d2%a5%a4%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Heena_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 최대치 DOWN",
         "MP 회복",
@@ -8416,7 +8415,8 @@
         "Machinery",
         "바람",
         "Land of Ro"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "garambarrel_as",
@@ -8445,7 +8445,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ac%a5%e9%a5%e0%a5%d0%a5%ec%a5%eb%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Garambarrel_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -8478,7 +8477,8 @@
         "Cursed",
         "Titan",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ashtear",
@@ -8555,7 +8555,6 @@
         "power": 8,
         "atk_state": 2
       },
-      "skills_en": true,
       "traits": [
         "권갑",
         "Glasses",
@@ -8563,7 +8562,8 @@
         "바르오키",
         "Gun",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "korobo",
@@ -8619,7 +8619,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%ca%a5%eb%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Minalca"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -8648,7 +8647,8 @@
         "Chronos Empire",
         "불",
         "Outlaw"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "tetra",
@@ -8785,7 +8785,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%e9%a5%e0%a5%e9%a5%d4%a5%b9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Flammelapis_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 최대치 UP",
@@ -8818,7 +8817,8 @@
         "물",
         "Demon Sword",
         "바르오키"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "iphi",
@@ -8859,14 +8859,14 @@
         "resource": 1,
         "tempo": 1
       },
-      "skills_en": true,
       "traits": [
         "지팡이",
         "Gun",
         "Spicy Lover",
         "불",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "noble_blossom_alter",
@@ -8894,7 +8894,6 @@
         "namu": "https://namu.wiki/w/%EA%BD%83%ED%94%BC%EC%9A%B0%EB%8A%94%20%EA%B3%B5%EC%A3%BC",
         "ae_wiki": "https://anothereden.wiki/w/Tsukiha_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -8931,7 +8930,8 @@
         "Fairy",
         "불",
         "Land of Ro"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "necoco_as",
@@ -8960,7 +8960,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a4%cd%a4%b3%a4%b3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Necoco_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -8992,7 +8991,8 @@
         "땅",
         "Land of Mi",
         "Spirit Talker"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "alphen",
@@ -9021,7 +9021,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%eb%a5%d5%a5%a7%a5%f3",
         "ae_wiki": "https://anothereden.wiki/w/Alphen"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -9056,7 +9055,8 @@
         "Tales of",
         "Concerto Artes",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "colette",
@@ -9085,7 +9085,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b3%a5%ec%a5%c3%a5%c8",
         "ae_wiki": "https://anothereden.wiki/w/Colette"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "기절",
@@ -9117,7 +9116,8 @@
         "Dog lover",
         "Tales of",
         "Concerto Artes"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "moonlight_flower_alter",
@@ -9146,7 +9146,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%b7%ee%b2%da%a4%ce%ce%e1%be%ee",
         "ae_wiki": "https://anothereden.wiki/w/Hismena_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "ZONE 기타",
         "마법 크리티컬율 UP",
@@ -9173,7 +9172,8 @@
         "검",
         "IDA 스쿨",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "lloyd",
@@ -9202,7 +9202,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ed%a5%a4%a5%c9",
         "ae_wiki": "https://anothereden.wiki/w/Lloyd"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -9235,7 +9234,8 @@
         "Tales of",
         "Concerto Artes",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "shionne",
@@ -9264,7 +9264,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%aa%a5%f3%28%a5%c6%a5%a4%a5%eb%a5%ba%29",
         "ae_wiki": "https://anothereden.wiki/w/Shionne"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -9300,7 +9299,8 @@
         "Tales of",
         "Concerto Artes",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "biaka_as",
@@ -9329,7 +9329,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%f4%a5%a3%a5%a2%a5%c3%a5%ab%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Biaka_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "대미지 UP",
@@ -9367,7 +9366,8 @@
         "Military",
         "Gun",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "cynthia_as",
@@ -9396,7 +9396,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%f3%a5%b7%a5%a2%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Cynthia_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "ZONE 기타",
         "대미지 UP",
@@ -9425,7 +9424,8 @@
         "Bookworm",
         "Bind",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "claude_es",
@@ -9454,7 +9454,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Claude_(Extra_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%ed%a1%bc%a5%c9%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -9496,7 +9495,8 @@
         "Bookworm",
         "용",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "aisha",
@@ -9525,7 +9525,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%a3%a5%b7%a5%e3",
         "ae_wiki": "https://anothereden.wiki/w/Aisha"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -9564,7 +9563,8 @@
         "Cursed",
         "불",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "soira_as",
@@ -9593,7 +9593,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bd%a5%a4%a5%e9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Soira_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "도발",
@@ -9623,7 +9622,8 @@
         "창",
         "Napper",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "uquaji",
@@ -9652,7 +9652,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a6%a5%af%a5%a2%a1%bc%a5%b8",
         "ae_wiki": "https://anothereden.wiki/w/Uquaji"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "기절",
@@ -9678,7 +9677,8 @@
       "traits": [
         "권갑",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "yukino_as",
@@ -9707,7 +9707,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a5%ad%a5%ce%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Yukino_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 최대치 UP (수치)",
         "HP 회복",
@@ -9739,7 +9738,8 @@
         "활",
         "Fairy",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "lele_as",
@@ -9768,7 +9768,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ec%a5%ec%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Lele_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -9798,7 +9797,8 @@
         "지팡이",
         "Animal Talker",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "alma",
@@ -9827,7 +9827,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%eb%a5%de",
         "ae_wiki": "https://anothereden.wiki/w/Alma"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -9862,7 +9861,8 @@
         "Alchemist",
         "결정",
         "Glasses"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "yipha_as",
@@ -9891,7 +9891,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Yipha_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a1%bc%a5%d5%a5%a1%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "날리기 무효",
@@ -9926,7 +9925,8 @@
         "Nicknamer",
         "Spicy Lover",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "azami_as",
@@ -9955,7 +9955,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Azami_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%b6%a5%df%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "대미지 UP",
@@ -9981,7 +9980,8 @@
         "Lovesick",
         "바람",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "jet_tactician_alter",
@@ -10009,7 +10009,6 @@
         "namu": "https://namu.wiki/w/%EB%A8%B9%EB%B9%9B%EC%9D%98%20%EC%B1%85%EC%82%AC",
         "ae_wiki": "https://anothereden.wiki/w/Shion_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "ZONE 기타",
         "불 속성 저항 DOWN",
@@ -10034,7 +10033,8 @@
         "Itto-Ryu",
         "불",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "radias_as",
@@ -10063,7 +10063,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%c7%a5%a3%a5%a2%a5%b9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Radias_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -10096,7 +10095,8 @@
         "검",
         "Shield",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "miyu_es",
@@ -10125,7 +10125,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Miyu_(Extra_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a1%bc%a5%e6%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "기절",
@@ -10157,7 +10156,8 @@
         "Royalty",
         "땅",
         "번개"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "noahxis",
@@ -10186,7 +10186,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ce%a5%af%a5%b7%a5%b9",
         "ae_wiki": "https://anothereden.wiki/w/Noahxis"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "기절",
@@ -10214,7 +10213,8 @@
         "망치",
         "Scientist",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "nona",
@@ -10243,7 +10243,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Nona",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ce%a1%bc%a5%ca"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -10272,7 +10271,8 @@
         "Hood",
         "물",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "orleya",
@@ -10301,7 +10301,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Orleya",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%aa%a5%eb%a5%ec%a5%a4%a5%a2"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -10336,7 +10335,8 @@
         "Estrangement",
         "불",
         "번개"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "milsha_as",
@@ -10365,7 +10365,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Milsha_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%eb%a5%b7%a5%e3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -10402,7 +10401,8 @@
         "Fishman",
         "땅",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "philo_as",
@@ -10431,7 +10431,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a3%a5%ed%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Philo_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -10457,7 +10456,8 @@
         "도끼",
         "Woodcutter",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "otoha_as",
@@ -10486,7 +10486,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%aa%a5%c8%a5%cf%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Otoha_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -10511,7 +10510,8 @@
         "Zoology",
         "땅",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "mayu",
@@ -10540,7 +10540,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%de%a5%e6",
         "ae_wiki": "https://anothereden.wiki/w/Mayu"
       },
-      "skills_en": true,
       "effect_tags": [
         "대미지 UP",
         "독",
@@ -10572,7 +10571,8 @@
         "지팡이",
         "IDA 스쿨",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "suzette_es",
@@ -10601,7 +10601,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%e5%a5%bc%a5%c3%a5%c8%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Suzette_(Extra_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "다단 강화",
@@ -10628,7 +10627,8 @@
         "Gourmet",
         "로스트 랩",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "silver_striker_alter",
@@ -10656,7 +10656,6 @@
         "namu": "https://namu.wiki/w/%EC%9D%80%EB%B9%9B%EC%9D%84%20%ED%9C%98%EA%B0%90%EC%9D%80%20%EB%B2%88%EA%B0%9C%EC%88%A0%EC%82%AC",
         "ae_wiki": "https://anothereden.wiki/w/Premaya_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -10688,7 +10687,8 @@
         "번개",
         "Lovesick",
         "Hood"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "starky",
@@ -10717,7 +10717,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%c0%b1%a4%ce%bb%d2",
         "ae_wiki": "https://anothereden.wiki/w/Starky"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP (수치)",
@@ -10766,7 +10765,8 @@
         "지팡이",
         "Scars of the Wheel of Time",
         "결정"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "violet_lancer_alter",
@@ -10794,7 +10794,6 @@
         "namu": "https://namu.wiki/w/%EB%B3%B4%EB%9D%BC%20%EC%9D%98%EC%83%81%EC%9D%98%20%EC%B0%BD%EC%88%A0%EC%82%AC",
         "ae_wiki": "https://anothereden.wiki/w/Toova_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP (수치)",
@@ -10832,7 +10831,8 @@
         "로스트 랩",
         "땅",
         "Amnesia"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "flammelapis",
@@ -10861,7 +10861,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%e9%a5%e0%a5%e9%a5%d4%a5%b9",
         "ae_wiki": "https://anothereden.wiki/w/Flammelapis"
       },
-      "skills_en": true,
       "effect_tags": [
         "MP 회복",
         "기절",
@@ -10891,7 +10890,8 @@
         "물",
         "Demon Sword",
         "바르오키"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "mistrare_as",
@@ -10920,7 +10920,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Mistrare_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%b9%a5%c8%a5%ec%a5%a2%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -10962,7 +10961,8 @@
         "Bookworm",
         "바람",
         "결정"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "cyan_scyther_alter",
@@ -10990,7 +10990,6 @@
         "namu": "https://namu.wiki/w/%ED%91%B8%EB%A5%B8%20%EB%B9%9B%EC%9D%98%20%EB%82%AB%EC%9E%A1%EC%9D%B4",
         "ae_wiki": "https://anothereden.wiki/w/Suzette_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "MP 회복",
         "ZONE 기타",
@@ -11025,7 +11024,8 @@
         "Gourmet",
         "로스트 랩",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "red_clad_flam_alter",
@@ -11053,7 +11053,6 @@
         "namu": "https://namu.wiki/w/%EB%B9%A8%EA%B0%84%20%EC%99%B8%ED%88%AC%EC%9D%98%20%ED%99%94%EC%97%BC%EC%88%A0%EC%82%AC",
         "ae_wiki": "https://anothereden.wiki/w/Dewey_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "ZONE 기타",
@@ -11090,7 +11089,8 @@
         "결정",
         "IDA 스쿨",
         "Hood"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "zeviro_as",
@@ -11119,7 +11119,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bc%a5%f4%a5%a3%a1%bc%a5%ed%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Zeviro_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -11149,7 +11148,8 @@
         "Hood",
         "연옥계",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "black_clad_sw_alter",
@@ -11177,7 +11177,6 @@
         "namu": "https://namu.wiki/w/%EA%B2%80%EC%9D%80%20%EC%98%B7%EC%9D%98%20%EC%B9%BC%EC%9E%A1%EC%9D%B4",
         "ae_wiki": "https://anothereden.wiki/w/Isuka_(Alter)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -11210,7 +11209,8 @@
         "Power to Rule",
         "땅",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "eva",
@@ -11239,7 +11239,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a8%a5%f4%a5%a1",
         "ae_wiki": "https://anothereden.wiki/w/Eva"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -11278,7 +11277,8 @@
         "용",
         "물",
         "결정"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "curio",
@@ -11307,7 +11307,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ad%a5%e5%a5%ea%a5%aa",
         "ae_wiki": "https://anothereden.wiki/w/Curio"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -11350,7 +11349,8 @@
         "Power to Rule",
         "바람",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "isuka_es",
@@ -11379,7 +11379,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Isuka_(Extra_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%b9%a5%ab%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "MP 회복",
         "대미지 UP",
@@ -11421,7 +11420,8 @@
         "Power to Rule",
         "불",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "daisy",
@@ -11450,7 +11450,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Daisy",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d2%a5%ca%a5%ae%a5%af"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "대미지 UP",
@@ -11480,7 +11479,8 @@
         "Dog lover",
         "연옥계",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "levia_as",
@@ -11509,7 +11509,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Levia_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ea%a5%f4%a5%a1%a5%a4%a5%a2%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -11541,7 +11540,8 @@
         "Fishman",
         "Bind",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "nagi_es",
@@ -11570,7 +11570,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ca%a5%ae%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Nagi_(Extra_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 회복",
@@ -11603,7 +11602,8 @@
         "Glutton",
         "물",
         "결정"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "harle",
@@ -11632,7 +11632,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Harle",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c4%a5%af%a5%e8%a5%df"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -11678,7 +11677,8 @@
         "Scars of the Wheel of Time",
         "불",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "kid",
@@ -11707,7 +11707,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ad%a5%c3%a5%c9",
         "ae_wiki": "https://anothereden.wiki/w/Kid"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -11753,7 +11752,8 @@
         "New Radical Dreamers",
         "Scars of the Wheel of Time",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "kikyo_as",
@@ -11782,7 +11782,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ad%a5%ad%a5%e7%a5%a6%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Kikyo_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "독",
@@ -11809,7 +11808,8 @@
         "Avenger",
         "Mounted",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "serge",
@@ -11838,7 +11838,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bb%a5%eb%a5%b8%a5%e5",
         "ae_wiki": "https://anothereden.wiki/w/Serge"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -11880,7 +11879,8 @@
         "New Radical Dreamers",
         "New Time Drift",
         "Scars of the Wheel of Time"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "pizzica",
@@ -11909,7 +11909,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d4%a5%c1%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Pizzica"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -11942,7 +11941,8 @@
         "Northern",
         "활",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "sheila_as",
@@ -11971,7 +11971,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Sheila_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a1%bc%a5%e9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "기절",
@@ -12000,7 +11999,8 @@
         "Royalty",
         "Fishman",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "hardy_as",
@@ -12029,7 +12029,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%cf%a1%bc%a5%c7%a5%a3%a1%bc%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Hardy_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -12058,7 +12057,8 @@
         "Gun",
         "Sweet tooth",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "chiyo_as",
@@ -12087,7 +12087,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c1%a5%e8%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Chiyo_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "대미지 UP",
         "독",
@@ -12112,7 +12111,8 @@
         "Dragon Palace",
         "지팡이",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "victor_as",
@@ -12140,7 +12140,6 @@
         "namu": "https://namu.wiki/w/%EB%B9%85%ED%8A%B8",
         "ae_wiki": "https://anothereden.wiki/w/Victor_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 최대치 UP",
@@ -12175,7 +12174,8 @@
         "Cursed",
         "바람",
         "번개"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "myunfa_as",
@@ -12204,7 +12204,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%e5%a5%f3%a5%d5%a5%a1%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Myunfa_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -12235,7 +12234,8 @@
         "Bind",
         "땅",
         "Land of Shin"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "garambarrel",
@@ -12264,7 +12264,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ac%a5%e9%a5%e0%a5%d0%a5%ec%a5%eb",
         "ae_wiki": "https://anothereden.wiki/w/Garambarrel"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -12291,7 +12290,8 @@
         "Cursed",
         "Titan",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "necoco",
@@ -12320,7 +12320,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a4%cd%a4%b3%a4%b3",
         "ae_wiki": "https://anothereden.wiki/w/Necoco"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -12352,7 +12351,8 @@
         "땅",
         "Land of Mi",
         "Spirit Talker"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "tsukiha_es",
@@ -12381,7 +12381,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c4%a5%ad%a5%cf%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Tsukiha_(Extra_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 최대치 DOWN",
         "대미지 UP",
@@ -12407,7 +12406,8 @@
         "Fairy",
         "바람",
         "Land of Ro"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "tsubame_as",
@@ -12436,7 +12436,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c4%a5%d0%a5%e1%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Tsubame_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "기절",
@@ -12467,7 +12466,8 @@
         "Glutton",
         "땅",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "melody",
@@ -12496,7 +12496,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%ed%a5%c7%a5%a3",
         "ae_wiki": "https://anothereden.wiki/w/Melody"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "대미지 UP",
@@ -12518,7 +12517,8 @@
         "지팡이",
         "Estrangement",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "clarte_as",
@@ -12547,7 +12547,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Clarte_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%e9%a5%eb%a5%c6%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "루나틱",
@@ -12580,7 +12579,8 @@
         "Geo",
         "땅",
         "결정"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "thillelille_as",
@@ -12609,7 +12609,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Thillelille_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c1%a5%eb%a5%ea%a5%eb%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "MP 최대치 UP",
         "기절",
@@ -12640,7 +12639,8 @@
         "검",
         "불",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "tiramisu_as",
@@ -12669,7 +12669,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c6%a5%a3%a5%e9%a5%df%a5%b9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Tiramisu_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "MP 회복",
         "대미지 UP",
@@ -12696,7 +12695,8 @@
         "창",
         "용",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "shigure_as",
@@ -12725,7 +12725,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%b0%a5%ec%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Shigure_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "대미지 UP",
         "물 속성 저항 DOWN",
@@ -12753,7 +12752,8 @@
         "Itto-Ryu",
         "물",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "melina_es",
@@ -12782,7 +12782,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Melina_(Extra_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%ea%a5%ca%28%a5%a8%a5%af%a5%b9%a5%c8%a5%e9%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -12818,7 +12817,8 @@
         "Royalty",
         "물",
         "번개"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "dunarith_as",
@@ -12847,7 +12847,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c7%a5%e5%a5%ca%a5%ea%a5%b9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Dunarith_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "대미지 UP",
@@ -12881,7 +12880,8 @@
         "Animal Talker",
         "연옥계",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ewella",
@@ -12956,13 +12956,13 @@
         "power": 1,
         "zone": 1
       },
-      "skills_en": true,
       "traits": [
         "엘프",
         "창",
         "물",
         "결정"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "miyu_as",
@@ -12991,7 +12991,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a1%bc%a5%e6%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Miyu_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "속성 공격 UP",
         "속성 저항 DOWN",
@@ -13010,7 +13009,8 @@
         "검",
         "Royalty",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "radica_as",
@@ -13039,7 +13039,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%c7%a5%a3%a5%ab%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Radica_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -13065,7 +13064,8 @@
         "지팡이",
         "Lovesick",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "hismena_as",
@@ -13094,7 +13094,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d2%a5%b9%a5%e1%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Hismena_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -13123,7 +13122,8 @@
         "IDA 스쿨",
         "창",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "milsha",
@@ -13152,7 +13152,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Milsha",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%eb%a5%b7%a5%e3"
       },
-      "skills_en": true,
       "effect_tags": [
         "MP 회복",
         "공격 대미지 흡수",
@@ -13180,7 +13179,8 @@
         "Fishman",
         "땅",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ewan_as",
@@ -13209,7 +13209,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Ewan_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a1%bc%a5%a4%a5%f3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "대미지 UP",
@@ -13238,7 +13237,8 @@
         "Weapons",
         "Cursed",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ilulu_as",
@@ -13267,7 +13267,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%eb%a5%eb%a5%a5%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Ilulu_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "공격 대미지 흡수",
         "속성 저항 DOWN",
@@ -13290,7 +13289,8 @@
         "Hood",
         "연옥계",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "hozuki_as",
@@ -13319,7 +13319,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%db%a5%aa%a5%ba%a5%ad%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Hozuki_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "[Crimson Fox Spirit] 해제",
         "대미지 UP",
@@ -13348,7 +13347,8 @@
         "Fairy",
         "불",
         "Land of Shin"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "rosetta_as",
@@ -13377,7 +13377,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ed%a5%bc%a5%c3%a5%bf%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Rosetta_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "ZONE 기타",
@@ -13410,7 +13409,8 @@
         "지팡이",
         "Sharp Ears",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "melissa",
@@ -13439,7 +13439,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%ea%a5%c3%a5%b5",
         "ae_wiki": "https://anothereden.wiki/w/Melissa"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -13479,7 +13478,8 @@
         "바람",
         "결정",
         "KMS"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "heena",
@@ -13508,7 +13508,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d2%a5%a4%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Heena"
       },
-      "skills_en": true,
       "effect_tags": [
         "대미지 UP",
         "독",
@@ -13530,7 +13529,8 @@
         "Machinery",
         "바람",
         "Land of Ro"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "yukino",
@@ -13559,7 +13559,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a5%ad%a5%ce",
         "ae_wiki": "https://anothereden.wiki/w/Yukino"
       },
-      "skills_en": true,
       "effect_tags": [
         "대미지 UP",
         "물 속성 저항 DOWN",
@@ -13578,7 +13577,8 @@
         "활",
         "Fairy",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "tsukiha_as",
@@ -13607,7 +13607,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c4%a5%ad%a5%cf%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Tsukiha_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "대미지 UP",
         "물리 저항 DOWN",
@@ -13636,7 +13635,8 @@
         "Fairy",
         "불",
         "Land of Ro"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "bertrand_as",
@@ -13665,7 +13665,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d9%a5%eb%a5%c8%a5%e9%a5%f3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Bertrand_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 최대치 UP (수치)",
         "기절",
@@ -13698,7 +13697,8 @@
         "창",
         "Shield",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "cress",
@@ -13727,12 +13727,12 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%ec%a5%b9",
         "ae_wiki": "https://anothereden.wiki/w/Cress"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 최대치 UP",
         "HP 회복",
         "대미지 UP",
         "물리 저항 UP",
+        "불 속성 공격 UP",
         "불 속성 저항 DOWN",
         "속성 공격 UP",
         "속성 저항 UP",
@@ -13741,7 +13741,7 @@
       ],
       "roles": {
         "attack": 10,
-        "atk_buff": 9,
+        "atk_buff": 10,
         "power": 6,
         "surv_buff": 3,
         "atk_debuff": 1,
@@ -13753,7 +13753,8 @@
         "Tales of",
         "Concerto Artes",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "milla",
@@ -13782,7 +13783,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Milla",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%e9"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "기절",
@@ -13810,7 +13810,8 @@
         "Tales of",
         "Concerto Artes",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "velvet",
@@ -13839,11 +13840,11 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d9%a5%eb%a5%d9%a5%c3%a5%c8",
         "ae_wiki": "https://anothereden.wiki/w/Velvet"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "기절",
         "대미지 UP",
+        "땅 속성 공격 UP",
         "땅 속성 저항 DOWN",
         "물리 저항 DOWN",
         "속도 DOWN",
@@ -13856,7 +13857,7 @@
       ],
       "roles": {
         "attack": 14,
-        "atk_buff": 8,
+        "atk_buff": 9,
         "mode": 3,
         "surv_debuff": 2,
         "atk_debuff": 3,
@@ -13870,7 +13871,8 @@
         "Tales of",
         "Concerto Artes",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "yuri",
@@ -13899,7 +13901,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Yuri",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a1%bc%a5%ea"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -13928,7 +13929,8 @@
         "Tales of",
         "Concerto Artes",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "clarte",
@@ -13957,7 +13959,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Clarte",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%e9%a5%eb%a5%c6"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -13987,7 +13988,8 @@
         "Geo",
         "땅",
         "결정"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "mistrare",
@@ -14055,7 +14057,6 @@
         "surv_debuff": 2,
         "surv_buff": 1
       },
-      "skills_en": true,
       "traits": [
         "Minstrel",
         "서방",
@@ -14064,7 +14065,8 @@
         "Bookworm",
         "바람",
         "결정"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "skull",
@@ -14093,12 +14095,12 @@
         "ae_wiki": "https://anothereden.wiki/w/Skull",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b9%a5%ab%a5%eb"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "기절",
         "대미지 UP",
         "루나틱",
+        "번개 속성 공격 UP",
         "속도 DOWN",
         "속도 UP",
         "지능 UP",
@@ -14112,8 +14114,8 @@
         "mode": 1,
         "attack": 6,
         "surv_debuff": 7,
-        "tempo": 1,
-        "atk_buff": 6
+        "atk_buff": 7,
+        "tempo": 1
       },
       "traits": [
         "Mask",
@@ -14121,7 +14123,8 @@
         "Phantom Thieves of Hearts",
         "Gun",
         "번개"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "victor",
@@ -14189,14 +14192,14 @@
         "atk_state": 2,
         "surv_buff": 1
       },
-      "skills_en": true,
       "traits": [
         "도",
         "바르오키",
         "Cursed",
         "바람",
         "번개"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "violet",
@@ -14225,7 +14228,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Violet",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%f4%a5%a1%a5%a4%a5%aa%a5%ec%a5%c3%a5%c8"
       },
-      "skills_en": true,
       "effect_tags": [
         "속도 UP",
         "크리티컬율 UP",
@@ -14243,7 +14245,8 @@
         "Glutton",
         "Gun",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "foran_as",
@@ -14272,7 +14275,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a9%a5%e9%a5%f3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Foran_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "대미지 UP",
@@ -14296,7 +14298,8 @@
         "창",
         "Cat Hater",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "thillelille",
@@ -14339,7 +14342,6 @@
         "surv_state": 1,
         "resource": 1
       },
-      "skills_en": true,
       "traits": [
         "Sweet tooth",
         "Clergy",
@@ -14347,7 +14349,8 @@
         "검",
         "불",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ciel_as",
@@ -14376,9 +14379,9 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%a8%a5%eb%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Ciel_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "대미지 UP",
+        "땅 속성 공격 UP",
         "속성 저항 UP",
         "힘 DOWN"
       ],
@@ -14387,14 +14390,15 @@
         "surv_debuff": 2,
         "surv_buff": 1,
         "power": 1,
-        "atk_buff": 2,
+        "atk_buff": 3,
         "resource": 1
       },
       "traits": [
         "Minstrel",
         "활",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "yipha",
@@ -14423,7 +14427,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Yipha",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a1%bc%a5%d5%a5%a1"
       },
-      "skills_en": true,
       "effect_tags": [
         "대미지 UP",
         "물리 저항 UP",
@@ -14454,7 +14457,8 @@
         "Nicknamer",
         "Spicy Lover",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "shannon_as",
@@ -14483,7 +14487,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%e3%a5%ce%a5%f3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Shannon_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "물리 저항 DOWN",
@@ -14506,7 +14509,8 @@
         "Art",
         "KMS",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "hardy",
@@ -14535,7 +14539,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%cf%a1%bc%a5%c7%a5%a3%a1%bc",
         "ae_wiki": "https://anothereden.wiki/w/Hardy"
       },
-      "skills_en": true,
       "effect_tags": [
         "ZONE 파괴",
         "기절",
@@ -14560,7 +14563,8 @@
         "Gun",
         "Sweet tooth",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "sophia",
@@ -14589,10 +14593,10 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bd%a5%d5%a5%a3%a5%a2",
         "ae_wiki": "https://anothereden.wiki/w/Sophia"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "독",
+        "물 속성 공격 UP",
         "물리 저항 UP",
         "배리어",
         "버티기",
@@ -14607,7 +14611,7 @@
         "surv_buff": 6,
         "surv_debuff": 2,
         "dot": 1,
-        "atk_buff": 1,
+        "atk_buff": 2,
         "recover": 2,
         "surv_state": 4,
         "resource": 1
@@ -14620,7 +14624,8 @@
         "Gourmet",
         "Bind",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "cynthia",
@@ -14649,7 +14654,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%f3%a5%b7%a5%a2",
         "ae_wiki": "https://anothereden.wiki/w/Cynthia"
       },
-      "skills_en": true,
       "effect_tags": [
         "ZONE 기타",
         "대미지 UP",
@@ -14675,7 +14679,8 @@
         "Bookworm",
         "Bind",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "veina_as",
@@ -14704,7 +14709,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%f4%a5%a7%a5%a4%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Veina_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 최대치 UP (수치)",
         "HP 회복",
@@ -14734,7 +14738,8 @@
         "Zoology",
         "Bookworm",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "zeviro",
@@ -14763,7 +14768,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bc%a5%f4%a5%a3%a1%bc%a5%ed",
         "ae_wiki": "https://anothereden.wiki/w/Zeviro"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -14787,7 +14791,8 @@
         "Hood",
         "연옥계",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "anabel_as",
@@ -14816,7 +14821,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%ca%a5%d9%a5%eb%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Anabel_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -14850,7 +14854,8 @@
         "Mounted",
         "Shield",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "radias",
@@ -14879,7 +14884,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%c7%a5%a3%a5%a2%a5%b9",
         "ae_wiki": "https://anothereden.wiki/w/Radias"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "대미지 UP",
@@ -14904,7 +14908,8 @@
         "검",
         "Shield",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "myrus_as",
@@ -14933,7 +14938,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%e5%a5%eb%a5%b9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Myrus_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "땅 속성 저항 DOWN",
         "마법 크리티컬율 UP",
@@ -14955,7 +14959,8 @@
         "Beast",
         "지팡이",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "renri_as",
@@ -14984,7 +14989,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ec%a5%f3%a5%ea%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Renri_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "ZONE 기타",
         "기절",
@@ -15011,7 +15015,8 @@
         "도끼",
         "COA",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "tiramisu",
@@ -15040,7 +15045,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c6%a5%a3%a5%e9%a5%df%a5%b9",
         "ae_wiki": "https://anothereden.wiki/w/Tiramisu"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 회복",
@@ -15068,7 +15072,8 @@
         "창",
         "용",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "elga_as",
@@ -15097,7 +15102,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a8%a5%eb%a5%ac%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Elga_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "기절",
@@ -15126,7 +15130,8 @@
         "Hood",
         "Amnesia",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "felmina_as",
@@ -15155,7 +15160,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a7%a5%eb%a5%df%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Felmina_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "MP 최대치 UP",
         "기절",
@@ -15191,7 +15195,8 @@
         "Hood",
         "Ninja",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "myunfa",
@@ -15220,7 +15225,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%e5%a5%f3%a5%d5%a5%a1",
         "ae_wiki": "https://anothereden.wiki/w/Myunfa"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -15246,7 +15250,8 @@
         "Bind",
         "땅",
         "Land of Shin"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "cetie_as",
@@ -15275,7 +15280,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bb%a5%c6%a5%a3%a1%bc%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Cetie_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 최대치 UP (수치)",
         "대미지 UP",
@@ -15304,7 +15308,8 @@
         "Mounted",
         "COA",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "altena",
@@ -15333,7 +15338,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%eb%a5%c6%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Altena"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 회복",
@@ -15366,7 +15370,8 @@
         "Spirit Talker",
         "Royalty",
         "Demon Sword"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "kikyo",
@@ -15395,7 +15400,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ad%a5%ad%a5%e7%a5%a6",
         "ae_wiki": "https://anothereden.wiki/w/Kikyo"
       },
-      "skills_en": true,
       "effect_tags": [
         "독",
         "속도 UP",
@@ -15417,7 +15421,8 @@
         "Avenger",
         "Mounted",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "nikeh_as",
@@ -15446,7 +15451,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%cb%a5%b1%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Nikeh_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "독",
         "물 속성 저항 DOWN",
@@ -15467,7 +15471,8 @@
         "도",
         "Outlaw",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "strawboy",
@@ -15631,7 +15636,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Claude_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%ed%a1%bc%a5%c9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -15665,7 +15669,8 @@
         "Bookworm",
         "용",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "premaya",
@@ -15694,7 +15699,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d7%a5%ec%a5%e1%a5%a2",
         "ae_wiki": "https://anothereden.wiki/w/Premaya"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "물 속성 저항 UP",
@@ -15720,7 +15724,8 @@
         "Machinery",
         "로스트 랩",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "gariyu_as",
@@ -15749,7 +15754,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Gariyu_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ac%a5%ea%a5%e6%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "독",
         "마법 저항 UP",
@@ -15776,7 +15780,8 @@
         "지팡이",
         "용",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "yuna_as",
@@ -15805,9 +15810,9 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Yuna_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
+        "물 속성 공격 UP",
         "물 속성 저항 DOWN",
         "물리 저항 DOWN",
         "상태 이상 회복",
@@ -15826,8 +15831,8 @@
         "atk_debuff": 4,
         "power": 2,
         "state_unknown": 1,
-        "surv_buff": 1,
-        "atk_buff": 1
+        "atk_buff": 2,
+        "surv_buff": 1
       },
       "traits": [
         "동방",
@@ -15835,7 +15840,8 @@
         "지팡이",
         "Estrangement",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "shanie_as",
@@ -15864,7 +15870,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%a7%a5%a4%a5%cd%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Shanie_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "대미지 UP",
@@ -15889,7 +15894,8 @@
         "Lovesick",
         "Cursed",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ruina_as",
@@ -15918,7 +15924,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%eb%a5%a4%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Ruina_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "공격 대미지 흡수",
         "물리 저항 UP",
@@ -15941,7 +15946,8 @@
         "검",
         "Bookworm",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "hismena",
@@ -15984,12 +15990,12 @@
         "mode": 1,
         "power": 1
       },
-      "skills_en": true,
       "traits": [
         "IDA 스쿨",
         "창",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "mana",
@@ -16018,7 +16024,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%de%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Mana"
       },
-      "skills_en": true,
       "effect_tags": [
         "MP 회복",
         "디버프 해제",
@@ -16040,7 +16045,8 @@
       "traits": [
         "IDA 스쿨",
         "활"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "mariel_as",
@@ -16069,7 +16075,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%de%a5%ea%a5%a8%a5%eb%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Mariel_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -16094,7 +16099,8 @@
         "고양이 애호가",
         "Clergy",
         "지팡이"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "dunarith",
@@ -16123,7 +16129,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c7%a5%e5%a5%ca%a5%ea%a5%b9",
         "ae_wiki": "https://anothereden.wiki/w/Dunarith"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "마법 크리티컬율 UP",
@@ -16148,7 +16153,8 @@
         "Animal Talker",
         "연옥계",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "lokido_as",
@@ -16177,7 +16183,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ed%a5%ad%a5%c9%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Lokido_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "MP 회복",
         "기절",
@@ -16203,7 +16208,8 @@
         "권갑",
         "Avenger",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "lovely",
@@ -16232,7 +16238,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Lovely",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%d6%a5%ea"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "ZONE 기타",
@@ -16257,7 +16262,8 @@
         "Dwarf",
         "Nicknamer",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "philo",
@@ -16286,7 +16292,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a3%a5%ed",
         "ae_wiki": "https://anothereden.wiki/w/Philo"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "대미지 UP",
@@ -16305,7 +16310,8 @@
         "도끼",
         "Woodcutter",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "nagi_as",
@@ -16334,7 +16340,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ca%a5%ae%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Nagi_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "공격 대미지 흡수",
         "기절",
@@ -16355,7 +16360,8 @@
         "Royalty",
         "Glutton",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "akane_as",
@@ -16384,7 +16390,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%ab%a5%cd%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Akane_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "기절",
@@ -16407,7 +16412,8 @@
         "불",
         "Land of Mi",
         "Itto-Ryu"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "joker",
@@ -16436,7 +16442,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Joker",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b8%a5%e7%a1%bc%a5%ab%a1%bc"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "속성 저항 DOWN",
@@ -16459,7 +16464,8 @@
         "Phantom Thieves of Hearts",
         "Gun",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "morgana",
@@ -16488,9 +16494,9 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e2%a5%eb%a5%ac%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Morgana"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
+        "바람 속성 공격 UP",
         "속도 DOWN",
         "지능 DOWN",
         "크리티컬 발생 확정",
@@ -16501,6 +16507,7 @@
         "power": 3,
         "recover": 2,
         "surv_debuff": 3,
+        "atk_buff": 1,
         "atk_state": 1
       },
       "traits": [
@@ -16509,7 +16516,8 @@
         "Lovesick",
         "Amnesia",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "rosetta",
@@ -16553,7 +16561,6 @@
         "recover": 3,
         "resource": 1
       },
-      "skills_en": true,
       "traits": [
         "고양이 애호가",
         "Clergy",
@@ -16561,7 +16568,8 @@
         "지팡이",
         "Sharp Ears",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "shigure",
@@ -16590,7 +16598,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%b0%a5%ec",
         "ae_wiki": "https://anothereden.wiki/w/Shigure"
       },
-      "skills_en": true,
       "effect_tags": [
         "마법 크리티컬율 UP",
         "물 속성 저항 DOWN",
@@ -16615,7 +16622,8 @@
         "Itto-Ryu",
         "물",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "tsubame",
@@ -16644,7 +16652,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c4%a5%d0%a5%e1",
         "ae_wiki": "https://anothereden.wiki/w/Tsubame"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "땅 속성 공격 UP",
@@ -16666,7 +16673,8 @@
         "Glutton",
         "땅",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "melina_as",
@@ -16695,7 +16703,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%ea%a5%ca%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Melina_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -16737,7 +16744,8 @@
         "망치",
         "Royalty",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "biaka",
@@ -16766,7 +16774,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%f4%a5%a3%a5%a2%a5%c3%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Biaka"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "대미지 UP",
@@ -16788,7 +16795,8 @@
         "Military",
         "Gun",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "galliard",
@@ -16817,7 +16825,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ac%a5%ea%a5%a2%a1%bc%a5%c9",
         "ae_wiki": "https://anothereden.wiki/w/Galliard"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP (수치)",
@@ -16855,7 +16862,8 @@
         "Outlaw",
         "Gun",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "hozuki",
@@ -16899,7 +16907,6 @@
         "state_unknown": 1,
         "resource": 1
       },
-      "skills_en": true,
       "traits": [
         "동방",
         "Cooking",
@@ -16908,7 +16915,8 @@
         "Fairy",
         "불",
         "Land of Shin"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "laclair_as",
@@ -16937,7 +16945,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%af%a5%ec%a5%a2%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Laclair_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "독",
@@ -16959,7 +16966,8 @@
         "Dragon Killer",
         "Dog lover",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ilulu",
@@ -16988,7 +16996,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%eb%a5%eb%a5%a5",
         "ae_wiki": "https://anothereden.wiki/w/Ilulu"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 최대치 UP (수치)",
         "공격 대미지 흡수",
@@ -17011,7 +17018,8 @@
         "Hood",
         "연옥계",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "radica",
@@ -17086,13 +17094,13 @@
         "state_unknown": 2,
         "tempo": 1
       },
-      "skills_en": true,
       "traits": [
         "엘프",
         "지팡이",
         "Lovesick",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "poporo",
@@ -17198,7 +17206,6 @@
         "zone": 1,
         "atk_buff": 5
       },
-      "skills_en": true,
       "traits": [
         "권갑",
         "Glasses",
@@ -17207,7 +17214,8 @@
         "Gun",
         "로스트 랩",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "shion_as",
@@ -17236,7 +17244,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%aa%a5%f3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Shion_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "ZONE 기타",
         "대미지 UP",
@@ -17273,7 +17280,8 @@
         "Itto-Ryu",
         "불",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "veina",
@@ -17302,7 +17310,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%f4%a5%a7%a5%a4%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Veina"
       },
-      "skills_en": true,
       "effect_tags": [
         "MP 회복",
         "땅 속성 저항 UP",
@@ -17328,7 +17335,8 @@
         "Zoology",
         "Bookworm",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "elga",
@@ -17357,7 +17365,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Elga",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a8%a5%eb%a5%ac"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "물리 저항 UP",
@@ -17381,7 +17388,8 @@
         "Hood",
         "Amnesia",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "toova_as",
@@ -17410,7 +17418,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c8%a5%a5%a1%bc%a5%f4%a5%a1%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Toova_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "ZONE 기타",
         "공격 대미지 흡수",
@@ -17440,7 +17447,8 @@
         "Nicknamer",
         "Funeral",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "renri",
@@ -17482,14 +17490,14 @@
         "attack": 1,
         "enemy_utility": 1
       },
-      "skills_en": true,
       "traits": [
         "Glasses",
         "Sweet tooth",
         "도끼",
         "COA",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "shannon",
@@ -17518,7 +17526,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%e3%a5%ce%a5%f3",
         "ae_wiki": "https://anothereden.wiki/w/Shannon"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "물리 저항 DOWN",
@@ -17537,7 +17544,8 @@
         "Art",
         "KMS",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "isuka_as",
@@ -17566,7 +17574,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%b9%a5%ab%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Isuka_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 회복",
@@ -17599,7 +17606,8 @@
         "로스트 랩",
         "Power to Rule",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "saki_as",
@@ -17628,7 +17636,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Saki_(Another_Style)",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b5%a5%ad%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29"
       },
-      "skills_en": true,
       "effect_tags": [
         "물리 저항 DOWN",
         "불 속성 저항 UP",
@@ -17649,7 +17656,8 @@
         "IDA 스쿨",
         "지팡이",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "claude",
@@ -17697,7 +17705,6 @@
         "enemy_utility": 1,
         "power": 1
       },
-      "skills_en": true,
       "traits": [
         "IDA 스쿨",
         "활",
@@ -17705,7 +17712,8 @@
         "Bookworm",
         "용",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "mighty_as",
@@ -17734,7 +17742,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%de%a5%a4%a5%c6%a5%a3%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Mighty_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 회복",
@@ -17763,7 +17770,8 @@
         "지팡이",
         "Napper",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "saki",
@@ -17792,7 +17800,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b5%a5%ad",
         "ae_wiki": "https://anothereden.wiki/w/Saki"
       },
-      "skills_en": true,
       "effect_tags": [
         "속도 DOWN",
         "지능 DOWN",
@@ -17807,7 +17814,8 @@
         "IDA 스쿨",
         "지팡이",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "tsukiha",
@@ -17836,7 +17844,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c4%a5%ad%a5%cf",
         "ae_wiki": "https://anothereden.wiki/w/Tsukiha"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "공격 대미지 흡수",
@@ -17876,7 +17883,8 @@
         "Fairy",
         "불",
         "Land of Ro"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "bertrand",
@@ -17905,7 +17913,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d9%a5%eb%a5%c8%a5%e9%a5%f3",
         "ae_wiki": "https://anothereden.wiki/w/Bertrand"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP (수치)",
@@ -17943,7 +17950,8 @@
         "창",
         "Shield",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "felmina",
@@ -18016,7 +18024,6 @@
         "surv_buff": 2,
         "surv_state": 2
       },
-      "skills_en": true,
       "traits": [
         "Miglance Palace",
         "권갑",
@@ -18024,7 +18031,8 @@
         "Hood",
         "Ninja",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "guildna",
@@ -18053,7 +18061,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Guildna",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ae%a5%eb%a5%c9%a5%ca"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP (수치)",
@@ -18091,7 +18098,8 @@
         "검",
         "Royalty",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "suzette_as",
@@ -18120,7 +18128,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%e5%a5%bc%a5%c3%a5%c8%28%a5%a2%a5%ca%a5%b6%a1%bc%a5%b9%a5%bf%a5%a4%a5%eb%29",
         "ae_wiki": "https://anothereden.wiki/w/Suzette_(Another_Style)"
       },
-      "skills_en": true,
       "effect_tags": [
         "MP 회복",
         "ZONE 기타",
@@ -18145,7 +18152,8 @@
         "Gourmet",
         "로스트 랩",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "myrus",
@@ -18191,12 +18199,12 @@
         "recover": 3,
         "resource": 2
       },
-      "skills_en": true,
       "traits": [
         "Beast",
         "지팡이",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "good_macky",
@@ -18224,7 +18232,6 @@
         "namu": "https://namu.wiki/w/%EC%B0%A9%ED%95%9C%20%EB%A7%88%EC%BF%A0%EB%A7%88%EC%BF%A0",
         "ae_wiki": "https://anothereden.wiki/w/Good_Macky"
       },
-      "skills_en": true,
       "effect_tags": [
         "바람 속성 저항 DOWN",
         "수면",
@@ -18242,7 +18249,8 @@
         "권갑",
         "Cat Hater",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "melina",
@@ -18271,7 +18279,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%ea%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Melina"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 최대치 UP",
@@ -18318,7 +18325,8 @@
         "망치",
         "Royalty",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "nonold",
@@ -18347,7 +18355,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Nonold",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ce%a5%ce%a5%eb%a5%c9"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 최대치 UP",
@@ -18392,7 +18399,8 @@
         "지팡이",
         "KMS",
         "IDA 스쿨"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "zilva",
@@ -18421,7 +18429,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b8%a5%eb%a5%d0%a1%bc",
         "ae_wiki": "https://anothereden.wiki/w/Zilva"
       },
-      "skills_en": true,
       "effect_tags": [
         "속성 저항 UP",
         "힘 UP"
@@ -18437,7 +18444,8 @@
         "Art",
         "땅",
         "Outlaw"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "shanie",
@@ -18466,13 +18474,13 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%a7%a5%a4%a5%cd",
         "ae_wiki": "https://anothereden.wiki/w/Shanie"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 최대치 UP",
         "공격 대미지 흡수",
         "기절",
         "독",
+        "물 속성 공격 UP",
         "물 속성 저항 DOWN",
         "베기 저항 DOWN",
         "심기일체",
@@ -18486,7 +18494,7 @@
         "atk_debuff": 5,
         "surv_debuff": 1,
         "dot": 1,
-        "atk_buff": 2,
+        "atk_buff": 3,
         "power": 3,
         "recover": 1,
         "resource": 7,
@@ -18498,7 +18506,8 @@
         "Lovesick",
         "Cursed",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "cerrine",
@@ -18527,7 +18536,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Cerrine",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%a7%a5%ea%a1%bc%a5%cc"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "속도 UP",
@@ -18548,7 +18556,8 @@
         "Outlaw",
         "권갑",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "cetie",
@@ -18586,14 +18595,14 @@
         "mode": 1,
         "resource": 1
       },
-      "skills_en": true,
       "traits": [
         "Glasses",
         "창",
         "Mounted",
         "COA",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "yazuki",
@@ -18622,7 +18631,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e4%a5%c5%a5%ad%3f",
         "ae_wiki": "https://anothereden.wiki/w/Yazuki"
       },
-      "skills_en": true,
       "effect_tags": [
         "땅 속성 저항 UP",
         "물리 저항 UP",
@@ -18641,7 +18649,8 @@
         "Outlaw",
         "Scallywag",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ewan",
@@ -18670,7 +18679,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Ewan",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a1%bc%a5%a4%a5%f3"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -18679,6 +18687,7 @@
         "대미지 UP",
         "디버프 해제",
         "물리 저항 DOWN",
+        "불 속성 공격 UP",
         "불 속성 저항 DOWN",
         "속도 UP",
         "심기일체",
@@ -18688,7 +18697,7 @@
       "roles": {
         "surv_buff": 1,
         "attack": 9,
-        "atk_buff": 7,
+        "atk_buff": 8,
         "tempo": 3,
         "atk_debuff": 3,
         "power": 5,
@@ -18707,7 +18716,8 @@
         "Weapons",
         "Cursed",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "erina",
@@ -18736,7 +18746,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a8%a5%ea%a5%ca%3f",
         "ae_wiki": "https://anothereden.wiki/w/Erina"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "디버프 해제",
@@ -18761,7 +18770,8 @@
         "Spirit-fused",
         "Sweet tooth",
         "연옥계"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "levia",
@@ -18790,7 +18800,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Levia",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ea%a5%f4%a5%a1%a5%a4%a5%a2"
       },
-      "skills_en": true,
       "effect_tags": [
         "물 속성 저항 DOWN",
         "지능 DOWN",
@@ -18811,7 +18820,8 @@
         "Fishman",
         "Bind",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "nagi",
@@ -18840,10 +18850,10 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ca%a5%ae",
         "ae_wiki": "https://anothereden.wiki/w/Nagi"
       },
-      "skills_en": true,
       "effect_tags": [
         "공격 대미지 흡수",
         "기절",
+        "땅 속성 공격 UP",
         "베기 저항 DOWN",
         "지능 DOWN",
         "페인"
@@ -18853,7 +18863,8 @@
         "atk_debuff": 4,
         "surv_debuff": 2,
         "recover": 1,
-        "power": 1
+        "power": 1,
+        "atk_buff": 1
       },
       "traits": [
         "Dragon Palace",
@@ -18861,7 +18872,8 @@
         "Royalty",
         "Glutton",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "chiyo",
@@ -18890,7 +18902,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c1%a5%e8",
         "ae_wiki": "https://anothereden.wiki/w/Chiyo"
       },
-      "skills_en": true,
       "effect_tags": [
         "물 속성 저항 UP",
         "물리 저항 UP",
@@ -18906,7 +18917,8 @@
         "Dragon Palace",
         "지팡이",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "sheila",
@@ -18935,7 +18947,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a1%bc%a5%e9",
         "ae_wiki": "https://anothereden.wiki/w/Sheila"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "물 속성 저항 DOWN",
@@ -18953,7 +18964,8 @@
         "Royalty",
         "Fishman",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "gariyu",
@@ -19023,12 +19035,12 @@
         "surv_buff": 4,
         "dot": 1
       },
-      "skills_en": true,
       "traits": [
         "지팡이",
         "용",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "yuna",
@@ -19057,7 +19069,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e6%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Yuna"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP (수치)",
@@ -19094,7 +19105,8 @@
         "Clergy",
         "지팡이",
         "Estrangement"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "lovinia",
@@ -19123,7 +19135,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%d3%a5%ca%3f",
         "ae_wiki": "https://anothereden.wiki/w/Lovinia"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "속도 UP",
@@ -19142,7 +19153,8 @@
         "활",
         "Spirit Talker",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "isuka",
@@ -19171,7 +19183,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%b9%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Isuka"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -19209,7 +19220,8 @@
         "로스트 랩",
         "Power to Rule",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "jade",
@@ -19238,7 +19250,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Jade",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b8%a5%a7%a5%a4%a5%c9"
       },
-      "skills_en": true,
       "effect_tags": [
         "대미지 UP",
         "찌르기 저항 DOWN",
@@ -19256,7 +19267,8 @@
         "IDA 스쿨",
         "창",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ruina",
@@ -19285,7 +19297,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%eb%a5%a4%a5%ca",
         "ae_wiki": "https://anothereden.wiki/w/Ruina"
       },
-      "skills_en": true,
       "effect_tags": [
         "바람 속성 저항 DOWN",
         "속도 UP"
@@ -19302,7 +19313,8 @@
         "검",
         "Bookworm",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "azami",
@@ -19331,7 +19343,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Azami",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%b6%a5%df"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "바람 속성 저항 DOWN",
@@ -19355,7 +19366,8 @@
         "Lovesick",
         "바람",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "laclair",
@@ -19384,7 +19396,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e9%a5%af%a5%ec%a5%a2",
         "ae_wiki": "https://anothereden.wiki/w/Laclair"
       },
-      "skills_en": true,
       "effect_tags": [
         "독",
         "물 속성 저항 DOWN",
@@ -19408,7 +19419,8 @@
         "Dragon Killer",
         "Dog lover",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "samora",
@@ -19437,7 +19449,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b5%a5%e2%a5%e9%3f",
         "ae_wiki": "https://anothereden.wiki/w/Samora"
       },
-      "skills_en": true,
       "effect_tags": [
         "불 속성 저항 DOWN"
       ],
@@ -19452,7 +19463,8 @@
         "Gourmet",
         "Dwarf",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "anabel",
@@ -19489,7 +19501,6 @@
         "surv_state": 3,
         "tempo": 1
       },
-      "skills_en": true,
       "traits": [
         "Miglance Palace",
         "Sweet tooth",
@@ -19497,7 +19508,8 @@
         "Mounted",
         "Shield",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "deirdre",
@@ -19526,7 +19538,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c7%a5%a3%a5%a2%a5%c9%a5%e9",
         "ae_wiki": "https://anothereden.wiki/w/Deirdre"
       },
-      "skills_en": true,
       "effect_tags": [
         "공격 대미지 흡수",
         "땅 속성 저항 DOWN",
@@ -19548,7 +19559,8 @@
         "Amnesia",
         "땅",
         "Demon Sword"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "nero",
@@ -19577,7 +19589,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%cd%a5%ed%3f",
         "ae_wiki": "https://anothereden.wiki/w/Nero"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "물 속성 저항 DOWN",
@@ -19596,7 +19607,8 @@
         "물",
         "Land of Shin",
         "MMA"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "akane",
@@ -19625,7 +19637,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Akane",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%ab%a5%cd"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -19653,7 +19664,8 @@
         "불",
         "Land of Mi",
         "Itto-Ryu"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "aldo",
@@ -19682,7 +19694,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a2%a5%eb%a5%c9",
         "ae_wiki": "https://anothereden.wiki/w/Aldo"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 회복",
@@ -19721,7 +19732,8 @@
         "Arcadia",
         "Itto-Ryu",
         "Demon Sword"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "amy",
@@ -19774,7 +19786,6 @@
         "power": 6,
         "surv_debuff": 3
       },
-      "skills_en": true,
       "traits": [
         "Blacksmith",
         "Cooking",
@@ -19782,7 +19793,8 @@
         "Spirit-fused",
         "Avenger",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "benedict",
@@ -19811,7 +19823,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d9%a5%cd%a5%c7%a5%a3%a5%c8",
         "ae_wiki": "https://anothereden.wiki/w/Benedict"
       },
-      "skills_en": true,
       "effect_tags": [
         "날리기 무효",
         "독",
@@ -19831,7 +19842,8 @@
         "Outlaw",
         "Woodcutter",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "bivette",
@@ -19860,16 +19872,17 @@
         "ae_wiki": "https://anothereden.wiki/w/Bivette",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d3%a5%f4%a5%a7%a5%c3%a5%c8"
       },
-      "skills_en": true,
       "effect_tags": [
         "물리 저항 UP",
         "상태 이상 회복",
+        "지능 UP",
         "치유"
       ],
       "roles": {
         "surv_buff": 1,
         "recover": 4,
-        "attack": 2
+        "attack": 2,
+        "atk_buff": 1
       },
       "traits": [
         "고양이 애호가",
@@ -19877,7 +19890,8 @@
         "Spirit Talker",
         "Animal Talker",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "bria",
@@ -19906,7 +19920,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d6%a5%ea%a5%a2%a1%bc",
         "ae_wiki": "https://anothereden.wiki/w/Bria"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "물리 저항 DOWN",
@@ -19924,7 +19937,8 @@
         "Fleareth",
         "창",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ciel",
@@ -19953,7 +19967,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%a8%a5%eb",
         "ae_wiki": "https://anothereden.wiki/w/Ciel"
       },
-      "skills_en": true,
       "effect_tags": [
         "땅 속성 저항 DOWN",
         "속성 저항 UP",
@@ -19969,7 +19982,8 @@
         "Minstrel",
         "활",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "cyrus",
@@ -20030,14 +20044,14 @@
         "atk_buff": 2,
         "tempo": 1
       },
-      "skills_en": true,
       "traits": [
         "동방",
         "Guiding Light",
         "도",
         "Cursed",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "feinne",
@@ -20066,7 +20080,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a3%a1%bc%a5%cd",
         "ae_wiki": "https://anothereden.wiki/w/Feinne"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -20099,7 +20112,8 @@
         "바르오키",
         "Geo",
         "Demon Sword"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "helena",
@@ -20128,7 +20142,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Helena",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d8%a5%ec%a5%ca"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "기절",
@@ -20161,7 +20174,8 @@
         "Synth Human",
         "지팡이",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "lokido",
@@ -20200,13 +20214,13 @@
         "atk_state": 2,
         "attack": 1
       },
-      "skills_en": true,
       "traits": [
         "Beast",
         "권갑",
         "Avenger",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "mariel",
@@ -20252,12 +20266,12 @@
         "resource": 1,
         "surv_buff": 1
       },
-      "skills_en": true,
       "traits": [
         "고양이 애호가",
         "Clergy",
         "지팡이"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "may",
@@ -20286,7 +20300,6 @@
         "ae_wiki": "https://anothereden.wiki/w/May",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%e1%a5%a4"
       },
-      "skills_en": true,
       "effect_tags": [
         "땅 속성 저항 DOWN",
         "치유",
@@ -20307,7 +20320,8 @@
         "Lovesick",
         "바르오키",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "mighty",
@@ -20336,7 +20350,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%de%a5%a4%a5%c6%a5%a3",
         "ae_wiki": "https://anothereden.wiki/w/Mighty"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -20379,7 +20392,8 @@
         "지팡이",
         "Napper",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "miyu",
@@ -20408,7 +20422,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a1%bc%a5%e6",
         "ae_wiki": "https://anothereden.wiki/w/Miyu"
       },
-      "skills_en": true,
       "effect_tags": [
         "속성 저항 DOWN",
         "지능 DOWN"
@@ -20423,7 +20436,8 @@
         "검",
         "Royalty",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "prai",
@@ -20452,7 +20466,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d7%a5%e9%a5%a4",
         "ae_wiki": "https://anothereden.wiki/w/Prai"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "기절",
@@ -20478,7 +20491,8 @@
         "서방",
         "망치",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "riica",
@@ -20507,7 +20521,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ea%a5%a3%a5%ab",
         "ae_wiki": "https://anothereden.wiki/w/Riica"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "HP 최대치 UP",
@@ -20546,7 +20559,8 @@
         "KMS",
         "Machinery",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "sevyn",
@@ -20575,7 +20589,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Sevyn",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bb%a5%f4%a5%a7%a5%f3"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "ZONE 기타",
@@ -20605,7 +20618,8 @@
         "Spirit Talker",
         "로스트 랩",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "shion",
@@ -20634,7 +20648,6 @@
         "ae_wiki": "https://anothereden.wiki/w/Shion",
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%aa%a5%f3"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -20671,7 +20684,8 @@
         "Itto-Ryu",
         "불",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "suzette",
@@ -20700,7 +20714,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b7%a5%e5%a5%bc%a5%c3%a5%c8",
         "ae_wiki": "https://anothereden.wiki/w/Suzette"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "MP 회복",
@@ -20738,7 +20751,8 @@
         "Gourmet",
         "로스트 랩",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "toova",
@@ -20767,7 +20781,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c8%a5%a5%a1%bc%a5%f4%a5%a1",
         "ae_wiki": "https://anothereden.wiki/w/Toova"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -20802,7 +20815,8 @@
         "Nicknamer",
         "Funeral",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "breeno",
@@ -20831,7 +20845,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d6%a5%ea%a1%bc%a5%ce%3f",
         "ae_wiki": "https://anothereden.wiki/w/Breeno"
       },
-      "skills_en": true,
       "effect_tags": [
         "공격 대미지 흡수",
         "독",
@@ -20848,7 +20861,8 @@
         "엘프",
         "검",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "cyuca",
@@ -20877,7 +20891,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ad%a5%e5%a5%ab%3f",
         "ae_wiki": "https://anothereden.wiki/w/Cyuca"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "독",
@@ -20895,7 +20908,8 @@
         "Spicy Lover",
         "Outlaw",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "darunis",
@@ -20924,7 +20938,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c0%a5%eb%a5%cb%a5%b9%3f",
         "ae_wiki": "https://anothereden.wiki/w/Darunis"
       },
-      "skills_en": true,
       "effect_tags": [
         "물리 저항 DOWN",
         "속성 저항 DOWN"
@@ -20942,7 +20955,8 @@
         "활",
         "바르오키",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "denny",
@@ -20971,7 +20985,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%c7%a5%cb%a1%bc%3f",
         "ae_wiki": "https://anothereden.wiki/w/Denny"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "물 속성 저항 DOWN"
@@ -20985,7 +20998,8 @@
         "도끼",
         "Scallywag",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "foran",
@@ -21014,7 +21028,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d5%a5%a9%a5%e9%a5%f3",
         "ae_wiki": "https://anothereden.wiki/w/Foran"
       },
-      "skills_en": true,
       "effect_tags": [
         "물 속성 저항 DOWN",
         "속도 DOWN",
@@ -21030,7 +21043,8 @@
         "창",
         "Cat Hater",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "komachi",
@@ -21059,7 +21073,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%b3%a5%de%a5%c1",
         "ae_wiki": "https://anothereden.wiki/w/Komachi"
       },
-      "skills_en": true,
       "effect_tags": [
         "찌르기 저항 DOWN"
       ],
@@ -21072,7 +21085,8 @@
         "창",
         "땅",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "krervo",
@@ -21101,7 +21115,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%af%a5%ec%a5%eb%a5%f4%a5%a9",
         "ae_wiki": "https://anothereden.wiki/w/Krervo"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "독",
@@ -21126,7 +21139,8 @@
         "Forager",
         "지팡이",
         "KMS"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "lele",
@@ -21155,7 +21169,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ec%a5%ec",
         "ae_wiki": "https://anothereden.wiki/w/Lele"
       },
-      "skills_en": true,
       "effect_tags": [
         "물리 저항 DOWN",
         "속도 DOWN",
@@ -21172,7 +21185,8 @@
         "지팡이",
         "Animal Talker",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "lingli",
@@ -21201,7 +21215,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ea%a5%f3%a5%ea%a1%bc",
         "ae_wiki": "https://anothereden.wiki/w/Lingli"
       },
-      "skills_en": true,
       "effect_tags": [
         "불 속성 저항 DOWN",
         "타격 저항 DOWN"
@@ -21217,7 +21230,8 @@
         "불",
         "Land of Shin",
         "MMA"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "miranda",
@@ -21246,7 +21260,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%e9%a5%f3%a5%c0%3f",
         "ae_wiki": "https://anothereden.wiki/w/Miranda"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "힘 DOWN"
@@ -21260,7 +21273,8 @@
         "Spicy Lover",
         "Scallywag",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "myron",
@@ -21289,7 +21303,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%df%a5%e5%a5%ed%a5%f3%3f",
         "ae_wiki": "https://anothereden.wiki/w/Myron"
       },
-      "skills_en": true,
       "effect_tags": [
         "베기 저항 DOWN"
       ],
@@ -21301,7 +21314,8 @@
         "Clergy",
         "검",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "nikeh",
@@ -21330,7 +21344,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%cb%a5%b1",
         "ae_wiki": "https://anothereden.wiki/w/Nikeh"
       },
-      "skills_en": true,
       "effect_tags": [
         "독",
         "물 속성 저항 DOWN",
@@ -21347,7 +21360,8 @@
         "도",
         "Outlaw",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "nomar",
@@ -21376,7 +21390,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%ce%a5%de%a5%eb%3f",
         "ae_wiki": "https://anothereden.wiki/w/Nomar"
       },
-      "skills_en": true,
       "effect_tags": [
         "도발",
         "물리 저항 UP",
@@ -21393,7 +21406,8 @@
         "Weapons",
         "바르오키",
         "물"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "otoha",
@@ -21422,7 +21436,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%aa%a5%c8%a5%cf",
         "ae_wiki": "https://anothereden.wiki/w/Otoha"
       },
-      "skills_en": true,
       "effect_tags": [
         "독",
         "베기 저항 DOWN",
@@ -21441,7 +21454,8 @@
         "Zoology",
         "땅",
         "Land of Mi"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "parisa",
@@ -21470,7 +21484,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%d1%a5%ea%a5%b5",
         "ae_wiki": "https://anothereden.wiki/w/Parisa"
       },
-      "skills_en": true,
       "effect_tags": [
         "지능 DOWN",
         "지능 UP",
@@ -21486,7 +21499,8 @@
         "활",
         "Cursed",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "pom",
@@ -21515,7 +21529,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%dd%a5%e0",
         "ae_wiki": "https://anothereden.wiki/w/Pom"
       },
-      "skills_en": true,
       "effect_tags": [
         "HP 회복",
         "독",
@@ -21536,7 +21549,8 @@
         "Forager",
         "지팡이",
         "Gun"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "raven",
@@ -21564,7 +21578,6 @@
         "namu": "https://namu.wiki/w/%EB%A0%88%EC%9D%B4%EB%B8%90%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Raven"
       },
-      "skills_en": true,
       "effect_tags": [
         "독",
         "땅 속성 저항 DOWN",
@@ -21583,7 +21596,8 @@
         "Hood",
         "Amnesia",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "rovella",
@@ -21643,7 +21657,6 @@
         "power": 1,
         "surv_state": 1
       },
-      "skills_en": true,
       "traits": [
         "활",
         "권갑",
@@ -21653,7 +21666,8 @@
         "로스트 랩",
         "물",
         "Amnesia"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "rufus",
@@ -21682,7 +21696,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%eb%a1%bc%a5%d5%a5%b9",
         "ae_wiki": "https://anothereden.wiki/w/Rufus"
       },
-      "skills_en": true,
       "effect_tags": [
         "공격 대미지 흡수",
         "기절",
@@ -21702,7 +21715,8 @@
         "권갑",
         "Bookworm",
         "불"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "soira",
@@ -21731,7 +21745,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%bd%a5%a4%a5%e9",
         "ae_wiki": "https://anothereden.wiki/w/Soira"
       },
-      "skills_en": true,
       "effect_tags": [
         "도발",
         "물리 저항 UP",
@@ -21747,7 +21760,8 @@
         "창",
         "Napper",
         "바람"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "yio",
@@ -21776,7 +21790,6 @@
         "game_info": "https://anothereden.game-info.wiki/d/%a5%a4%a5%aa%3f",
         "ae_wiki": "https://anothereden.wiki/w/Yio"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "땅 속성 저항 DOWN",
@@ -21791,7 +21804,8 @@
         "도끼",
         "Dragon Killer",
         "땅"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "asia",
@@ -21819,7 +21833,6 @@
         "namu": "https://namu.wiki/w/%EC%97%90%EC%9D%B4%EC%8B%9C%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Asia"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "독"
@@ -21833,7 +21846,8 @@
         "Mask",
         "활",
         "Estrangement"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "ctos",
@@ -21861,7 +21875,6 @@
         "namu": "https://namu.wiki/w/%ED%81%AC%ED%86%A0%EC%8A%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Ctos"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "타격 저항 DOWN"
@@ -21874,7 +21887,8 @@
       "traits": [
         "Fleareth",
         "망치"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "een",
@@ -21902,7 +21916,6 @@
         "namu": "https://namu.wiki/w/%EC%9D%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Een"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "찌르기 저항 DOWN"
@@ -21915,7 +21928,8 @@
       "traits": [
         "창",
         "Machinery"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "emms",
@@ -21943,7 +21957,6 @@
         "namu": "https://namu.wiki/w/%EC%97%90%EB%AC%B4%EC%8A%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Emms"
       },
-      "skills_en": true,
       "effect_tags": [
         "속도 UP",
         "힘 UP"
@@ -21957,7 +21970,8 @@
         "Fleareth",
         "권갑",
         "Napper"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "esta",
@@ -21985,7 +21999,6 @@
         "namu": "https://namu.wiki/w/%EC%97%90%EC%8A%A4%ED%83%80%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Esta"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "독",
@@ -22000,7 +22013,8 @@
       "traits": [
         "Fleareth",
         "도끼"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "kilqia",
@@ -22028,7 +22042,6 @@
         "namu": "https://namu.wiki/w/%ED%82%AC%ED%80%B4%EC%96%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Kilqia"
       },
-      "skills_en": true,
       "effect_tags": [
         "상태 이상 회복",
         "지능 UP",
@@ -22043,7 +22056,8 @@
         "Mask",
         "지팡이",
         "Sharp Ears"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "koot",
@@ -22071,7 +22085,6 @@
         "namu": "https://namu.wiki/w/%EC%BF%A0%ED%8A%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Koot"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "상태 이상 회복",
@@ -22086,7 +22099,8 @@
       "traits": [
         "도",
         "Machinery"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "menesia",
@@ -22114,7 +22128,6 @@
         "namu": "https://namu.wiki/w/%EB%A9%94%EB%84%A4%EC%8B%9C%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Menesia"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "상태 이상 회복",
@@ -22129,7 +22142,8 @@
       "traits": [
         "Mask",
         "도"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "natore",
@@ -22157,7 +22171,6 @@
         "namu": "https://namu.wiki/w/%EB%82%98%ED%86%A0%EB%A0%88%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Natore"
       },
-      "skills_en": true,
       "effect_tags": [
         "물리 저항 UP",
         "힘 DOWN"
@@ -22171,7 +22184,8 @@
         "Fleareth",
         "검",
         "Ninja"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "naylia",
@@ -22199,7 +22213,6 @@
         "namu": "https://namu.wiki/w/%EB%84%A4%EC%9D%BC%EB%A6%AC%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Naylia"
       },
-      "skills_en": true,
       "effect_tags": [
         "물리 저항 UP",
         "힘 DOWN"
@@ -22212,7 +22225,8 @@
       "traits": [
         "Mask",
         "검"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "nixa",
@@ -22240,7 +22254,6 @@
         "namu": "https://namu.wiki/w/%EB%8B%89%EC%82%AC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Nixa"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "독"
@@ -22253,7 +22266,8 @@
       "traits": [
         "Fleareth",
         "활"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "noome",
@@ -22281,7 +22295,6 @@
         "namu": "https://namu.wiki/w/%EB%88%84%EB%AF%80%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Noome"
       },
-      "skills_en": true,
       "effect_tags": [
         "상태 이상 회복",
         "지능 UP",
@@ -22295,7 +22308,8 @@
       "traits": [
         "지팡이",
         "Machinery"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "oor",
@@ -22323,7 +22337,6 @@
         "namu": "https://namu.wiki/w/%EC%98%A4%EB%A5%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Oor"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "독",
@@ -22338,7 +22351,8 @@
       "traits": [
         "도끼",
         "Machinery"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "pasia",
@@ -22366,7 +22380,6 @@
         "namu": "https://namu.wiki/w/%ED%8C%A8%EC%8B%9C%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Pasia"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "타격 저항 DOWN"
@@ -22381,7 +22394,8 @@
         "Mask",
         "망치",
         "Animal Talker"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "rodeia",
@@ -22409,7 +22423,6 @@
         "namu": "https://namu.wiki/w/%EB%A1%9C%EB%94%94%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Rodeia"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "독",
@@ -22425,7 +22438,8 @@
         "Mask",
         "Sweet tooth",
         "도끼"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "saithe",
@@ -22453,7 +22467,6 @@
         "namu": "https://namu.wiki/w/%EC%84%B8%EC%8A%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Saithe"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "독"
@@ -22466,7 +22479,8 @@
       "traits": [
         "활",
         "Machinery"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "sauria",
@@ -22494,7 +22508,6 @@
         "namu": "https://namu.wiki/w/%EC%82%AC%EC%9A%B0%EB%A6%AC%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Sauria"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "찌르기 저항 DOWN"
@@ -22508,7 +22521,8 @@
         "Mask",
         "창",
         "Nicknamer"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "tayme",
@@ -22536,7 +22550,6 @@
         "namu": "https://namu.wiki/w/%ED%85%8C%EC%9E%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Tayme"
       },
-      "skills_en": true,
       "effect_tags": [
         "속도 UP",
         "힘 UP"
@@ -22549,7 +22562,8 @@
       "traits": [
         "권갑",
         "Machinery"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "tohme",
@@ -22577,7 +22591,6 @@
         "namu": "https://namu.wiki/w/%ED%86%B0%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Tohme"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "상태 이상 회복",
@@ -22593,7 +22606,8 @@
         "Fleareth",
         "도",
         "Avenger"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "toole",
@@ -22621,7 +22635,6 @@
         "namu": "https://namu.wiki/w/%ED%86%A8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Toole"
       },
-      "skills_en": true,
       "effect_tags": [
         "기절",
         "타격 저항 DOWN"
@@ -22634,7 +22647,8 @@
       "traits": [
         "망치",
         "Machinery"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "urania",
@@ -22662,7 +22676,6 @@
         "namu": "https://namu.wiki/w/%EC%9A%B0%EB%9D%BC%EB%8B%88%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Urania"
       },
-      "skills_en": true,
       "effect_tags": [
         "속도 UP",
         "힘 UP"
@@ -22676,7 +22689,8 @@
         "Mask",
         "Cooking",
         "권갑"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "uuo",
@@ -22704,7 +22718,6 @@
         "namu": "https://namu.wiki/w/%EC%9A%B0%EC%98%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Uuo"
       },
-      "skills_en": true,
       "effect_tags": [
         "물리 저항 UP",
         "힘 DOWN"
@@ -22717,7 +22730,8 @@
       "traits": [
         "검",
         "Machinery"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "yssis",
@@ -22745,7 +22759,6 @@
         "namu": "https://namu.wiki/w/%EC%9D%B4%EC%8B%9C%EC%8A%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Yssis"
       },
-      "skills_en": true,
       "effect_tags": [
         "상태 이상 회복",
         "지능 UP",
@@ -22759,7 +22772,8 @@
       "traits": [
         "Fleareth",
         "지팡이"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "havoc",
@@ -22831,7 +22845,6 @@
         "atk_state": 2,
         "zone": 3
       },
-      "skills_en": true,
       "traits": [
         "Scientist",
         "권갑",
@@ -22842,7 +22855,8 @@
         "로스트 랩",
         "Amnesia",
         "IDA 스쿨"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "theodorus",
@@ -22917,13 +22931,13 @@
         "state_unknown": 1,
         "surv_buff": 2
       },
-      "skills_en": true,
       "traits": [
         "권갑",
         "땅",
         "MMA",
         "Sweet tooth"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "erina_as",
@@ -22998,14 +23012,14 @@
         "recover": 4,
         "power": 1
       },
-      "skills_en": true,
       "traits": [
         "지팡이",
         "Spirit-fused",
         "그림자",
         "Sweet tooth",
         "연옥계"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "moonlight_flower_alter_as",
@@ -23164,14 +23178,14 @@
         "surv_state": 1,
         "mode": 1
       },
-      "skills_en": true,
       "traits": [
         "지팡이",
         "KMS",
         "Scientist",
         "동방",
         "Synth Human"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "twinkling_illustrator_alter",
@@ -23238,7 +23252,6 @@
         "power": 1,
         "state_unknown": 1
       },
-      "skills_en": true,
       "traits": [
         "창",
         "불",
@@ -23246,7 +23259,8 @@
         "번개",
         "Bookworm",
         "Nicknamer"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "jorna",
@@ -23306,7 +23320,6 @@
         "atk_state": 1,
         "state_unknown": 1
       },
-      "skills_en": true,
       "traits": [
         "Sweet tooth",
         "도끼",
@@ -23317,7 +23330,8 @@
         "연옥계",
         "Estrangement",
         "그림자"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "jillfunny_as",
@@ -23389,7 +23403,6 @@
         "surv_debuff": 2,
         "surv_buff": 1
       },
-      "skills_en": true,
       "traits": [
         "검",
         "물",
@@ -23398,7 +23411,8 @@
         "Hood",
         "Amnesia",
         "Cursed"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "pyggie_as",
@@ -23477,7 +23491,6 @@
       "urls": {
         "ae_wiki": "https://anothereden.wiki/w/Ramiu"
       },
-      "skills_en": true,
       "effect_tags": [
         "AF·천명",
         "대미지 UP",
@@ -23509,7 +23522,8 @@
         "지팡이",
         "땅",
         "Animal Talker"
-      ]
+      ],
+      "skills_en": true
     },
     {
       "id": "darunis_as",
@@ -23574,13 +23588,13 @@
         "state_unknown": 1,
         "surv_state": 1
       },
-      "skills_en": true,
       "traits": [
         "Forager",
         "활",
         "바르오키",
         "바람"
-      ]
+      ],
+      "skills_en": true
     }
   ]
 }

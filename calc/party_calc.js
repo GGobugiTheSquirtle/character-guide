@@ -271,6 +271,30 @@
     return z;
   }
 
+  // 공격의 조건부 배수(atk.conds) 중 지금 켜진 것 — {all: 곱, crit: 크리 전용 곱, on: [조건]} (2026-10-15 S7)
+  //   상성 · 대상 상태(opt.punish · opt.targetStates) · 크리 · HP(opt.maxHp/lowHp) · 존(opt.zone · zoneAwake) · 적 수 · 선후(opt.enemyFirst)
+  //   · AF(opt.af) · 스텔라(opt.stellar)는 자동, 자기 상태 · 스택 · 비례 · 턴 · 기타는 opt.states(라벨 목록)에 있을 때만
+  function condMult(atk, aff, opt, brk) {
+    const out = { all: 1, crit: 1, on: [] };
+    const tgt = [...(opt.punish || []), ...(opt.targetStates || [])];
+    const zn = opt.zone && opt.zone.name ? opt.zone.name.toLowerCase() : "";
+    for (const c of atk.conds || []) {
+      const on = c.t === "weak" ? aff === "weak" : c.t === "resist" ? aff === "resist"
+        : c.t === "target" ? (c.on === "ailment" ? tgt.length > 0 : c.on === "break" ? !!brk : tgt.includes(c.on))
+        : c.t === "crit" ? true
+        : c.t === "hp" ? (c.on === "max" ? !!opt.maxHp : !!opt.lowHp)
+        : c.t === "zone" ? (c.on === "another" || c.on === "awake" ? !!opt.zoneAwake && (!c.name || zn.includes(c.name.toLowerCase()))
+          : c.on === "any" ? !!opt.zone : zn.includes(String(c.on).toLowerCase()))
+        : c.t === "enemies" ? (opt.enemyCount || 1) >= 2 : c.t === "enemyFirst" ? !!opt.enemyFirst
+        : c.t === "af" ? !!opt.af : c.t === "stellar" ? !!opt.stellar
+        : (opt.states || []).includes(c.label);
+      if (!on) continue;
+      if (c.t === "crit") out.crit *= c.x; else out.all *= c.x;
+      out.on.push(c);
+    }
+    return out;
+  }
+
   // 멤버 한 명의 선택 공격 1타 — {normal, crit, p, expected, why}. pre = prepare(members, opt) 를 넘기면 파티 공통분을 다시 만들지 않는다
   function memberDamage(m, members, opt, pre) {
     const atk = m.attack;
@@ -299,10 +323,12 @@
       brk: brk && eg.breaks.some(b => b === "*" || b === "e:" + atk.element || b === "a:" + atk.atk) ? 1 : 0 };
     for (const x of [sx.shingan, sx.kesshi, sx.brk]) if (x) groups.push(x);
     const en = opt.enemy || { end: 0, spr: 0 };
-    // skillMult — 범위 배율(150~18000%)의 위값(multMax)은 조건부(스택 · HP 소모 · 모드)라 opt.cond 일 때만.
-    // 「약점이면 ×N」(weakX) · 「내성이면 ×N」(resistX)은 적 상성으로 판정 — 위값을 넘지 않는다
-    const affX = (aff === "weak" && atk.weakX) || (aff === "resist" && atk.resistX) || 1;
-    const baseMult = (opt.cond && atk.multMax) || Math.min(atk.multMax || Infinity, (atk.mult || 0) * affX);
+    // skillMult — 범위 배율(150~18000%)의 위값(multMax)은 조건부라 opt.cond 일 때만(모든 조건 최대).
+    // 아니면 아래값 × 켜진 조건 배수(atk.conds, 2026-10-15 S7) — 위값을 넘지 않는다. 크리 조건은 크리 타격에만
+    const cx = condMult(atk, aff, opt, brk);
+    const cap = atk.multMax || Infinity;
+    const baseMult = (opt.cond && atk.multMax) || Math.min(cap, (atk.mult || 0) * cx.all);
+    const critX = Math.min(cx.crit, cap / Math.max(baseMult, 1e-9));
     const o = {
       dep: atk.dep, elemental: !!atk.element, stat: st, weapon: { atk: (m.weapon || {}).atk || 0, matk: (m.weapon || {}).matk || 0 },
       buff: { pwr: net(ag, "pwr", () => C.groupNet(ag.pwr)), int: net(ag, "int", () => C.groupNet(ag.int)), spd: net(ag, "spd", () => C.groupNet(ag.spd)) },
@@ -319,9 +345,9 @@
     const rate = magic ? C.additive([...ag.mcrit, eq.mcrit]) : (st.lck || 0) / 1600 + C.additive([...ag.crit, eq.crit]);
     const oc = (magic ? ag.movercrit : ag.overcrit) ? Math.max(0, Math.min(1, (rate - 1) / 10)) : 0;
     const normal = C.damage({ ...o, crit: false }).total;
-    const crit = C.damage({ ...o, crit: true, critDmg }).total * (1 + oc);
+    const crit = C.damage({ ...o, crit: true, critDmg }).total * (1 + oc) * critX;
     const p = (ag.sureCrit || sx.kesshi) ? 1 : Math.max(0, Math.min(1, rate));
-    const res = { normal, crit, p, expected: p * crit + (1 - p) * normal, o, get why() { return [...ag.src, ...eg.src, ...eq.src, ...ev.src]; } };
+    const res = { normal, crit, p, expected: p * crit + (1 - p) * normal, o, conds: cx.on, get why() { return [...ag.src, ...eg.src, ...eq.src, ...ev.src, ...cx.on.map(c => `조건: ${c.label} ×${c.x}`)]; } };
     // 정밀값(ae_pipeline — 딩님 계산기와 정수 일치 엔진): 난수 전 구간 평균. 근사보다 0~0.4% 낮다(단계마다 버림)
     Object.defineProperty(res, "precise", { enumerable: false, get() {
       const P = root.AEPipe || (typeof require === "function" ? require("./ae_pipeline.js") : null);
@@ -342,7 +368,7 @@
           condNB: o.skillFx.map(x => x * 100), critDmg: pct(critDmg), overCrit: oc * 100 || undefined, aim: sum(sl.aim) || undefined,
           zoneAwake: sl.zoneAwake, lsAlly: sl.lsAlly, overthrowE: sl.overthrowE, growthAtk: sl.growthAtk, wins: (sl.wins || [])[0],
           zone: pct(o.zone), cheer: ev.groups.map(x => x * 100), break: sx.brk * 100 || undefined } });
-      return { normal: r.avg, crit: r.critAvg, p, expected: p * r.critAvg + (1 - p) * r.avg };
+      return { normal: r.avg, crit: r.critAvg * critX, p, expected: p * r.critAvg * critX + (1 - p) * r.avg };
     } });
     return res;
   }

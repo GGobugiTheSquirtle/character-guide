@@ -80,6 +80,10 @@
     const team = swapIn(members, w);
     // 획득 가능 수(2026-10-14 SV — 1회성 보상 글래스터 · 광석을 여러 개 끼우던 것): 글래스터 = 기본 이름별 limit(위키 획득처, null = 반복 획득),
     //   특수 광석 = 광석별 oreLimit. 보유 모드(conf.counts)는 보유 수
+    // 파티 공동(2026-10-15): conf.taken = 다른 파티원이 이미 쓴 수({"g:기본 이름" · "o:광석" · "e:무기/방어구" · "b:배지": 수}),
+    //   conf.others = [{m, w}] 이 멤버의 그라스타(공유)가 바꾸는 파티원 대미지 × 가중치, conf.selfWeight = 자기 대미지 가중치(기본 1)
+    const tkey = (it, kind) => (kind === "g" ? "g:" + (it.base || it.name) : kind === "b" ? "b:" + it.name : "e:" + it.name);
+    const taken = (it, kind) => (conf.taken || {})[tkey(it, kind)] || 0;
     const limit = (it, kind) => {
       if (conf.counts) return conf.counts[kind === "g" ? it.base || it.name : it.name] || 0;
       if (kind === "g") return conf.dupGrasta === false ? 1 : it.limit ?? Infinity;
@@ -93,8 +97,13 @@
       w.grasta = [...s.grasta, ...(s.special || [])].filter(Boolean); w.badges = s.badges.filter(Boolean);
       evals++;
       const d = P.memberDamage(w, team, opt, pre);
-      return d ? d.expected : 0;
+      const own = (conf.selfWeight ?? 1) * (d ? d.expected : 0);
+      if (!conf.others || !conf.others.length) return own;
+      const sig = w.grasta.filter(g => g.share && !g.ore).map(g => g.name).sort().join("|");   // 남에게 닿는 건 공유 그라스타뿐 — 그 집합이 같으면 다시 안 잰다
+      if (sig !== othersSig) { othersSig = sig; othersV = conf.others.reduce((t, o) => t + o.w * ((P.memberDamage(o.m, team, opt, pre) || {}).expected || 0), 0); }
+      return own + othersV;
     };
+    let othersSig = null, othersV = 0;
     const pad = (a, n) => Array.from({ length: n }, (_, i) => (a || [])[i] || null);
     const start = score({ weapon: m.weapon || null, armor: m.armor || null, grasta: pad(m.grasta, gs), badges: pad(m.badges, bs), special: pad(m.special, ss) });
     // 탐색은 후보 안에서만 — 지금 장비가 후보(보유 목록) 밖이면 빈 칸에서 시작
@@ -112,10 +121,10 @@
         const pool = key === "weapon" ? pools.weapons : key === "armor" ? pools.armor : key === "grasta" ? pools.grasta : key === "special" ? pools.special : pools.badges;
         const kind = key === "grasta" || key === "special" ? "g" : key === "badges" ? "b" : "e";
         const used = it => (i < 0 ? 0 : state[key].filter((x, j) => j !== i && x && (kind === "g" ? (x.base || x.name) === (it.base || it.name) : x === it)).length);
-        const oreFull = it => key === "grasta" && it.ore && state.grasta.filter((x, j) => j !== i && x && x.ore === it.ore).length >= (it.oreLimit ?? Infinity);
+        const oreFull = it => key === "grasta" && it.ore && state.grasta.filter((x, j) => j !== i && x && x.ore === it.ore).length + ((conf.taken || {})["o:" + it.ore] || 0) >= (it.oreLimit ?? Infinity);
         for (const it of [null, ...pool]) {
           if (it === null && key === "weapon" && pools.weapons.length) continue;
-          if (it && (used(it) >= limit(it, kind) || oreFull(it))) continue;
+          if (it && (used(it) + taken(it, kind) >= limit(it, kind) || oreFull(it))) continue;
           const s2 = { ...state, grasta: [...state.grasta], badges: [...state.badges], special: [...state.special] };
           if (i < 0) s2[key] = it; else s2[key][i] = it;
           const v = score(s2);
@@ -127,6 +136,65 @@
     score(state);
     return { gear: { weapon: state.weapon, armor: state.armor, grasta: state.grasta.filter(Boolean), badges: state.badges.filter(Boolean), special: state.special.filter(Boolean) },
       value: best, start, evals };
+  }
+
+  // 파티 공동 장비 최적화(2026-10-15) — 멤버마다 gearOptimize 를 돌리되 ① 다른 멤버가 쓴 장비는 수량에서 빼고(1개뿐인 그라스타 · 무기 · 고유 배지)
+  //   ② 내 그라스타가 공유로 올리는 파티원 대미지까지 목표에 넣는다. 멤버를 돌아가며 반복(좌표 하강), 목표가 안 오르면 멈춤.
+  //   conf = gearOptimize conf + { objective: 'sum'|'carry', carry: id, passes: 3 }, poolsOf(member) → 후보
+  //   carry 면 그 멤버 대미지가 목표(다른 멤버는 1e-3 — 남는 장비로 무난하게), 그 멤버를 먼저 채운다
+  function partyGear(members, opt, poolsOf, conf = {}) {
+    const team = members.map(m => ({ ...m, gear: { grasta: m.grasta || [], special: m.special || [] } }));
+    const wt = x => (conf.objective === "carry" ? (x.c.id === conf.carry ? 1 : 1e-3) : 1);
+    const order = conf.objective === "carry" ? [...team].sort((a, b) => wt(b) - wt(a)) : team;
+    const usage = except => {
+      const t = {}, add = k => (t[k] = (t[k] || 0) + 1);
+      for (const x of team) {
+        if (x === except) continue;
+        if (x.weapon) add("e:" + x.weapon.name);
+        if (x.armor) add("e:" + x.armor.name);
+        for (const g of x.grasta || []) { add("g:" + (g.base || g.name)); if (g.ore) add("o:" + g.ore); }
+        for (const b of x.badges || []) if (b.kind !== "random") add("b:" + b.name);
+      }
+      return t;
+    };
+    const total = () => { const pre = P.prepare(team, opt); return team.reduce((s, x) => s + wt(x) * ((P.memberDamage(x, team, opt, pre) || {}).expected || 0), 0); };
+    let evals = 0, best = -Infinity;
+    const hist = [];
+    for (let pass = 0; pass < (conf.passes ?? 3); pass++) {
+      for (const x of order) {
+        const others = team.filter(o => o !== x).map(o => ({ m: o, w: wt(o) }));
+        const r = gearOptimize({ ...x, grasta: x.gear.grasta, special: x.gear.special }, team, opt, poolsOf(x),
+          { ...conf, taken: usage(x), others, selfWeight: wt(x) });
+        evals += r.evals;
+        Object.assign(x, { weapon: r.gear.weapon, armor: r.gear.armor, badges: r.gear.badges, gear: { grasta: r.gear.grasta, special: r.gear.special || [] },
+          grasta: [...r.gear.grasta, ...(r.gear.special || [])] });
+      }
+      let v = total();
+      // 맞바꾸기 — 먼저 고른 멤버가 1개뿐인 장비를 쥐고 있으면 좌표 하강은 못 빠져나온다(국소 최적). 두 멤버의 같은 종류 칸을 서로 바꿔 본다
+      for (const x of team) for (const y of team) {
+        if (x === y || team.indexOf(x) > team.indexOf(y)) continue;
+        const tries = [["weapon"], ["armor"], ...x.gear.grasta.flatMap((_, i) => y.gear.grasta.map((_, j) => ["g", i, j])),
+          ...(x.badges || []).flatMap((_, i) => (y.badges || []).map((_, j) => ["b", i, j]))];
+        for (const [k, i, j] of tries) {
+          const sw = () => {
+            if (k === "weapon" || k === "armor") { if ((x[k] && x[k].type) !== (y[k] && y[k].type) && k === "weapon") return false; [x[k], y[k]] = [y[k], x[k]]; }
+            else if (k === "b") [x.badges[i], y.badges[j]] = [y.badges[j], x.badges[i]];
+            else { [x.gear.grasta[i], y.gear.grasta[j]] = [y.gear.grasta[j], x.gear.grasta[i]]; for (const z of [x, y]) z.grasta = [...z.gear.grasta, ...z.gear.special]; }
+            return true;
+          };
+          const fits = () => k !== "g" || [x, y].every(z => z.gear.grasta.every(g => !g || !(g.req && g.req.length) || g.req.some(t => (z.c.traits || []).includes(t) || t === ((z.weapon && z.weapon.type) || (z.cc && z.cc.weapon)))));
+          if (!sw()) continue;
+          const nv = fits() ? total() : -Infinity;
+          if (nv > v * (1 + 1e-9)) v = nv; else sw();
+        }
+      }
+      hist.push(v);
+      if (v <= best * (1 + 1e-9)) break;
+      best = v;
+    }
+    const pre = P.prepare(team, opt);
+    return { team, value: best, hist, evals,
+      per: team.map(x => ({ id: x.c.id, expected: (P.memberDamage(x, team, opt, pre) || {}).expected || 0, gear: { weapon: x.weapon, armor: x.armor, badges: x.badges, ...x.gear } })) };
   }
 
   // 공격까지 고르는 장비 최적화 — attacks 각각에 장비를 맞춰 보고 가장 큰 것
@@ -244,7 +312,7 @@
     return { list, evals, pool: pool.length };
   }
 
-  const api = { baseId, canGrasta, damagePools, grantAttacks, attackPool, gearOptimize, bestSetup, bestAttack, scoreParty, partySearch };
+  const api = { baseId, canGrasta, damagePools, grantAttacks, attackPool, gearOptimize, partyGear, bestSetup, bestAttack, scoreParty, partySearch };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEOpt = api;
 })(typeof window !== "undefined" ? window : globalThis);

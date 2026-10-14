@@ -1,5 +1,5 @@
 // 원작 어나더에덴 대미지 — 정밀 파이프라인(단계 순서 · 소수점 버림 · 감쇠 연산) (2026-10-13)
-//   근거: 딩님 「AE 대미지 계산기 v4.003」의 계산 순서 · 실험 규칙을 해독한 것(docs/ae-damage-pipeline.md). 크레딧은 딩님.
+//   근거: 딩님 「AE 대미지 계산기」(v4.003 해독 → 2026-10-15 v4.016 반영)의 계산 순서 · 실험 규칙(docs/ae-damage-pipeline.md). 크레딧은 딩님.
 //   ae_calc.js(위키 공식 · 평균 근사)와 같은 본식이고, 여기는 난수 값마다 정수 대미지를 그대로 낸다.
 //   테스트: _tools/character/tests/test_ae_pipeline.cjs (엑셀 재계산 오라클과 정수 일치)
 //   브라우저(window.AEPipe) · node 공용
@@ -71,7 +71,8 @@
     const eleM = 1 + (inp.elemental ? (ru(Math.sqrt((ally ? x6 : st(x6, "int")) * 10 + 16), 5) - 4) / 64 : 0);
 
     // 배율 칸들
-    const powerM = arr(f.power).reduce((p, x) => rd(p * pc(x), 0), rd(inp.power, 0)) / 100;
+    // 위력 UP — v4.016: 칸들을 합산해 한 번 곱한다(모드 체인지 · 다단 강화 합연), 기본 위력은 올림 (v4.003 = 칸마다 곱 · 버림, 기본 위력 버림)
+    const powerM = rd(ru(inp.power, 0) * (1 + sum(arr(f.power).map(x => rd(x, 2))) / 100), 0) / 100;
     const AFF = { norm: 1, resist: 0.25, null: 0, absorb: 0.5 };
     const affM = rd(K.dot || !isDmg ? 1 : inp.affinity === "weak"
       ? (K.dmg === "magic" ? 2 : 1.85 + (x7 + Math.sqrt(2 * x7)) / 512) + sum(f.weak) / 100 : AFF[inp.affinity], 4);
@@ -112,6 +113,7 @@
       v = seq(v, f.cheer);                                                         // 가창 · 기도 · 환경
       v = addR(v, decay(f.aura));                                                  // 오라
       const ce = v;
+      v = rd(v * pc(f.dmgTaken), 0);                                               // (대상) 피격 대미지 감소 — v4.016 신설, 배리어와 별개 칸
       v = rd(v * pc(f.barrier), 0);                                                // 배리어
       if (inp.scope === "single") v = addR(v, 1.1);
       v = addR(v, pc(f.break));

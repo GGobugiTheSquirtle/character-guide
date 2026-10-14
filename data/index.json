@@ -2803,10 +2803,12 @@
         "MP 회복",
         "ZONE 기타",
         "공명",
+        "그림자 속성 공격 UP",
         "기절",
         "대미지 UP",
         "디버프 해제",
         "배리어",
+        "불 속성 공격 UP",
         "상태 이상 무효",
         "속도 UP",
         "속성 저항 DOWN",
@@ -2826,7 +2828,7 @@
         "power": 8,
         "resource": 11,
         "attack": 8,
-        "atk_buff": 6,
+        "atk_buff": 8,
         "tempo": 2,
         "surv_state": 6,
         "atk_state": 3,
@@ -3022,6 +3024,7 @@
         "날리기 무효",
         "마법 저항 UP",
         "마법 크리티컬율 UP",
+        "물 속성 저항 UP",
         "받는 대미지 DOWN",
         "방패막이",
         "배리어",
@@ -3042,7 +3045,7 @@
         "attack": 2,
         "surv_debuff": 1,
         "tempo": 2,
-        "surv_buff": 4,
+        "surv_buff": 6,
         "atk_state": 3,
         "recover": 3,
         "surv_state": 4,
@@ -3107,19 +3110,20 @@
         "상태 이상 회복",
         "속도 UP",
         "속성 저항 DOWN",
+        "속성 저항 UP",
         "실드",
         "지능 UP",
         "치유"
       ],
       "roles": {
         "recover": 12,
+        "surv_buff": 4,
         "surv_state": 8,
         "resource": 6,
         "mode": 1,
         "attack": 4,
         "dot": 1,
         "atk_debuff": 1,
-        "surv_buff": 3,
         "atk_buff": 5,
         "power": 4,
         "tempo": 1,
@@ -4932,8 +4936,10 @@
         "속성 저항 UP",
         "실드",
         "전투 불능 회복",
+        "지능 UP",
         "치유",
-        "크리티컬율 UP"
+        "크리티컬율 UP",
+        "힘 UP"
       ],
       "roles": {
         "resource": 13,
@@ -4945,7 +4951,7 @@
         "atk_debuff": 1,
         "surv_debuff": 1,
         "surv_buff": 1,
-        "atk_buff": 2,
+        "atk_buff": 4,
         "atk_state": 1,
         "mode": 1,
         "zone": 3
@@ -5466,11 +5472,19 @@
         "MP 회복",
         "ZONE 기타",
         "대상의 방어 무시",
+        "마법 저항 DOWN",
+        "마법 저항 UP",
         "마법 크리티컬 대미지 UP",
         "마법 크리티컬율 UP",
+        "물리 저항 DOWN",
+        "물리 저항 UP",
         "배리어",
         "약점 간파",
-        "정신 통일"
+        "정신 통일",
+        "지능 DOWN",
+        "지능 UP",
+        "힘 DOWN",
+        "힘 UP"
       ],
       "roles": {
         "zone": 6,
@@ -5478,10 +5492,11 @@
         "atk_state": 5,
         "power": 2,
         "resource": 5,
+        "surv_debuff": 2,
+        "atk_debuff": 3,
         "state_unknown": 1,
         "surv_state": 1,
-        "atk_buff": 2,
-        "atk_debuff": 1
+        "atk_buff": 2
       },
       "traits": [
         "지팡이",
@@ -5696,11 +5711,11 @@
         "mode": 3,
         "atk_buff": 18,
         "attack": 4,
+        "atk_debuff": 5,
         "tempo": 1,
         "recover": 2,
         "surv_state": 2,
         "surv_buff": 2,
-        "atk_debuff": 3,
         "dot": 1,
         "power": 4
       },
@@ -7990,14 +8005,16 @@
         "다단 강화",
         "마법 크리티컬율 UP",
         "속도 UP",
+        "속성 공격 UP",
+        "지능 UP",
         "크리티컬율 UP",
         "페인",
         "힘 UP"
       ],
       "roles": {
         "attack": 8,
-        "atk_buff": 4,
-        "tempo": 2,
+        "atk_buff": 7,
+        "tempo": 3,
         "surv_debuff": 1,
         "atk_debuff": 1,
         "power": 2,
@@ -9742,8 +9759,8 @@
         "zone": 5,
         "resource": 4,
         "atk_buff": 4,
+        "tempo": 2,
         "atk_debuff": 2,
-        "tempo": 1,
         "surv_buff": 2,
         "state_unknown": 1,
         "recover": 1
@@ -10675,6 +10692,8 @@
         "AF·천명",
         "ZONE 기타",
         "루나틱",
+        "물 속성 저항 DOWN",
+        "번개 속성 저항 DOWN",
         "속도 UP",
         "속성 저항 UP",
         "크리티컬 대미지 UP",
@@ -10688,8 +10707,8 @@
         "mode": 1,
         "zone": 8,
         "attack": 7,
+        "atk_debuff": 7,
         "atk_buff": 4,
-        "atk_debuff": 1,
         "tempo": 1,
         "surv_buff": 1,
         "power": 2
@@ -11196,6 +11215,8 @@
         "HP 회복",
         "MP 회복",
         "ZONE 기타",
+        "그림자 속성 공격 UP",
+        "땅 속성 공격 UP",
         "루나틱",
         "베기 저항 DOWN",
         "상태 이상 회복",
@@ -11210,7 +11231,7 @@
         "mode": 1,
         "zone": 8,
         "attack": 7,
-        "atk_buff": 5,
+        "atk_buff": 7,
         "resource": 1,
         "power": 3,
         "surv_debuff": 1,
@@ -11258,8 +11279,12 @@
         "AF·천명",
         "HP 회복",
         "MP 회복",
+        "결정 속성 공격 UP",
+        "결정 속성 저항 DOWN",
         "루나틱",
         "마법 크리티컬율 UP",
+        "물 속성 공격 UP",
+        "물 속성 저항 DOWN",
         "배리어",
         "배리어 관통",
         "버프 해제",
@@ -11277,13 +11302,13 @@
         "resource": 6,
         "mode": 2,
         "attack": 8,
+        "atk_debuff": 3,
+        "atk_buff": 4,
         "recover": 1,
         "power": 2,
         "surv_debuff": 3,
         "state_unknown": 1,
-        "atk_buff": 2,
         "tempo": 1,
-        "atk_debuff": 1,
         "enemy_utility": 1,
         "surv_state": 1
       },
@@ -11326,16 +11351,19 @@
         "AF·천명",
         "HP 회복",
         "ZONE 기타",
+        "그림자 속성 공격 UP",
         "기절",
         "대미지 UP",
         "독",
         "루나틱",
         "물리 저항 DOWN",
         "물리 저항 UP",
+        "바람 속성 공격 UP",
         "브레이크",
         "속도 UP",
         "심기일체",
         "지능 UP",
+        "크리티컬율 UP",
         "페인",
         "힘 UP"
       ],
@@ -11344,7 +11372,7 @@
         "mode": 1,
         "zone": 4,
         "attack": 7,
-        "atk_buff": 9,
+        "atk_buff": 16,
         "atk_debuff": 2,
         "surv_debuff": 1,
         "surv_buff": 1,
@@ -11396,12 +11424,14 @@
       },
       "effect_tags": [
         "MP 회복",
+        "그림자 속성 공격 UP",
         "대미지 UP",
         "도발",
         "독",
         "루나틱",
         "물리 저항 DOWN",
         "물리 저항 UP",
+        "불 속성 공격 UP",
         "속도 UP",
         "속성 저항 UP",
         "수면",
@@ -11424,7 +11454,7 @@
         "recover": 1,
         "atk_debuff": 1,
         "dot": 2,
-        "atk_buff": 3,
+        "atk_buff": 5,
         "tempo": 1
       },
       "traits": [
@@ -11589,8 +11619,10 @@
       "effect_tags": [
         "AF·천명",
         "MP 회복",
+        "결정 속성 공격 UP",
         "독",
         "루나틱",
+        "물 속성 공격 UP",
         "상태 이상 무효",
         "속도 DOWN",
         "속성 저항 DOWN",
@@ -11609,7 +11641,8 @@
         "surv_debuff": 3,
         "surv_buff": 1,
         "surv_state": 1,
-        "resource": 4
+        "resource": 4,
+        "atk_buff": 2
       },
       "traits": [
         "Dragon Palace",
@@ -11810,7 +11843,7 @@
         "atk_buff": 1,
         "attack": 8,
         "surv_debuff": 2,
-        "tempo": 2,
+        "tempo": 3,
         "dot": 1,
         "mode": 1,
         "state_unknown": 1,
@@ -12054,6 +12087,7 @@
         "물리 저항 DOWN",
         "바람 속성 저항 UP",
         "불 속성 저항 DOWN",
+        "크리티컬 대미지 UP",
         "타격 저항 DOWN"
       ],
       "roles": {
@@ -12063,7 +12097,8 @@
         "atk_debuff": 3,
         "surv_debuff": 1,
         "mode": 2,
-        "zone": 2
+        "zone": 2,
+        "atk_buff": 1
       },
       "traits": [
         "권갑",
@@ -12567,9 +12602,13 @@
       },
       "effect_tags": [
         "HP 회복",
+        "결정 속성 공격 UP",
+        "그림자 속성 저항 UP",
+        "땅 속성 공격 UP",
         "루나틱",
         "물 속성 저항 UP",
         "버티기",
+        "번개 속성 저항 UP",
         "상태 이상 회복",
         "속도 DOWN",
         "속도 UP",
@@ -12584,9 +12623,9 @@
         "attack": 8,
         "power": 4,
         "recover": 2,
-        "surv_buff": 2,
+        "surv_buff": 4,
         "surv_debuff": 2,
-        "atk_buff": 2,
+        "atk_buff": 4,
         "tempo": 2,
         "surv_state": 1
       },
@@ -12629,9 +12668,13 @@
       },
       "effect_tags": [
         "MP 최대치 UP",
+        "그림자 속성 공격 UP",
+        "그림자 속성 저항 DOWN",
         "기절",
         "루나틱",
         "물리 저항 DOWN",
+        "불 속성 공격 UP",
+        "불 속성 저항 DOWN",
         "속도 DOWN",
         "지능 DOWN",
         "치유",
@@ -12644,10 +12687,10 @@
         "resource": 3,
         "mode": 2,
         "attack": 7,
-        "atk_buff": 2,
+        "atk_buff": 4,
         "surv_debuff": 3,
         "recover": 1,
-        "atk_debuff": 1,
+        "atk_debuff": 3,
         "tempo": 1
       },
       "traits": [
@@ -12746,6 +12789,7 @@
       "effect_tags": [
         "물 속성 저항 DOWN",
         "물리 저항 DOWN",
+        "속도 UP",
         "지능 DOWN",
         "크리티컬 대미지 UP",
         "페인",
@@ -12758,7 +12802,8 @@
         "atk_debuff": 3,
         "atk_buff": 2,
         "power": 1,
-        "resource": 2
+        "resource": 2,
+        "tempo": 1
       },
       "traits": [
         "고양이 애호가",
@@ -12806,6 +12851,8 @@
         "MP 회복",
         "기절",
         "루나틱",
+        "물 속성 저항 DOWN",
+        "번개 속성 저항 DOWN",
         "속도 UP",
         "속성 저항 DOWN",
         "수면",
@@ -12823,7 +12870,7 @@
         "tempo": 3,
         "attack": 4,
         "surv_debuff": 3,
-        "atk_debuff": 2
+        "atk_debuff": 4
       },
       "traits": [
         "Sweet tooth",
@@ -12885,8 +12932,8 @@
         "atk_buff": 6,
         "surv_debuff": 2,
         "attack": 3,
+        "tempo": 2,
         "atk_state": 1,
-        "tempo": 1,
         "resource": 2,
         "power": 1,
         "dot": 1
@@ -13298,7 +13345,7 @@
         "recover": 2,
         "surv_debuff": 1,
         "atk_debuff": 3,
-        "atk_buff": 2,
+        "atk_buff": 3,
         "resource": 2
       },
       "traits": [
@@ -13344,18 +13391,21 @@
         "바람 속성 저항 UP",
         "불 속성 저항 DOWN",
         "속도 DOWN",
+        "속도 UP",
         "지능 DOWN",
-        "힘 DOWN"
+        "힘 DOWN",
+        "힘 UP"
       ],
       "roles": {
         "attack": 5,
-        "atk_debuff": 2,
+        "atk_debuff": 3,
         "surv_debuff": 2,
         "atk_state": 1,
         "resource": 4,
         "power": 2,
-        "atk_buff": 1,
-        "surv_buff": 1
+        "atk_buff": 2,
+        "surv_buff": 1,
+        "tempo": 1
       },
       "traits": [
         "동방",
@@ -13460,10 +13510,16 @@
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
+        "결정 속성 공격 UP",
+        "결정 속성 저항 DOWN",
+        "그림자 속성 저항 UP",
         "독",
         "루나틱",
         "물리 저항 DOWN",
         "물리 저항 UP",
+        "바람 속성 공격 UP",
+        "바람 속성 저항 DOWN",
+        "번개 속성 저항 UP",
         "브레이크",
         "속도 DOWN",
         "속도 UP (수치)",
@@ -13481,10 +13537,10 @@
         "mode": 2,
         "attack": 11,
         "state_unknown": 3,
-        "atk_debuff": 5,
+        "atk_debuff": 7,
         "dot": 1,
-        "surv_buff": 1,
-        "atk_buff": 2,
+        "surv_buff": 3,
+        "atk_buff": 4,
         "power": 3,
         "surv_debuff": 3,
         "zone": 16,
@@ -13580,6 +13636,7 @@
       },
       "effect_tags": [
         "물 속성 저항 DOWN",
+        "속도 UP",
         "지능 UP",
         "크리티컬 대미지 UP",
         "힘 UP"
@@ -13589,6 +13646,7 @@
         "mode": 6,
         "attack": 7,
         "atk_buff": 3,
+        "tempo": 1,
         "atk_debuff": 1
       },
       "traits": [
@@ -13632,6 +13690,7 @@
         "불 속성 저항 DOWN",
         "속도 DOWN",
         "속도 UP",
+        "속도 UP (수치)",
         "크리티컬율 UP",
         "페인",
         "힘 DOWN"
@@ -13642,7 +13701,7 @@
         "power": 3,
         "surv_debuff": 2,
         "atk_buff": 3,
-        "tempo": 1
+        "tempo": 2
       },
       "traits": [
         "동방",
@@ -13704,7 +13763,7 @@
         "attack": 6,
         "surv_state": 4,
         "surv_buff": 3,
-        "atk_debuff": 4,
+        "atk_debuff": 5,
         "resource": 3,
         "surv_debuff": 4,
         "atk_buff": 1,
@@ -13981,6 +14040,8 @@
         "AF·천명",
         "HP 회복",
         "MP 회복",
+        "결정 속성 공격 UP",
+        "땅 속성 공격 UP",
         "루나틱",
         "배리어",
         "상태 이상 회복",
@@ -13997,6 +14058,7 @@
         "recover": 3,
         "surv_buff": 1,
         "surv_debuff": 2,
+        "atk_buff": 2,
         "surv_state": 1
       },
       "traits": [
@@ -14735,13 +14797,14 @@
         "물리 저항 DOWN",
         "물리 저항 UP",
         "바람 속성 공격 UP",
+        "바람 속성 저항 DOWN",
         "상태 이상 회복",
         "수면",
         "크리티컬율 UP"
       ],
       "roles": {
         "attack": 5,
-        "atk_debuff": 1,
+        "atk_debuff": 2,
         "surv_buff": 3,
         "surv_debuff": 1,
         "recover": 2,
@@ -15474,6 +15537,7 @@
         "물 속성 저항 DOWN",
         "수면",
         "지능 DOWN",
+        "크리티컬율 UP",
         "페인",
         "힘 DOWN"
       ],
@@ -15482,7 +15546,8 @@
         "surv_debuff": 4,
         "dot": 1,
         "atk_debuff": 2,
-        "resource": 1
+        "resource": 1,
+        "atk_buff": 1
       },
       "traits": [
         "동방",
@@ -15952,7 +16017,7 @@
       "roles": {
         "attack": 9,
         "atk_debuff": 2,
-        "tempo": 1,
+        "tempo": 2,
         "resource": 2,
         "surv_buff": 1,
         "recover": 1
@@ -16046,6 +16111,7 @@
         "MP 회복",
         "디버프 해제",
         "물리 저항 UP",
+        "속도 UP",
         "지능 DOWN",
         "지능 UP",
         "치유",
@@ -16152,6 +16218,7 @@
         "마법 크리티컬율 UP",
         "바람 속성 공격 UP",
         "상태 이상 회복",
+        "속도 UP",
         "요격",
         "치유",
         "크리티컬율 UP",
@@ -16162,6 +16229,7 @@
         "atk_buff": 5,
         "surv_debuff": 1,
         "attack": 2,
+        "tempo": 1,
         "atk_state": 1
       },
       "traits": [
@@ -17018,6 +17086,7 @@
         "HP 최대치 UP (수치)",
         "공격 대미지 흡수",
         "물리 저항 DOWN",
+        "속성 저항 DOWN",
         "페인",
         "힘 DOWN",
         "힘 UP"
@@ -17026,7 +17095,7 @@
         "attack": 9,
         "recover": 3,
         "surv_debuff": 1,
-        "atk_debuff": 2,
+        "atk_debuff": 3,
         "atk_buff": 1,
         "surv_buff": 1
       },
@@ -18084,14 +18153,17 @@
         "HP 회복",
         "공격 대미지 흡수",
         "마법 저항 UP",
+        "물리 저항 DOWN",
         "물리 저항 UP",
         "버티기",
         "불 속성 저항 DOWN",
         "속도 UP",
         "전투 불능 회복",
+        "지능 DOWN",
         "치유",
         "크리티컬 발생 확정",
         "크리티컬율 UP",
+        "힘 DOWN",
         "힘 UP",
         "힘 UP (수치)"
       ],
@@ -18101,7 +18173,8 @@
         "surv_buff": 3,
         "mode": 1,
         "atk_buff": 6,
-        "atk_debuff": 1,
+        "atk_debuff": 2,
+        "surv_debuff": 2,
         "atk_state": 1,
         "power": 1,
         "state_unknown": 2,
@@ -19897,7 +19970,7 @@
         "치유"
       ],
       "roles": {
-        "surv_buff": 1,
+        "surv_buff": 3,
         "recover": 4,
         "attack": 2,
         "atk_buff": 1
@@ -19941,6 +20014,7 @@
       "effect_tags": [
         "기절",
         "물리 저항 DOWN",
+        "물리 저항 UP",
         "찌르기 저항 DOWN",
         "치유"
       ],
@@ -19948,6 +20022,7 @@
         "attack": 7,
         "atk_debuff": 3,
         "surv_debuff": 1,
+        "surv_buff": 1,
         "recover": 1
       },
       "traits": [
@@ -20741,9 +20816,11 @@
         "대미지 UP",
         "대상의 방어 무시",
         "독",
+        "마법 크리티컬율 UP",
         "속도 UP",
         "지능 DOWN",
         "찌르기 저항 DOWN",
+        "크리티컬율 UP",
         "페인",
         "힘 DOWN",
         "힘 UP"
@@ -20756,7 +20833,7 @@
         "tempo": 2,
         "recover": 1,
         "resource": 6,
-        "atk_buff": 2,
+        "atk_buff": 4,
         "power": 4,
         "surv_debuff": 2,
         "atk_state": 2,

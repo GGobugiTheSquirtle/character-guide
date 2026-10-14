@@ -110,7 +110,8 @@
     total *= 1 + (o.zone || 0);
     total *= 1 + resSum;
     for (const x of o.groups || []) total *= 1 + x;
-    total *= Math.pow(1.3, o.punish || 0);
+    if (o.punishV) for (const v of o.punishV) total *= 1 + v / 100;           // 페인 · 독 대상 글래스터 — 효과 값 그대로(25% 는 ×1.25, 2026-10-14)
+    else total *= Math.pow(1.3, o.punish || 0);
     total *= 1 + additive(o.equip);
     if (o.single) total *= 1.1;
     if (crit) total *= 1 + (o.critDmg || 0);

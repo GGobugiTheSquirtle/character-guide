@@ -190,7 +190,7 @@
       enemy: { def: (en.data.end || 0) * (1 - Math.max(0, -net(en, ["내구"], sim))), mdef: (en.data.spr || 0) * (1 - Math.max(0, -net(en, ["정신"], sim))) },
       affinity: aff, weakBuff: sumBuff(a, "약점 배율", sim), skillMult: mult / 100 * eq.skillMul, skillFx, zone,
       resDown: { phys: -net(en, physStats, sim), type: -net(en, typeRes, sim), magic: -net(en, ["마법 저항"], sim) },
-      groups, punish: eq.punish, equip: eq.equip, single: step.target === "one" || step.target === "random", rand: "avg",
+      groups, punish: eq.punish, punishV: eq.punishV, equip: eq.equip, single: step.target === "one" || step.target === "random", rand: "avg",
     };
     // 크리 연동(형식 v1): crit_dmg = 이 스킬 크리 대미지 +%, crit_rate = 이 스킬 크리율 +%p, crit_x = 크리일 때 대미지 배수(「+400% when critical (x5)」)
     const critDmg = (magic ? sumBuff(a, "마법 크리티컬 대미지", sim) : sumBuff(a, "크리티컬 대미지", sim)) / 100 + (magic ? eq.mcritDmg : eq.critDmg) + (step.crit_dmg || 0) / 100;

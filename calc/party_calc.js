@@ -173,9 +173,11 @@
   //   · ZONE 각성 opt.zoneAwake · 누계 승리 opt.wins · 천/명 아군 opt.lightAllies/shadowAllies · 봉인 인핸스 opt.sealed
   //   · 적 수 opt.enemyCount · 쓰러진 아군 opt.fallen · 대상 페인/독 opt.punish. 하극상 = 대상 Lv²/d %.
   //   환경 조건(f.env: severe · special · weather · atmos · ground)은 opt.env(data/calc/envs.json 한 항목 — 계열 type · 심화 severe)로 판정
+  const baseName = n => (n || "").replace(/\s+(AS|ES|Alter)$/, "").replace(/\s*\((Another|Extra) Style\)$/, "");
+  const whoOk = (who, w) => !!w && (baseName(w.nameEn) === who || (w.traits || []).some(t => who.toLowerCase().startsWith(String(t).toLowerCase())));
   const envOk = (cond, env) => !!env && (cond === "severe" ? !!env.severe : env.type === cond);
   function equipFor(items, atk, opt) {
-    const out = { equip: [], punish: 0, skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, groups: [], weak: 0, slots: {}, skillMul: 1, src: [] };
+    const out = { equip: [], punish: 0, punishV: [], skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, groups: [], weak: 0, slots: {}, skillMul: 1, src: [] };
     // slot = 정밀 엔진(ae_pipeline) 칸 — 근사 엔진에는 모두 곱(groups)으로 들어간다
     const mult = (it, label, x, slot = "condE", raw = x) => {
       if (x > 0) { out.groups.push(x / 100); (out.slots[slot] = out.slots[slot] || []).push(raw); out.src.push(`${it.name}: ${label} +${+x.toFixed(2)}%`); }
@@ -192,13 +194,14 @@
         if (f.zone && !(opt.zone && opt.zone.name.includes(f.zone))) continue;
         if (f.env && !envOk(f.env, opt.env)) continue;
         if (f.loc && f.loc !== opt.loc) continue;                       // 지역 한정(wyrmrest_isle · wyrmrest_isle/darkrealm) — opt.loc 이 같을 때만
+        if (f.who && !whoOk(f.who, opt._who)) continue;                  // 「(Noahxis only)」 — 그 캐릭터(또는 성격)가 낄 때만, 누군지 모르면 뺀다(2026-10-14)
         const v = (f.v || 0) / 100;
         if (f.k === "stat") out.stats[f.stat] = (out.stats[f.stat] || 0) + f.v;
         else if (f.k === "dmg") {
           const ok = f.when === "type" || f.when === "all" || (f.when === "nontype" && !atk.element) || f.when === atk.element
             || (f.when === "maxhp" && opt.maxHp) || (f.when === "lowhp" && opt.lowHp);
           if (ok) { out.equip.push(v); out.src.push(`${it.name}: ${f.when} +${f.v}%`); }
-        } else if (f.k === "punish" && opt.punish && opt.punish.includes(f.when)) { out.punish++; out.src.push(`${it.name}: ${f.when} ×1.3`); }
+        } else if (f.k === "punish" && opt.punish && opt.punish.includes(f.when)) { out.punish++; out.punishV.push(f.v || 30); out.src.push(`${it.name}: ${f.when} ×${1 + (f.v || 30) / 100}`); }
         else if (f.k === "skillfx" && f.when === "weak" && opt._weak) { out.skillFx.push(v); out.src.push(`${it.name}: 약점 +${f.v}%`); }
         else if (f.k === "weak" && opt._weak) uniq("weak", it, "약점 배율", f.v);
         else if (f.k === "crit_rate") out[f.magic ? "mcrit" : "crit"] += v;
@@ -267,7 +270,7 @@
     pre = pre || prepare(members, opt);
     const ag = ownGroups(pre, m, opt), eg = pre.eg;
     const aff = affinityOf(opt.enemy, atk);
-    const eq = equipFor([m.weapon, m.armor, ...(m.grasta || []), ...(m.badges || [])], atk, { ...opt, _weak: aff === "weak" });
+    const eq = equipFor([m.weapon, m.armor, ...(m.grasta || []), ...(m.badges || [])], atk, { ...opt, _weak: aff === "weak", _who: m.c });
     const ev = envFor(opt.env, atk, opt);
     const st = { ...m.stats };
     for (const [k, v] of Object.entries(eq.stats)) st[k] = (st[k] || 0) + v;
@@ -298,7 +301,7 @@
       resDown: { phys: net(eg, "p" + atk.atk, () => C.groupNet({ buffs: [...eg.phys, ...(eg.atk[atk.atk] || [])] })),
         type: net(eg, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(eg.type["*"] || []), ...(eg.type[typeKey] || [])] : [] })),
         magic: net(eg, "magic", () => C.groupNet({ buffs: eg.magic })) },
-      groups, punish: eq.punish, equip: eq.equip, weakBuff: eq.weak + ev.weak + (sx.shingan ? 1 : 0), single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
+      groups, punish: eq.punish, punishV: eq.punishV, equip: eq.equip, weakBuff: eq.weak + ev.weak + (sx.shingan ? 1 : 0), single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
     };
     const critDmg = magic ? C.additive([...ag.mcritDmg, eq.mcritDmg]) : C.additive([...ag.critDmg, eq.critDmg]);
     // 오버 크리: 크리 대미지 ×2 확률 = (크리율 − 100%) / 1000% (위키 Status Effects)
@@ -323,7 +326,7 @@
         fx: { pct: { pwr: pct(o.buff.pwr), int: pct(o.buff.int), spd: pct(o.buff.spd), def: negPct(defNet), mdef: negPct(mdefNet) },
           resPhysMag: negPct(magic ? o.resDown.magic : o.resDown.phys), resType: negPct(o.resDown.type),
           typeNE: pct(typeNet), wielder: pct(net(ag, "dmg", () => C.groupNet(ag.dmg))), hawk: focusV ? [focusV * 100, 0] : [],
-          weak: o.weakBuff ? [o.weakBuff * 100] : [], typeE: eq.equip.map(x => x * 100), statusE: [...Array(eq.punish).fill(30), ...(sl.statusE || [])],
+          weak: o.weakBuff ? [o.weakBuff * 100] : [], typeE: eq.equip.map(x => x * 100), statusE: [...eq.punishV, ...(sl.statusE || [])],
           enhance: sl.enhance, fallen: sl.fallen, condE: sl.condE, kesshi: sx.kesshi * 100 || undefined, shingan: sx.shingan * 100 || undefined,
           condNB: o.skillFx.map(x => x * 100), critDmg: pct(critDmg), overCrit: oc * 100 || undefined, aim: sum(sl.aim) || undefined,
           zoneAwake: sl.zoneAwake, lsAlly: sl.lsAlly, overthrowE: sl.overthrowE, growthAtk: sl.growthAtk, wins: (sl.wins || [])[0],

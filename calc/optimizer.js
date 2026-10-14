@@ -11,18 +11,28 @@
   const DMG_STATS = ["pwr", "int", "spd", "lck", "mp"];
 
   // 대미지에 닿을 수 있는 장비만 — 방어구는 효과(스탯 · 대미지 · 크리)가 있는 것, 효과 없는 그라스타는 같은 스탯 묶음에서 하나만
-  function damagePools(db, cc, traits) {
-    const touches = it => (it.fx || []).some(f => f.k !== "etc" && f.k !== "res") || (it.calc || []).some(f => f.k !== "res")
+  // 특수 광석 — 엔진이 읽는 계산 키가 있고 값이 확정된 것만(2026-10-14 개인 최강 세팅)
+  const ENGINE_KEYS = new Set(["stat", "dmg", "punish", "skillfx", "weak", "crit_rate", "crit_dmg", "growth", "aim", "mpatk", "overthrow", "zonedmg", "wins", "lsally", "seal", "enemies", "fallen", "tstat"]);
+  const oreUseful = o => o.kind === "special" && (o.calc || []).length && o.calc.every(f => ENGINE_KEYS.has(f.k) && !f.rank);
+  // 글래스터 + 특수 광석 한 덩어리 — 글래스터 하나엔 연성 하나라 잠재 광석 강화(calc_ore)는 빠진다(위키 Grasta Enhancements)
+  const withOre = (g, o) => ({ ...g, name: `${g.name} + ${o.name}`, calc: [...(g.calc || []), ...o.calc], calc_ore: undefined, base: g.name, ore: o.name });
+  function damagePools(db, cc, traits, conf = {}) {
+    const touches = it => (it.fx || []).some(f => f.k !== "etc" && f.k !== "res") || [...(it.calc || []), ...(it.calc_ore || [])].some(f => f.k !== "res")
       || DMG_STATS.some(k => (it.stats || {})[k]);
     const seen = new Set(), grasta = [];
     for (const g of db.grasta) {
       if (g.type === "VC" || !canGrasta(g, traits) || !touches(g)) continue;
-      if (!(g.calc || []).some(f => f.k !== "res")) {
+      if (![...(g.calc || []), ...(g.calc_ore || [])].some(f => f.k !== "res")) {
         const key = DMG_STATS.map(k => (g.stats || {})[k] || 0).join(",");
         if (seen.has(key)) continue;
         seen.add(key);
       }
       grasta.push(g);
+    }
+    // 광석 조합(conf.ores !== false 이고 db.ores 가 있을 때) — 글래스터마다 「잠재 연성(기본)」 + 「특수 광석 1개」 변형
+    if (db.ores && conf.ores !== false) {
+      const ores = db.ores.filter(oreUseful);
+      for (const g of [...grasta]) for (const o of ores) grasta.push(withOre(g, o));
     }
     return {
       weapons: db.weapons.filter(w => w.type === cc.weapon),

@@ -18,12 +18,22 @@
   //   광석에서 온 효과는 ore:true — 글래스터 자체 조건이 맞을 때만 켠다(party_calc.equipFor 의 광석 조건 연동 가정)
   const withOre = (g, o) => ({ ...g, name: `${g.name} + ${o.name}`, calc: [...(g.calc || []), ...o.calc.map(f => ({ ...f, ore: true }))], calc_ore: undefined, base: g.name, ore: o.name,
     oreLimit: o.limit ?? Infinity });
+  // 특수 칸(위키 Grasta · Valor Chant Grastas, 2026-10-14) — 일반 칸(아래 3 + 위 1, 명암 200)과 별개인 1칸. VC · Special 형만 들어간다.
+  //   VC 는 그 캐릭터(다른 스타일 포함)의 것만 · Extreme = True VC + Fated Star Proof → HP 900 · MP 75 · 나머지 스탯 ⌊LS/25 + 15⌋(LS 255 = 25)
+  const baseChar = n => (n || "").replace(/\s*\((Another|Extra) Style\)$/, "").replace(/\s+(AS|ES)$/, "");
+  const LS = 255, EX = Math.floor(LS / 25 + 15);
+  function specialPool(db, cc, traits) {
+    const who = baseChar(cc.page);
+    const vc = db.grasta.filter(g => g.type === "VC" && who && baseChar(g.connection) === who);
+    const ex = vc.map(g => ({ ...g, name: `${g.name} (Extreme)`, stats: { hp: 900, mp: 75, ...Object.fromEntries(["pwr", "int", "spd", "end", "spr", "lck"].map(k => [k, EX])) }, limit: 1 }));
+    return [...db.grasta.filter(g => g.type === "Special" && canGrasta(g, traits)), ...vc, ...ex];
+  }
   function damagePools(db, cc, traits, conf = {}) {
     const touches = it => (it.fx || []).some(f => f.k !== "etc" && f.k !== "res") || [...(it.calc || []), ...(it.calc_ore || [])].some(f => f.k !== "res")
       || DMG_STATS.some(k => (it.stats || {})[k]);
     const seen = new Set(), grasta = [];
     for (const g of db.grasta) {
-      if (g.type === "VC" || !canGrasta(g, traits) || !touches(g)) continue;
+      if (g.type === "VC" || g.type === "Special" || !canGrasta(g, traits) || !touches(g)) continue;
       if (![...(g.calc || []), ...(g.calc_ore || [])].some(f => f.k !== "res")) {
         const key = DMG_STATS.map(k => (g.stats || {})[k] || 0).join(",");
         if (seen.has(key)) continue;
@@ -41,19 +51,20 @@
       armor: db.armor.filter(touches),
       grasta,
       badges: db.badges.filter(b => Object.keys(b.stats || {}).length || (b.calc || []).length),
+      ...(conf.special ? { special: specialPool(db, cc, traits) } : {}),
     };
   }
 
   // ── 장비 ─────────────────────────────────────────────
   // m = 계산 멤버(c · fx · stats · attack · weapon …), members = m 을 포함한 파티(혼자면 [m])
-  // conf = { grastaSlots: 4, badgeSlots: 2, dupGrasta: true, counts: {이름: 보유 수} | null }
+  // conf = { grastaSlots: 4, badgeSlots: 2, specialSlots: 1(pools.special 이 있을 때), dupGrasta: true, counts: {이름: 보유 수} | null }
   //   counts 가 있으면 그 수까지만(보유 모드), 없으면 그라스타는 dupGrasta 로 중복 허용, 고유 배지는 1개(무작위 배지는 중복 가능)
   // 반환 { gear: {weapon, armor, grasta[], badges[]}, value, start, evals }
   // 파티 안의 같은 멤버(id)를 w 로 바꾼 명단 — 없으면 끝에 넣는다
   const swapIn = (members, w) => members.some(x => x.c.id === w.c.id) ? members.map(x => (x.c.id === w.c.id ? w : x)) : [...members, w];
 
   function gearOptimize(m, members, opt, pools, conf = {}) {
-    const gs = conf.grastaSlots ?? 4, bs = conf.badgeSlots ?? 2;
+    const gs = conf.grastaSlots ?? 4, bs = conf.badgeSlots ?? 2, ss = pools.special ? conf.specialSlots ?? 1 : 0;
     const w = { ...m };
     const team = swapIn(members, w);
     // 획득 가능 수(2026-10-14 SV — 1회성 보상 글래스터 · 광석을 여러 개 끼우던 것): 글래스터 = 기본 이름별 limit(위키 획득처, null = 반복 획득),
@@ -68,32 +79,33 @@
     const pre = P.prepare(team, opt);                     // 장비는 파티 버프와 무관 — 한 번만
     const score = s => {
       w.weapon = s.weapon; w.armor = s.armor;
-      w.grasta = s.grasta.filter(Boolean); w.badges = s.badges.filter(Boolean);
+      w.grasta = [...s.grasta, ...(s.special || [])].filter(Boolean); w.badges = s.badges.filter(Boolean);
       evals++;
       const d = P.memberDamage(w, team, opt, pre);
       return d ? d.expected : 0;
     };
     const pad = (a, n) => Array.from({ length: n }, (_, i) => (a || [])[i] || null);
-    const start = score({ weapon: m.weapon || null, armor: m.armor || null, grasta: pad(m.grasta, gs), badges: pad(m.badges, bs) });
+    const start = score({ weapon: m.weapon || null, armor: m.armor || null, grasta: pad(m.grasta, gs), badges: pad(m.badges, bs), special: pad(m.special, ss) });
     // 탐색은 후보 안에서만 — 지금 장비가 후보(보유 목록) 밖이면 빈 칸에서 시작
     const inPool = (it, pool) => (it && pool.some(x => x.name === it.name) ? pool.find(x => x.name === it.name) : null);
     let state = { weapon: inPool(m.weapon, pools.weapons) || pools.weapons[0] || null, armor: inPool(m.armor, pools.armor),
       grasta: pad((m.grasta || []).map(g => inPool(g, pools.grasta)).filter(Boolean), gs),
-      badges: pad((m.badges || []).map(b => inPool(b, pools.badges)).filter(Boolean), bs) };
+      badges: pad((m.badges || []).map(b => inPool(b, pools.badges)).filter(Boolean), bs),
+      special: pad((m.special || []).map(g => inPool(g, pools.special || [])).filter(Boolean), ss) };
     let best = score(state);
-    const slots = ["weapon", "armor", ...state.grasta.map((_, i) => ["grasta", i]), ...state.badges.map((_, i) => ["badges", i])];
+    const slots = ["weapon", "armor", ...state.grasta.map((_, i) => ["grasta", i]), ...state.badges.map((_, i) => ["badges", i]), ...state.special.map((_, i) => ["special", i])];
     for (let pass = 0; pass < 10; pass++) {
       let moved = false;
       for (const sl of slots) {
         const [key, i] = Array.isArray(sl) ? sl : [sl, -1];
-        const pool = key === "weapon" ? pools.weapons : key === "armor" ? pools.armor : key === "grasta" ? pools.grasta : pools.badges;
-        const kind = key === "grasta" ? "g" : key === "badges" ? "b" : "e";
-        const used = it => (i < 0 ? 0 : state[key].filter((x, j) => j !== i && x && (key === "grasta" ? (x.base || x.name) === (it.base || it.name) : x === it)).length);
+        const pool = key === "weapon" ? pools.weapons : key === "armor" ? pools.armor : key === "grasta" ? pools.grasta : key === "special" ? pools.special : pools.badges;
+        const kind = key === "grasta" || key === "special" ? "g" : key === "badges" ? "b" : "e";
+        const used = it => (i < 0 ? 0 : state[key].filter((x, j) => j !== i && x && (kind === "g" ? (x.base || x.name) === (it.base || it.name) : x === it)).length);
         const oreFull = it => key === "grasta" && it.ore && state.grasta.filter((x, j) => j !== i && x && x.ore === it.ore).length >= (it.oreLimit ?? Infinity);
         for (const it of [null, ...pool]) {
           if (it === null && key === "weapon" && pools.weapons.length) continue;
           if (it && (used(it) >= limit(it, kind) || oreFull(it))) continue;
-          const s2 = { ...state, grasta: [...state.grasta], badges: [...state.badges] };
+          const s2 = { ...state, grasta: [...state.grasta], badges: [...state.badges], special: [...state.special] };
           if (i < 0) s2[key] = it; else s2[key][i] = it;
           const v = score(s2);
           if (v > best * (1 + 1e-9)) { best = v; state = s2; moved = true; }
@@ -102,7 +114,7 @@
       if (!moved) break;
     }
     score(state);
-    return { gear: { weapon: state.weapon, armor: state.armor, grasta: state.grasta.filter(Boolean), badges: state.badges.filter(Boolean) },
+    return { gear: { weapon: state.weapon, armor: state.armor, grasta: state.grasta.filter(Boolean), badges: state.badges.filter(Boolean), special: state.special.filter(Boolean) },
       value: best, start, evals };
   }
 

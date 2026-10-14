@@ -55,6 +55,16 @@
     };
   }
 
+  // 그라스타가 부여하는 공격 스킬(grant.kind attack, 2026-10-15 S7) — 이 캐릭터가 낄 수 있는 것만, 스킬 이름별 하나. via = 그 그라스타(lockGrasta 로 고정)
+  function grantAttacks(pools) {
+    const seen = new Map();
+    for (const g of pools.grasta || []) {
+      const a = g.grant && g.grant.kind === "attack" && g.grant.attack;
+      if (a && !g.ore && !seen.has(a.skill)) seen.set(a.skill, { ...a, via: g });
+    }
+    return [...seen.values()];
+  }
+
   // ── 장비 ─────────────────────────────────────────────
   // m = 계산 멤버(c · fx · stats · attack · weapon …), members = m 을 포함한 파티(혼자면 [m])
   // conf = { grastaSlots: 4, badgeSlots: 2, specialSlots: 1(pools.special 이 있을 때), dupGrasta: true, counts: {이름: 보유 수} | null }
@@ -65,6 +75,7 @@
 
   function gearOptimize(m, members, opt, pools, conf = {}) {
     const gs = conf.grastaSlots ?? 4, bs = conf.badgeSlots ?? 2, ss = pools.special ? conf.specialSlots ?? 1 : 0;
+    const lock = conf.lockGrasta || [];                    // 고정 그라스타(부여 스킬을 쓰려면 그 그라스타가 칸에 있어야 한다) — 앞 칸부터, 탐색 제외
     const w = { ...m };
     const team = swapIn(members, w);
     // 획득 가능 수(2026-10-14 SV — 1회성 보상 글래스터 · 광석을 여러 개 끼우던 것): 글래스터 = 기본 이름별 limit(위키 획득처, null = 반복 획득),
@@ -89,11 +100,11 @@
     // 탐색은 후보 안에서만 — 지금 장비가 후보(보유 목록) 밖이면 빈 칸에서 시작
     const inPool = (it, pool) => (it && pool.some(x => x.name === it.name) ? pool.find(x => x.name === it.name) : null);
     let state = { weapon: inPool(m.weapon, pools.weapons) || pools.weapons[0] || null, armor: inPool(m.armor, pools.armor),
-      grasta: pad((m.grasta || []).map(g => inPool(g, pools.grasta)).filter(Boolean), gs),
+      grasta: pad([...lock, ...(m.grasta || []).map(g => inPool(g, pools.grasta)).filter(g => g && !lock.includes(g))], gs),
       badges: pad((m.badges || []).map(b => inPool(b, pools.badges)).filter(Boolean), bs),
       special: pad((m.special || []).map(g => inPool(g, pools.special || [])).filter(Boolean), ss) };
     let best = score(state);
-    const slots = ["weapon", "armor", ...state.grasta.map((_, i) => ["grasta", i]), ...state.badges.map((_, i) => ["badges", i]), ...state.special.map((_, i) => ["special", i])];
+    const slots = ["weapon", "armor", ...state.grasta.map((_, i) => ["grasta", i]).filter(([, i]) => i >= lock.length), ...state.badges.map((_, i) => ["badges", i]), ...state.special.map((_, i) => ["special", i])];
     for (let pass = 0; pass < 10; pass++) {
       let moved = false;
       for (const sl of slots) {
@@ -233,7 +244,7 @@
     return { list, evals, pool: pool.length };
   }
 
-  const api = { baseId, canGrasta, damagePools, attackPool, gearOptimize, bestSetup, bestAttack, scoreParty, partySearch };
+  const api = { baseId, canGrasta, damagePools, grantAttacks, attackPool, gearOptimize, bestSetup, bestAttack, scoreParty, partySearch };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEOpt = api;
 })(typeof window !== "undefined" ? window : globalThis);

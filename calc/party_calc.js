@@ -307,6 +307,7 @@
   // P글래스터 공유(2026-10-15) — 다른 파티원이 낀 그라스타 중 잠재 연성 「Also affects all party members (of the matching weapon · Personality)」.
   //   all = 전원 · weapon = 장착자와 같은 무기 · personality = 장착자 · 받는 쪽이 함께 가진 성격(그 그라스타 장착 조건 안).
   //   특수 광석 연성본(it.ore)은 잠재 연성이 아니라 공유 없음, opt.ore === false 도 없음. 스탯은 공유하지 않는다(효과만)
+  //   자기 것 + 공유분은 모두 중첩된다(10-15 사용자 확인) — 효과 칸 규칙(장비 대미지 UP 합연산 · 대상 상태 곱연산 …)을 그대로 따른다
   const weaponOfMember = x => (x.weapon && x.weapon.type) || (x.cc && x.cc.weapon) || "";
   function sharedItems(m, members, opt) {
     if (opt.ore === false || !members) return [];

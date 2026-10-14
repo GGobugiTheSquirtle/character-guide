@@ -304,6 +304,26 @@
     return out;
   }
 
+  // P글래스터 공유(2026-10-15) — 다른 파티원이 낀 그라스타 중 잠재 연성 「Also affects all party members (of the matching weapon · Personality)」.
+  //   all = 전원 · weapon = 장착자와 같은 무기 · personality = 장착자 · 받는 쪽이 함께 가진 성격(그 그라스타 장착 조건 안).
+  //   특수 광석 연성본(it.ore)은 잠재 연성이 아니라 공유 없음, opt.ore === false 도 없음. 스탯은 공유하지 않는다(효과만)
+  const weaponOfMember = x => (x.weapon && x.weapon.type) || (x.cc && x.cc.weapon) || "";
+  function sharedItems(m, members, opt) {
+    if (opt.ore === false || !members) return [];
+    const out = [], mw = weaponOfMember(m), mt = (m.c && m.c.traits) || [];
+    for (const h of members) {
+      if (h === m || (h.c && m.c && h.c.id === m.c.id)) continue;
+      for (const g of h.grasta || []) {
+        if (!g || !g.share || g.ore) continue;
+        const ht = (h.c && h.c.traits) || [], req = g.req || [];
+        const ok = g.share === "all" || (g.share === "weapon" && mw && mw === weaponOfMember(h) && (!req.length || req.includes(mw)))
+          || (g.share === "personality" && ht.some(t => mt.includes(t) && (!req.length || req.includes(t))));
+        if (ok) out.push({ name: `${g.name}(공유: ${(h.c && h.c.nameKo) || ""})`, stats: {}, fx: [], calc: (g.calc_ore || g.calc || []).filter(f => f.k !== "stat") });
+      }
+    }
+    return out;
+  }
+
   // 멤버 한 명의 선택 공격 1타 — {normal, crit, p, expected, why}. pre = prepare(members, opt) 를 넘기면 파티 공통분을 다시 만들지 않는다
   function memberDamage(m, members, opt, pre) {
     const atk = m.attack;
@@ -311,7 +331,7 @@
     pre = pre || prepare(members, opt);
     const ag = ownGroups(pre, m, opt), eg = pre.eg;
     const aff = affinityOf(opt.enemy, atk);
-    const eq = equipFor([m.weapon, m.armor, ...(m.grasta || []), ...(m.badges || [])], atk, { ...opt, _weak: aff === "weak", _who: m.c });
+    const eq = equipFor([m.weapon, m.armor, ...(m.grasta || []), ...(m.badges || []), ...sharedItems(m, members, opt)], atk, { ...opt, _weak: aff === "weak", _who: m.c });
     const ev = envFor(opt.env, atk, opt);
     const st = { ...m.stats };
     for (const [k, v] of Object.entries(eq.stats)) st[k] = (st[k] || 0) + v;

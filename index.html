@@ -1383,10 +1383,11 @@ function calcOpt(db) {
     cond: !!S.cond, maxHp: !!S.maxHp, punish: S.pain ? ["pain", "poison"] : [],
     // 세부 조건(2026-10-13) — 환경(envs.json) · 경과 턴(성장) · 적 수 · AF 중 · ZONE 각성 · 누계 승리 최대 · HP 50%↓ · 봉인 · 천 아군 수
     env: (db.envs || []).find(e => e.name === S.env) || null, turns: +S.turns || 0, enemyCount: +S.enemyCount || 1, af: !!S.af,
-    zoneAwake: !!S.zoneAwake, wins: !!S.wins, lowHp: !!S.lowHp, sealed: !!S.sealed, lightAllies: +S.lightAllies || 0 };
+    zoneAwake: !!S.zoneAwake, wins: !!S.wins, lowHp: !!S.lowHp, sealed: !!S.sealed, lightAllies: +S.lightAllies || 0,
+    selfStatus: [S.selfPain && "pain", S.selfPoison && "poison"].filter(Boolean) };
 }
 // 세부 조건 개수(접힌 줄에 보이는 요약) — calcOpt 와 같은 키
-const DETAIL_KEYS = ["env", "turns", "enemyCount", "af", "zoneAwake", "wins", "lowHp", "sealed", "lightAllies"];
+const DETAIL_KEYS = ["env", "turns", "enemyCount", "af", "zoneAwake", "wins", "lowHp", "sealed", "selfPain", "selfPoison", "lightAllies"];
 const ENV_TYPE_KO = { atmos: "대기", ground: "지면", weather: "날씨", special: "특수" };
 const gearStats = (m, opt) => AEParty.equipFor([m.weapon, m.armor, ...m.grasta, ...m.badges], m.attack || {}, opt || {}).stats;
 function saveGear(id, gear, attack) {
@@ -1477,7 +1478,8 @@ function detailConds(db, rerender, tog) {
     num("lightAllies", "천 아군", "장비 「천 아군 수만큼 대미지 UP」", 0, 6),
     tog("af", "AF 중", "어나더 포스 중 — 겨누어 쏘기(AF 이외 시 대미지+)가 꺼진다"), tog("zoneAwake", "ZONE 각성", "장비 「ZONE 각성 중 대미지+」"),
     tog("wins", "누계 승리 최대", "장비 「누계 승리 횟수에 따라 대미지 UP」 최대치(위키: 6000승)"), tog("lowHp", "HP 50% 이하", "장비 「HP 50% 이하 시 대미지+」"),
-    tog("sealed", "자신 봉인", "장비 「봉인 인핸스」"));
+    tog("sealed", "자신 봉인", "장비 「봉인 인핸스」"), tog("selfPain", "자신 페인", "장비 「페인 인핸스」(자신이 페인일 때 대미지+)"),
+    tog("selfPoison", "자신 독", "장비 「독 인핸스」(자신이 독일 때 대미지+)"));
   box.appendChild(row);
   const env = (db.envs || []).find(e => e.name === S.env);
   if (env) box.appendChild(el("div", { class: "skko-src", text: `${env.name}: ${env.effect}` }));

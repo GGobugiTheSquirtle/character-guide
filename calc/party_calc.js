@@ -231,6 +231,9 @@
         else if (f.k === "wins" && opt.wins) mult(it, "누계 승리", f.v, "wins");
         else if (f.k === "lsally") mult(it, f.side === "light" ? "천 아군" : "명 아군", f.per * ((f.side === "light" ? opt.lightAllies : opt.shadowAllies) || 0), "lsAlly");
         else if (f.k === "seal" && opt.sealed) uniq("seal", it, "봉인 인핸스", f.v, "enhance");
+        // 페인 · 독 · 분노 인핸스(자신이 그 상태 — opt.selfStatus ['pain'|'poison'|'rage']) · 그 상태일 때 스탯+ (2026-10-15, 그동안 엔진이 안 읽던 키)
+        else if (f.k === "selfstatus" && (opt.selfStatus || []).includes(f.when)) uniq("self:" + f.when, it, `${{ pain: "페인", poison: "독", rage: "분노" }[f.when] || f.when} 인핸스`, f.v, "enhance");
+        else if (f.k === "selfstat" && f.v && (opt.selfStatus || []).includes(f.when)) out.stats[f.stat] = (out.stats[f.stat] || 0) + f.v;
         else if (f.k === "enemies") uniq("enemies", it, "적 수", f.per * Math.max(0, (opt.enemyCount || 1) - 1));
         else if (f.k === "fallen") mult(it, "쓰러진 아군", f.per * (opt.fallen || 0), "fallen");
         else if (f.k === "tstat" && opt.punish && opt.punish.includes(f.when)) mult(it, `대상 ${f.when === "pain" ? "페인" : "독"}`, f.v, "statusE");

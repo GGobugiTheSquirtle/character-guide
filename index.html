@@ -1341,7 +1341,7 @@ STATE.calc.m = STATE.calc.m || {};
 function saveCalc() { try { localStorage.setItem('cg-calc', JSON.stringify(STATE.calc)); } catch {} }
 async function loadCalcDb() {
   if (!STATE.calcDb) {
-    const names = ["chars", "weapons", "armor", "grasta", "badges", "zones", "enemies", "fx", "envs", "statuses"];
+    const names = ["chars", "weapons", "armor", "grasta", "badges", "zones", "enemies", "fx", "envs", "statuses", "ores"];
     const parts = await Promise.all(names.map(n => fetch(`data/calc/${n}.json`).then(r => r.json())));
     STATE.calcDb = Object.fromEntries(names.map((n, i) => [n, parts[i]]));
     // 배지 — 계산에 닿는 것만(고정 스탯 · 대미지 · 크리). 무작위 배지 최대치가 위로
@@ -1357,7 +1357,16 @@ const fmtN = x => x >= 1e6 ? (x / 1e6).toFixed(2) + "M" : Math.round(x).toLocale
 const enemyLabel = e => e.name + (e.type ? ` · ${e.type}` : "");
 const byName = (list, n) => (n ? list.find(x => x.name === n) || null : null);
 // 그라스타 이름이 변형별로 갈렸다(2026-10-08 「Power of Pain」 → 「Power of Pain (PWR/LCK)」) — 옛 이름은 이 캐릭터가 낄 수 있는 변형으로
-const findGrasta = (db, n, traits) => byName(db.grasta, n) || (n ? db.grasta.find(g => g.name.startsWith(n + " (") && AEOpt.canGrasta(g, traits)) : null) || null;
+//   광석 합성 「글래스터 + 광석」(AEOpt.withOre) · 특수 칸 「VC (Extreme)」(AEOpt.specialPool, cc 필요)도 이름으로 저장 · 복원한다(2026-10-15)
+const findGrasta = (db, n, traits, cc) => {
+  if (!n) return null;
+  const k = n.lastIndexOf(" + ");
+  if (k > 0 && db.ores) { const g = findGrasta(db, n.slice(0, k), traits), o = byName(db.ores, n.slice(k + 3)); return g && o ? AEOpt.withOre(g, o) : g; }
+  if (cc && / \(Extreme\)$/.test(n)) return AEOpt.specialPool(db, cc, traits).find(g => g.name === n) || null;
+  return byName(db.grasta, n) || db.grasta.find(g => g.name.startsWith(n + " (") && AEOpt.canGrasta(g, traits)) || null;
+};
+// 장비 결과(gear: grasta = 일반 칸 · special = 특수 칸)를 멤버에 입힌다 — 대미지 계산은 grasta 에 둘 다
+const withGear = (m, g) => ({ ...m, ...g, grasta: [...g.grasta, ...(g.special || [])], special: g.special || [] });
 const STAT_KEYS = [["hp", "HP"], ["mp", "MP"], ["pwr", "힘"], ["int", "지능"], ["spd", "속도"], ["end", "내구"], ["spr", "정신"], ["lck", "행운"]];
 // 기본 공격 — MP 를 쓰는 일반 스킬 중 최고 배율(MP 0 · 없음 특수 발동은 조건부이거나 직접 고를 때만) — AEOpt.attackPool
 const defaultAttack = atks => AEOpt.attackPool(atks, !!STATE.calc.cond)[0] || atks[0];
@@ -1372,8 +1381,9 @@ function calcMember(db, c, pos = "front") {
   const attack = atks.find(a => a.skill === conf.attack) || defaultAttack(atks);
   const weapon = byName(db.weapons.filter(w => w.type === cc.weapon), conf.weapon) || AEParty.bestWeapon(db.weapons, cc.weapon, attack && attack.dep === "magic");
   const fx = (db.fx[c.id] || []).filter(u => { const p = posReq(u); return !p || p === pos; });
-  return { c, cc, pos, fx, atks, attack, weapon, armor: byName(db.armor, conf.armor),
-    grasta: (conf.grasta || []).map(n => findGrasta(db, n, c.traits)).filter(Boolean),
+  const special = (conf.special || []).map(n => findGrasta(db, n, c.traits, cc)).filter(Boolean);
+  return { c, cc, pos, fx, atks, attack, weapon, armor: byName(db.armor, conf.armor), special,
+    grasta: [...(conf.grasta || []).map(n => findGrasta(db, n, c.traits, cc)).filter(Boolean), ...special],
     badges: (conf.badges || []).map(n => byName(db.badges, n)).filter(Boolean),
     stats: conf.base ? { ...cc.stats, ...conf.base } : cc.stats, zones: cc.zones || [] };
 }
@@ -1393,17 +1403,18 @@ const gearStats = (m, opt) => AEParty.equipFor([m.weapon, m.armor, ...m.grasta, 
 function saveGear(id, gear, attack) {
   const conf = STATE.calc.m[id] = STATE.calc.m[id] || {};
   conf.weapon = gear.weapon ? gear.weapon.name : ""; conf.armor = gear.armor ? gear.armor.name : "";
-  conf.grasta = gear.grasta.map(g => g.name); conf.badges = gear.badges.map(b => b.name);
+  conf.grasta = gear.grasta.map(g => g.name); conf.badges = gear.badges.map(b => b.name); conf.special = (gear.special || []).map(g => g.name);
   if (attack) conf.attack = attack.skill;
   saveCalc();
 }
 // 장비 후보 — 「보유 장비만」이면 보유 목록(STATE.inv) 안에서, 보유 수까지
 function gearPools(db, m) {
-  if (!STATE.calc.ownedOnly) return { pools: AEOpt.damagePools(db, m.cc, m.c.traits), counts: null };
+  // 특수 칸(VC · Extreme) 포함. 광석 조합은 전체 장비 모드만 — 보유 목록에 광석이 없다
+  if (!STATE.calc.ownedOnly) return { pools: AEOpt.damagePools(db, m.cc, m.c.traits, { special: true }), counts: null };
   const inv = STATE.inv;
   const sub = { weapons: db.weapons.filter(x => inv.w[x.name]), armor: db.armor.filter(x => inv.a[x.name]),
     grasta: db.grasta.filter(x => inv.g[x.name]), badges: db.badges.filter(x => inv.b[x.name]) };
-  return { pools: AEOpt.damagePools(sub, m.cc, m.c.traits), counts: { ...inv.w, ...inv.a, ...inv.g, ...inv.b } };
+  return { pools: AEOpt.damagePools(sub, m.cc, m.c.traits, { special: true }), counts: { ...inv.w, ...inv.a, ...inv.g, ...inv.b } };
 }
 function runGear(db, m, team, opt, attacks) {
   const { pools, counts } = gearPools(db, m);
@@ -1512,16 +1523,16 @@ function gearLists(db, m) {
     b: [db.badges, ensureDatalist("dl-b", db.badges, b => b.effect.slice(0, 70))],
   };
 }
-function gearInput(list, dlId, cur, onPick, ph = "없음") {
+function gearInput(list, dlId, cur, onPick, ph = "없음", okName = null) {
   const inp = el("input", { class: "fx-input gear-in", attrs: { list: dlId, placeholder: ph, value: cur || "" } });
   inp.addEventListener('change', () => {
     const v = inp.value.trim();
-    if (v && !list.some(x => x.name === v)) { inp.value = cur || ""; return; }
+    if (v && !list.some(x => x.name === v) && !(okName && okName(v))) { inp.value = cur || ""; return; }
     onPick(v);
   });
   return inp;
 }
-// 한 멤버의 장비 칸 — 무기 · 방어구 · 그라스타 N · 배지 2
+// 한 멤버의 장비 칸 — 무기 · 방어구 · 그라스타 N · 배지 2 · 특수 1(VC · Extreme). 광석 합성 이름(「… + … Ore」)은 목록에 없어도 받는다
 function gearEditor(db, m, rerender) {
   const conf = STATE.calc.m[m.c.id] = STATE.calc.m[m.c.id] || {};
   const L = gearLists(db, m), box = el("div", { class: "gear-ed" });
@@ -1530,8 +1541,11 @@ function gearEditor(db, m, rerender) {
   const setAt = (k, i, v) => { const a = [...(conf[k] || [])]; a[i] = v; set(k, a.filter(Boolean)); };
   row("무기", gearInput(L.w[0], L.w[1], conf.weapon ? m.weapon && m.weapon.name : "", v => set("weapon", v), `기본: ${m.weapon ? m.weapon.name : "없음"}`));
   row("방어구", gearInput(L.a[0], L.a[1], m.armor && m.armor.name, v => set("armor", v)));
-  for (let i = 0; i < (STATE.calc.gslots || 4); i++) row(`그라스타${i + 1}`, gearInput(L.g[0], L.g[1], (m.grasta[i] || {}).name, v => setAt("grasta", i, v)));
+  const gN = m.grasta.filter(g => !(m.special || []).includes(g)), okG = v => !!findGrasta(db, v, m.c.traits);
+  for (let i = 0; i < (STATE.calc.gslots || 4); i++) row(`그라스타${i + 1}`, gearInput(L.g[0], L.g[1], (gN[i] || {}).name, v => setAt("grasta", i, v), "없음", okG));
   for (let i = 0; i < 2; i++) row(`배지${i + 1}`, gearInput(L.b[0], L.b[1], (m.badges[i] || {}).name, v => setAt("badges", i, v)));
+  const sp = AEOpt.specialPool(db, m.cc, m.c.traits);
+  row("특수", gearInput(sp, ensureDatalist("dl-s-" + m.c.id, sp, g => `${g.type}${g.connection ? " · " + g.connection : ""}`), ((m.special || [])[0] || {}).name, v => set("special", v ? [v] : [])));
   return box;
 }
 
@@ -1547,7 +1561,7 @@ async function renderCalc(wrap, members) {
   sec.appendChild(enemyLine(opt.enemy));
   const team = members.map(m => calcMember(db, m.c, m.pos) || { ...m, attack: null });
   const tbl = el("table", { class: "skill-table party-table" });
-  tbl.appendChild(el("thead", { children: [el("tr", { children: ["멤버", "스킬", "장비", "일반", "크리 (확률)", "기대값", "정밀", "근거"].map(h => el("th", { text: h })) })] }));
+  tbl.appendChild(el("thead", { children: [el("tr", { children: ["멤버", "스킬", "장비", "일반 (1타)", "크리 (확률)", "1회 기대값", "정밀", "근거"].map(h => el("th", { text: h })) })] }));
   const tb = el("tbody");
   let sum = 0, sumP = 0;
   for (const m of team.filter(x => x.pos === "front")) {
@@ -1565,13 +1579,13 @@ async function renderCalc(wrap, members) {
     tr.appendChild(el("td", { children: [gearEditor(db, m, renderParty)] }));
     const d = AEParty.memberDamage(m, team, opt);
     if (!d) { tr.appendChild(el("td", { text: "배율 없음", attrs: { colspan: 5 } })); tb.appendChild(tr); continue; }
-    sum += d.expected;
+    sum += d.perUse;                                                         // 1회 = 1타 기대값 × 타수(최적화 목표와 같은 값, 2026-10-15)
     tr.appendChild(el("td", { text: fmtN(d.normal) }));
     tr.appendChild(el("td", { text: `${fmtN(d.crit)} (${Math.round(d.p * 100)}%)` }));
-    tr.appendChild(el("td", { class: "role-ok", text: fmtN(d.expected) }));
+    tr.appendChild(el("td", { class: "role-ok", text: fmtN(d.perUse), attrs: { title: `1타 ${fmtN(d.expected)} × ${d.hits}타` } }));
     const pr = d.precise;                                                    // 단계마다 소수점 버림(딩님 계산기와 정수 일치 엔진)
-    if (pr) sumP += pr.expected;
-    tr.appendChild(el("td", { text: pr ? fmtN(pr.expected) : "-", attrs: { title: pr ? `일반 ${fmtN(pr.normal)} · 크리 ${fmtN(pr.crit)} — 난수 전 구간 평균, 단계별 버림` : "" } }));
+    if (pr) sumP += pr.expected * d.hits;
+    tr.appendChild(el("td", { text: pr ? fmtN(pr.expected * d.hits) : "-", attrs: { title: pr ? `1타 일반 ${fmtN(pr.normal)} · 크리 ${fmtN(pr.crit)} — 난수 전 구간 평균, 단계별 버림` : "" } }));
     tr.appendChild(el("td", { children: [whyDetails(d)] }));
     tb.appendChild(tr);
   }
@@ -1583,7 +1597,7 @@ async function renderCalc(wrap, members) {
 }
 const CALC_ASSUME = "정밀 = 단계마다 소수점 버림(딩님 「AE 대미지 계산기」 순서 · 규칙, 크레딧 딩님) — 기대값보다 0~0.5% 낮다. 스킬 효과 수치 일부 출처: 카페 딩님 「어나더 에덴 스킬 검색기」. 루나틱(심안 · 결사) · 브레이크 · 호시탐탐은 「조건부 효과 포함」일 때. " +
   "가정 — 스탯: 최대 레벨 + 성도 각성 + 명암 255(캐릭터창 값을 넣으면 그것) · 무작위 배지는 주 스탯 최대치 · 부 스탯 제외 · 무기: 위키 최대 강화 · 스킬 배율: 위키 최대 레벨(범위면 기본값, 「조건부 효과 포함」이면 위값) · 크리: 행운/16% + 크리율 가산 · " +
-  "중첩: 위키 Damage Formula/Multipliers(체감 · 반감 · 가산 · 곱). 「특정 아군」 대상 효과 · 고유 축적 · 정신 통일 비율(0.23%/MP 고정) · 연성 광석 · 증표(VC) 그라스타는 단순화 · 미반영.";
+  "중첩: 위키 Damage Formula/Multipliers(체감 · 반감 · 가산 · 곱). 「특정 아군」 대상 효과 · 고유 축적 · 정신 통일 비율(0.23%/MP 고정)은 단순화 · 미반영. 특수 광석은 글래스터 하나에 1개(전체 장비 모드만 — 보유 목록엔 광석 칸이 없다) · 특수 칸 = 그 캐릭터의 VC · Extreme(명암 255) · Special.";
 function whyDetails(d) {
   const o = d.o, pctS = x => (x >= 0 ? "+" : "") + Math.round(x * 100) + "%";
   const why = el("details", { class: "skko-raw" });
@@ -1677,7 +1691,7 @@ function renderGearTab(box, db) {
   const curTeam = team.map(x => (x.c.id === c.id ? cur : x));
   const dCur = AEParty.memberDamage(cur, curTeam, opt);
   const res = runGear(db, m, team, opt, attacks);
-  const rec = { ...m, attack: res.attack, ...res.gear };
+  const rec = withGear({ ...m, attack: res.attack }, res.gear);
   const recTeam = team.map(x => (x.c.id === c.id ? rec : x));
   const dRec = AEParty.memberDamage(rec, recTeam, opt);
 
@@ -1708,7 +1722,7 @@ function renderGearTab(box, db) {
   const gt = el("table", { class: "skill-table" });
   gt.appendChild(el("thead", { children: [el("tr", { children: ["칸", "현재 (입력)", "추천"].map(h => el("th", { text: h })) })] }));
   const gtb = el("tbody"), ed = gearEditor(db, cur, rr);
-  const recNames = [rec.weapon, rec.armor, ...Array.from({ length: STATE.calc.gslots || 4 }, (_, i) => rec.grasta[i]), rec.badges[0], rec.badges[1]];
+  const recNames = [rec.weapon, rec.armor, ...Array.from({ length: STATE.calc.gslots || 4 }, (_, i) => res.gear.grasta[i]), rec.badges[0], rec.badges[1], rec.special[0]];
   [...ed.children].forEach((row, i) => {
     const [k, inp] = row.children, r = recNames[i], same = (r ? r.name : "") === (inp.value || (i === 0 ? (cur.weapon || {}).name : "") || "");
     gtb.appendChild(el("tr", { children: [el("td", { text: k.textContent }), el("td", { children: [inp] }),
@@ -1719,15 +1733,15 @@ function renderGearTab(box, db) {
   box.appendChild(cw);
 
   // 결과
-  const gain = dCur && dCur.expected > 0 ? dRec.expected / dCur.expected - 1 : null;
+  const gain = dCur && dCur.perUse > 0 ? dRec.perUse / dCur.perUse - 1 : null;
   const apply = el("button", { class: "view-btn active", text: "추천 장비 적용" });
   apply.addEventListener('click', () => { saveGear(c.id, res.gear, res.attack); rr(); });
   const sum = el("div", { class: "cw-box", style: "margin-top:12px" });
   sum.append(el("h4", { text: "기대값 (스킬 1회)" }),
-    el("div", { class: "pt", text: `현재 — ${cur.attack.skill}: ${dCur ? fmtN(dCur.expected) : "—"}` }),
-    el("div", { class: "pt", children: [el("b", { class: "role-ok", text: `추천 — ${res.attack.skill}: ${fmtN(dRec.expected)}` }),
+    el("div", { class: "pt", text: `현재 — ${cur.attack.skill}: ${dCur ? fmtN(dCur.perUse) : "—"}` }),
+    el("div", { class: "pt", children: [el("b", { class: "role-ok", text: `추천 — ${res.attack.skill}: ${fmtN(dRec.perUse)}` }),
       document.createTextNode(gain == null ? "" : `  (${gain >= 0 ? "+" : ""}${(gain * 100).toFixed(1)}%)`)] }),
-    el("div", { class: "skko-src", style: "margin:6px 0", text: `후보: ${STATE.calc.ownedOnly ? "보유 목록" : "전체 장비"} · 평가 ${res.evals.toLocaleString()}회 · 공격 ${attacks.length}개 비교 · 그라스타 ${STATE.calc.gslots || 4}칸 · 배지 2칸` }),
+    el("div", { class: "skko-src", style: "margin:6px 0", text: `후보: ${STATE.calc.ownedOnly ? "보유 목록" : "전체 장비"} · 평가 ${res.evals.toLocaleString()}회 · 공격 ${attacks.length}개 비교 · 그라스타 ${STATE.calc.gslots || 4}칸 · 배지 2칸 · 특수 1칸` }),
     apply, el("div", { style: "margin-top:8px", children: [whyDetails(dRec)] }));
   if (STATE.calc.ownedOnly && !gearPools(db, m).pools.weapons.length) sum.appendChild(el("div", { class: "pt role-gap", text: `보유 목록에 ${m.cc.weapon} 무기가 없습니다.` }));
   box.appendChild(sum);
@@ -1752,7 +1766,8 @@ async function renderPartyTab(box, db) {
   bar.append(
     sel("roster", [["owned", `보유 캐릭터 (${owned.length}명)`], ["all", `전체 캐릭터 (${Object.keys(db.chars).length}명)`]], owned.length ? "owned" : "all"),
     sel("objective", [["sum", "목표: 전방 4명 합계"], ["carry", "목표: 주력 1명 최대"]], "sum"),
-    sel("zoneMode", [["auto", "존: 파티원이 전개하는 것 중 최고"], ["none", "존: 없음"], ["fixed", "존: 직접 고르기"]], "auto"));
+    sel("zoneMode", [["auto", "존: 파티원이 전개하는 것 중 최고"], ["none", "존: 없음"], ["fixed", "존: 직접 고르기"]], "auto"),
+    sel("gearMode", [["saved", "장비: 저장된 것 그대로"], ["party", "장비: 상위 3 파티에 공동 최적화 (파티당 수 초)"]], "saved"));
   box.appendChild(bar);
   // 고정 멤버
   const fixed = (O.fixed || []).filter(id => db.chars[id]);
@@ -1773,7 +1788,7 @@ async function renderPartyTab(box, db) {
   box.append(el("div", { children: [run, prog] }));
   const out = el("div", { style: "margin-top:12px" });
   box.appendChild(out);
-  const key = JSON.stringify([ros.length, ros.slice(0, 3), O.objective, O.zoneMode, S.zone, S.enemy, S.cond, S.maxHp, S.pain, DETAIL_KEYS.map(k => S[k]), fixed]);
+  const key = JSON.stringify([ros.length, ros.slice(0, 3), O.objective, O.zoneMode, O.gearMode, S.gslots, S.ownedOnly, S.zone, S.enemy, S.cond, S.maxHp, S.pain, DETAIL_KEYS.map(k => S[k]), fixed]);
   if (STATE.ovRes && STATE.ovRes.key === key) showPartyResult(out, db, STATE.ovRes);
   run.addEventListener('click', async () => {
     run.disabled = true; clear(out);
@@ -1783,19 +1798,24 @@ async function renderPartyTab(box, db) {
       m.atks = AEOpt.attackPool(m.atks, opt.cond).slice(0, 4);
       return m;
     }).filter(m => m.atks.length);
-    const r = await AEOpt.partySearch(cands, opt, { size: FRONT_N, objective: O.objective || "sum", zoneMode: O.zoneMode || "auto", zoneDb: db.zones, fixed,
-      tick: async n => { prog.textContent = `평가 ${n.toLocaleString()}팀…`; await new Promise(res => setTimeout(res)); } });
-    prog.textContent = `${cands.length}명(가지치기 후 ${r.pool}) · ${r.evals.toLocaleString()}팀 평가 · ${((performance.now() - t0) / 1000).toFixed(1)}초`;
+    const geared = O.gearMode === "party";
+    const sconf = { size: FRONT_N, objective: O.objective || "sum", zoneMode: O.zoneMode || "auto", zoneDb: db.zones, fixed,
+      tick: async n => { prog.textContent = geared ? `평가 ${n.toLocaleString()}회 — 장비 맞추는 중…` : `평가 ${n.toLocaleString()}팀…`; await new Promise(res => setTimeout(res)); } };
+    // 2단계(2026-10-15) — 저장 장비로 고른 상위 3 파티마다 파티 공동 장비 최적화(AEOpt.partyGear: 1개뿐인 장비 나눠 갖기 · 공유 그라스타 포함) 후 다시 순위
+    const r = geared ? await AEOpt.partySearchGeared(cands, opt, { ...sconf, gearTop: 3, poolsOf: m => gearPools(db, m).pools,
+        gear: { grastaSlots: S.gslots || 4, badgeSlots: 2, counts: cands.length ? gearPools(db, cands[0]).counts : null } })
+      : await AEOpt.partySearch(cands, opt, sconf);
+    prog.textContent = `${cands.length}명(가지치기 후 ${r.pool}) · ${r.evals.toLocaleString()}${geared ? "회" : "팀"} 평가 · ${((performance.now() - t0) / 1000).toFixed(1)}초`;
     STATE.ovRes = { key, ...r, opt };
     showPartyResult(out, db, STATE.ovRes);
     run.disabled = false;
   });
   box.appendChild(el("div", { class: "skko-src", style: "margin-top:12px", text: "탐색 = 단독 딜 상위 8명에서 각각 출발 → 한 명씩 가장 좋은 멤버로 채움 → 한 자리씩 바꿔 오르지 않을 때까지(무작위 12명 명단 20개 — 4명 전수 탐색 1위와 20/20 일치). " +
-    "전방 4명만 평가 · 장비는 저장된 것(없으면 무기 최고 공격력, 그라스타 · 배지 없음) — 고른 뒤 파티 구성 7절 「⚙ 자동」으로 장비를 맞추세요. 같은 캐릭터의 다른 스타일은 한 파티에 하나만." }));
+    "전방 4명만 평가 · 장비는 저장된 것(없으면 무기 최고 공격력, 그라스타 · 배지 없음). 「공동 최적화」면 그 상위 3 파티마다 네 명 장비를 함께 맞춘 뒤 다시 순위 — 1개뿐인 무기 · 그라스타는 한 명만, 공유 그라스타가 올리는 파티원 대미지까지 셉니다. 같은 캐릭터의 다른 스타일은 한 파티에 하나만." }));
 }
 function showPartyResult(out, db, r) {
   const tbl = el("table", { class: "skill-table party-table" });
-  tbl.appendChild(el("thead", { children: [el("tr", { children: ["#", "파티 (스킬 · 1회 기대값)", "존", "점수", ""].map(h => el("th", { text: h })) })] }));
+  tbl.appendChild(el("thead", { children: [el("tr", { children: ["#", "파티 (스킬 · 1회 기대값)", "존", r.list.some(p => p.base != null) ? "점수 (장비 전 → 후)" : "점수", ""].map(h => el("th", { text: h })) })] }));
   const tb = el("tbody");
   r.list.forEach((p, i) => {
     const who = el("td");
@@ -1803,16 +1823,21 @@ function showPartyResult(out, db, r) {
       const c = STATE.all.find(y => y.id === x.id);
       who.appendChild(el("div", { class: "pt", children: [el("b", { text: c ? c.nameKo : x.id }),
         document.createTextNode(` — ${x.attack ? x.attack.skill : "공격 없음"} · ${fmtN(x.expected)}`)] }));
+      if (x.gear) who.appendChild(el("div", { class: "skko-src", style: "margin:0 0 4px 10px",
+        text: [x.gear.weapon, x.gear.armor, ...x.gear.grasta, ...(x.gear.badges || []), ...(x.gear.special || [])].filter(Boolean).map(g => g.name).join(" · ") }));
     }
     const go = el("button", { class: "slot-btn", text: "파티 구성으로" });
     go.addEventListener('click', () => {
       STATE.party = [...p.ids];
-      for (const x of p.per) if (x.attack) { const cf = STATE.calc.m[x.id] = STATE.calc.m[x.id] || {}; cf.attack = x.attack.skill; }
+      for (const x of p.per) {
+        if (x.gear) saveGear(x.id, x.gear, x.attack);                         // 공동 최적화 장비까지 저장
+        else if (x.attack) { const cf = STATE.calc.m[x.id] = STATE.calc.m[x.id] || {}; cf.attack = x.attack.skill; }
+      }
       if (p.zone) STATE.calc.zone = p.zone.name; else STATE.calc.zone = "";
       saveParty(); saveCalc(); setView("party");
     });
     tb.appendChild(el("tr", { children: [el("td", { text: String(i + 1) }), who, el("td", { class: "pt", text: p.zone ? p.zone.name : "없음" }),
-      el("td", { class: "role-ok", text: fmtN(p.score) }), el("td", { children: [go] })] }));
+      el("td", { class: "role-ok", text: p.base != null ? `${fmtN(p.base)} → ${fmtN(p.score)}` : fmtN(p.score) }), el("td", { children: [go] })] }));
   });
   tbl.appendChild(tb);
   out.appendChild(el("div", { class: "table-scroll", children: [tbl] }));

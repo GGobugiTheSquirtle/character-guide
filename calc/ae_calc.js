@@ -131,8 +131,15 @@
     return clamp(o.magic ? (o.mcritRate || 0) : (o.lck || 0) / 16 / 100 + (o.critRate || 0), 0, 1);
   }
 
+  // 1타 대미지 경감(Ver 3.11 ~, 25억 소프트 캡) — 딩님 계산기 v4.016 마지막 단계(ae_pipeline 의 같은 식, 거기는 단계마다 버림).
+  //   25억~35억 ×0.3 + 17.5억 · ~50억 ×0.1 + 24.5억 · ~100억 ×0.03 + 28억 · ~7000억 ×0.01 + 30억 · 그 위 9,999,999,999
+  function softCap(v) {
+    if (!(v >= 2.5e9)) return v;
+    return v < 3.5e9 ? 1.75e9 + v * 0.3 : v < 5e9 ? 2.45e9 + v * 0.1 : v < 1e10 ? 2.8e9 + v * 0.03 : v < 7e11 ? 3e9 + v * 0.01 : 9999999999;
+  }
+
   const api = { diminish, halfStack, groupNet, additive, focusGroup, mentalFocus, perHitMult, elemMod, physWeak,
-    damage, heal, critChance };
+    damage, heal, critChance, softCap };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AECalc = api;
 })(typeof window !== "undefined" ? window : globalThis);

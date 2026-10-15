@@ -384,8 +384,10 @@
     // 오버 크리: 크리 대미지 ×2 확률 = (크리율 − 100%) / 1000% (위키 Status Effects)
     const rate = magic ? C.additive([...ag.mcrit, eq.mcrit]) : (st.lck || 0) / 1600 + C.additive([...ag.crit, eq.crit]);
     const oc = (magic ? ag.movercrit : ag.overcrit) ? Math.max(0, Math.min(1, (rate - 1) / 10)) : 0;
-    const normal = C.damage({ ...o, crit: false }).total;
-    const crit = C.damage({ ...o, crit: true, critDmg }).total * (1 + oc) * critX;
+    // 25억 경감(opt.cap === false 면 끔) — 1타마다. 최적화 목표가 캡을 모르면 1타가 큰 조합을 과대평가한다(2026-10-15, 추천 상위가 1타 수십억)
+    const capF = opt.cap === false ? v => v : C.softCap;
+    const normal = capF(C.damage({ ...o, crit: false }).total);
+    const crit = capF(C.damage({ ...o, crit: true, critDmg }).total * (1 + oc) * critX);
     const p = (ag.sureCrit || sx.kesshi) ? 1 : Math.max(0, Math.min(1, rate));
     // perUse = 1회 사용 기대 대미지(1타 × 타수) — 스킬 · 장비 · 파티 비교는 이걸로(1타끼리 비교하면 다단 히트가 저평가된다, 2026-10-15)
     const hits = Math.max(1, atk.hits || 1), exp1 = p * crit + (1 - p) * normal;
@@ -399,7 +401,7 @@
       const defNet = net(eg, "def", () => C.groupNet({ buffs: eg.def })), mdefNet = net(eg, "mdef", () => C.groupNet({ buffs: eg.mdef }));
       const sl = eq.slots, sum = a => (a || []).reduce((x, y) => x + y, 0);
       const r = P.compute({ caster: "ally", kind: KIND[atk.dep] || "phys", power: o.skillMult * 100, scope: o.single ? "single" : "all",
-        elemental: o.elemental, affinity: o.affinity, cap: true,
+        elemental: o.elemental, affinity: o.affinity, cap: opt.cap !== false,
         stats: { mp: st.mp || 0, atk: (st.pwr || 0) + w.atk, matk: (st.int || 0) + w.matk, pwr: st.pwr || 0, int: st.int || 0, spd: st.spd || 0 },
         enemy: { lv: (opt.enemy && opt.enemy.lv) || 0, def: en.end || 0, mdef: en.spr || 0 },
         fx: { pct: { pwr: pct(o.buff.pwr), int: pct(o.buff.int), spd: pct(o.buff.spd), def: negPct(defNet), mdef: negPct(mdefNet) },

@@ -52,8 +52,13 @@
     s._contrib = s._contrib || [];
     if (s._contrib[key]) return s._contrib[key];
     const c = { all: newAG(), self: newAG(), skill: {}, enemy: newEG() };
-    for (const u of s.fx) {
-      if (!usable(u, opt)) continue;
+    for (const u0 of s.fx) {
+      if (!usable(u0, opt)) continue;
+      // 값 범위(2026-10-15) — 위값(누적 최대 · ANOTHER ZONE · 진 전개 2배 …)은 「조건부 효과 포함」일 때만, 기본은 아래값(base · 딩님 표로 올리기 전 _base).
+      //   공격 배율(mult/multMax)과 같은 규칙. 위값이 조건 없이 들어가 요르나 1회 542억 같은 값이 났다
+      const lo = u0.base ?? u0._base;
+      const u = !opt.cond && typeof lo === "number" && lo < u0.value ? { ...u0, value: lo } : u0;
+      if (u.value == null && (u.k === "stat_pct" || u.k === "dmg")) continue;      // 값 없는 단위(「축적 수에 따라 …」)는 계산 · 근거에서 뺀다
       const sc = allyScope(u);
       if (sc === "all" || sc === "self") addAlly(c[sc], u, s);
       else if (sc === "skill") for (const n of new Set([u._skill, u._skillEn].filter(Boolean))) addAlly(c.skill[n] = c.skill[n] || newAG(), u, s);

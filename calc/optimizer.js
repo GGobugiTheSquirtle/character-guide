@@ -71,6 +71,8 @@
   //   counts 가 있으면 그 수까지만(보유 모드), 없으면 그라스타는 dupGrasta 로 중복 허용, 고유 배지는 1개(무작위 배지는 중복 가능)
   // 반환 { gear: {weapon, armor, grasta[], badges[]}, value, start, evals }
   // 파티 안의 같은 멤버(id)를 w 로 바꾼 명단 — 없으면 끝에 넣는다
+  // 일반 칸 그라스타 — 화면 멤버(calcMember)는 대미지 계산용 grasta 에 특수 칸(special)까지 넣어 둔다
+  const normalOf = m => (m.grasta || []).filter(g => !(m.special || []).includes(g));
   const swapIn = (members, w) => members.some(x => x.c.id === w.c.id) ? members.map(x => (x.c.id === w.c.id ? w : x)) : [...members, w];
 
   function gearOptimize(m, members, opt, pools, conf = {}) {
@@ -105,11 +107,11 @@
     };
     let othersSig = null, othersV = 0;
     const pad = (a, n) => Array.from({ length: n }, (_, i) => (a || [])[i] || null);
-    const start = score({ weapon: m.weapon || null, armor: m.armor || null, grasta: pad(m.grasta, gs), badges: pad(m.badges, bs), special: pad(m.special, ss) });
+    const start = score({ weapon: m.weapon || null, armor: m.armor || null, grasta: pad(normalOf(m), gs), badges: pad(m.badges, bs), special: pad(m.special, ss) });
     // 탐색은 후보 안에서만 — 지금 장비가 후보(보유 목록) 밖이면 빈 칸에서 시작
     const inPool = (it, pool) => (it && pool.some(x => x.name === it.name) ? pool.find(x => x.name === it.name) : null);
     let state = { weapon: inPool(m.weapon, pools.weapons) || pools.weapons[0] || null, armor: inPool(m.armor, pools.armor),
-      grasta: pad([...lock, ...(m.grasta || []).map(g => inPool(g, pools.grasta)).filter(g => g && !lock.includes(g))], gs),
+      grasta: pad([...lock, ...normalOf(m).map(g => inPool(g, pools.grasta)).filter(g => g && !lock.includes(g))], gs),
       badges: pad((m.badges || []).map(b => inPool(b, pools.badges)).filter(Boolean), bs),
       special: pad((m.special || []).map(g => inPool(g, pools.special || [])).filter(Boolean), ss) };
     let best = score(state);
@@ -143,7 +145,7 @@
   //   conf = gearOptimize conf + { objective: 'sum'|'carry', carry: id, passes: 3 }, poolsOf(member) → 후보
   //   carry 면 그 멤버 대미지가 목표(다른 멤버는 1e-3 — 남는 장비로 무난하게), 그 멤버를 먼저 채운다
   function partyGear(members, opt, poolsOf, conf = {}) {
-    const team = members.map(m => ({ ...m, gear: { grasta: m.grasta || [], special: m.special || [] } }));
+    const team = members.map(m => ({ ...m, gear: { grasta: normalOf(m), special: m.special || [] } }));
     const wt = x => (conf.objective === "carry" ? (x.c.id === conf.carry ? 1 : 1e-3) : 1);
     const order = conf.objective === "carry" ? [...team].sort((a, b) => wt(b) - wt(a)) : team;
     const usage = except => {
@@ -220,17 +222,24 @@
     }
     const pre = P.prepare(team, opt);
     return { team, value: best, hist, evals,
-      per: team.map(x => ({ id: x.c.id, expected: (P.memberDamage(x, team, opt, pre) || {}).perUse || 0, gear: { weapon: x.weapon, armor: x.armor, badges: x.badges, ...x.gear } })) };
+      per: team.map(x => ({ id: x.c.id, attack: x.attack, expected: (P.memberDamage(x, team, opt, pre) || {}).perUse || 0, gear: { weapon: x.weapon, armor: x.armor, badges: x.badges, ...x.gear } })) };
   }
 
   // 공격까지 고르는 장비 최적화 — attacks 각각에 장비를 맞춰 보고 가장 큰 것
   function bestSetup(m, members, opt, pools, conf, attacks) {
-    let best = null;
-    for (const a of attacks) {
+    let best = null, cand = attacks, pre = 0;
+    // 광석 조합이 있으면(그라스타 ~5,000) 공격 고르기는 광석 없는 후보로 먼저 — 상위 2개만 전체 후보로(2026-10-15 화면 연결)
+    if (attacks.length > 2 && pools.grasta.some(g => g.ore)) {
+      const lite = { ...pools, grasta: pools.grasta.filter(g => !g.ore) };
+      cand = attacks.map(a => { const mm = { ...m, attack: a }, r = gearOptimize(mm, swapIn(members, mm), opt, lite, conf); pre += r.evals; return [a, r.value]; })
+        .sort((x, y) => y[1] - x[1]).slice(0, 2).map(x => x[0]);
+    }
+    for (const a of cand) {
       const mm = { ...m, attack: a };
       const r = gearOptimize(mm, swapIn(members, mm), opt, pools, conf);
       if (!best || r.value > best.value) best = { ...r, attack: a };
     }
+    best.evals += pre;
     return best;
   }
 
@@ -239,8 +248,10 @@
   const effMult = (a, cond) => (cond && a.multMax) || a.mult || 0;
   function attackPool(atks, cond) {
     const by = xs => xs.sort((a, b) => effMult(b, cond) - effMult(a, cond));
-    const main = atks.filter(a => a.sec === "skills" && effMult(a, cond) > 0 && (cond || a.mp > 0));
-    return by(main.length ? main : atks.filter(a => effMult(a, cond) > 0));
+    // 발동 조건(gate — 전술 레벨 50 · 전원 카타르시스 3 · 반격 …)이 붙은 공격도 조건부에서만(2026-10-15, 라이자 20배 기술이 1위를 독식)
+    const ok = a => effMult(a, cond) > 0 && (cond || !a.gate);
+    const main = atks.filter(a => a.sec === "skills" && ok(a) && (cond || a.mp > 0));
+    return by(main.length ? main : atks.filter(ok));
   }
 
   // ── 파티 ─────────────────────────────────────────────
@@ -359,7 +370,7 @@
     return { list, stage1: r1.list, evals, pool: r1.pool };
   }
 
-  const api = { baseId, canGrasta, damagePools, grantAttacks, attackPool, gearOptimize, partyGear, partySearchGeared, bestSetup, bestAttack, scoreParty, partySearch };
+  const api = { baseId, canGrasta, withOre, specialPool, damagePools, grantAttacks, attackPool, gearOptimize, partyGear, partySearchGeared, bestSetup, bestAttack, scoreParty, partySearch };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEOpt = api;
 })(typeof window !== "undefined" ? window : globalThis);

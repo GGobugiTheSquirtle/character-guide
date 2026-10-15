@@ -1408,14 +1408,20 @@ function saveGear(id, gear, attack) {
   saveCalc();
 }
 // 장비 후보 — 「보유 장비만」이면 보유 목록(STATE.inv) 안에서, 보유 수까지
-function gearPools(db, m) {
-  // 특수 칸(VC · Extreme) 포함. 광석 조합은 전체 장비 모드만 — 보유 목록에 광석이 없다
-  if (!STATE.calc.ownedOnly) return { pools: AEOpt.damagePools(db, m.cc, m.c.traits, { special: true }), counts: null };
-  const inv = STATE.inv;
-  const sub = { weapons: db.weapons.filter(x => inv.w[x.name]), armor: db.armor.filter(x => inv.a[x.name]),
-    grasta: db.grasta.filter(x => inv.g[x.name]), badges: db.badges.filter(x => inv.b[x.name]) };
-  return { pools: AEOpt.damagePools(sub, m.cc, m.c.traits, { special: true }), counts: { ...inv.w, ...inv.a, ...inv.g, ...inv.b } };
-}
+// 특수 칸(VC · Extreme) 포함. 광석 조합은 전체 장비 모드만 — 보유 목록에 광석이 없다(AEOpt.ownedPools, 워커와 공용)
+const gearPools = (db, m) => AEOpt.ownedPools(db, m.cc, m.c.traits, STATE.calc.ownedOnly ? STATE.inv : null);
+// 파티 장비는 워커로(calc/opt_worker.js, 2026-10-15) — 파티 하나에 수 초라 화면이 멈췄다. 상위 파티마다 워커 하나(병렬).
+//   워커를 못 띄우면(file:// 등) 이 스레드에서
+const gearInWorker = (db, inv) => (team, o, g) => new Promise((res, rej) => {
+  let w;
+  try { w = new Worker("calc/opt_worker.js"); } catch (e) {
+    const cache = new Map();
+    return res(AEOpt.partyGear(team, o, m => cache.get(m.c.id) || cache.set(m.c.id, AEOpt.ownedPools(db, m.cc, m.c.traits, inv).pools).get(m.c.id), g));
+  }
+  w.onmessage = e => { w.terminate(); e.data.error ? rej(new Error(e.data.error)) : res(e.data.done); };
+  w.onerror = e => { w.terminate(); rej(new Error(e.message || "워커 오류")); };
+  w.postMessage({ team, opt: o, conf: g, db: { weapons: db.weapons, armor: db.armor, grasta: db.grasta, badges: db.badges, ores: db.ores }, inv });
+});
 function runGear(db, m, team, opt, attacks) {
   const { pools, counts } = gearPools(db, m);
   return AEOpt.bestSetup(m, team, opt, pools, { grastaSlots: STATE.calc.gslots || 4, badgeSlots: 2, counts }, attacks);
@@ -1800,10 +1806,12 @@ async function renderPartyTab(box, db) {
     }).filter(m => m.atks.length);
     const geared = O.gearMode === "party";
     const sconf = { size: FRONT_N, objective: O.objective || "sum", zoneMode: O.zoneMode || "auto", zoneDb: db.zones, fixed,
-      tick: async n => { prog.textContent = geared ? `평가 ${n.toLocaleString()}회 — 장비 맞추는 중…` : `평가 ${n.toLocaleString()}팀…`; await new Promise(res => setTimeout(res)); } };
+      tick: async (n, done) => { prog.textContent = done ? `장비 맞추는 중 — 파티 ${done}/3 끝 · 평가 ${n.toLocaleString()}회` : `평가 ${n.toLocaleString()}팀…`; await new Promise(res => setTimeout(res)); } };
     // 2단계(2026-10-15) — 저장 장비로 고른 상위 3 파티마다 파티 공동 장비 최적화(AEOpt.partyGear: 1개뿐인 장비 나눠 갖기 · 공유 그라스타 포함) 후 다시 순위
-    const r = geared ? await AEOpt.partySearchGeared(cands, opt, { ...sconf, gearTop: 3, poolsOf: m => gearPools(db, m).pools,
-        gear: { grastaSlots: S.gslots || 4, badgeSlots: 2, counts: cands.length ? gearPools(db, cands[0]).counts : null } })
+    const inv = S.ownedOnly ? STATE.inv : null, gearRun = gearInWorker(db, inv);
+    const r = geared ? await AEOpt.partySearchGeared(cands, opt, { ...sconf, gearTop: 3,
+        gearRunner: (team, o, g) => { prog.textContent = "상위 3 파티 장비 맞추는 중(백그라운드 3개 동시)…"; return gearRun(team, o, g); },
+        gear: { grastaSlots: S.gslots || 4, badgeSlots: 2, counts: inv ? { ...inv.w, ...inv.a, ...inv.g, ...inv.b } : null } })
       : await AEOpt.partySearch(cands, opt, sconf);
     prog.textContent = `${cands.length}명(가지치기 후 ${r.pool}) · ${r.evals.toLocaleString()}${geared ? "회" : "팀"} 평가 · ${((performance.now() - t0) / 1000).toFixed(1)}초`;
     STATE.ovRes = { key, ...r, opt };

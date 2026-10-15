@@ -352,25 +352,35 @@
   // 파티 탐색 2단계(2026-10-15) — ① partySearch(지금 · 기본 장비)로 상위 후보 ② 상위 gearTop 개만 partyGear 로 장비를 함께 맞추고
   //   ③ 장비 낀 점수로 다시 줄 세운다. 장비 탐색은 파티당 수십 초라 전부에 돌릴 수 없다 — 기본 장비 순위가 장비 후 순위와 크게 어긋나지 않는다는 가정
   //   conf = partySearch conf + { gearTop: 3, poolsOf(member) → 후보, gear: partyGear conf }. objective 'carry' 면 각 파티의 1위 딜러를 carry 로
+  // conf.gearRunner(team, opt, gearConf) → Promise<partyGear 결과> — 화면은 워커로 보낸다(calc/opt_worker.js, 2026-10-15 화면 멈춤).
+  //   없으면 이 스레드에서 partyGear(conf.poolsOf). 상위 파티들은 한꺼번에 띄운다(워커면 병렬)
   async function partySearchGeared(cands, opt, conf = {}) {
     const r1 = await partySearch(cands, opt, conf);
     const byId = new Map(cands.map(m => [m.c.id, m]));
-    const list = [];
-    let evals = r1.evals;
-    for (const p of r1.list.slice(0, conf.gearTop ?? 3)) {
+    const run = conf.gearRunner || (async (team, o, g) => partyGear(team, o, conf.poolsOf, g));
+    let evals = r1.evals, done = 0;
+    const list = await Promise.all(r1.list.slice(0, conf.gearTop ?? 3).map(async p => {
       const team = p.per.map(x => ({ ...byId.get(x.id), attack: x.attack }));
       const carry = conf.objective === "carry" ? [...p.per].sort((a, b) => b.expected - a.expected)[0].id : undefined;
-      const g = partyGear(team, { ...opt, zone: p.zone }, conf.poolsOf, { ...(conf.gear || {}), objective: conf.objective === "carry" ? "carry" : "sum", carry });
+      const g = await run(team, { ...opt, zone: p.zone }, { ...(conf.gear || {}), objective: conf.objective === "carry" ? "carry" : "sum", carry });
       evals += g.evals;
-      const score = carry ? g.per.find(x => x.id === carry).expected : g.value;
-      list.push({ ids: p.ids, zone: p.zone, base: p.score, score, carry, per: g.per });
-      if (conf.tick) await conf.tick(evals);
-    }
+      if (conf.tick) await conf.tick(evals, ++done);
+      return { ids: p.ids, zone: p.zone, base: p.score, score: carry ? g.per.find(x => x.id === carry).expected : g.value, carry, per: g.per };
+    }));
     list.sort((a, b) => b.score - a.score);
     return { list, stage1: r1.list, evals, pool: r1.pool };
   }
 
-  const api = { baseId, canGrasta, withOre, specialPool, damagePools, grantAttacks, attackPool, gearOptimize, partyGear, partySearchGeared, bestSetup, bestAttack, scoreParty, partySearch };
+  // 장비 후보 — inv(보유 목록 {w, a, g, b: {이름: 수}})가 있으면 그 안에서, 특수 칸 포함. 화면 · 워커 공용
+  //   광석 조합은 보유 목록에 광석 칸이 없어 전체 장비일 때만(db.ores)
+  function ownedPools(db, cc, traits, inv) {
+    if (!inv) return { pools: damagePools(db, cc, traits, { special: true }), counts: null };
+    const sub = { weapons: db.weapons.filter(x => inv.w[x.name]), armor: db.armor.filter(x => inv.a[x.name]),
+      grasta: db.grasta.filter(x => inv.g[x.name]), badges: db.badges.filter(x => inv.b[x.name]) };
+    return { pools: damagePools(sub, cc, traits, { special: true }), counts: { ...inv.w, ...inv.a, ...inv.g, ...inv.b } };
+  }
+
+  const api = { baseId, canGrasta, withOre, specialPool, damagePools, ownedPools, grantAttacks, attackPool, gearOptimize, partyGear, partySearchGeared, bestSetup, bestAttack, scoreParty, partySearch };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEOpt = api;
 })(typeof window !== "undefined" ? window : globalThis);

@@ -226,17 +226,19 @@
   }
 
   // 공격까지 고르는 장비 최적화 — attacks 각각에 장비를 맞춰 보고 가장 큰 것
+  //   members = 팀 배열, 또는 공격 → 팀 함수(외부 프리셋은 공격 속성 · 종류마다 값이 달라 공격마다 만든다, 2026-10-17)
   function bestSetup(m, members, opt, pools, conf, attacks) {
     let best = null, cand = attacks, pre = 0;
+    const team = a => (typeof members === "function" ? members(a) : members);
     // 광석 조합이 있으면(그라스타 ~5,000) 공격 고르기는 광석 없는 후보로 먼저 — 상위 2개만 전체 후보로(2026-10-15 화면 연결)
     if (attacks.length > 2 && pools.grasta.some(g => g.ore)) {
       const lite = { ...pools, grasta: pools.grasta.filter(g => !g.ore) };
-      cand = attacks.map(a => { const mm = { ...m, attack: a }, r = gearOptimize(mm, swapIn(members, mm), opt, lite, conf); pre += r.evals; return [a, r.value]; })
+      cand = attacks.map(a => { const mm = { ...m, attack: a }, r = gearOptimize(mm, swapIn(team(a), mm), opt, lite, conf); pre += r.evals; return [a, r.value]; })
         .sort((x, y) => y[1] - x[1]).slice(0, 2).map(x => x[0]);
     }
     for (const a of cand) {
       const mm = { ...m, attack: a };
-      const r = gearOptimize(mm, swapIn(members, mm), opt, pools, conf);
+      const r = gearOptimize(mm, swapIn(team(a), mm), opt, pools, conf);
       if (!best || r.value > best.value) best = { ...r, attack: a };
     }
     best.evals += pre;

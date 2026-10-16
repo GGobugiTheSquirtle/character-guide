@@ -1691,6 +1691,31 @@ function charPicker(db, cur, onPick, ph) {
   inp.addEventListener('change', () => { const c = STATE.all.find(x => x.nameKo === inp.value.trim() && db.chars[x.id]); if (c) onPick(c); else inp.value = cur ? cur.nameKo : ""; });
   return inp;
 }
+// 외부 버프 내역(S8) — 항목마다 표준(중앙값) · 최대 · 주는 캐릭터 수 · 가장 센 캐릭터, 켜고 끄기(STATE.ov.presetOff)
+function presetDetails(st, atk, lvl, rr) {
+  const O = STATE.ov, off = O.presetOff || [];
+  const fmt = (p, v) => (p.flag ? (v ? "켬" : "—") : v ? `${Math.round(v * 100)}%` : "—");
+  const det = el("details", { class: "cw-box", style: "margin:0 0 12px" });
+  det.open = !!O.presetOpen;
+  det.addEventListener('toggle', () => { O.presetOpen = det.open; saveOv(); });
+  det.appendChild(el("summary", { text: `외부 버프(${lvl === "max" ? "최대" : "표준"}) 내역 — ${atk.skill}(${atk.element || "무속성"} ${atk.atk}) 기준 · 끈 항목 ${off.length}` }));
+  const t = el("table", { class: "skill-table", style: "min-width:560px" });     // 좁은 화면은 표만 옆으로 민다(이름이 글자마다 끊기지 않게)
+  t.appendChild(el("thead", { children: [el("tr", { children: ["켬", "항목", "표준", "최대", "주는 캐릭터", "가장 센"].map(h => el("th", { text: h })) })] }));
+  const tb = el("tbody");
+  for (const p of AEParty.PRESET) {
+    const x = st[p.id];
+    if (!x || !x.n) continue;
+    const cb = el("input", { attrs: { type: "checkbox", ...(off.includes(p.id) ? {} : { checked: "" }) } });
+    cb.addEventListener('change', () => { O.presetOff = cb.checked ? off.filter(k => k !== p.id) : [...off, p.id]; saveOv(); rr(); });
+    tb.appendChild(el("tr", { class: off.includes(p.id) ? "pt more" : "", children: [el("td", { children: [cb] }), el("td", { text: p.label }),
+      el("td", { text: fmt(p, x.std) }), el("td", { text: fmt(p, x.max) }), el("td", { text: `${x.n}명` }), el("td", { text: x.top })] }));
+  }
+  t.appendChild(tb);
+  det.append(el("div", { class: "table-scroll", children: [t] }), el("div", { class: "skko-src", style: "margin-top:6px",
+    text: "값 = 효과 DB에서 그 효과를 아군 전체(또는 적)에게 주는 캐릭터들의 값(한 캐릭터 안 여러 효과는 엔진 중첩 규칙). 표준 = 중앙값 · 최대 = 항목마다 가장 센 한 명이라 " +
+      "실제 4인 파티로 다 모으지 못할 수 있는 이론상 상한. 상태 항목(심기일체 · 하극상 …)은 최대에서만. 같은 묶음은 자기 버프와 합쳐 상한(대개 +100%)이 있어, 자기 키트로 이미 채운 항목은 꺼도 값이 그대로다. 루나틱 · 브레이크는 「조건부 효과 포함」일 때 계산에 들어간다. 존은 전투 조건에서 고른다." }));
+  return det;
+}
 function renderGearTab(box, db) {
   const O = STATE.ov, rr = renderOpt;
   const c = STATE.all.find(x => x.id === O.char && db.chars[x.id]);
@@ -1701,8 +1726,10 @@ function renderGearTab(box, db) {
   const inParty = STATE.party.slice(0, FRONT_N).includes(c.id);
   const ctx = el("select", { class: "fx-input" });
   ctx.append(el("option", { text: "혼자 (자기 버프만)", attrs: { value: "solo" } }),
+    el("option", { text: "외부 버프: 표준 (효과 DB 중앙값)", attrs: { value: "std" } }),
+    el("option", { text: "외부 버프: 최대 (항목마다 가장 센 한 명)", attrs: { value: "max" } }),
     el("option", { text: inParty ? "현재 파티 구성의 버프 포함" : "현재 파티 구성 (이 캐릭터가 전방에 없음)", attrs: { value: "party", ...(inParty ? {} : { disabled: "" }) } }));
-  ctx.value = O.ctx === "party" && inParty ? "party" : "solo";
+  ctx.value = O.ctx === "party" && inParty ? "party" : ["std", "max"].includes(O.ctx) ? O.ctx : "solo";
   ctx.addEventListener('change', () => { O.ctx = ctx.value; saveOv(); rr(); });
   top.appendChild(ctx);
   box.appendChild(buildCondBar(db, rr, { gear: true }));
@@ -1726,12 +1753,17 @@ function renderGearTab(box, db) {
   const fixedAtk = m.atks.find(a => a.skill === asel.value);
   const attacks = fixedAtk ? [fixedAtk] : AEOpt.attackPool(m.atks, opt.cond);
   const cur = { ...m, attack: fixedAtk || m.attack };
-  const curTeam = team.map(x => (x.c.id === c.id ? cur : x));
+  // 외부 프리셋(S8, 2026-10-17) — 아군 버프 · 적 디버프를 가상 아군 1명으로(party_calc.presetMember). 공격 속성 · 종류마다 값이 달라 공격마다 만든다
+  const lvl = ["std", "max"].includes(ctx.value) ? ctx.value : null, pOff = O.presetOff || [];
+  const pStats = a => AEParty.presetStats(STATE.all, db.fx, AEParty.presetCtx(a, m.cc.weapon), { cond: opt.cond });
+  const presetFor = a => AEParty.presetMember(pStats(a), AEParty.presetCtx(a, m.cc.weapon), lvl, pOff);
+  const curTeam = lvl ? [cur, presetFor(cur.attack)] : team.map(x => (x.c.id === c.id ? cur : x));
   const dCur = AEParty.memberDamage(cur, curTeam, opt);
-  const res = runGear(db, m, team, opt, attacks);
+  const res = runGear(db, m, lvl ? (a => [presetFor(a)]) : team, opt, attacks);
   const rec = withGear({ ...m, attack: res.attack }, res.gear);
-  const recTeam = team.map(x => (x.c.id === c.id ? rec : x));
+  const recTeam = lvl ? [rec, presetFor(res.attack)] : team.map(x => (x.c.id === c.id ? rec : x));
   const dRec = AEParty.memberDamage(rec, recTeam, opt);
+  if (lvl) box.appendChild(presetDetails(pStats(res.attack), res.attack, lvl, rr));
 
   // 캐릭터창 — 스탯(장비 제외 · 현재 장비 · 화면 값 입력 · 추천 시) + 장비 칸(현재 · 추천)
   const cw = el("div", { class: "cw" });
@@ -1779,7 +1811,7 @@ function renderGearTab(box, db) {
     el("div", { class: "pt", text: `현재 — ${cur.attack.skill}: ${dCur ? fmtN(dCur.perUse) : "—"}` }),
     el("div", { class: "pt", children: [el("b", { class: "role-ok", text: `추천 — ${res.attack.skill}: ${fmtN(dRec.perUse)}` }),
       document.createTextNode(gain == null ? "" : `  (${gain >= 0 ? "+" : ""}${(gain * 100).toFixed(1)}%)`)] }),
-    el("div", { class: "skko-src", style: "margin:6px 0", text: `후보: ${STATE.calc.ownedOnly ? "보유 목록" : "전체 장비"} · 평가 ${res.evals.toLocaleString()}회 · 공격 ${attacks.length}개 비교 · 그라스타 ${STATE.calc.gslots || 4}칸 · 배지 2칸 · 특수 1칸` }),
+    el("div", { class: "skko-src", style: "margin:6px 0", text: `버프: ${ctx.selectedOptions[0].text} · 후보: ${STATE.calc.ownedOnly ? "보유 목록" : "전체 장비"} · 평가 ${res.evals.toLocaleString()}회 · 공격 ${attacks.length}개 비교 · 그라스타 ${STATE.calc.gslots || 4}칸 · 배지 2칸 · 특수 1칸` }),
     apply, el("div", { style: "margin-top:8px", children: [whyDetails(dRec)] }));
   if (STATE.calc.ownedOnly && !gearPools(db, m).pools.weapons.length) sum.appendChild(el("div", { class: "pt role-gap", text: `보유 목록에 ${m.cc.weapon} 무기가 없습니다.` }));
   box.appendChild(sum);

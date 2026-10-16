@@ -28,12 +28,20 @@
   const sideOf = u => (/적/.test(u.tc || "") ? "e" : "a");
   const slotKey = (caster, u) => [caster, u.k, (u.stats || []).join(",") || u.name || u.what || "", u.dir || "", sideOf(u)].join("|");
 
-  function newSim(party, opt) {
-    return { party, opt, turn: 0, af: false, zone: opt.zone || null, live: new Map(), log: [], dmg: [] };
+  function newSim(party, opt, memo) {
+    return { party, opt, memo, turn: 0, af: false, zone: opt.zone || null, live: new Map(), log: [], dmg: [] };
   }
   // 효과 걸기 — 같은 칸은 덮어쓰기(누적형은 겹 +1), 지속 갱신
+  // 파티 구성 조건(위키 need: 전방에 특성 n명 이상) — 실제 전방 멤버로 판정(others:false 면 본인 포함)
+  function needOk(sim, ci, need) {
+    if (!need) return true;
+    const ts = need.traits || [];
+    const cnt = sim.party.filter((m, i) => (need.others ? i !== ci : true) && ((m.c && m.c.traits) || []).some(t => ts.includes(t))).length;
+    return cnt >= (need.n || 1);
+  }
   function apply(sim, ci, u, skName) {
     if (u.cond && !sim.opt.cond) return;
+    if (!needOk(sim, ci, u.need)) return;
     if (u.k === "zone") { const z = (sim.opt.zones || []).find(x => x.name === ZONE_KO[u.name]); if (z) sim.zone = z; return; }
     if (!ENGINE.has(u.k)) return;
     const key = slotKey(ci, u), old = sim.live.get(key);
@@ -52,9 +60,22 @@
     }
     return extra ? out.concat(extra) : out;
   }
-  // 공격 1회 — 그 순간 효과로 근사 기대 대미지(perUse)
+  // 공격 1회 — 그 순간 효과로 근사 기대 대미지(perUse). conf.memo(Map)가 있으면 같은 상태(공격자 · 스킬 · 살아 있는 효과 · 존 · 턴)는 다시 안 센다
+  //   — 계획기 · 빌드 탐색은 같은 상태를 수없이 지난다. 장비가 바뀌면 memo 를 새로(키에 장비는 없다)
   function attack(sim, ci, sk, part) {
-    const m0 = sim.party[ci], atk = toAttack(part, sk);
+    const memo = sim.memo;
+    let key;
+    if (memo) {
+      const live = [...sim.live.entries()].map(([k, e]) => `${k}#${e.stacks}#${e.u.value}`).sort().join(";");
+      key = `${ci}|${sk.name}|${sk.attacks.indexOf(part)}|${(sim.zone || {}).name || ""}|${sim.turn}|${sim.af ? 1 : 0}|${live}`;
+      if (memo.has(key)) return memo.get(key);
+    }
+    const v = attackRaw(sim, ci, sk, part);
+    if (memo) memo.set(key, v);
+    return v;
+  }
+  function attackRaw(sim, ci, sk, part) {
+    const atk = toAttack(part, sk);
     const members = sim.party.map((m, i) => ({ ...m, fx: fxOf(sim, i, i === ci && atk._sure ? [{ k: "buff", name: "크리티컬 발생 확정", _skill: sk.name, _atkItem: true }] : null), _contrib: null }));
     const m = { ...members[ci], attack: atk };
     members[ci] = m;
@@ -77,8 +98,9 @@
     const m = sim.party[ci], sk = (m.actions.skills || []).find(s => s.name === name);
     if (!sk) return 0;
     let d = 0;
-    for (const a of sk.attacks || []) d += attack(sim, ci, sk, a);
-    if ((sk.attacks || []).length) consume(sim, ci, sk.attacks[0]);
+    const parts = (sk.attacks || []).filter(a => !a.cond || sim.opt.cond);   // 조건부 공격(「스텔라 버스트 시」 · 전술 레벨 50 …)은 조건부 효과 포함일 때만
+    for (const a of parts) d += attack(sim, ci, sk, a);
+    if (parts.length) consume(sim, ci, parts[0]);
     for (const u of sk.fx || []) if (!u.timing || u.timing === "use") apply(sim, ci, u, sk.name);
     sim.log.push({ turn: sim.turn, af: sim.af, who: m.c.nameKo, skill: name, dmg: Math.round(d) });
     if (scored) sim.dmg[sim.turn] = (sim.dmg[sim.turn] || 0) + d;
@@ -97,9 +119,9 @@
   const order = sim => sim.party.map((m, i) => i).sort((a, b) => ((sim.party[b].stats || {}).spd || 0) - ((sim.party[a].stats || {}).spd || 0) || a - b);
 
   // 시나리오 실행 → { perTurn: {턴: 대미지}, score, log }
-  //   plan.af = 멤버마다 6개(없으면 AF 없음) · plan.turns = 턴마다 멤버별 스킬 · conf.scoreTurns = 점수에 넣는 턴(기본: AF 면 2~4, 아니면 계획의 모든 턴)
+  //   plan.af = 멤버마다 6개(없으면 AF 없음) · plan.turns = 턴마다 멤버별 스킬 · conf.scoreTurns = 점수에 넣는 턴(기본: AF 면 2~4, 아니면 계획의 모든 턴) · conf.memo = 대미지 메모(Map)
   function run(party, plan, opt, conf = {}) {
-    const sim = newSim(party, opt);
+    const sim = newSim(party, opt, conf.memo || null);
     battleStart(sim);
     sim.turn = 1;
     let t0 = 1;

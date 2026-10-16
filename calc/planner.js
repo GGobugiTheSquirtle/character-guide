@@ -37,6 +37,7 @@
     for (let i = 0; i < conf.restarts; i++)
       starts.push({ af: base.af && party.map(m => Array.from({ length: conf.afCasts }, () => pickR(m))), turns: base.turns.map(row => row.map((x, ci) => pickR(party[ci]))) });
     let top = null, evals = 0;
+    conf = { ...conf, memo: conf.memo || new Map() };                     // 재시작끼리도 메모 공유(장비 · 파티가 같다)
     for (const st of starts) {
       const r = descend(party, opt, conf, st);
       evals += r.evals;
@@ -47,7 +48,8 @@
   function descend(party, opt, conf, start) {
     const scoreTurns = conf.scoreTurns || (conf.af ? Array.from({ length: conf.turns }, (_, i) => i + 2) : Array.from({ length: conf.turns }, (_, i) => i + 1));
     let p = start, evals = 0;
-    const score = q => { evals++; return S.run(party, q, opt, { scoreTurns }).score; };
+    const memo = conf.memo || new Map();                                  // 같은 상태의 대미지는 한 번만(scenario attack 메모)
+    const score = q => { evals++; return S.run(party, q, opt, { scoreTurns, memo }).score; };
     let best = score(p);
     const cells = [];
     if (p.af) party.forEach((m, ci) => { for (let k = 0; k < conf.afCasts; k++) cells.push(["af", ci, k]); });

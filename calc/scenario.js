@@ -37,7 +37,8 @@
     if (u.k === "zone") { const z = (sim.opt.zones || []).find(x => x.name === ZONE_KO[u.name]); if (z) sim.zone = z; return; }
     if (!ENGINE.has(u.k)) return;
     const key = slotKey(ci, u), old = sim.live.get(key);
-    const stacks = u.maxStack > 1 ? Math.min(u.maxStack, (old && old.stacks || 0) + 1) : 1;
+    // 겹은 같은 스킬을 다시 걸 때만 오른다 — 다른 스킬이 같은 칸을 덮어쓰면 1부터(전에는 앞 스킬 겹을 이어받아 첫 시전이 2겹이 됐다)
+    const stacks = u.maxStack > 1 ? Math.min(u.maxStack, (old && old.skill === skName ? old.stacks : 0) + 1) : 1;
     const until = u.turns == null ? (u.times ? Infinity : Infinity) : sim.turn + u.turns;    // 만료 = 그 턴 끝
     sim.live.set(key, { ci, u, skill: skName, stacks, until, times: u.times || null });
   }

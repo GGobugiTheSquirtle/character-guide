@@ -156,7 +156,8 @@
     const st = (u.k === "ailment" || u.k === "stack") && !/아군|자신/.test(u.tc || "") ? statusOf(u) : null;
     if (st && ["break", "ebreak", "wbreak"].includes(st.id)) {
       const which = st.id === "ebreak" ? [st.which] : st.id === "wbreak" ? st.which : ["*"];
-      e.breaks.push(...which.map(w => (st.id === "ebreak" ? "e:" : st.id === "wbreak" ? "a:" : "") + w));
+      const n = st.id === "break" ? 1 : Math.max(1, Math.floor(u.value || 1));     // 엘리멘탈 · 웨폰 브레이크 「N 축적」 = N 타
+      for (let i = 0; i < n; i++) e.breaks.push(...which.map(w => (st.id === "ebreak" ? "e:" : st.id === "wbreak" ? "a:" : "") + w));
       e.src.push(`${s.c.nameKo}: 적 ${u.name}`);
       return;
     }
@@ -333,13 +334,79 @@
     return out;
   }
 
+  // 버디(BUDDY, 2026-10-17) — opt.buddy = { b: data/calc/buddies.json 한 항목, up: 「스테이터스에 따른 스킬 효과 상승」 %(버디 상세 화면 값), stacks: 누적 수 }
+  //   원천: 딩님 「어나더 에덴 스킬 랭킹」 DB_스킬 · DB_효과(_tools/character/build_buddies.py)
+  //   오토 스킬(매 턴 끝 발동) — 아군 버프 · 적 디버프 · 브레이크. 누적 = stacks ?? (조건부면 최고 누적, 아니면 max(1, 경과 턴 − 1))
+  //   효과량 = 최소 × (1 + up/100), 최대(최소의 1~3배)를 넘지 않음. up 이 없으면 기본 0 · 조건부 200(최대)
+  //   오라 — 발동 조건을 공격자마다 판정(환경 계통 · ZONE · 공격 종류 · 속성 · 약점 · MP · 속도). 판정 못 하는 조건(HP · AF 게이지 · 독기 계통 …)은 조건부에서만.
+  //     「가하는 대미지 UP」 오라 = 가창 · 기도와 같은 칸(딩님 대문 분류) → 환경 보정처럼 각자 곱(정밀 cheer). 「크리티컬로 …」는 크리 타격에만
+  //   차지 스킬 · [추가 효과](버디 장비 · 동료 조건, u.cond)는 조건부에서만. 버디 자신의 공격 대미지는 넣지 않는다
+  //   측정: 큐모스 오버 커밍 브레이크 = 그 뒤 첫 1타만 ×2(10-16 블루스택). 누적이 효과량을 더하는지 · 상승 % 적용 방식은 미측정
+  function buddyOn(cond, atk, aff, m, members, opt) {
+    if (!cond) return true;
+    const magic = atk.dep === "magic" || atk.dep === "magicpwr";
+    const zn = (opt.zone && opt.zone.name) || "";
+    switch (cond.t) {
+      case "env": return !!opt.env && opt.env.type === cond.on;
+      case "zone": return zn.includes(cond.on);
+      case "weak": return aff === "weak";
+      case "atk": return cond.on.includes(atk.atk) || (magic && cond.on.includes("마법"));
+      case "elem": return atk.element === cond.on;
+      case "mp": return ((m.stats && m.stats.mp) || 0) >= cond.on;
+      case "spd": return (members || [m]).some(x => ((x.stats && x.stats.spd) || 0) >= cond.on);
+      default: return !!opt.cond;
+    }
+  }
+  function buddyGroups(bd, atk, aff, m, members, opt) {
+    const ag = newAG(), eg = newEG(), cheer = [], critCheer = [];
+    const up = bd.up != null && bd.up !== "" ? +bd.up : (opt.cond ? 200 : 0);
+    const who = { c: { nameKo: `${bd.b.name}(버디)` } };
+    for (const sk of bd.b.skills) {
+      if (sk.kind === "charge" && !opt.cond) continue;
+      if (sk.kind === "aura" && !buddyOn(sk.cond, atk, aff, m, members, opt)) continue;
+      for (const u0 of sk.fx) {
+        if (u0.cond && !opt.cond) continue;
+        let v = u0.value;
+        if (typeof v === "number" && u0.k !== "stack") {
+          v = Math.min(u0.max ?? v, v * (1 + up / 100));
+          if (sk.kind === "auto" && (u0.maxStack || 1) > 1)
+            v *= bd.stacks != null && bd.stacks !== "" ? Math.min(+bd.stacks, u0.maxStack) : opt.cond ? u0.maxStack : Math.min(u0.maxStack, Math.max(1, (opt.turns || 2) - 1));
+          v = +v.toFixed(2);
+        }
+        const u = { ...u0, value: v, tc: u0.tc === "특정 아군" && sk.kind === "aura" ? "아군 전체" : u0.tc };   // 오라 「조건을 달성한 대상」 = 지금 판정한 공격자
+        if (u.k === "cheer") {
+          const w = u.when || {};
+          if (w.af && !opt.af) continue;
+          if (w.atk && !(atk.atk === w.atk || (w.atk === "마법" && (atk.dep === "magic" || atk.dep === "magicpwr")))) continue;
+          if (w.elemental && !atk.element) continue;
+          (w.crit ? critCheer : cheer).push(v / 100);
+          ag.src.push(`${who.c.nameKo}: ${sk.name} 가하는 대미지 +${v}%${w.crit ? "(크리)" : ""}`);
+          continue;
+        }
+        if (allyScope(u) === "all") addAlly(ag, u, who);
+        addEnemy(eg, u, who);
+      }
+    }
+    return { ag, eg, cheer, critCheer };
+  }
+
   // 멤버 한 명의 선택 공격 1타 — {normal, crit, p, expected, why}. pre = prepare(members, opt) 를 넘기면 파티 공통분을 다시 만들지 않는다
   function memberDamage(m, members, opt, pre) {
     const atk = m.attack;
     if (!atk || !(atk.mult || atk.multMax)) return null;              // 기본 0%(「0%-27500%」 스택 전용)는 조건부에서만 대미지
     pre = pre || prepare(members, opt);
-    const ag = ownGroups(pre, m, opt), eg = pre.eg;
+    let ag = ownGroups(pre, m, opt), eg = pre.eg;
     const aff = affinityOf(opt.enemy, atk);
+    let bud = null;
+    if (opt.buddy && opt.buddy.b) {               // 버디 — 오라 조건이 공격자마다 달라 멤버 · 공격 · 상성 단위로 합친다(pre 에 메모)
+      const key = `${m.c.id}|${atk.skill}|${aff}`;
+      pre.bud = pre.bud || new Map();
+      if (!pre.bud.has(key)) {
+        const b = buddyGroups(opt.buddy, atk, aff, m, members, opt);
+        pre.bud.set(key, { ...b, ag: mergeInto(mergeInto(newAG(), ag), b.ag), eg: mergeInto(mergeInto(newEG(), eg), b.eg) });
+      }
+      bud = pre.bud.get(key); ag = bud.ag; eg = bud.eg;
+    }
     const eq = equipFor([m.weapon, m.armor, ...(m.grasta || []), ...(m.badges || []), ...sharedItems(m, members, opt)], atk, { ...opt, _weak: aff === "weak", _who: m.c });
     const ev = envFor(opt.env, atk, opt);
     const st = { ...m.stats };
@@ -349,6 +416,7 @@
     const typeNet = net(ag, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(ag.type["*"] || []), ...(ag.type[typeKey] || [])] : (ag.type["*"] || []) }));
     const wt = (m.weapon && m.weapon.type) || (m.cc && m.cc.weapon) || "";
     const dmgNet = net(ag, "dmg" + wt, () => C.groupNet({ buffs: [...ag.dmg.buffs, ...(ag.wdmg[wt] || [])] }));
+    if (bud) ev.groups.push(...bud.cheer);         // 버디 오라 「가하는 대미지 UP」 = 가창 · 기도 칸(정밀 cheer 로도 간다)
     const groups = [typeNet, dmgNet, ...eq.groups, ...ev.groups];
     const focus = magic ? ag.focusMag : ag.focusPhys;
     // 정신 통일 · 심기일체 · 호시탐탐 · 하극상(스킬) — 한 감쇠 그룹(각 상한: 정신 통일 250% · 하극상 100%, 합 350%). 딩님 계산기 행 30~32 (2026-10-13)
@@ -359,16 +427,19 @@
     if ((opt.enemyFirst ?? !!opt.cond) && ag.hawk.length) fv.push(...ag.hawk);
     const focusV = fv.length ? C.focusGroup(fv) : 0;
     if (fv.length) groups.push(focusV);
-    const sx = { shingan: lun && ag.mindseye ? 0.5 : 0, kesshi: lun && ag.risktaker ? 0.7 : 0,
-      brk: brk && eg.breaks.some(b => b === "*" || b === "e:" + atk.element || b === "a:" + atk.atk) ? 1 : 0 };
-    for (const x of [sx.shingan, sx.kesshi, sx.brk]) if (x) groups.push(x);
+    // 브레이크 = 그 뒤 첫 1타만 ×2(10-16 블루스택 세스타 2타 7,967,814 / 3,974,134). 엘리멘탈 · 웨폰은 축적 수만큼, 겹치면 큰 쪽 하나 —
+    //   normal · crit · expected 는 첫 타(브레이크 포함), perUse = 첫 타들 + 나머지 타(브레이크 없음). 전에는 모든 타에 ×2 라 다단 히트를 과대평가했다
+    const bMatch = b => b === "e:" + atk.element || b === "a:" + atk.atk;
+    const nBrk = brk ? Math.max(eg.breaks.includes("*") ? 1 : 0, eg.breaks.filter(bMatch).length) : 0;
+    const sx = { shingan: lun && ag.mindseye ? 0.5 : 0, kesshi: lun && ag.risktaker ? 0.7 : 0, brk: nBrk ? 1 : 0 };
+    for (const x of [sx.shingan, sx.kesshi]) if (x) groups.push(x);
     const en = opt.enemy || { end: 0, spr: 0 };
     // skillMult — 범위 배율(150~18000%)의 위값(multMax)은 조건부라 opt.cond 일 때만(모든 조건 최대).
     // 아니면 아래값 × 켜진 조건 배수(atk.conds, 2026-10-15 S7) — 위값을 넘지 않는다. 크리 조건은 크리 타격에만
     const cx = condMult(atk, aff, opt, brk);
     const cap = atk.multMax || Infinity;
     const baseMult = (opt.cond && atk.multMax) || Math.min(cap, (atk.mult || 0) * cx.all);
-    const critX = Math.min(cx.crit, cap / Math.max(baseMult, 1e-9));
+    const critX = Math.min(cx.crit, cap / Math.max(baseMult, 1e-9)) * (bud ? bud.critCheer.reduce((a, v) => a * (1 + v), 1) : 1);
     const o = {
       dep: atk.dep, elemental: !!atk.element, stat: st, weapon: { atk: (m.weapon || {}).atk || 0, matk: (m.weapon || {}).matk || 0 },
       buff: { pwr: net(ag, "pwr", () => C.groupNet(ag.pwr)), int: net(ag, "int", () => C.groupNet(ag.int)), spd: net(ag, "spd", () => C.groupNet(ag.spd)) },
@@ -386,12 +457,14 @@
     const oc = (magic ? ag.movercrit : ag.overcrit) ? Math.max(0, Math.min(1, (rate - 1) / 10)) : 0;
     // 25억 경감(opt.cap === false 면 끔) — 1타마다. 최적화 목표가 캡을 모르면 1타가 큰 조합을 과대평가한다(2026-10-15, 추천 상위가 1타 수십억)
     const capF = opt.cap === false ? v => v : C.softCap;
-    const normal = capF(C.damage({ ...o, crit: false }).total);
-    const crit = capF(C.damage({ ...o, crit: true, critDmg }).total * (1 + oc) * critX);
+    const hitOf = ob => [capF(C.damage({ ...ob, crit: false }).total), capF(C.damage({ ...ob, crit: true, critDmg }).total * (1 + oc) * critX)];
+    const [n0, c0] = hitOf(o), [normal, crit] = sx.brk ? hitOf({ ...o, groups: [...groups, 1] }) : [n0, c0];
     const p = (ag.sureCrit || sx.kesshi) ? 1 : Math.max(0, Math.min(1, rate));
-    // perUse = 1회 사용 기대 대미지(1타 × 타수) — 스킬 · 장비 · 파티 비교는 이걸로(1타끼리 비교하면 다단 히트가 저평가된다, 2026-10-15)
-    const hits = Math.max(1, atk.hits || 1), exp1 = p * crit + (1 - p) * normal;
-    const res = { normal, crit, p, expected: exp1, hits, perUse: exp1 * hits, o, conds: cx.on, get why() { return [...ag.src, ...eg.src, ...eq.src, ...ev.src, ...cx.on.map(c => `조건: ${c.label} ×${c.x}`)]; } };
+    // perUse = 1회 사용 기대 대미지(타수만큼) — 스킬 · 장비 · 파티 비교는 이걸로(1타끼리 비교하면 다단 히트가 저평가된다, 2026-10-15)
+    const hits = Math.max(1, atk.hits || 1), exp1 = p * crit + (1 - p) * normal, rest = p * c0 + (1 - p) * n0;
+    const kb = Math.min(hits, nBrk);
+    const res = { normal, crit, p, expected: exp1, rest, hits, perUse: exp1 * kb + rest * (hits - kb), o, conds: cx.on,
+      get why() { return [...ag.src, ...eg.src, ...eq.src, ...ev.src, ...cx.on.map(c => `조건: ${c.label} ×${c.x}`), ...(kb ? [`브레이크: 첫 ${kb}타 ×2`] : [])]; } };
     // 정밀값(ae_pipeline — 딩님 계산기와 정수 일치 엔진): 난수 전 구간 평균. 근사보다 0~0.4% 낮다(단계마다 버림)
     Object.defineProperty(res, "precise", { enumerable: false, get() {
       const P = root.AEPipe || (typeof require === "function" ? require("./ae_pipeline.js") : null);
@@ -424,7 +497,7 @@
     return best;
   }
 
-  const api = { allyGroups, enemyGroups, prepare, equipFor, envFor, statusOf, affinityOf, zoneMult, memberDamage, bestWeapon, posReq, contrib };
+  const api = { allyGroups, enemyGroups, prepare, equipFor, envFor, statusOf, affinityOf, zoneMult, memberDamage, bestWeapon, posReq, contrib, buddyGroups };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEParty = api;
 })(typeof window !== "undefined" ? window : globalThis);

@@ -1341,12 +1341,13 @@ STATE.calc.m = STATE.calc.m || {};
 function saveCalc() { try { localStorage.setItem('cg-calc', JSON.stringify(STATE.calc)); } catch {} }
 async function loadCalcDb() {
   if (!STATE.calcDb) {
-    const names = ["chars", "weapons", "armor", "grasta", "badges", "zones", "enemies", "fx", "envs", "statuses", "ores"];
+    const names = ["chars", "weapons", "armor", "grasta", "badges", "zones", "enemies", "fx", "envs", "statuses", "ores", "buddies"];
     const parts = await Promise.all(names.map(n => fetch(`data/calc/${n}.json`).then(r => r.json())));
     STATE.calcDb = Object.fromEntries(names.map((n, i) => [n, parts[i]]));
     // 배지 — 계산에 닿는 것만(고정 스탯 · 대미지 · 크리). 무작위 배지 최대치가 위로
     STATE.calcDb.badges = STATE.calcDb.badges.filter(b => Object.keys(b.stats || {}).length || (b.calc || []).length)
       .sort((a, b) => (b.kind === "random") - (a.kind === "random"));
+    STATE.calcDb.buddyMeta = STATE.calcDb.buddies.meta; STATE.calcDb.buddies = STATE.calcDb.buddies.buddies;   // 버디 26(딩님 스킬 랭킹, 2026-10-17)
   }
   return STATE.calcDb;
 }
@@ -1394,10 +1395,13 @@ function calcOpt(db) {
     // 세부 조건(2026-10-13) — 환경(envs.json) · 경과 턴(성장) · 적 수 · AF 중 · ZONE 각성 · 누계 승리 최대 · HP 50%↓ · 봉인 · 천 아군 수
     env: (db.envs || []).find(e => e.name === S.env) || null, turns: +S.turns || 0, enemyCount: +S.enemyCount || 1, af: !!S.af,
     zoneAwake: !!S.zoneAwake, wins: !!S.wins, lowHp: !!S.lowHp, sealed: !!S.sealed, lightAllies: +S.lightAllies || 0,
-    selfStatus: [S.selfPain && "pain", S.selfPoison && "poison"].filter(Boolean) };
+    selfStatus: [S.selfPain && "pain", S.selfPoison && "poison"].filter(Boolean),
+    // 버디(2026-10-17) — 오토 스킬 · 오라 · (조건부) 차지 스킬. up = 버디 상세 「스테이터스에 따른 스킬 효과 상승」 %, stacks 비우면 경과 턴 − 1
+    buddy: S.buddy ? { b: (db.buddies || []).find(b => b.id === S.buddy), up: S.buddyUp, stacks: S.buddyStacks } : null,
+    breakOn: S.breakOn ? true : undefined };
 }
 // 세부 조건 개수(접힌 줄에 보이는 요약) — calcOpt 와 같은 키
-const DETAIL_KEYS = ["env", "turns", "enemyCount", "af", "zoneAwake", "wins", "lowHp", "sealed", "selfPain", "selfPoison", "lightAllies"];
+const DETAIL_KEYS = ["env", "turns", "enemyCount", "af", "zoneAwake", "wins", "lowHp", "sealed", "selfPain", "selfPoison", "lightAllies", "breakOn"];
 const ENV_TYPE_KO = { atmos: "대기", ground: "지면", weather: "날씨", special: "특수" };
 const gearStats = (m, opt) => AEParty.equipFor([m.weapon, m.armor, ...m.grasta, ...m.badges], m.attack || {}, opt || {}).stats;
 function saveGear(id, gear, attack) {
@@ -1459,6 +1463,7 @@ function buildCondBar(db, rerender, o = {}) {
   }
   bar.append(tog("cond", "조건부 효과 포함", "「Another Zone 중」「3명 이상일 때」 같은 조건을 다 만족했다고 본다 + 범위 배율(150~18000%)은 위값 + MP 0 특수기(일반 공격 대체 · 스택 발동)도 후보"),
     tog("maxHp", "HP 최대", "장비 「HP 최대 시 대미지+」 적용"), tog("pain", "적 페인 · 독", "페인/독 그라스타 ×1.3 적용"));
+  bar.append(buddyConds(db, rerender));
   bar.append(detailConds(db, rerender, tog));
   if (o.gear) {
     const gsel = el("select", { class: "fx-input", attrs: { title: "4번 칸은 그 캐릭터의 천명 합계 200 이상에서 열린다" } });
@@ -1496,10 +1501,37 @@ function detailConds(db, rerender, tog) {
     tog("af", "AF 중", "어나더 포스 중 — 겨누어 쏘기(AF 이외 시 대미지+)가 꺼진다"), tog("zoneAwake", "ZONE 각성", "장비 「ZONE 각성 중 대미지+」"),
     tog("wins", "누계 승리 최대", "장비 「누계 승리 횟수에 따라 대미지 UP」 최대치(위키: 6000승)"), tog("lowHp", "HP 50% 이하", "장비 「HP 50% 이하 시 대미지+」"),
     tog("sealed", "자신 봉인", "장비 「봉인 인핸스」"), tog("selfPain", "자신 페인", "장비 「페인 인핸스」(자신이 페인일 때 대미지+)"),
-    tog("selfPoison", "자신 독", "장비 「독 인핸스」(자신이 독일 때 대미지+)"));
+    tog("selfPoison", "자신 독", "장비 「독 인핸스」(자신이 독일 때 대미지+)"),
+    tog("breakOn", "적 브레이크", "적에게 브레이크 · 엘리멘탈/웨폰 브레이크가 걸려 있다고 본다 — 그 뒤 첫 1타만 ×2(축적 수만큼). 버디 큐모스 오버 커밍 등이 매 턴 끝에 건다"));
   box.appendChild(row);
   const env = (db.envs || []).find(e => e.name === S.env);
   if (env) box.appendChild(el("div", { class: "skko-src", text: `${env.name}: ${env.effect}` }));
+  return box;
+}
+// 버디 선택(2026-10-17) — 오토 스킬(매 턴 끝) 버프 · 디버프 · 브레이크, 오라(조건 맞을 때), 차지 스킬은 조건부에서만
+function buddyConds(db, rerender) {
+  const S = STATE.calc, list = db.buddies || [];
+  const box = el("div", { class: "filter-group", style: "gap:8px;align-items:center;flex-basis:100%" });
+  const sel = el("select", { class: "fx-input", attrs: { title: "버디 — 오토 스킬은 매 턴 끝 발동(누적형은 턴마다 한 겹), 오라는 조건이 맞을 때" } });
+  sel.appendChild(el("option", { text: "버디 없음", attrs: { value: "" } }));
+  for (const b of list) sel.appendChild(el("option", { text: b.name, attrs: { value: b.id } }));
+  sel.value = S.buddy || "";
+  sel.addEventListener('change', () => { S.buddy = sel.value; saveCalc(); rerender(); });
+  box.append(sel);
+  const b = list.find(x => x.id === S.buddy);
+  if (b) {
+    const num = (key, label, tip, max, ph) => {
+      const lab = el("label", { class: "pt", attrs: { title: tip } });
+      const inp = el("input", { class: "fx-input", attrs: { type: "number", min: "0", max: String(max), placeholder: ph, value: S[key] ?? "" }, style: "width:64px" });
+      inp.addEventListener('change', () => { S[key] = inp.value === "" ? "" : Math.max(0, Math.min(max, +inp.value)); saveCalc(); rerender(); });
+      lab.append(document.createTextNode(label + " "), inp);
+      return lab;
+    };
+    box.append(num("buddyUp", "효과 상승 %", "버디 상세 화면 「스테이터스에 따른 스킬 효과 상승」 값(예: 큐모스 방해 441 → 104). 비우면 최소값 · 조건부 효과 포함이면 최대(200)", 200, "0"),
+      num("buddyStacks", "누적", "누적형 오토 스킬 효과의 겹 수(최고 누적까지). 비우면 경과 턴 − 1 · 조건부 효과 포함이면 최고", 5, "턴−1"));
+    const sum = b.skills.map(sk => `${{ auto: "오토", charge: "차지", aura: "오라" }[sk.kind]} 「${sk.name}」` + (sk.kind === "aura" && sk.cond ? `(${sk.desc.split(/\r?\n/)[0]})` : "")).join(" · ");
+    box.append(el("div", { class: "skko-src", style: "flex-basis:100%", text: `${b.name}: ${sum} — ${(db.buddyMeta || {}).source || "출처: 카페 딩님 「어나더 에덴 스킬 랭킹」"}` }));
+  }
   return box;
 }
 function enemyLine(enemy) {
@@ -1794,7 +1826,7 @@ async function renderPartyTab(box, db) {
   box.append(el("div", { children: [run, prog] }));
   const out = el("div", { style: "margin-top:12px" });
   box.appendChild(out);
-  const key = JSON.stringify([ros.length, ros.slice(0, 3), O.objective, O.zoneMode, O.gearMode, S.gslots, S.ownedOnly, S.zone, S.enemy, S.cond, S.maxHp, S.pain, DETAIL_KEYS.map(k => S[k]), fixed]);
+  const key = JSON.stringify([ros.length, ros.slice(0, 3), O.objective, O.zoneMode, O.gearMode, S.gslots, S.ownedOnly, S.zone, S.enemy, S.cond, S.maxHp, S.pain, DETAIL_KEYS.map(k => S[k]), S.buddy, S.buddyUp, S.buddyStacks, fixed]);
   if (STATE.ovRes && STATE.ovRes.key === key) showPartyResult(out, db, STATE.ovRes);
   run.addEventListener('click', async () => {
     run.disabled = true; clear(out);

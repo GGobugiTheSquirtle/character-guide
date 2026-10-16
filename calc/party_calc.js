@@ -336,12 +336,14 @@
 
   // 버디(BUDDY, 2026-10-17) — opt.buddy = { b: data/calc/buddies.json 한 항목, up: 「스테이터스에 따른 스킬 효과 상승」 %(버디 상세 화면 값), stacks: 누적 수 }
   //   원천: 딩님 「어나더 에덴 스킬 랭킹」 DB_스킬 · DB_효과(_tools/character/build_buddies.py)
-  //   오토 스킬(매 턴 끝 발동) — 아군 버프 · 적 디버프 · 브레이크. 누적 = stacks ?? (조건부면 최고 누적, 아니면 max(1, 경과 턴 − 1))
+  //   오토 스킬(매 턴 끝 발동) — 아군 버프 · 적 디버프 · 브레이크. 누적 수 n = stacks ?? (조건부면 최고 누적, 아니면 max(1, 경과 턴 − 1))
   //   효과량 = 최소 × (1 + up/100), 최대(최소의 1~3배)를 넘지 않음. up 이 없으면 기본 0 · 조건부 200(최대)
+  //   n 겹 = 누적형 스킬 버프 규칙 A + A/2 × (n − 1)(위키 Types of stacking · AECalc.halfStack). 효과는 같은 이름 스킬 효과와 같은 감쇠 그룹에 넣는다
+  //   ⚠ 버디는 % 적용 방식이 같은 이름의 일반 스킬과 다를 수 있다(10-17 사용자) — 상승 % · 누적 · 그룹은 가정, 측정 계획 docs/ae-damage-formula.md §5.2
   //   오라 — 발동 조건을 공격자마다 판정(환경 계통 · ZONE · 공격 종류 · 속성 · 약점 · MP · 속도). 판정 못 하는 조건(HP · AF 게이지 · 독기 계통 …)은 조건부에서만.
-  //     「가하는 대미지 UP」 오라 = 가창 · 기도와 같은 칸(딩님 대문 분류) → 환경 보정처럼 각자 곱(정밀 cheer). 「크리티컬로 …」는 크리 타격에만
+  //     「가하는 대미지 UP」 오라 = 딩님 계산기 v4.016 「오라」 칸(58행 — 가창 · 기도 · 환경 다음, 감쇠 합산 ±100%, 정밀 f.aura). 「크리티컬로 …」는 크리 타격에만(독립 곱 — 가정)
   //   차지 스킬 · [추가 효과](버디 장비 · 동료 조건, u.cond)는 조건부에서만. 버디 자신의 공격 대미지는 넣지 않는다
-  //   측정: 큐모스 오버 커밍 브레이크 = 그 뒤 첫 1타만 ×2(10-16 블루스택). 누적이 효과량을 더하는지 · 상승 % 적용 방식은 미측정
+  //   측정: 큐모스 오버 커밍 브레이크 = 그 뒤 첫 1타만 ×2(10-16 블루스택, 타당 1개 소모 — 10-17 사용자 확인)
   function buddyOn(cond, atk, aff, m, members, opt) {
     if (!cond) return true;
     const magic = atk.dep === "magic" || atk.dep === "magicpwr";
@@ -358,7 +360,7 @@
     }
   }
   function buddyGroups(bd, atk, aff, m, members, opt) {
-    const ag = newAG(), eg = newEG(), cheer = [], critCheer = [];
+    const ag = newAG(), eg = newEG(), aura = [], critAura = [];
     const up = bd.up != null && bd.up !== "" ? +bd.up : (opt.cond ? 200 : 0);
     const who = { c: { nameKo: `${bd.b.name}(버디)` } };
     for (const sk of bd.b.skills) {
@@ -370,16 +372,16 @@
         if (typeof v === "number" && u0.k !== "stack") {
           v = Math.min(u0.max ?? v, v * (1 + up / 100));
           if (sk.kind === "auto" && (u0.maxStack || 1) > 1)
-            v *= bd.stacks != null && bd.stacks !== "" ? Math.min(+bd.stacks, u0.maxStack) : opt.cond ? u0.maxStack : Math.min(u0.maxStack, Math.max(1, (opt.turns || 2) - 1));
+            v = C.halfStack(v, bd.stacks != null && bd.stacks !== "" ? Math.max(1, Math.min(+bd.stacks, u0.maxStack)) : opt.cond ? u0.maxStack : Math.min(u0.maxStack, Math.max(1, (opt.turns || 2) - 1)));
           v = +v.toFixed(2);
         }
         const u = { ...u0, value: v, tc: u0.tc === "특정 아군" && sk.kind === "aura" ? "아군 전체" : u0.tc };   // 오라 「조건을 달성한 대상」 = 지금 판정한 공격자
-        if (u.k === "cheer") {
+        if (u.k === "auradmg") {
           const w = u.when || {};
           if (w.af && !opt.af) continue;
           if (w.atk && !(atk.atk === w.atk || (w.atk === "마법" && (atk.dep === "magic" || atk.dep === "magicpwr")))) continue;
           if (w.elemental && !atk.element) continue;
-          (w.crit ? critCheer : cheer).push(v / 100);
+          (w.crit ? critAura : aura).push(v / 100);
           ag.src.push(`${who.c.nameKo}: ${sk.name} 가하는 대미지 +${v}%${w.crit ? "(크리)" : ""}`);
           continue;
         }
@@ -387,7 +389,7 @@
         addEnemy(eg, u, who);
       }
     }
-    return { ag, eg, cheer, critCheer };
+    return { ag, eg, aura, critAura };
   }
 
   // 멤버 한 명의 선택 공격 1타 — {normal, crit, p, expected, why}. pre = prepare(members, opt) 를 넘기면 파티 공통분을 다시 만들지 않는다
@@ -416,8 +418,9 @@
     const typeNet = net(ag, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(ag.type["*"] || []), ...(ag.type[typeKey] || [])] : (ag.type["*"] || []) }));
     const wt = (m.weapon && m.weapon.type) || (m.cc && m.cc.weapon) || "";
     const dmgNet = net(ag, "dmg" + wt, () => C.groupNet({ buffs: [...ag.dmg.buffs, ...(ag.wdmg[wt] || [])] }));
-    if (bud) ev.groups.push(...bud.cheer);         // 버디 오라 「가하는 대미지 UP」 = 가창 · 기도 칸(정밀 cheer 로도 간다)
     const groups = [typeNet, dmgNet, ...eq.groups, ...ev.groups];
+    const auraNet = bud && bud.aura.length ? C.groupNet({ buffs: bud.aura }) : 0;   // 버디 오라 「가하는 대미지 UP」 = 오라 칸(감쇠 합산 ±100%)
+    if (auraNet) groups.push(auraNet);
     const focus = magic ? ag.focusMag : ag.focusPhys;
     // 정신 통일 · 심기일체 · 호시탐탐 · 하극상(스킬) — 한 감쇠 그룹(각 상한: 정신 통일 250% · 하극상 100%, 합 350%). 딩님 계산기 행 30~32 (2026-10-13)
     const fv = [...(focus.length ? [C.mentalFocus(st.mp || 0, focus)] : []), ...ev.focus,
@@ -439,7 +442,7 @@
     const cx = condMult(atk, aff, opt, brk);
     const cap = atk.multMax || Infinity;
     const baseMult = (opt.cond && atk.multMax) || Math.min(cap, (atk.mult || 0) * cx.all);
-    const critX = Math.min(cx.crit, cap / Math.max(baseMult, 1e-9)) * (bud ? bud.critCheer.reduce((a, v) => a * (1 + v), 1) : 1);
+    const critX = Math.min(cx.crit, cap / Math.max(baseMult, 1e-9)) * (bud ? bud.critAura.reduce((a, v) => a * (1 + v), 1) : 1);
     const o = {
       dep: atk.dep, elemental: !!atk.element, stat: st, weapon: { atk: (m.weapon || {}).atk || 0, matk: (m.weapon || {}).matk || 0 },
       buff: { pwr: net(ag, "pwr", () => C.groupNet(ag.pwr)), int: net(ag, "int", () => C.groupNet(ag.int)), spd: net(ag, "spd", () => C.groupNet(ag.spd)) },
@@ -484,7 +487,7 @@
           enhance: sl.enhance, fallen: sl.fallen, condE: sl.condE, kesshi: sx.kesshi * 100 || undefined, shingan: sx.shingan * 100 || undefined,
           condNB: o.skillFx.map(x => x * 100), critDmg: pct(critDmg), overCrit: oc * 100 || undefined, aim: sum(sl.aim) || undefined,
           zoneAwake: sl.zoneAwake, lsAlly: sl.lsAlly, overthrowE: sl.overthrowE, growthAtk: sl.growthAtk, wins: (sl.wins || [])[0],
-          zone: pct(o.zone), cheer: ev.groups.map(x => x * 100), break: sx.brk * 100 || undefined } });
+          zone: pct(o.zone), cheer: ev.groups.map(x => x * 100), aura: bud ? bud.aura.map(x => x * 100) : [], break: sx.brk * 100 || undefined } });
       return { normal: r.avg, crit: r.critAvg * critX, p, expected: p * r.critAvg * critX + (1 - p) * r.avg };
     } });
     return res;
@@ -497,7 +500,92 @@
     return best;
   }
 
-  const api = { allyGroups, enemyGroups, prepare, equipFor, envFor, statusOf, affinityOf, zoneMult, memberDamage, bestWeapon, posReq, contrib, buddyGroups };
+  // 외부 프리셋(2026-10-17, 개인 세팅 S8) — 「아군이 걸어 주는 버프 · 적 디버프」를 가상 아군 한 명으로 넣는다(엔진 계산은 그대로).
+  //   값 = 효과 DB(fx) 분포: 항목마다 그 효과를 아군 전체(또는 적)에게 주는 캐릭터 각자의 값(한 캐릭터 안 여러 단위는 엔진 묶음 규칙 그대로) →
+  //   표준 = 중앙값, 최대 = 최댓값(항목마다 가장 센 한 명 — 실제 4인 파티로 다 모으지 못할 수 있다). 상태(심기일체 · 하극상 …)는 최대에서만 켠다.
+  //   ctx = 공격 맥락 { element, atk(베기 · 찌르기 · 타격 · 마법), magic, weapon } — 속성 · 공격 종류마다 값이 다르다
+  const PRESET = [
+    { id: "pwr", label: "힘 UP" }, { id: "int", label: "지능 UP" }, { id: "spd", label: "속도 UP" },
+    { id: "type", label: "속성 공격 UP(공격 속성)" }, { id: "dmg", label: "가하는 대미지 UP(무기 포함)" },
+    { id: "crit", label: "크리티컬율 UP", add: true }, { id: "critDmg", label: "크리티컬 대미지 UP", add: true },
+    { id: "resType", label: "적 속성 저항 DOWN", enemy: true }, { id: "resPhys", label: "적 물리(마법) · 공격 종류 저항 DOWN", enemy: true },
+    { id: "def", label: "적 내구(정신) DOWN", enemy: true },
+    { id: "focus", label: "심기일체 · 정신 통일", flag: true }, { id: "overthrow", label: "하극상", flag: true },
+    { id: "sureCrit", label: "크리티컬 확정", flag: true }, { id: "overcrit", label: "오버 크리티컬", flag: true },
+    { id: "mindseye", label: "심안(루나틱)", flag: true }, { id: "risktaker", label: "결사(루나틱)", flag: true },
+    { id: "break", label: "적 브레이크", flag: true, enemy: true },
+  ];
+  function presetValue(id, c, ctx) {
+    const a = c.all, e = c.enemy, el = ctx.element, mg = !!ctx.magic, gn = b => (b.length ? C.groupNet({ buffs: b }) : 0);
+    switch (id) {
+      case "pwr": case "int": case "spd": return gn(a[id].buffs);
+      case "type": return gn(el ? [...(a.type["*"] || []), ...(a.type[el] || [])] : (a.type["*"] || []));
+      case "dmg": return gn([...a.dmg.buffs, ...(a.wdmg[ctx.weapon] || [])]);
+      case "crit": return C.additive(mg ? a.mcrit : a.crit);
+      case "critDmg": return C.additive(mg ? a.mcritDmg : a.critDmg);
+      case "resType": return el ? gn([...(e.type["*"] || []), ...(e.type[el] || [])]) : 0;
+      case "resPhys": return gn(mg ? e.magic : [...e.phys, ...(e.atk[ctx.atk] || [])]);
+      case "def": return gn(mg ? e.mdef : e.def);
+      case "focus": return (mg ? a.focusMag : a.focusPhys).length ? 1 : 0;
+      case "overcrit": return (mg ? a.movercrit : a.overcrit) ? 1 : 0;
+      case "break": return e.breaks.some(b => b === "*" || b === "e:" + el || b === "a:" + ctx.atk) ? 1 : 0;
+      default: return a[id] ? 1 : 0;
+    }
+  }
+  //   chars = [{ id, nameKo }], fxDb = data/calc/fx.json. 후방에서만 켜지는 단위는 뺀다(전방 아군 기준). 반환 { id → { n, std, max, top } } (값 0~1, 깃발은 1)
+  const presetCache = new Map();
+  function presetStats(chars, fxDb, ctx, opt = {}) {
+    const key = [ctx.element, ctx.atk, !!ctx.magic, ctx.weapon, !!opt.cond].join("|");
+    if (presetCache.has(key) && presetCache.get(key).fxDb === fxDb) return presetCache.get(key).out;
+    const vals = Object.fromEntries(PRESET.map(p => [p.id, []]));
+    for (const ch of chars) {
+      const fx = fxDb[ch.id];
+      if (!fx || !fx.length) continue;
+      const c = contrib({ c: ch, fx: fx.filter(u => posReq(u) !== "back") }, { cond: !!opt.cond });
+      for (const p of PRESET) { const v = presetValue(p.id, c, ctx); if (v > 0) vals[p.id].push([v, ch.nameKo]); }
+    }
+    const out = {};
+    for (const p of PRESET) {
+      const xs = vals[p.id].sort((x, y) => x[0] - y[0]), n = xs.length;
+      const med = n ? (n % 2 ? xs[(n - 1) / 2][0] : (xs[n / 2 - 1][0] + xs[n / 2][0]) / 2) : 0;
+      out[p.id] = { ...p, n, std: p.flag ? 0 : med, max: n ? xs[n - 1][0] : 0, top: n ? xs[n - 1][1] : "" };
+    }
+    presetCache.set(key, { fxDb, out });
+    return out;
+  }
+  //   level = "std" | "max", off = 끈 항목 id 목록. 가상 아군은 공유 글래스터 · 공격이 없다(파티 탐색 후보가 아니다)
+  function presetMember(stats, ctx, level, off = []) {
+    const fx = [], ally = "아군 전체", foe = "적 전체", mg = !!ctx.magic, el = ctx.element;
+    const pct = (st, v, dir = "UP", tc = ally) => fx.push({ k: "stat_pct", stats: [st], dir, value: +(v * 100).toFixed(2), tc });
+    for (const p of PRESET) {
+      const v = (stats[p.id] || {})[level] || 0;
+      if (!v || off.includes(p.id)) continue;
+      switch (p.id) {
+        case "pwr": pct("힘", v); break;
+        case "int": pct("지능", v); break;
+        case "spd": pct("속도", v); break;
+        case "type": pct(el ? el + " 속성 공격" : "모든 속성 공격", v); break;
+        case "dmg": fx.push({ k: "dmg", dir: "UP", what: "가하는 대미지", value: +(v * 100).toFixed(2), tc: ally }); break;
+        case "crit": pct(mg ? "마법 크리티컬율" : "크리티컬율", v); break;
+        case "critDmg": pct(mg ? "마법 크리티컬 대미지" : "크리티컬 대미지", v); break;
+        case "resType": if (el) pct(el + " 속성 저항", v, "DOWN", foe); break;
+        case "resPhys": pct(mg ? "마법 저항" : "물리 저항", v, "DOWN", foe); break;
+        case "def": pct(mg ? "정신" : "내구", v, "DOWN", foe); break;
+        case "focus": fx.push({ k: "buff", name: mg ? "정신 통일" : "심기일체", tc: ally }); break;
+        case "overthrow": fx.push({ k: "buff", name: "하극상", tc: ally }); break;
+        case "sureCrit": fx.push({ k: "buff", name: "크리티컬 발생 확정", tc: ally }); break;
+        case "overcrit": fx.push({ k: "buff", name: mg ? "마법 오버 크리티컬" : "오버 크리티컬", tc: ally }); break;
+        case "mindseye": fx.push({ k: "buff", name: "심안", tc: ally }); break;
+        case "risktaker": fx.push({ k: "buff", name: "결사", tc: ally }); break;
+        case "break": fx.push({ k: "ailment", name: "브레이크", tc: foe }); break;
+      }
+    }
+    return { c: { id: "_preset", nameKo: level === "max" ? "외부 버프(최대)" : "외부 버프(표준)", traits: [] }, fx, grasta: [], badges: [], preset: true };
+  }
+  const presetCtx = (atk, weapon) => ({ element: (atk && atk.element) || null, atk: (atk && atk.atk) || "", magic: !!atk && (atk.dep === "magic" || atk.dep === "magicpwr"), weapon: weapon || "" });
+
+  const api = { allyGroups, enemyGroups, prepare, equipFor, envFor, statusOf, affinityOf, zoneMult, memberDamage, bestWeapon, posReq, contrib, buddyGroups,
+    PRESET, presetStats, presetMember, presetCtx };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEParty = api;
 })(typeof window !== "undefined" ? window : globalThis);

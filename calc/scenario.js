@@ -29,7 +29,7 @@
   const slotKey = (caster, u) => [caster, u.k, (u.stats || []).join(",") || u.name || u.what || "", u.dir || "", sideOf(u)].join("|");
 
   function newSim(party, opt, memo) {
-    return { party, opt, memo, turn: 0, af: false, zone: opt.zone || null, live: new Map(), log: [], dmg: [] };
+    return { party, opt, memo, turn: 0, af: false, zone: opt.zone || null, live: new Map(), log: [], dmg: [], byMember: [] };
   }
   // 효과 걸기 — 같은 칸은 덮어쓰기(누적형은 겹 +1), 지속 갱신
   // 파티 구성 조건(위키 need: 전방에 특성 n명 이상) — 실제 전방 멤버로 판정(others:false 면 본인 포함)
@@ -102,8 +102,9 @@
     for (const a of parts) d += attack(sim, ci, sk, a);
     if (parts.length) consume(sim, ci, parts[0]);
     for (const u of sk.fx || []) if (!u.timing || u.timing === "use") apply(sim, ci, u, sk.name);
-    sim.log.push({ turn: sim.turn, af: sim.af, who: m.c.nameKo, skill: name, dmg: Math.round(d) });
+    sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: name, dmg: Math.round(d) });
     if (scored) sim.dmg[sim.turn] = (sim.dmg[sim.turn] || 0) + d;
+    if (scored) (sim.byMember[sim.turn] = sim.byMember[sim.turn] || [])[ci] = ((sim.byMember[sim.turn] || [])[ci] || 0) + d;
     return d;
   }
   function endTurn(sim) {
@@ -140,10 +141,13 @@
     });
     const perTurn = Object.fromEntries(Object.entries(sim.dmg).map(([t, v]) => [t, v]));
     const want = conf.scoreTurns || Object.keys(perTurn).map(Number);
-    return { perTurn, score: want.reduce((s, t) => s + (perTurn[t] || 0), 0), log: sim.log, live: sim.live };
+    const perMember = party.map((m, ci) => want.reduce((s, t) => s + ((sim.byMember[t] || [])[ci] || 0), 0));   // 멤버별 점수 몫(기회비용 나누기용)
+    return { perTurn, perMember, score: want.reduce((s, t) => s + (perTurn[t] || 0), 0), log: sim.log, live: sim.live, zone: sim.zone };
   }
 
-  const api = { run, toAttack, ZONE_KO };
+  // 살아 있는 효과 → 멤버별 fx(빌드의 장비 단계가 정적 계산에 넣는다)
+  const liveFx = (live, ci) => fxOf({ live }, ci);
+  const api = { run, toAttack, liveFx, ZONE_KO };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEScenario = api;
 })(typeof window !== "undefined" ? window : globalThis);

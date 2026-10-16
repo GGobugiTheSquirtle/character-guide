@@ -8,6 +8,7 @@ onmessage = ({ data: d }) => {
     if (d.gear) {
       const cache = new Map();
       conf.gear = { poolsOf: m => cache.get(m.c.id) || cache.set(m.c.id, AEOpt.ownedPools(d.db, m.cc, m.c.traits, d.inv).pools).get(m.c.id), conf: d.gearConf || {} };
+      conf.grantsOf = m => conf.gear.poolsOf(m).grasta.filter(g => g.grant && !g.ore);     // 장비 최적화면 낄 수 있는 그라스타의 부여 스킬 전부
     }
     const r = AEBuild.optimize(d.team, d.opt, conf);
     const { team, ...rest } = r;

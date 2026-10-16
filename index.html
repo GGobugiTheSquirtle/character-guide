@@ -1929,7 +1929,7 @@ const buildInWorker = (msg, tick) => new Promise((res, rej) => {
   let w;
   try { w = new Worker("calc/build_worker.js"); } catch (e) {
     const conf = { tick };
-    if (msg.gear) { const cache = new Map(); conf.gear = { poolsOf: m => cache.get(m.c.id) || cache.set(m.c.id, AEOpt.ownedPools(msg.db, m.cc, m.c.traits, msg.inv).pools).get(m.c.id), conf: msg.gearConf }; }
+    if (msg.gear) { const cache = new Map(); conf.gear = { poolsOf: m => cache.get(m.c.id) || cache.set(m.c.id, AEOpt.ownedPools(msg.db, m.cc, m.c.traits, msg.inv).pools).get(m.c.id), conf: msg.gearConf }; conf.grantsOf = m => conf.gear.poolsOf(m).grasta.filter(g => g.grant && !g.ore); }
     try { const { team, ...r } = AEBuild.optimize(msg.team, msg.opt, conf); return res({ ...r, gear: team.map(m => ({ weapon: m.weapon, armor: m.armor, grasta: m.grasta || [], badges: m.badges || [], special: m.special || [] })) }); }
     catch (e2) { return rej(e2); }
   }
@@ -1991,7 +1991,8 @@ function renderBuildTab(box, db) {
   box.appendChild(el("div", { class: "skko-src", style: "margin-top:12px", text:
     "스킬칸 = 멤버마다 칸 하나씩 다른 스킬로 바꿔 보며 점수가 오르면 채택 · AF = 캐릭터당 6회 시전, 대미지는 점수 밖(버프 · 디버프를 까는 턴) · 2~4턴은 속도순으로 1회씩. " +
     "지속(건 턴 = 0턴) · 누적(A + A/2 × (n−1)) · 「N회 행동」 소모 · 덮어쓰기는 위키 규칙. 자원(구슬 · 카운트 · 게이지)을 쓰는 스킬과 조건부 공격(스텔라 버스트 시 등)은 「조건부 효과 포함」일 때만. " +
-    "MP · 후방 멤버 · 장비가 주는 스킬은 아직 안 셉니다. 스킬 데이터: 카페 딩님 스킬 DB(178명, 출처: 카페 딩님 스킬 검색기) · 나머지 198명은 위키 문장 자동 해석. 인게임 대조 전 추정치." }));
+    "장비 최적화 때는 그라스타가 주는 스킬(존 전개 · 무기별 기도 · 공격 — 스킬칸 하나를 쓴다고 가정)과 무기의 「공격 시 적 저항 다운 · 페인/독」(확률은 기대값)까지 봅니다. 대상 페인 · 독은 파티가 실제로 건 뒤부터 켜집니다(화면 토글을 켜면 처음부터). " +
+    "MP · 후방 멤버 · 전용 장비가 주는 스킬(딩님 「장비 습득 스킬」)은 아직 안 셉니다. 스킬 데이터: 카페 딩님 스킬 DB(178명, 출처: 카페 딩님 스킬 검색기) · 나머지 198명은 위키 문장 자동 해석. 인게임 대조 전 추정치." }));
 }
 function showBuildResult(out, r) {
   const pct = x => `${(x * 100).toFixed(1)}%`, nm = id => { const c = STATE.all.find(x => x.id === id); return c ? c.nameKo : id; };
@@ -2004,7 +2005,7 @@ function showBuildResult(out, r) {
     const g = r.gear[ci] || {}, share = r.contrib.base ? r.contrib.perMember[ci] / r.contrib.base : 0;
     tb.appendChild(el("tr", { children: [
       el("td", { children: [el("b", { text: nm(id) }), el("div", { class: "skko-src", text: pct(share) })] }),
-      el("td", { class: "pt", text: (r.slots[ci] || []).join(" · ") }),
+      el("td", { class: "pt", text: (r.slots[ci] || []).map((n, k) => (r.via && r.via[ci] && r.via[ci][k] ? `${n} (그라스타 ${r.via[ci][k]})` : n)).join(" · ") }),
       el("td", { class: "pt", text: ((r.plan.af || [])[ci] || []).map(x => x || "—").join(" → ") }),
       el("td", { class: "pt", text: r.plan.turns.map(t => t[ci] || "—").join(" → ") }),
       el("td", { class: "skko-src", text: [g.weapon, g.armor, ...(g.grasta || []), ...(g.badges || [])].filter(Boolean).map(x => x.name).join(" · ") || "—" })] }));

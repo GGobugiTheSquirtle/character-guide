@@ -585,7 +585,7 @@
   const presetCtx = (atk, weapon) => ({ element: (atk && atk.element) || null, atk: (atk && atk.atk) || "", magic: !!atk && (atk.dep === "magic" || atk.dep === "magicpwr"), weapon: weapon || "" });
 
   const api = { allyGroups, enemyGroups, prepare, equipFor, envFor, statusOf, affinityOf, zoneMult, memberDamage, bestWeapon, posReq, contrib, buddyGroups,
-    PRESET, presetStats, presetMember, presetCtx };
+    PRESET, presetStats, presetMember, presetCtx, envOk, whoOk };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEParty = api;
 })(typeof window !== "undefined" ? window : globalThis);

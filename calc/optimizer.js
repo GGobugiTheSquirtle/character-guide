@@ -190,7 +190,7 @@
         // 지금 낀 그라스타는 후보에 꼭 둔다 — 맞바꾸기로 받은 것이 이 멤버의 가지치기 목록 밖이면 버려져 목표가 내려갔다(2026-10-15)
         const pf = full ? poolsOf(x) : poolsFor(x), extra = x.gear.grasta.filter(g => g && !pf.grasta.includes(g));
         const r = gearOptimize({ ...x, grasta: x.gear.grasta, special: x.gear.special }, team, opt, extra.length ? { ...pf, grasta: [...pf.grasta, ...extra] } : pf,
-          { ...conf, taken: usage(x), others, selfWeight: wt(x) });
+          { ...conf, taken: usage(x), others, selfWeight: wt(x), lockGrasta: x.lockGrasta || conf.lockGrasta });   // 멤버별 고정(파티 빌드의 부여 스킬 그라스타, 10-17)
         evals += r.evals;
         Object.assign(x, { weapon: r.gear.weapon, armor: r.gear.armor, badges: r.gear.badges, gear: { grasta: r.gear.grasta, special: r.gear.special || [] },
           grasta: [...r.gear.grasta, ...(r.gear.special || [])] });
@@ -199,7 +199,8 @@
       // 맞바꾸기 — 먼저 고른 멤버가 1개뿐인 장비를 쥐고 있으면 좌표 하강은 못 빠져나온다(국소 최적). 두 멤버의 같은 종류 칸을 서로 바꿔 본다
       for (const x of team) for (const y of team) {
         if (x === y || team.indexOf(x) > team.indexOf(y)) continue;
-        const tries = [["weapon"], ["armor"], ...x.gear.grasta.flatMap((_, i) => y.gear.grasta.map((_, j) => ["g", i, j])),
+        const free = (z, g) => !(z.lockGrasta || []).includes(g);                     // 고정 그라스타는 맞바꾸지 않는다
+        const tries = [["weapon"], ["armor"], ...x.gear.grasta.flatMap((g, i) => (free(x, g) ? y.gear.grasta.map((h, j) => (free(y, h) ? ["g", i, j] : null)).filter(Boolean) : [])),
           ...(x.badges || []).flatMap((_, i) => (y.badges || []).map((_, j) => ["b", i, j]))];
         for (const [k, i, j] of tries) {
           const sw = () => {

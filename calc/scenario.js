@@ -5,6 +5,8 @@
 //   효과 타임라인: 시전자 × 효과(종류 · 스탯/이름 · 방향 · 편) 한 칸 — 다시 걸면 덮어쓰기, 최고 누적이면 겹 +1(값은 party_calc 가 반감 누적으로),
 //     turns = 건 턴이 0턴, 그 턴 + N 턴 끝 만료(0 = 그 턴 끝) · times = 대미지 행동마다 1 소모(속성 공격 · 크리율) · 영구는 null
 //   대미지: 공격 순간 살아 있는 효과를 시전자별 fx 로 묶어 party_calc.memberDamage(근사) — 정적 추정과 같은 식. 스킬의 효과는 공격 뒤에 건다
+//   장비 「공격 시」 부여(D2, 10-17): 대미지 행동 뒤 적 저항 다운(확률 × 값) · 페인/독(확률 p). 대상 상태 = 살아 있는 적 페인 · 독(스킬 · 장비) + 화면 토글(opt.punish)
+//     — 확률 p < 1 상태는 켠 값 · 끈 값을 p 로 섞는다. 적 상태 저항 · 확률 반복 누적은 안 본다
 //   브라우저(window.AEScenario) · node 공용. 테스트: _tools/character/tests/test_scenario.cjs
 (function (root) {
   "use strict";
@@ -26,10 +28,34 @@
       conds: a.conds, mp: sk.mp || 0, sec: "skills", _sure: !!a.sureCrit, _fixed: !!a.fixed };
   }
   const sideOf = u => (/적/.test(u.tc || "") ? "e" : "a");
-  const slotKey = (caster, u) => [caster, u.k, (u.stats || []).join(",") || u.name || u.what || "", u.dir || "", sideOf(u)].join("|");
+  // 장비 효과는 스킬 효과와 따로 한 칸(출처가 다르면 덮어쓰지 않는다 — 위키 Buffs 「같은 시전자 × 출처」)
+  const slotKey = (caster, u) => [caster, u.k, (u.stats || []).join(",") || u.name || u.what || "", u.dir || "", sideOf(u), u._equip ? "eq" : ""].join("|");
+
+  // 장비 「공격 시」 부여 → 효과 단위(build_calc_db equip_fx k inflict). 지속 = 원문 N턴(없으면 3)
+  const RES_KO = { slash: "베기 저항", pierce: "찌르기 저항", blunt: "타격 저항", physical: "물리 저항", magic: "마법 저항", type: "속성 저항",
+    fire: "불 속성 저항", water: "물 속성 저항", earth: "땅 속성 저항", wind: "바람 속성 저항", thunder: "번개 속성 저항", shade: "그림자 속성 저항", crystal: "결정 속성 저항" };
+  function equipOnHit(m, opt) {
+    const out = [];
+    for (const it of [m.weapon, m.armor, ...(m.grasta || []), ...(m.badges || [])]) {
+      if (!it) continue;
+      const seen = new Set();
+      for (const f of [...(it.fx || []), ...(it.calc || [])]) {
+        if (f.k !== "inflict" || seen.has(f.what) || (f.env && !P.envOk(f.env, opt.env)) || (f.who && !P.whoOk(f.who, m.c))) continue;
+        seen.add(f.what);
+        const p = Math.min(1, (f.chance ?? 100) / 100), turns = f.turns ?? 3;
+        if (/_res$/.test(f.what) && f.v && RES_KO[f.what.slice(0, -4)])
+          out.push({ k: "stat_pct", stats: [RES_KO[f.what.slice(0, -4)]], dir: "DOWN", value: +(f.v * p).toFixed(2), tc: "적 하나", turns, _equip: it.name });
+        else if (f.what === "pain" || f.what === "poison") out.push({ k: "ailment", name: f.what === "pain" ? "페인" : "독", tc: "적 하나", turns, p, _equip: it.name });
+      }
+    }
+    return out;
+  }
+  // 적에게 건 페인 · 독(대상 상태) — 편이 비어 있으면 적(공격 스킬의 부가 효과). 맹독(Megapoison)은 「독 대상」 조건에 드는지 몰라 뺀다
+  const TSTATE = { "독": "poison", "페인": "pain" };
+  const tstateOf = u => (u.k === "ailment" && TSTATE[u.name] && !/^(아군|자신|특정 아군)/.test(u.tc || "") ? TSTATE[u.name] : null);
 
   function newSim(party, opt, memo) {
-    return { party, opt, memo, turn: 0, af: false, zone: opt.zone || null, live: new Map(), log: [], dmg: [], byMember: [] };
+    return { party, opt, memo, turn: 0, af: false, zone: opt.zone || null, live: new Map(), log: [], dmg: [], byMember: [], onHit: [] };
   }
   // 효과 걸기 — 같은 칸은 덮어쓰기(누적형은 겹 +1), 지속 갱신
   // 파티 구성 조건(위키 need: 전방에 특성 n명 이상) — 실제 전방 멤버로 판정(others:false 면 본인 포함)
@@ -42,7 +68,7 @@
   function apply(sim, ci, u, skName) {
     if (u.cond && !sim.opt.cond) return;
     if (!needOk(sim, ci, u.need)) return;
-    if (u.k === "zone") { const z = (sim.opt.zones || []).find(x => x.name === ZONE_KO[u.name]); if (z) sim.zone = z; return; }
+    if (u.k === "zone") { const z = (sim.opt.zones || []).find(x => x.name === (ZONE_KO[u.name] || u.name)); if (z) sim.zone = z; return; }   // 그라스타 부여 존은 영어 이름
     if (!ENGINE.has(u.k)) return;
     const key = slotKey(ci, u), old = sim.live.get(key);
     // 겹은 같은 스킬을 다시 걸 때만 오른다 — 다른 스킬이 같은 칸을 덮어쓰면 1부터(전에는 앞 스킬 겹을 이어받아 첫 시전이 2겹이 됐다)
@@ -67,7 +93,7 @@
     let key;
     if (memo) {
       const live = [...sim.live.entries()].map(([k, e]) => `${k}#${e.stacks}#${e.u.value}`).sort().join(";");
-      key = `${ci}|${sk.name}|${sk.attacks.indexOf(part)}|${(sim.zone || {}).name || ""}|${sim.turn}|${sim.af ? 1 : 0}|${live}`;
+      key = `${sim.gear}|${ci}|${sk.name}|${sk.attacks.indexOf(part)}|${(sim.zone || {}).name || ""}|${sim.turn}|${sim.af ? 1 : 0}|${live}`;
       if (memo.has(key)) return memo.get(key);
     }
     const v = attackRaw(sim, ci, sk, part);
@@ -79,8 +105,24 @@
     const members = sim.party.map((m, i) => ({ ...m, fx: fxOf(sim, i, i === ci && atk._sure ? [{ k: "buff", name: "크리티컬 발생 확정", _skill: sk.name, _atkItem: true }] : null), _contrib: null }));
     const m = { ...members[ci], attack: atk };
     members[ci] = m;
-    const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, turns: sim.turn, af: sim.af });
-    return r ? r.perUse : 0;
+    // 대상 상태 — 확실한 것(p = 1 · 화면 토글)과 확률 상태(p < 1, 켠 값 · 끈 값을 p 로 섞음)
+    const sure = new Set(sim.opt.punish || []), maybe = new Map();
+    for (const e of sim.live.values()) {
+      const s = tstateOf(e.u);
+      if (!s || sure.has(s)) continue;
+      const p = e.u.p ?? 1;
+      if (p >= 1) { sure.add(s); maybe.delete(s); } else maybe.set(s, Math.max(maybe.get(s) || 0, p));
+    }
+    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, turns: sim.turn, af: sim.af, punish }); return r ? r.perUse : 0; };
+    const mb = [...maybe];
+    let v = 0;
+    for (let mask = 0; mask < 1 << mb.length; mask++) {
+      let pr = 1;
+      const on = [...sure];
+      mb.forEach(([s, p], i) => { if (mask >> i & 1) { pr *= p; on.push(s); } else pr *= 1 - p; });
+      v += pr * dmg(on);
+    }
+    return v;
   }
   // 행동 소모형(times) — 대미지 행동 1회마다. 크리율은 물리/마법 각각
   function consume(sim, ci, atk) {
@@ -102,6 +144,7 @@
     for (const a of parts) d += attack(sim, ci, sk, a);
     if (parts.length) consume(sim, ci, parts[0]);
     for (const u of sk.fx || []) if (!u.timing || u.timing === "use") apply(sim, ci, u, sk.name);
+    if (parts.length) for (const u of sim.onHit[ci] || (sim.onHit[ci] = equipOnHit(m, sim.opt))) apply(sim, ci, u, "장비: " + u._equip);   // 장비 「공격 시」
     sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: name, dmg: Math.round(d) });
     if (scored) sim.dmg[sim.turn] = (sim.dmg[sim.turn] || 0) + d;
     if (scored) (sim.byMember[sim.turn] = sim.byMember[sim.turn] || [])[ci] = ((sim.byMember[sim.turn] || [])[ci] || 0) + d;
@@ -123,6 +166,8 @@
   //   plan.af = 멤버마다 6개(없으면 AF 없음) · plan.turns = 턴마다 멤버별 스킬 · conf.scoreTurns = 점수에 넣는 턴(기본: AF 면 2~4, 아니면 계획의 모든 턴) · conf.memo = 대미지 메모(Map)
   function run(party, plan, opt, conf = {}) {
     const sim = newSim(party, opt, conf.memo || null);
+    // 메모 키의 장비 서명 — 장비 후보를 바꿔 가며 같은 메모를 써도 섞이지 않게
+    if (sim.memo) sim.gear = party.map(m => [m.weapon && m.weapon.name, m.armor && m.armor.name, ...(m.grasta || []).map(g => g.name), "/", ...(m.badges || []).map(x => x.name)].join(",")).join("|");
     battleStart(sim);
     sim.turn = 1;
     let t0 = 1;
@@ -147,7 +192,9 @@
 
   // 살아 있는 효과 → 멤버별 fx(빌드의 장비 단계가 정적 계산에 넣는다)
   const liveFx = (live, ci) => fxOf({ live }, ci);
-  const api = { run, toAttack, liveFx, ZONE_KO };
+  // 살아 있는 대상 상태(확률 0.5 이상) — 장비 단계의 정적 식에 opt.punish 로
+  const liveStates = live => [...new Set([...live.values()].filter(e => tstateOf(e.u) && (e.u.p ?? 1) >= 0.5).map(e => tstateOf(e.u)))];
+  const api = { run, toAttack, liveFx, liveStates, ZONE_KO };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEScenario = api;
 })(typeof window !== "undefined" ? window : globalThis);

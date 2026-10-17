@@ -197,7 +197,7 @@
     const mult = (it, label, x, slot = "condE", raw = x) => {
       if (x > 0) { out.groups.push(x / 100); (out.slots[slot] = out.slots[slot] || []).push(raw); out.src.push(`${it.name}: ${label} +${+x.toFixed(2)}%`); }
     };
-    // 효과 중복 불가(위키 광석 「Not stackable」 — 겨누어 쏘기 · MP 소비 공격 · 봉인 인핸스 · 적 수 · 약점 강화): 장비 전체에서 종류별 최댓값 하나만 (2026-10-13)
+    // 효과 중복 불가(위키 「Not stackable」 — 겨누어 쏘기 · MP 소비 공격 · 봉인 인핸스 · 적 수 · 약점 강화 · 약점 공격 글래스터): 장비 전체에서 종류별 최댓값 하나만 (2026-10-13)
     const once = {};
     const uniq = (key, it, label, x, slot, raw) => { if (x > 0 && !(once[key] && once[key].x >= x)) once[key] = { it, label, x, slot, raw }; };
     for (const it of items) {
@@ -225,7 +225,8 @@
             || (f.when === "maxhp" && opt.maxHp) || (f.when === "lowhp" && opt.lowHp);
           if (ok) { out.equip.push(v); out.src.push(`${it.name}: ${f.when} +${f.v}%`); }
         } else if (f.k === "punish" && opt.punish && opt.punish.includes(f.when)) { out.punish++; out.punishV.push(f.v || 30); out.src.push(`${it.name}: ${f.when} ×${1 + (f.v || 30) / 100}`); }
-        else if (f.k === "skillfx" && f.when === "weak" && opt._weak) { out.skillFx.push(v); out.src.push(`${it.name}: 약점 +${f.v}%`); }
+        // 약점 공격 강화 글래스터(Weak Point Strike)도 「Not stackable」 — 여러 개 껴도 최댓값 하나(2026-10-17, 전에는 3개가 쌓였다)
+        else if (f.k === "skillfx" && f.when === "weak" && opt._weak) uniq("weakfx", it, "약점 공격", v);
         else if (f.k === "weak" && opt._weak) uniq("weak", it, "약점 배율", f.v);
         else if (f.k === "crit_rate") out[f.magic ? "mcrit" : "crit"] += v;
         else if (f.k === "crit_dmg") out[f.magic ? "mcritDmg" : "critDmg"] += v;
@@ -249,6 +250,7 @@
     }
     for (const [key, u] of Object.entries(once)) {
       if (key === "weak") { out.weak += u.x / 100; out.src.push(`${u.it.name}: 약점 배율 +${u.x}%`); }
+      else if (key === "weakfx") { out.skillFx.push(u.x); out.src.push(`${u.it.name}: 약점 +${+(u.x * 100).toFixed(2)}%`); }
       else mult(u.it, u.label, u.x, u.slot, u.raw);
     }
     return out;

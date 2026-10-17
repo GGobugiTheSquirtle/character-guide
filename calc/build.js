@@ -18,8 +18,10 @@
   const useful = sk => (sk.attacks || []).length > 0 || (sk.fx || []).some(u => ENGINE.has(u.k) && (!u.timing || u.timing === "use"));
   // 스킬칸 후보 — 쓸모 있는 스킬칸 스킬. 장비 습득 스킬은 conf.equipSkills, 자원 소비(구슬 · 카운트 · 게이지, s.needs)는 conf.cond 일 때만
   //   — 그 자원을 모으는 흐름은 시나리오가 아직 모른다(해방 영랑지처럼 아무 때나 쓰면 4.9배 과대, 10-17)
+  // 구슬을 모으는 캐릭터(전투 시작 어빌리티 · 스킬 「구슬 축적」)는 구슬 소비 스킬도 후보 — 시나리오가 수치를 세고 모자라면 못 쓴다(D3 뼈대 10-18)
+  const gathers = m => (m.actions.skills || []).some(s => (s.fx || []).some(u => u.k === "other" && u.name === "구슬 축적" && !u.cond));
   function candidates(m, conf = {}) {
-    return (m.actions.skills || []).filter(s => s.slot && useful(s) && (!s.needEquip || conf.equipSkills) && (!s.needs || conf.cond)
+    return (m.actions.skills || []).filter(s => s.slot && useful(s) && (!s.needEquip || conf.equipSkills) && (!s.needs || conf.cond || (s.needs.every(n => n === "구슬") && gathers(m)))
       && (!s.viaG || conf.via || (m.grasta || []).includes(s.viaG))).map(s => s.name);
   }
   // 시작 스킬칸 — 준비 스킬(엔진 효과 수 많은 순) 2 + 공격(1회 위력 × 타수 큰 순) 2, 모자라면 나머지로
@@ -111,8 +113,13 @@
       for (let round = 0; round < rounds; round++) {
         const snap = S.run(team, { af: cur.plan.af, turns: [cur.plan.turns[0]] }, opt, { memo: new Map() });
         const members = team.map((m, ci) => {
-          const sk = (m.actions.skills || []).find(x => x.name === cur.plan.turns[0][ci]);
-          const part = sk && (sk.attacks || []).find(a => !a.cond || opt.cond);
+          let sk = (m.actions.skills || []).find(x => x.name === cur.plan.turns[0][ci]);
+          let part = sk && (sk.attacks || []).find(a => !a.cond || opt.cond);
+          // 그 턴에 공격이 없는 멤버(버퍼 · 아직 계획이 빈 칸)는 스킬칸 · 일반 공격 중 첫 공격을 대리로 — 자기 대미지 0 이면 방어구 · 배지가 전부 같은 점수라 빈 채로 남았다(시구레 ES 방어구 null, 10-18)
+          if (!part) for (const n of [...m.slots, (S.normalOf(m) || {}).name]) {
+            const s2 = (m.actions.skills || []).find(x => x.name === n), p2 = s2 && (s2.attacks || []).find(a => !a.cond || opt.cond);
+            if (p2) { sk = s2; part = p2; break; }
+          }
           return { ...m, fx: S.liveFx(snap.live, ci), attack: part ? S.toAttack(part, sk) : undefined, _contrib: null };
         });
         const punish = [...new Set([...(opt.punish || []), ...S.liveStates(snap.live)])];      // 파티가 건 페인 · 독(정적 식은 대상 상태를 모른다)

@@ -9,6 +9,8 @@
   const skillOf = (m, name) => (m.actions.skills || []).find(s => s.name === name);
   const isSetup = sk => !!sk && !(sk.attacks || []).length && (sk.fx || []).some(u => ENGINE.has(u.k) && (!u.timing || u.timing === "use"));
   const isAttack = sk => !!sk && (sk.attacks || []).length > 0;
+  // 행동 선택지 = 스킬칸 4 + 일반 공격(있으면 — 구슬이 차 있으면 시나리오가 변화한 일반 공격으로 바꿔 친다) + 안 씀
+  const options = m => { const nm = S.normalOf && S.normalOf(m); return nm ? [...m.slots, nm.name, null] : [...m.slots, null]; };
 
   // 시작 계획 — AF: 준비 스킬(공격 없이 엔진 효과)을 돌려 가며, 없으면 안 씀 / 턴: 혼자 쳤을 때 가장 센 공격, 공격이 없으면 준비 스킬
   function initial(party, opt, conf) {
@@ -18,7 +20,7 @@
       return Array.from({ length: conf.afCasts }, (_, k) => (setup.length ? setup[k % setup.length] : null));
     }) : null;
     const pick = party.map((m, ci) => {
-      const atks = m.slots.filter(n => isAttack(skillOf(m, n)));
+      const atks = options(m).filter(n => n && isAttack(skillOf(m, n)));
       if (!atks.length) return m.slots.find(n => isSetup(skillOf(m, n))) || null;
       return atks.map(n => [n, solo(ci, n)]).sort((a, b) => b[1] - a[1])[0][0];
     });
@@ -31,7 +33,7 @@
     conf = { af: true, afCasts: 6, turns: 3, passes: 4, restarts: 8, seed: 7, ...conf };
     let rnd = conf.seed >>> 0 || 1;
     const rand = () => (rnd = (Math.imul(rnd, 1664525) + 1013904223) >>> 0) / 4294967296;
-    const pickR = m => { const o = [...m.slots, null]; return o[Math.floor(rand() * o.length)]; };
+    const pickR = m => { const o = options(m); return o[Math.floor(rand() * o.length)]; };
     const base = conf.start || initial(party, opt, conf);
     const starts = [base];
     for (let i = 0; i < conf.restarts; i++)
@@ -59,7 +61,7 @@
       for (const [kind, a, b] of cells) {
         const m = kind === "af" ? party[a] : party[b];
         const cur = p[kind][a][b];
-        for (const opt2 of [...m.slots, null]) {
+        for (const opt2 of options(m)) {
           if (opt2 === cur) continue;
           const q = { af: p.af && p.af.map(r => r.slice()), turns: p.turns.map(r => r.slice()) };
           q[kind][a][b] = opt2;
@@ -69,7 +71,7 @@
       }
       // 바꿔치기 — 멤버의 「스킬 X 를 쓰던 칸 전부」를 Y 로. 칸 하나씩은 매번 손해인 이동(덮어쓰기 · 누적 전환)을 넘는다
       party.forEach((m, ci) => {
-        const opts = [...m.slots, null];
+        const opts = options(m);
         for (const x of opts) for (const y of opts) {
           if (x === y) continue;
           const q = { af: p.af && p.af.map(r => r.slice()), turns: p.turns.map(r => r.slice()) };

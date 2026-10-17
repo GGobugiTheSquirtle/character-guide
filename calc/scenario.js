@@ -54,8 +54,28 @@
   const TSTATE = { "독": "poison", "페인": "pain" };
   const tstateOf = u => (u.k === "ailment" && TSTATE[u.name] && !/^(아군|자신|특정 아군)/.test(u.tc || "") ? TSTATE[u.name] : null);
 
+  // 자원(구슬 — 낭지 · 무아 …, D3 뼈대 10-18): 캐릭터당 수치 하나. 상한 = 「구슬」 항목(sub 구슬)의 max, 양 = 「구슬 축적/소비」 단위 value(없으면 1).
+  //   소비 스킬은 모자라면 그 행동이 없어진다(대미지 0). 조건부 소비(「이도신랑」으로 발동 시 …)는 평소 비용에서 뺀다
+  const resMaxOf = m => { const r = (m.actions.skills || []).find(s => s.sub === "구슬" && s.max); return r ? r.max : Infinity; };
+  const resCost = sk => (sk.fx || []).filter(u => u.k === "other" && u.name === "구슬 소비" && !u.cond).reduce((s, u) => s + (u.value ?? 1), 0);
+  // 일반 공격 · 변화한 일반 공격(사슬낫 공격 → 이도신랑 EX): 「구슬 N 이상 축적 시」(기본 1) 커맨드가 바뀐다 — 매 턴 고를 수 있는 행동(스킬칸 밖)
+  const normalOf = m => (m.actions.skills || []).find(s => s.kind === "normal" && s.sub === "일반 공격");
+  const transformOf = m => (m.actions.skills || []).find(s => s.kind === "normal" && s.sub === "변화한 일반 공격");
+  const transformAt = m => { const n = normalOf(m), u = n && (n.fx || []).find(x => x.name === "스킬 변화"); const t = u && /(\d+) 이상 축적/.exec(u.cond || ""); return t ? +t[1] : 1; };
+  // 고정 수치 스탯(힘 +100, flat) — % 가 아니라 스탯에 더한다(party_calc 는 % 만 받는다). 받는 쪽: 「자신」 = 시전자만, 그 밖 아군 편 = 전원
+  const FLAT = { "힘": "pwr", "지능": "int", "속도": "spd", "행운": "lck" };
+  function flatStats(sim, ci) {
+    const add = {};
+    for (const e of sim.live.values()) {
+      if (!e.u.flat || e.u.k !== "stat_pct" || e.u.dir !== "UP" || sideOf(e.u) !== "a" || (/^자신/.test(e.u.tc || "") && e.ci !== ci)) continue;
+      for (const st of e.u.stats || []) if (FLAT[st]) add[FLAT[st]] = (add[FLAT[st]] || 0) + (e.u.value || 0);
+    }
+    return add;
+  }
+  const withFlat = (m, fl) => (Object.keys(fl).length ? { ...m, stats: { ...m.stats, ...Object.fromEntries(Object.keys(fl).map(k => [k, ((m.stats || {})[k] || 0) + fl[k]])) } } : m);
+
   function newSim(party, opt, memo) {
-    return { party, opt, memo, turn: 0, af: false, zone: opt.zone || null, live: new Map(), log: [], dmg: [], byMember: [], onHit: [] };
+    return { party, opt, memo, turn: 0, af: false, zone: opt.zone || null, live: new Map(), log: [], dmg: [], byMember: [], onHit: [], res: party.map(() => 0) };
   }
   // 효과 걸기 — 같은 칸은 덮어쓰기(누적형은 겹 +1), 지속 갱신
   // 파티 구성 조건(위키 need: 전방에 특성 n명 이상) — 실제 전방 멤버로 판정(others:false 면 본인 포함)
@@ -65,10 +85,19 @@
     const cnt = sim.party.filter((m, i) => (need.others ? i !== ci : true) && ((m.c && m.c.traits) || []).some(t => ts.includes(t))).length;
     return cnt >= (need.n || 1);
   }
-  function apply(sim, ci, u, skName) {
+  function apply(sim, ci, u, skName, sk) {
     if (u.cond && !sim.opt.cond) return;
     if (!needOk(sim, ci, u.need)) return;
     if (u.k === "zone") { const z = (sim.opt.zones || []).find(x => x.name === (ZONE_KO[u.name] || u.name)); if (z) sim.zone = z; return; }   // 그라스타 부여 존은 영어 이름
+    if (u.k === "other" && u.name === "구슬 축적") { sim.res[ci] = Math.min(resMaxOf(sim.party[ci]), sim.res[ci] + (u.value ?? 1)); return; }
+    if (u.k === "other" && u.name === "모드 체인지") {
+      // 모드(영랑 · 전심 …)의 상시 효과를 지속 턴만큼 건다 — 어느 모드인지는 시전 스킬 설명의 「모드 체인지(X)」, 없으면 하나뿐인 모드
+      const modes = (sim.party[ci].actions.skills || []).filter(s => s.sub === "모드 체인지");
+      const named = /모드 체인지\(([^)]+)\)/.exec((sk && sk.desc) || "");
+      const mode = (named && modes.find(s => s.name === named[1])) || (modes.length === 1 ? modes[0] : null);
+      if (mode) for (const f of mode.fx || []) apply(sim, ci, { ...f, timing: undefined, turns: u.turns ?? null, cond: undefined }, "모드: " + mode.name);
+      return;
+    }
     if (!ENGINE.has(u.k)) return;
     const key = slotKey(ci, u), old = sim.live.get(key);
     // 겹은 같은 스킬을 다시 걸 때만 오른다 — 다른 스킬이 같은 칸을 덮어쓰면 1부터(전에는 앞 스킬 겹을 이어받아 첫 시전이 2겹이 됐다)
@@ -80,7 +109,7 @@
   function fxOf(sim, ci, extra) {
     const out = [];
     for (const e of sim.live.values()) {
-      if (e.ci !== ci) continue;
+      if (e.ci !== ci || e.u.flat) continue;                             // 고정 수치는 flatStats 가 스탯에
       const v = typeof e.u.value === "number" && e.stacks > 1 ? +C.halfStack(e.u.value, e.stacks).toFixed(2) : e.u.value;
       out.push({ ...e.u, value: v, base: undefined, _skill: e.skill });
     }
@@ -102,7 +131,7 @@
   }
   function attackRaw(sim, ci, sk, part) {
     const atk = toAttack(part, sk);
-    const members = sim.party.map((m, i) => ({ ...m, fx: fxOf(sim, i, i === ci && atk._sure ? [{ k: "buff", name: "크리티컬 발생 확정", _skill: sk.name, _atkItem: true }] : null), _contrib: null }));
+    const members = sim.party.map((m, i) => ({ ...withFlat(m, flatStats(sim, i)), fx: fxOf(sim, i, i === ci && atk._sure ? [{ k: "buff", name: "크리티컬 발생 확정", _skill: sk.name, _atkItem: true }] : null), _contrib: null }));
     const m = { ...members[ci], attack: atk };
     members[ci] = m;
     // 대상 상태 — 확실한 것(p = 1 · 화면 토글)과 확률 상태(p < 1, 켠 값 · 끈 값을 p 로 섞음)
@@ -137,15 +166,20 @@
     }
   }
   function act(sim, ci, name, scored) {
-    const m = sim.party[ci], sk = (m.actions.skills || []).find(s => s.name === name);
+    const m = sim.party[ci];
+    let sk = (m.actions.skills || []).find(s => s.name === name);
     if (!sk) return 0;
+    if (sk.sub === "일반 공격") { const t = transformOf(m); if (t && sim.res[ci] >= transformAt(m)) sk = t; }   // 구슬이 차 있으면 변화한 일반 공격으로
+    const cost = resCost(sk);
+    if (cost && sim.res[ci] < cost) { sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: 0, skip: "자원 부족" }); return 0; }
+    sim.res[ci] -= cost;
     let d = 0;
     const parts = (sk.attacks || []).filter(a => !a.cond || sim.opt.cond);   // 조건부 공격(「스텔라 버스트 시」 · 전술 레벨 50 …)은 조건부 효과 포함일 때만
     for (const a of parts) d += attack(sim, ci, sk, a);
     if (parts.length) consume(sim, ci, parts[0]);
-    for (const u of sk.fx || []) if (!u.timing || u.timing === "use") apply(sim, ci, u, sk.name);
+    for (const u of sk.fx || []) if (!u.timing || u.timing === "use") apply(sim, ci, u, sk.name, sk);
     if (parts.length) for (const u of sim.onHit[ci] || (sim.onHit[ci] = equipOnHit(m, sim.opt))) apply(sim, ci, u, "장비: " + u._equip);   // 장비 「공격 시」
-    sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: name, dmg: Math.round(d) });
+    sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: Math.round(d) });
     if (scored) sim.dmg[sim.turn] = (sim.dmg[sim.turn] || 0) + d;
     if (scored) (sim.byMember[sim.turn] = sim.byMember[sim.turn] || [])[ci] = ((sim.byMember[sim.turn] || [])[ci] || 0) + d;
     return d;
@@ -187,14 +221,14 @@
     const perTurn = Object.fromEntries(Object.entries(sim.dmg).map(([t, v]) => [t, v]));
     const want = conf.scoreTurns || Object.keys(perTurn).map(Number);
     const perMember = party.map((m, ci) => want.reduce((s, t) => s + ((sim.byMember[t] || [])[ci] || 0), 0));   // 멤버별 점수 몫(기회비용 나누기용)
-    return { perTurn, perMember, score: want.reduce((s, t) => s + (perTurn[t] || 0), 0), log: sim.log, live: sim.live, zone: sim.zone };
+    return { perTurn, perMember, score: want.reduce((s, t) => s + (perTurn[t] || 0), 0), log: sim.log, live: sim.live, zone: sim.zone, res: sim.res };
   }
 
   // 살아 있는 효과 → 멤버별 fx(빌드의 장비 단계가 정적 계산에 넣는다)
   const liveFx = (live, ci) => fxOf({ live }, ci);
   // 살아 있는 대상 상태(확률 0.5 이상) — 장비 단계의 정적 식에 opt.punish 로
   const liveStates = live => [...new Set([...live.values()].filter(e => tstateOf(e.u) && (e.u.p ?? 1) >= 0.5).map(e => tstateOf(e.u)))];
-  const api = { run, toAttack, liveFx, liveStates, ZONE_KO };
+  const api = { run, toAttack, liveFx, liveStates, normalOf, ZONE_KO };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEScenario = api;
 })(typeof window !== "undefined" ? window : globalThis);

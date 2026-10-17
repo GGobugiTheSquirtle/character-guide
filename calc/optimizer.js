@@ -9,6 +9,8 @@
   const baseId = id => id.replace(/_(as|es)$/, "");
   const canGrasta = (g, traits) => !(g.req && g.req.length) || g.req.some(t => (traits || []).includes(t));
   const DMG_STATS = ["pwr", "int", "spd", "lck", "mp"];
+  // 방어구 종류는 무기 종류로 정해진다(위키 Cargo Characters.AccessoryType 388명 전원, 2026-10-17 — 전에는 안 걸러 못 끼는 방어구를 추천할 수 있었다)
+  const ACC = { 지팡이: "Ring", 활: "Ring", 도: "Ring", 검: "Bangle", 창: "Bangle", 망치: "Bangle", 권갑: "Necklace", 도끼: "Necklace" };
 
   // 대미지에 닿을 수 있는 장비만 — 방어구는 효과(스탯 · 대미지 · 크리)가 있는 것, 효과 없는 그라스타는 같은 스탯 묶음에서 하나만
   // 특수 광석 — 엔진이 읽는 계산 키가 있고 값이 확정된 것만(2026-10-14 개인 최강 세팅)
@@ -48,7 +50,7 @@
     }
     return {
       weapons: db.weapons.filter(w => w.type === cc.weapon),
-      armor: db.armor.filter(touches),
+      armor: db.armor.filter(a => touches(a) && (!ACC[cc.weapon] || a.type === ACC[cc.weapon])),
       grasta,
       badges: db.badges.filter(b => Object.keys(b.stats || {}).length || (b.calc || []).length),
       ...(conf.special ? { special: specialPool(db, cc, traits) } : {}),
@@ -204,7 +206,7 @@
           ...(x.badges || []).flatMap((_, i) => (y.badges || []).map((_, j) => ["b", i, j]))];
         for (const [k, i, j] of tries) {
           const sw = () => {
-            if (k === "weapon" || k === "armor") { if ((x[k] && x[k].type) !== (y[k] && y[k].type) && k === "weapon") return false; [x[k], y[k]] = [y[k], x[k]]; }
+            if (k === "weapon" || k === "armor") { if ((x[k] && x[k].type) !== (y[k] && y[k].type)) return false; [x[k], y[k]] = [y[k], x[k]]; }
             else if (k === "b") [x.badges[i], y.badges[j]] = [y.badges[j], x.badges[i]];
             else { [x.gear.grasta[i], y.gear.grasta[j]] = [y.gear.grasta[j], x.gear.grasta[i]]; for (const z of [x, y]) z.grasta = [...z.gear.grasta, ...z.gear.special]; }
             return true;

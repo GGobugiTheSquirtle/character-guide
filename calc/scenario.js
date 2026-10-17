@@ -85,6 +85,15 @@
     const cnt = sim.party.filter((m, i) => (need.others ? i !== ci : true) && ((m.c && m.c.traits) || []).some(t => ts.includes(t))).length;
     return cnt >= (need.n || 1);
   }
+  // 스텝 조건(E3) — 「X 로 발동 시」 = 연속 실행 경로(via), 「X 로 발동하지 않았을 시」, 「X 습득 시」 = 그 스킬이 있으면 참(최대 빌드), 그 밖은 「조건부 효과 포함」(opt.cond)
+  function condOk(sim, m, cond, via) {
+    if (!cond) return true;
+    let x;
+    if ((x = /^「(.+?)」로 발동 시$/.exec(cond))) return via === x[1];
+    if ((x = /^「(.+?)」로 발동하지 않았을 시$/.exec(cond))) return via !== x[1];
+    if ((x = /^「(.+?)」 습득 시$/.exec(cond))) return (m.actions.skills || []).some(s => s.name === x[1]);
+    return !!sim.opt.cond;
+  }
   function apply(sim, ci, u, skName, sk) {
     if (u.cond && !sim.opt.cond) return;
     if (!needOk(sim, ci, u.need)) return;
@@ -103,14 +112,30 @@
     // 겹은 같은 스킬을 다시 걸 때만 오른다 — 다른 스킬이 같은 칸을 덮어쓰면 1부터(전에는 앞 스킬 겹을 이어받아 첫 시전이 2겹이 됐다)
     const stacks = u.maxStack > 1 ? Math.min(u.maxStack, (old && old.skill === skName ? old.stacks : 0) + 1) : 1;
     const until = u.turns == null ? (u.times ? Infinity : Infinity) : sim.turn + u.turns;    // 만료 = 그 턴 끝
-    sim.live.set(key, { ci, u, skill: skName, stacks, until, times: u.times || null });
+    // 브레이크 축적(stack 엘리멘탈/웨폰 브레이크 「N 축적」)은 남은 개수 left — 일치 타마다 1개 소모(consumeBreak), 다시 걸면 더해진다
+    const left = u.k === "stack" ? Math.max(1, Math.floor(u.value || 1)) + (old && old.left ? old.left : 0) : undefined;
+    sim.live.set(key, { ci, u, skill: skName, stacks, until, times: u.times || null, left });
+  }
+  // 브레이크 소모 — 그 공격의 일치 타 수만큼(엘리멘탈 = 같은 속성, 웨폰 = 같은 공격 종류, 일반 = 아무 타). party_calc 는 fxOf 가 넘긴 남은 개수(value)로 첫 타들에 ×2
+  function consumeBreak(sim, atk, hits) {
+    for (const [k, e] of sim.live) {
+      if (!e.left || sideOf(e.u) !== "e") continue;
+      const st = P.statusOf(e.u);
+      if (!st) continue;
+      const fit = st.id === "ebreak" ? st.which === atk.element : st.id === "wbreak" ? (st.which || []).includes(atk.atk) : st.id === "break";
+      if (!fit) continue;
+      const n = Math.min(e.left, hits);
+      hits -= n; e.left -= n;
+      if (e.left <= 0) sim.live.delete(k);
+      if (hits <= 0) break;
+    }
   }
   // 살아 있는 효과 → 시전자별 fx(누적은 A + A/2·(n−1) 한 값)
   function fxOf(sim, ci, extra) {
     const out = [];
     for (const e of sim.live.values()) {
       if (e.ci !== ci || e.u.flat) continue;                             // 고정 수치는 flatStats 가 스탯에
-      const v = typeof e.u.value === "number" && e.stacks > 1 ? +C.halfStack(e.u.value, e.stacks).toFixed(2) : e.u.value;
+      const v = e.left ? e.left : typeof e.u.value === "number" && e.stacks > 1 ? +C.halfStack(e.u.value, e.stacks).toFixed(2) : e.u.value;
       out.push({ ...e.u, value: v, base: undefined, _skill: e.skill });
     }
     return extra ? out.concat(extra) : out;
@@ -121,8 +146,8 @@
     const memo = sim.memo;
     let key;
     if (memo) {
-      const live = [...sim.live.entries()].map(([k, e]) => `${k}#${e.stacks}#${e.u.value}`).sort().join(";");
-      key = `${sim.gear}|${ci}|${sk.name}|${sk.attacks.indexOf(part)}|${(sim.zone || {}).name || ""}|${sim.turn}|${sim.af ? 1 : 0}|${live}`;
+      const live = [...sim.live.entries()].map(([k, e]) => `${k}#${e.stacks}#${e.left || e.u.value}`).sort().join(";");
+      key = `${sim.gear}|${ci}|${sk.name}|${part.power ?? part.mult}x${part.hits || 1}${part.element || ""}${part.atk || ""}|${(sim.zone || {}).name || ""}|${sim.turn}|${sim.af ? 1 : 0}|${live}`;
       if (memo.has(key)) return memo.get(key);
     }
     const v = attackRaw(sim, ci, sk, part);
@@ -142,7 +167,8 @@
       const p = e.u.p ?? 1;
       if (p >= 1) { sure.add(s); maybe.delete(s); } else maybe.set(s, Math.max(maybe.get(s) || 0, p));
     }
-    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, turns: sim.turn, af: sim.af, punish }); return r ? r.perUse : 0; };
+    // breakOn: 시나리오가 건 브레이크 축적은 확정 사실(남은 개수 left 로 소모) — 정적 식의 「조건부일 때만」 기본값을 켠다
+    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, turns: sim.turn, af: sim.af, punish, breakOn: sim.opt.breakOn ?? true }); return r ? r.perUse : 0; };
     const mb = [...maybe];
     let v = 0;
     for (let mask = 0; mask < 1 << mb.length; mask++) {
@@ -165,25 +191,66 @@
       if (--e.times <= 0) sim.live.delete(k);
     }
   }
-  function act(sim, ci, name, scored) {
+  // 스킬 1회 = 스텝 순서대로(E3, docs/ae-battle-engine-audit.md §5) — fx: 그 순간 걸기 / atk: 분할이면 타마다(첫 타 뒤 그 공격의 상태 부여를 걸고 남은 타), 아니면 첫 타 상태로 타수 /
+  //   exec: 하위 스킬을 그 자리에(via = 이 스킬) / next: 행동 경계(행동 소모형 버프는 공격 있는 행동마다 1) / repeat: 다음 스텝 n회. 스텝이 없는 스킬(옛 데이터)은 공격 전부 → 효과 전부
+  function act(sim, ci, name, scored, via, depth = 0) {
     const m = sim.party[ci];
     let sk = (m.actions.skills || []).find(s => s.name === name);
-    if (!sk) return 0;
+    if (!sk || depth > 4) return 0;
     if (sk.sub === "일반 공격") { const t = transformOf(m); if (t && sim.res[ci] >= transformAt(m)) sk = t; }   // 구슬이 차 있으면 변화한 일반 공격으로
     const cost = resCost(sk);
     if (cost && sim.res[ci] < cost) { sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: 0, skip: "자원 부족" }); return 0; }
     sim.res[ci] -= cost;
-    let d = 0;
-    const parts = (sk.attacks || []).filter(a => !a.cond || sim.opt.cond);   // 조건부 공격(「스텔라 버스트 시」 · 전술 레벨 50 …)은 조건부 효과 포함일 때만
-    for (const a of parts) d += attack(sim, ci, sk, a);
-    if (parts.length) consume(sim, ci, parts[0]);
-    for (const u of sk.fx || []) if (!u.timing || u.timing === "use") apply(sim, ci, u, sk.name, sk);
-    if (parts.length) for (const u of sim.onHit[ci] || (sim.onHit[ci] = equipOnHit(m, sim.opt))) apply(sim, ci, u, "장비: " + u._equip);   // 장비 「공격 시」
-    sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: Math.round(d) });
-    if (scored) sim.dmg[sim.turn] = (sim.dmg[sim.turn] || 0) + d;
-    if (scored) (sim.byMember[sim.turn] = sim.byMember[sim.turn] || [])[ci] = ((sim.byMember[sim.turn] || [])[ci] || 0) + d;
+    let d = 0, lastAtk = null, hadAtk = false;
+    const onHit = () => { for (const u of sim.onHit[ci] || (sim.onHit[ci] = equipOnHit(m, sim.opt))) apply(sim, ci, u, "장비: " + u._equip); };   // 장비 「공격 시」
+    const endAction = () => { if (hadAtk) { consume(sim, ci, lastAtk); onHit(); } hadAtk = false; };
+    const steps = sk.steps ? sk.steps.slice() : [...(sk.attacks || []).map((a, i) => ({ t: "atk", i, cond: a.cond })), ...(sk.fx || []).map((u, i) => ({ t: "fx", i, cond: u.cond }))];   // 복사 — 분할 처리가 done 표식을 찍는다
+    const fxUnits = sk.fx || [];
+    for (let k = 0; k < steps.length; k++) {
+      const st = steps[k];
+      if (!condOk(sim, m, st.cond, via)) continue;
+      let reps = 1;
+      if (st.t === "repeat") { reps = st.n || 1; k++; if (k >= steps.length) break; }
+      const s2 = steps[k];
+      if (!condOk(sim, m, s2.cond, via)) continue;
+      for (let r = 0; r < reps; r++) {
+        if (s2.t === "fx") { const u = fxUnits[s2.i]; if (u && (!u.timing || u.timing === "use")) apply(sim, ci, { ...u, cond: undefined }, sk.name, sk); }
+        else if (s2.t === "atk") {
+          const a = sk.attacks[s2.i]; if (!a) continue;
+          const hits = a.hits || 1;
+          hadAtk = true; lastAtk = a;
+          // 타마다 다시 계산 — 첫 타 뒤 이 공격 줄의 상태 부여(바로 뒤 fx 스텝 중 적 대상 상태 · 축적)를 걸어 둘째 타부터 「대상 페인」 등을 받게.
+          //   타 사이에 바뀌는 것(뒤따르는 상태 부여 · 소모되는 브레이크)이 없으면 한 번에(속도 — 타마다 부르면 4인 60초 → 300초)
+          const follow = [];
+          if (a.split && hits > 1) for (let j = k + 1; j < steps.length && steps[j].t === "fx"; j++) { const u = fxUnits[steps[j].i]; if (u && (u.k === "ailment" || u.k === "stack") && sideOf(u) === "e") follow.push(j); else break; }
+          const brkLive = [...sim.live.values()].some(e => e.left && sideOf(e.u) === "e");
+          if (a.split && hits > 1 && (follow.length || brkLive)) {
+            for (let h = 0; h < hits; h++) {
+              d += attack(sim, ci, sk, { ...a, hits: 1 });
+              consumeBreak(sim, a, 1);
+              if (h === 0) for (const j of follow) { if (condOk(sim, m, steps[j].cond, via)) apply(sim, ci, { ...fxUnits[steps[j].i], cond: undefined }, sk.name, sk); steps[j] = { t: "done" }; }
+            }
+          } else { d += attack(sim, ci, sk, a); consumeBreak(sim, a, hits); }
+        }
+        else if (s2.t === "exec" && s2.skill) { endAction(); for (let n = 0; n < (s2.n || 1); n++) d += act(sim, ci, s2.skill, scored, sk.name, depth + 1); }
+        else if (s2.t === "next") endAction();
+      }
+    }
+    endAction();
+    if (!depth) sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: Math.round(d) });
+    if (scored && !depth) sim.dmg[sim.turn] = (sim.dmg[sim.turn] || 0) + d;
+    if (scored && !depth) (sim.byMember[sim.turn] = sim.byMember[sim.turn] || [])[ci] = ((sim.byMember[sim.turn] || [])[ci] || 0) + d;
     return d;
   }
+  // 턴 시작(③) · 턴 종료(⑭) 시점 효과 — 어빌리티 · 모드의 timing turnStart / turnEnd 단위(좌→우). hit · sb 는 아직(적 행동 · SB 모델 없음)
+  function timed(sim, timing) {
+    sim.party.forEach((m, ci) => {
+      for (const sk of m.actions.skills || []) if (sk.kind === "ability" || sk.sub === "모드 체인지")
+        for (const u of sk.fx || []) if (u.timing === timing) apply(sim, ci, u, sk.name, sk);
+    });
+  }
+  // 그 턴 행동의 계층 — 선제(tier pre) → 보통 → 후공(post). 계층 안은 속도순(난수 없음 = 기대값)
+  const tierOf = (m, name) => { let sk = (m.actions.skills || []).find(s => s.name === name); if (sk && sk.sub === "일반 공격") sk = transformOf(m) || sk; return (sk && sk.tier) || "mid"; };
   function endTurn(sim) {
     for (const [k, e] of sim.live) if (e.until <= sim.turn) sim.live.delete(k);
   }
@@ -206,17 +273,22 @@
     sim.turn = 1;
     let t0 = 1;
     if (plan.af) {
+      timed(sim, "turnStart");
       sim.af = true;
       const n = Math.max(...plan.af.map(x => x.length));
       for (let k = 0; k < n; k++) party.forEach((m, ci) => { if (plan.af[ci] && plan.af[ci][k]) act(sim, ci, plan.af[ci][k], false); });
       sim.af = false;
       endTurn(sim);
+      timed(sim, "turnEnd");
       t0 = 2;
     }
     (plan.turns || []).forEach((row, i) => {
       sim.turn = t0 + i;
-      for (const ci of order(sim)) if (row[ci]) act(sim, ci, row[ci], true);
-      endTurn(sim);
+      timed(sim, "turnStart");
+      for (const tier of ["pre", "mid", "post"])
+        for (const ci of order(sim)) if (row[ci] && tierOf(party[ci], row[ci]) === tier) act(sim, ci, row[ci], true);
+      endTurn(sim);                                                    // ⑪ 만료
+      timed(sim, "turnEnd");                                           // ⑭ 턴 종료 효과(만료 뒤 — 1턴 효과가 다음 턴까지 산다)
     });
     const perTurn = Object.fromEntries(Object.entries(sim.dmg).map(([t, v]) => [t, v]));
     const want = conf.scoreTurns || Object.keys(perTurn).map(Number);

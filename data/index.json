@@ -8853,7 +8853,7 @@
     },
     {
       "id": "iphi",
-      "nameKo": "이프",
+      "nameKo": "애니",
       "nameEn": "Iphi",
       "style": "NS",
       "rarity": 5,
@@ -9898,7 +9898,7 @@
     },
     {
       "id": "yipha_as",
-      "nameKo": "유인 AS",
+      "nameKo": "이프 AS",
       "nameEn": "Yipha AS",
       "style": "AS",
       "rarity": 5,
@@ -14482,7 +14482,7 @@
     },
     {
       "id": "yipha",
-      "nameKo": "유인",
+      "nameKo": "이프",
       "nameEn": "Yipha",
       "style": "NS",
       "rarity": 5,

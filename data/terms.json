@@ -274,13 +274,14 @@
    "id": "personality",
    "cat": "system",
    "en": "Personality",
-   "ko": "성격",
-   "src": "self",
-   "n_ko": 0,
+   "ko": "특성",
+   "src": "notice",
+   "n_ko": 44,
    "n_en": 1,
-   "note": "글래스터 장착 조건 · 공유 범위",
+   "note": "글래스터 장착 조건 · 공유 범위. 공지 표기 「특성」(10-17 사용자 확인)",
    "aliases_ko": [
-    "특성"
+    "성격",
+    "퍼스널리티"
    ]
   },
   {

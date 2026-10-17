@@ -57,7 +57,9 @@
   // 자원(구슬 — 낭지 · 무아 …, D3 뼈대 10-18): 캐릭터당 수치 하나. 상한 = 「구슬」 항목(sub 구슬)의 max, 양 = 「구슬 축적/소비」 단위 value(없으면 1).
   //   소비 스킬은 모자라면 그 행동이 없어진다(대미지 0). 조건부 소비(「이도신랑」으로 발동 시 …)는 평소 비용에서 뺀다
   const resMaxOf = m => { const r = (m.actions.skills || []).find(s => s.sub === "구슬" && s.max); return r ? r.max : Infinity; };
-  const resCost = sk => (sk.fx || []).filter(u => u.k === "other" && u.name === "구슬 소비" && !u.cond).reduce((s, u) => s + (u.value ?? 1), 0);
+  //   연속 실행으로 불린 하위 스킬(via)은 부모가 비용을 낸다 — 자기 「X로 발동 시 소비」 단위만(해방 영랑지 SB → 이도신랑 EX 「낭지를 소비하지 않음」)
+  const resCost = (sk, via) => (sk.fx || []).filter(u => u.k === "other" && u.name === "구슬 소비" && (via ? u.cond === `「${via}」로 발동 시` || u.cond === `[추가 효과] 「${via}」로 발동 시` : !u.cond))
+    .reduce((s, u) => s + (u.value ?? 1), 0);
   // 일반 공격 · 변화한 일반 공격(사슬낫 공격 → 이도신랑 EX): 「구슬 N 이상 축적 시」(기본 1) 커맨드가 바뀐다 — 매 턴 고를 수 있는 행동(스킬칸 밖)
   const normalOf = m => (m.actions.skills || []).find(s => s.kind === "normal" && s.sub === "일반 공격");
   const transformOf = m => (m.actions.skills || []).find(s => s.kind === "normal" && s.sub === "변화한 일반 공격");
@@ -75,7 +77,50 @@
   const withFlat = (m, fl) => (Object.keys(fl).length ? { ...m, stats: { ...m.stats, ...Object.fromEntries(Object.keys(fl).map(k => [k, ((m.stats || {})[k] || 0) + fl[k]])) } } : m);
 
   function newSim(party, opt, memo) {
-    return { party, opt, memo, turn: 0, af: false, zone: opt.zone || null, live: new Map(), log: [], dmg: [], byMember: [], onHit: [], res: party.map(() => 0) };
+    return { party, opt, memo, turn: 0, af: false, zone: opt.zone || null, live: new Map(), log: [], dmg: [], byMember: [], onHit: [], res: party.map(() => 0),
+      sb: { light: 0, shadow: 0, on: false, fired: 0 } };
+  }
+  // ── 스텔라 버스트(E3-3, 10-18 — 위키 Stellar Awakening §Building · §Flux, 사용자 「행동 수로 차고 어빌리티 · 공명으로 축적량이 다르며 발동 뒤 버프가 있다」) ──
+  //   게이지 = 천 에너지 + 명 에너지(합 100%). 전투 시작: 전방 1명마다 자기 정렬에 12.5%(천명 255 가정) · 아군 행동(AF 시전 포함, 턴 종료 행동 · 버디 제외)마다 행동자 정렬에 2.5%
+  //   + 천명 어빌리티(「축적량 N% UP」, need · cond). 100% 이상이면 다음 행동 경계에서 발동(버튼은 플레이어 몫 — 가장 이른 시점 가정): 전방 성도 각성 멤버(최대 4)가 스킬칸의 성도 스킬을 좌→우로
+  //   턴 소비 없이 실행(「스텔라 버스트 시」 조건 켬, MP 는 안 셈) → 많은 쪽 에너지 = 플럭스 → 그쪽 「스텔라 버스트 강화」(timing sb) 발동 → 게이지 0. 공명(Resonance) 축적은 아직
+  const ALIGN = { light: "light", shadow: "shadow", 천: "light", 명: "shadow" };
+  const alignOf = m => ALIGN[(m.c && m.c.ls) || ""] || null;
+  const isSA = m => (m.c && m.c.sa != null ? !!m.c.sa : (m.actions.skills || []).some(s => /^성도 스킬/.test(s.sub || "")));   // index sa 가 정본, 없으면 성도 스킬 보유로
+  const stellarOf = m => (m.slots || []).map(n => (m.actions.skills || []).find(s => s.name === n)).find(s => s && /^성도 스킬/.test(s.sub || ""));
+  function sbStart(sim) {
+    if (!sim.party.some(isSA)) { sim.sb.off = true; return; }                  // 성도 각성 멤버가 없으면 게이지 자체가 없다
+    for (const m of sim.party) { const a = alignOf(m); if (a) sim.sb[a] += 12.5; }
+  }
+  function sbGain(sim, ci) {
+    if (sim.sb.off) return;
+    const m = sim.party[ci], a = alignOf(m) || "light";
+    let rate = 2.5;
+    for (const sk of m.actions.skills || []) if (sk.kind === "ability")
+      for (const u of sk.fx || []) if (u.k === "other" && /축적량 UP/.test(u.name || "") && (!u.cond || sim.opt.cond) && needOk(sim, ci, u.need)) rate += u.value || 0;
+    sim.sb[a] += rate;
+  }
+  //   누르는 시점 = plan.sbAt(턴 번호 — 그 턴 시작에 누른다, 비AF 턴이면 턴을 안 쓰는 추가 행동) · 없으면 차는 즉시. 그 턴 전에 안 찼으면 찬 뒤 바로
+  function sbFire(sim, scored, atTurnStart) {
+    if (sim.sb.off || sim.sb.on || sim.sb.light + sim.sb.shadow < 100) return;
+    const at = sim.plan && sim.plan.sbAt;
+    if (at && !atTurnStart && sim.turn < at) return;                         // 미루는 중
+    if (at && atTurnStart && sim.turn !== at && sim.turn < at) return;
+    const flux = sim.sb.light >= sim.sb.shadow ? "light" : "shadow";
+    sim.sb.on = true;
+    let n = 0;
+    sim.party.forEach((m, ci) => {
+      const sk = isSA(m) && stellarOf(m);
+      if (!sk || n >= 4) return;
+      n++;
+      act(sim, ci, sk.name, scored, undefined, 0, true);
+    });
+    sim.party.forEach((m, ci) => {                                           // 발동 뒤 버프 — 플럭스가 맞는 「스텔라 버스트 강화」
+      for (const sk of m.actions.skills || []) if (sk.kind === "ability")
+        for (const u of sk.fx || []) if (u.timing === "sb" && (!u.flux || u.flux === flux)) apply(sim, ci, { ...u, timing: undefined }, sk.name, sk);
+    });
+    sim.log.push({ turn: sim.turn, af: sim.af, sb: true, flux, who: n });
+    sim.sb.light = sim.sb.shadow = 0; sim.sb.on = false; sim.sb.fired++;
   }
   // 효과 걸기 — 같은 칸은 덮어쓰기(누적형은 겹 +1), 지속 갱신
   // 파티 구성 조건(위키 need: 전방에 특성 n명 이상) — 실제 전방 멤버로 판정(others:false 면 본인 포함)
@@ -88,6 +133,7 @@
   // 스텝 조건(E3) — 「X 로 발동 시」 = 연속 실행 경로(via), 「X 로 발동하지 않았을 시」, 「X 습득 시」 = 그 스킬이 있으면 참(최대 빌드), 그 밖은 「조건부 효과 포함」(opt.cond)
   function condOk(sim, m, cond, via) {
     if (!cond) return true;
+    if (/^스텔라 버스트 시$/.test(cond)) return !!sim.sb.on;                 // SB 안에서 실행 중일 때
     let x;
     if ((x = /^「(.+?)」로 발동 시$/.exec(cond))) return via === x[1];
     if ((x = /^「(.+?)」로 발동하지 않았을 시$/.exec(cond))) return via !== x[1];
@@ -97,7 +143,15 @@
   function apply(sim, ci, u, skName, sk) {
     if (u.cond && !sim.opt.cond) return;
     if (!needOk(sim, ci, u.need)) return;
-    if (u.k === "zone") { const z = (sim.opt.zones || []).find(x => x.name === (ZONE_KO[u.name] || u.name)); if (z) sim.zone = z; return; }   // 그라스타 부여 존은 영어 이름
+    // 존 — 「극 X」 = ANOTHER ZONE(증가 효과 ×2, 2턴 뒤 존까지 사라짐) · 「절 X」 = Radical(×2, 5턴) · zoneAwake 단위 = 지금 존 각성(위키 Zones §Awakened, 구조 지도 §4.5). 그라스타 부여 존은 영어 이름
+    if (u.k === "zone" || u.k === "zoneAwake") {
+      const aw = /^극 /.test(u.name || "") ? 2 : /^절 /.test(u.name || "") ? 5 : u.k === "zoneAwake" ? 2 : 0;
+      const base = (u.name || "").replace(/^(극|절) /, "");
+      const z = u.k === "zoneAwake" ? (sim.zone && (sim.zone.base || sim.zone)) : (sim.opt.zones || []).find(x => x.name === (ZONE_KO[base] || base));
+      if (!z) return;
+      sim.zone = aw ? { ...z, up: { ...z.up, v: (z.up.v || 0) * 2 }, awake: true, base: z, until: sim.turn + aw } : z;
+      return;
+    }
     if (u.k === "other" && u.name === "구슬 축적") { sim.res[ci] = Math.min(resMaxOf(sim.party[ci]), sim.res[ci] + (u.value ?? 1)); return; }
     if (u.k === "other" && u.name === "모드 체인지") {
       // 모드(영랑 · 전심 …)의 상시 효과를 지속 턴만큼 건다 — 어느 모드인지는 시전 스킬 설명의 「모드 체인지(X)」, 없으면 하나뿐인 모드
@@ -147,7 +201,7 @@
     let key;
     if (memo) {
       const live = [...sim.live.entries()].map(([k, e]) => `${k}#${e.stacks}#${e.left || e.u.value}`).sort().join(";");
-      key = `${sim.gear}|${ci}|${sk.name}|${part.power ?? part.mult}x${part.hits || 1}${part.element || ""}${part.atk || ""}|${(sim.zone || {}).name || ""}|${sim.turn}|${sim.af ? 1 : 0}|${live}`;
+      key = `${sim.gear}|${ci}|${sk.name}|${part.power ?? part.mult}x${part.hits || 1}${part.element || ""}${part.atk || ""}|${(sim.zone || {}).name || ""}${sim.zone && sim.zone.awake ? "!" : ""}|${sim.turn}|${sim.af ? 1 : 0}${sim.sb.on ? "S" : ""}|${live}`;
       if (memo.has(key)) return memo.get(key);
     }
     const v = attackRaw(sim, ci, sk, part);
@@ -168,7 +222,7 @@
       if (p >= 1) { sure.add(s); maybe.delete(s); } else maybe.set(s, Math.max(maybe.get(s) || 0, p));
     }
     // breakOn: 시나리오가 건 브레이크 축적은 확정 사실(남은 개수 left 로 소모) — 정적 식의 「조건부일 때만」 기본값을 켠다
-    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, turns: sim.turn, af: sim.af, punish, breakOn: sim.opt.breakOn ?? true }); return r ? r.perUse : 0; };
+    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, zoneAwake: !!(sim.zone && sim.zone.awake), turns: sim.turn, af: sim.af, punish, breakOn: sim.opt.breakOn ?? true }); return r ? r.perUse : 0; };
     const mb = [...maybe];
     let v = 0;
     for (let mask = 0; mask < 1 << mb.length; mask++) {
@@ -193,12 +247,13 @@
   }
   // 스킬 1회 = 스텝 순서대로(E3, docs/ae-battle-engine-audit.md §5) — fx: 그 순간 걸기 / atk: 분할이면 타마다(첫 타 뒤 그 공격의 상태 부여를 걸고 남은 타), 아니면 첫 타 상태로 타수 /
   //   exec: 하위 스킬을 그 자리에(via = 이 스킬) / next: 행동 경계(행동 소모형 버프는 공격 있는 행동마다 1) / repeat: 다음 스텝 n회. 스텝이 없는 스킬(옛 데이터)은 공격 전부 → 효과 전부
-  function act(sim, ci, name, scored, via, depth = 0) {
+  function act(sim, ci, name, scored, via, depth = 0, inSB = false) {
     const m = sim.party[ci];
     let sk = (m.actions.skills || []).find(s => s.name === name);
     if (!sk || depth > 4) return 0;
+    if (!depth && !inSB) { sbGain(sim, ci); }                                 // 행동 1회 = 게이지(스텔라 버스트 안 실행 · 하위 스킬은 제외)
     if (sk.sub === "일반 공격") { const t = transformOf(m); if (t && sim.res[ci] >= transformAt(m)) sk = t; }   // 구슬이 차 있으면 변화한 일반 공격으로
-    const cost = resCost(sk);
+    const cost = resCost(sk, via);
     if (cost && sim.res[ci] < cost) { sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: 0, skip: "자원 부족" }); return 0; }
     sim.res[ci] -= cost;
     let d = 0, lastAtk = null, hadAtk = false;
@@ -237,9 +292,10 @@
       }
     }
     endAction();
-    if (!depth) sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: Math.round(d) });
+    if (!depth) sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: Math.round(d), ...(inSB ? { sb: true } : {}) });
     if (scored && !depth) sim.dmg[sim.turn] = (sim.dmg[sim.turn] || 0) + d;
     if (scored && !depth) (sim.byMember[sim.turn] = sim.byMember[sim.turn] || [])[ci] = ((sim.byMember[sim.turn] || [])[ci] || 0) + d;
+    if (!depth && !inSB) sbFire(sim, scored);                                // 행동 경계 — 게이지가 찼으면 스텔라 버스트
     return d;
   }
   // 턴 시작(③) · 턴 종료(⑭) 시점 효과 — 어빌리티 · 모드의 timing turnStart / turnEnd 단위(좌→우). hit · sb 는 아직(적 행동 · SB 모델 없음)
@@ -253,6 +309,7 @@
   const tierOf = (m, name) => { let sk = (m.actions.skills || []).find(s => s.name === name); if (sk && sk.sub === "일반 공격") sk = transformOf(m) || sk; return (sk && sk.tier) || "mid"; };
   function endTurn(sim) {
     for (const [k, e] of sim.live) if (e.until <= sim.turn) sim.live.delete(k);
+    if (sim.zone && sim.zone.awake && sim.zone.until <= sim.turn) sim.zone = null;   // 각성 존 종료 = 원래 존까지 사라진다(⑪)
   }
   function battleStart(sim) {
     sim.party.forEach((m, ci) => {
@@ -267,9 +324,11 @@
   //   plan.af = 멤버마다 6개(없으면 AF 없음) · plan.turns = 턴마다 멤버별 스킬 · conf.scoreTurns = 점수에 넣는 턴(기본: AF 면 2~4, 아니면 계획의 모든 턴) · conf.memo = 대미지 메모(Map)
   function run(party, plan, opt, conf = {}) {
     const sim = newSim(party, opt, conf.memo || null);
+    sim.plan = plan;
     // 메모 키의 장비 서명 — 장비 후보를 바꿔 가며 같은 메모를 써도 섞이지 않게
     if (sim.memo) sim.gear = party.map(m => [m.weapon && m.weapon.name, m.armor && m.armor.name, ...(m.grasta || []).map(g => g.name), "/", ...(m.badges || []).map(x => x.name)].join(",")).join("|");
     battleStart(sim);
+    sbStart(sim);
     sim.turn = 1;
     let t0 = 1;
     if (plan.af) {
@@ -285,6 +344,7 @@
     (plan.turns || []).forEach((row, i) => {
       sim.turn = t0 + i;
       timed(sim, "turnStart");
+      sbFire(sim, true, true);                                           // 미뤄 둔 스텔라 버스트는 턴 시작에(턴을 안 쓴다)
       for (const tier of ["pre", "mid", "post"])
         for (const ci of order(sim)) if (row[ci] && tierOf(party[ci], row[ci]) === tier) act(sim, ci, row[ci], true);
       endTurn(sim);                                                    // ⑪ 만료
@@ -293,7 +353,7 @@
     const perTurn = Object.fromEntries(Object.entries(sim.dmg).map(([t, v]) => [t, v]));
     const want = conf.scoreTurns || Object.keys(perTurn).map(Number);
     const perMember = party.map((m, ci) => want.reduce((s, t) => s + ((sim.byMember[t] || [])[ci] || 0), 0));   // 멤버별 점수 몫(기회비용 나누기용)
-    return { perTurn, perMember, score: want.reduce((s, t) => s + (perTurn[t] || 0), 0), log: sim.log, live: sim.live, zone: sim.zone, res: sim.res };
+    return { perTurn, perMember, score: want.reduce((s, t) => s + (perTurn[t] || 0), 0), log: sim.log, live: sim.live, zone: sim.zone, res: sim.res, sb: sim.sb };
   }
 
   // 살아 있는 효과 → 멤버별 fx(빌드의 장비 단계가 정적 계산에 넣는다)

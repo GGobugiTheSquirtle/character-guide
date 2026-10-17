@@ -56,14 +56,27 @@
     const cells = [];
     if (p.af) party.forEach((m, ci) => { for (let k = 0; k < conf.afCasts; k++) cells.push(["af", ci, k]); });
     for (let t = 0; t < conf.turns; t++) party.forEach((m, ci) => cells.push(["turns", t, ci]));
+    // 스텔라 버스트 누르는 턴(E3-3) — 즉시(null) 또는 비AF 턴 시작. 성도 각성 멤버가 있을 때만 칸을 둔다
+    const t0 = conf.af ? 2 : 1, sbOpts = [null, ...Array.from({ length: conf.turns }, (_, i) => t0 + i)];
+    if (party.some(m => m.c && m.c.sa)) cells.push(["sb"]);
+    const copy = pl => ({ af: pl.af && pl.af.map(r => r.slice()), turns: pl.turns.map(r => r.slice()), ...(pl.sbAt ? { sbAt: pl.sbAt } : {}) });
     for (let pass = 0; pass < conf.passes; pass++) {
       let moved = false;
       for (const [kind, a, b] of cells) {
+        if (kind === "sb") {
+          for (const opt2 of sbOpts) {
+            if ((opt2 || null) === (p.sbAt || null)) continue;
+            const q = copy(p); if (opt2) q.sbAt = opt2; else delete q.sbAt;
+            const s = score(q);
+            if (s > best * (1 + 1e-9)) { best = s; p = q; moved = true; }
+          }
+          continue;
+        }
         const m = kind === "af" ? party[a] : party[b];
         const cur = p[kind][a][b];
         for (const opt2 of options(m)) {
           if (opt2 === cur) continue;
-          const q = { af: p.af && p.af.map(r => r.slice()), turns: p.turns.map(r => r.slice()) };
+          const q = copy(p);
           q[kind][a][b] = opt2;
           const s = score(q);
           if (s > best * (1 + 1e-9)) { best = s; p = q; moved = true; }
@@ -74,7 +87,7 @@
         const opts = options(m);
         for (const x of opts) for (const y of opts) {
           if (x === y) continue;
-          const q = { af: p.af && p.af.map(r => r.slice()), turns: p.turns.map(r => r.slice()) };
+          const q = copy(p);
           let hit = false;
           if (q.af) q.af[ci] = q.af[ci].map(v => (v === x ? (hit = true, y) : v));
           q.turns.forEach(r => { if (r[ci] === x) { r[ci] = y; hit = true; } });

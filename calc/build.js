@@ -150,13 +150,35 @@
       if (team !== keep.team) gearPass(1);
       if (cur.score < keep.cur.score) ({ team, cur } = keep);
     } else if (conf.grantsOf) slotPass({ ...conf, via: true, passes: 2 });
+    // 후열 셔틀(10-18) — conf.back = [{c, cc, pool?}] 은 공격 · 효과 없이 공유 그라스타만 나른다. 칸마다 후보를 바꿔 A 점수(계획 고정)가 오르면 채택 → 다시 계획.
+    //   후보 = pool(없으면 장비 후보 중 공유 그라스타). 획득 가능 수(limit)는 전방이 낀 것까지 세고, 같은 그라스타를 둘이 나르면 둘 다 들어간다(공유분 중첩, 10-15 사용자 확인)
+    const back = (conf.back || []).map(b => ({ c: b.c, cc: b.cc, pool: b.pool || (conf.gear ? (conf.gear.poolsOf(b).grasta || []).filter(g => g.share && !g.ore) : []), grasta: Array(gslots).fill(null) }));
+    if (back.length) {
+      const setBack = () => { opt = { ...opt, back: back.map(b => ({ c: b.c, cc: b.cc, grasta: b.grasta.filter(Boolean) })) }; };
+      const used = g => [...team.flatMap(m => m.grasta || []), ...back.flatMap(b => b.grasta)].filter(x => x && (x.base || x.name) === (g.base || g.name)).length;
+      setBack();
+      let best = quick(team, cur.plan);
+      for (let pass = 0; pass < 3; pass++) {
+        let moved = false;
+        for (const b of back) for (let k = 0; k < gslots; k++) for (const g of [null, ...b.pool]) {
+          const was = b.grasta[k];
+          if (g === was || (g && used(g) >= (g.limit ?? Infinity))) continue;
+          b.grasta[k] = g; setBack();
+          const q = quick(team, cur.plan);
+          if (q > best * (1 + 1e-9)) { best = q; moved = true; } else { b.grasta[k] = was; setBack(); }
+        }
+        if (!moved) break;
+      }
+      cur = PL.plan(team, opt, { ...inner, start: cur.plan, memo });
+      evals += cur.evals;
+    }
     // 확정 — 재시작 8 로 계획을 다시, 보조 점수 B(1턴) · C(3턴)는 AF 없이 따로 계획
     const fin = PL.plan(team, opt, { af: true, afCasts: 6, turns: 3, restarts: 8, memo, start: cur.plan });
     const b = PL.plan(team, opt, { af: false, turns: 1, restarts: 4, memo });
     const c = PL.plan(team, opt, { af: false, turns: 3, restarts: 4, memo });
     return { team, slots: team.map(m => m.slots), via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)), plan: fin.plan, perTurn: fin.res.perTurn, perMember: fin.res.perMember, log: fin.res.log, gearHist,
       scores: { A: fin.score, B: b.score, C: c.score }, plans: { B: b.plan, C: c.plan }, evals: evals + fin.evals + b.evals + c.evals,
-      contrib: contributions(team, fin.plan, opt) };
+      contrib: contributions(team, fin.plan, opt), back: opt.back || [] };
   }
 
   // 기회비용 — 칸(무기 · 방어구 · 그라스타 · 배지 · 스킬)마다 「빼면 A 점수가 얼마 주나」를 자기 몫 / 파티원 몫으로. 계획은 고정(스킬은 그 칸을 안 씀으로)
@@ -179,7 +201,13 @@
         turns: plan.turns.map(r => r.map((x, i) => (i === ci && x === n ? null : x))) }, "스킬", n));
       out[ci].sort((a, b) => b.total - a.total);
     });
-    return { base: base.score, perMember: base.perMember, items: out };
+    // 후열 셔틀 그라스타 — 빼면 A 가 얼마 주나(전부 파티 몫)
+    const backItems = (opt.back || []).map((b, bi) => (b.grasta || []).map((g, j) => {
+      const r = S.run(team, plan, { ...opt, back: opt.back.map((x, i) => (i === bi ? { ...x, grasta: x.grasta.filter((_, k) => k !== j) } : x)) }, sc);
+      const all = base.score - r.score;
+      return { kind: "그라스타(후열)", name: g.name, total: all, own: 0, party: all, pct: base.score ? all / base.score : 0 };
+    }));
+    return { base: base.score, perMember: base.perMember, items: out, backItems };
   }
 
   const api = { optimize, candidates, initialSlots, useful, contributions, grantSkill, withGrants, fitGrasta };

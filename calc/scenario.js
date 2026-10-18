@@ -326,7 +326,8 @@
     const sim = newSim(party, opt, conf.memo || null);
     sim.plan = plan;
     // 메모 키의 장비 서명 — 장비 후보를 바꿔 가며 같은 메모를 써도 섞이지 않게
-    if (sim.memo) sim.gear = party.map(m => [m.weapon && m.weapon.name, m.armor && m.armor.name, ...(m.grasta || []).map(g => g.name), "/", ...(m.badges || []).map(x => x.name)].join(",")).join("|");
+    if (sim.memo) sim.gear = party.map(m => [m.weapon && m.weapon.name, m.armor && m.armor.name, ...(m.grasta || []).map(g => g.name), "/", ...(m.badges || []).map(x => x.name)].join(",")).join("|")
+      + "||" + (opt.back || []).map(b => (b.grasta || []).map(g => g.name).join(",")).join("|");      // 후열 셔틀 그라스타(공유)
     battleStart(sim);
     sbStart(sim);
     sim.turn = 1;

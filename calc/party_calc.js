@@ -35,7 +35,7 @@
   // 효과 기여 — 멤버마다 효과 단위를 한 번만 분류해 s._contrib 에 둔다(파티 탐색은 같은 멤버를 수십만 번 합친다).
   //   s.fx 를 바꾸면 s._contrib 를 지울 것
   const newAG = () => ({ pwr: { buffs: [] }, int: { buffs: [] }, spd: { buffs: [] }, type: {}, dmg: { buffs: [] }, wdmg: {},
-    crit: [], mcrit: [], critDmg: [], mcritDmg: [], focusPhys: [], focusMag: [], sureCrit: false, overthrow: false,
+    crit: [], mcrit: [], critDmg: [], mcritDmg: [], weak: [], focusPhys: [], focusMag: [], sureCrit: false, overthrow: false,
     mindseye: false, risktaker: false, overcrit: false, movercrit: false, hawk: [], src: [] });
   const newEG = () => ({ phys: [], magic: [], type: {}, atk: {}, def: [], mdef: [], breaks: [], src: [] });
   function mergeInto(g, h) {
@@ -128,6 +128,9 @@
         } else hit = false;
         if (hit) g.src.push(`${s.c.nameKo}: ${st} +${u.value}%`);
       }
+    } else if (u.k === "dmg" && u.dir === "UP" && u.what === "약점 시 대미지") {
+      // 「약점 시 대미지 N% UP」(낭전-식 · 배지) = 약점 배율 +N/100 가산(딩님 파이프라인 「약점 대미지 UP 합」 · 시련 광석과 같은 자리 — 가정, 10-18 영상 대조로 공백 발견). 약점 타에만 들어간다
+      g.weak.push(v); g.src.push(`${s.c.nameKo}: 약점 시 대미지 +${u.value}%`);
     } else if (u.k === "dmg" && u.dir === "UP" && /크리티컬 대미지$/.test(u.what || "")) {   // 한국어 해석기는 크리 대미지를 dmg 로 낸다 — 일반 대미지가 아님(2026-10-15)
       (/마법 크리티컬/.test(u.what) ? g.mcritDmg : g.critDmg).push(v); g.src.push(`${s.c.nameKo}: ${u.what} +${u.value}%`);
     } else if (u.k === "dmg" && u.dir === "UP" && !/받는|피격/.test(u.what || "") && u.what !== "약점 시 대미지") {
@@ -438,7 +441,8 @@
     const nBrk = brk ? Math.max(eg.breaks.includes("*") ? 1 : 0, eg.breaks.filter(bMatch).length) : 0;
     const sx = { shingan: lun && ag.mindseye ? 0.5 : 0, kesshi: lun && ag.risktaker ? 0.7 : 0, brk: nBrk ? 1 : 0 };
     for (const x of [sx.shingan, sx.kesshi]) if (x) groups.push(x);
-    const en = opt.enemy || { end: 0, spr: 0 };
+    // 방어 무시(공격 단위 ignoreDef — 발경참 · 흉랑체, 10-18 영상 대조로 공백 발견) = 그 공격만 적 내구 · 정신 0
+    const en = atk._ignoreDef ? { ...(opt.enemy || {}), end: 0, spr: 0 } : (opt.enemy || { end: 0, spr: 0 });
     // skillMult — 범위 배율(150~18000%)의 위값(multMax)은 조건부라 opt.cond 일 때만(모든 조건 최대).
     // 아니면 아래값 × 켜진 조건 배수(atk.conds, 2026-10-15 S7) — 위값을 넘지 않는다. 크리 조건은 크리 타격에만
     const cx = condMult(atk, aff, opt, brk);
@@ -454,7 +458,7 @@
       resDown: { phys: net(eg, "p" + atk.atk, () => C.groupNet({ buffs: [...eg.phys, ...(eg.atk[atk.atk] || [])] })),
         type: net(eg, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(eg.type["*"] || []), ...(eg.type[typeKey] || [])] : [] })),
         magic: net(eg, "magic", () => C.groupNet({ buffs: eg.magic })) },
-      groups, punish: eq.punish, punishV: eq.punishV, equip: eq.equip, weakBuff: eq.weak + ev.weak + (sx.shingan ? 1 : 0), single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
+      groups, punish: eq.punish, punishV: eq.punishV, equip: eq.equip, weakBuff: eq.weak + ev.weak + (sx.shingan ? 1 : 0) + ag.weak.reduce((a, b) => a + b, 0), single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
     };
     const critDmg = magic ? C.additive([...ag.mcritDmg, eq.mcritDmg]) : C.additive([...ag.critDmg, eq.critDmg]);
     // 오버 크리: 크리 대미지 ×2 확률 = (크리율 − 100%) / 1000% (위키 Status Effects)

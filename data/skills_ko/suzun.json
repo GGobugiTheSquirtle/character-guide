@@ -1,0 +1,1623 @@
+{
+ "id": "suzun",
+ "source": "news-ap.another-eden.games notice_v2 (ko)",
+ "blocks": [
+  {
+   "notice": 874,
+   "kind": "encounter",
+   "who": "스즈누이",
+   "class": "",
+   "sections": {
+    "skills": [
+     {
+      "name": "그림자 보내기",
+      "tag": "일반 공격 변화",
+      "mp": null,
+      "lines": [
+       "적 전체에 다음 효과 부여",
+       "약점 간파(마)(3턴)",
+       "아군 전체에 다음 효과 부여",
+       "약점 시 대미지 UP(3턴)",
+       "자신에게 다음 효과 부여",
+       "영소 상태로 변화(영구 지속)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "ailment",
+        "name": "약점 간파(마)",
+        "guess": true,
+        "turns": 3,
+        "raw": "약점 간파(마)(3턴)",
+        "target": "적 전체",
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 전체"
+       },
+       {
+        "k": "dmg",
+        "what": "대미지",
+        "dir": "UP",
+        "turns": 3,
+        "raw": "약점 시 대미지 UP(3턴)",
+        "target": "아군 전체",
+        "mode": "",
+        "cond": "약점 시",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "action",
+        "what": "영소 상태로 변화",
+        "perm": true,
+        "raw": "영소 상태로 변화(영구 지속)",
+        "target": "자신",
+        "mode": "",
+        "r": "mode",
+        "tm": "사용 시",
+        "tc": "자신"
+       }
+      ],
+      "en": "Shadowed Send-Off"
+     },
+     {
+      "name": "애향의 동요",
+      "tag": "",
+      "mp": 60,
+      "lines": [
+       "가창 발동(2턴)",
+       "아군 전체에 다음 효과 부여",
+       "HP 최대치 20% UP(3턴)",
+       "【가창 효과】",
+       "아군 전체의 받는 대미지 30% DOWN",
+       "가창 효과 발동 중 턴 종료 시 아군 전체에 다음 효과 부여",
+       "HP 회복 30%",
+       "속도 50 DOWN(3턴)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "action",
+        "what": "가창 발동",
+        "turns": 2,
+        "raw": "가창 발동(2턴)",
+        "target": "",
+        "mode": "",
+        "r": "mode",
+        "tm": "사용 시"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "HP 최대치"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 20.0,
+        "turns": 3,
+        "raw": "HP 최대치 20% UP(3턴)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "dmg",
+        "what": "아군 전체의 받는 대미지",
+        "value": 30.0,
+        "dir": "DOWN",
+        "raw": "아군 전체의 받는 대미지 30% DOWN",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "heal",
+        "what": "HP",
+        "value": 30.0,
+        "flat": false,
+        "raw": "HP 회복 30%",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "cond": "가창 효과 발동 중 턴 종료 시",
+        "r": "recover",
+        "tm": "턴 종료",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stat_flat",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 50.0,
+        "basis": "",
+        "cap": "",
+        "turns": 3,
+        "raw": "속도 50 DOWN(3턴)",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "cond": "가창 효과 발동 중 턴 종료 시",
+        "r": "other",
+        "tm": "턴 종료",
+        "tc": "아군 전체"
+       }
+      ],
+      "en": "Hometown Lullaby"
+     },
+     {
+      "name": "전승의 동요",
+      "tag": "",
+      "mp": 68,
+      "lines": [
+       "가창 발동(2턴)",
+       "아군 전체에 다음 효과 부여",
+       "HP 최대치 30% UP(3턴)",
+       "【가창 효과】",
+       "아군 전체의 받는 대미지 40% DOWN",
+       "가창 효과 발동 중 턴 종료 시 아군 전체에 다음 효과 부여",
+       "HP 회복 50%",
+       "속도 100 DOWN(3턴)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "action",
+        "what": "가창 발동",
+        "turns": 2,
+        "raw": "가창 발동(2턴)",
+        "target": "",
+        "mode": "",
+        "r": "mode",
+        "tm": "사용 시"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "HP 최대치"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 30.0,
+        "turns": 3,
+        "raw": "HP 최대치 30% UP(3턴)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "dmg",
+        "what": "아군 전체의 받는 대미지",
+        "value": 40.0,
+        "dir": "DOWN",
+        "raw": "아군 전체의 받는 대미지 40% DOWN",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "heal",
+        "what": "HP",
+        "value": 50.0,
+        "flat": false,
+        "raw": "HP 회복 50%",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "cond": "가창 효과 발동 중 턴 종료 시",
+        "r": "recover",
+        "tm": "턴 종료",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stat_flat",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 100.0,
+        "basis": "",
+        "cap": "",
+        "turns": 3,
+        "raw": "속도 100 DOWN(3턴)",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "cond": "가창 효과 발동 중 턴 종료 시",
+        "r": "other",
+        "tm": "턴 종료",
+        "tc": "아군 전체"
+       }
+      ],
+      "en": "Traditional Lullaby"
+     },
+     {
+      "name": "실종의 동요",
+      "tag": "",
+      "mp": 85,
+      "lines": [
+       "가창 발동(2턴)",
+       "아군 전체에 다음 효과 부여",
+       "HP 최대치 70% UP + MP 최대치 40% UP + 물리 저항 30% UP + 마법 저항 30% UP(2턴)",
+       "속도 150 DOWN(3턴)",
+       "【가창 효과】",
+       "아군 전체의 마법 공격으로 가하는 대미지 30% UP + 받는 대미지 50% DOWN",
+       "가창 효과 발동 중 턴 종료 시 「박애의 포옹」 실행",
+       "【추가 효과】",
+       "영소 상태에서 스킬 발동 시 가창 효과 변화"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "action",
+        "what": "가창 발동",
+        "turns": 2,
+        "raw": "가창 발동(2턴)",
+        "target": "",
+        "mode": "",
+        "r": "mode",
+        "tm": "사용 시"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "HP 최대치"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 70.0,
+        "raw": "HP 최대치 70% UP",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "MP 최대치"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 40.0,
+        "raw": "MP 최대치 40% UP",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "물리 저항"
+        ],
+        "group": "resist",
+        "dir": "UP",
+        "value": 30.0,
+        "raw": "물리 저항 30% UP",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "마법 저항"
+        ],
+        "group": "resist",
+        "dir": "UP",
+        "value": 30.0,
+        "turns": 2,
+        "raw": "마법 저항 30% UP(2턴)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stat_flat",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 150.0,
+        "basis": "",
+        "cap": "",
+        "turns": 3,
+        "raw": "속도 150 DOWN(3턴)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "other",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "dmg",
+        "what": "아군 전체의 마법 공격으로 가하는 대미지",
+        "value": 30.0,
+        "dir": "UP",
+        "raw": "아군 전체의 마법 공격으로 가하는 대미지 30% UP",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "dmg",
+        "what": "받는 대미지",
+        "value": 50.0,
+        "dir": "DOWN",
+        "raw": "받는 대미지 50% DOWN",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "action",
+        "what": "「박애의 포옹」 실행",
+        "raw": "가창 효과 발동 중 턴 종료 시 「박애의 포옹」 실행",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "cond": "가창 효과 발동 중 턴 종료 시",
+        "r": "mode",
+        "tm": "턴 종료",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "other",
+        "raw": "영소 상태에서 스킬 발동 시 가창 효과 변화",
+        "target": "아군 전체",
+        "mode": "추가 효과",
+        "r": "other",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       }
+      ]
+     },
+     {
+      "name": "실종의 동요",
+      "tag": "영소 상태 시",
+      "mp": 85,
+      "lines": [
+       "가창 발동(2턴)",
+       "아군 전체에 다음 효과 부여",
+       "HP 최대치 70% UP + MP 최대치 40% UP + 물리 저항 30% UP + 마법 저항 30% UP(2턴)",
+       "속도 150 DOWN(3턴)",
+       "【가창 효과】",
+       "아군 전체의 마법 공격으로 가하는 대미지 120% UP",
+       "가창 효과 발동 중 턴 종료 시 「고별의 포옹」 실행"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "action",
+        "what": "가창 발동",
+        "turns": 2,
+        "raw": "가창 발동(2턴)",
+        "target": "",
+        "mode": "",
+        "r": "mode",
+        "tm": "사용 시"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "HP 최대치"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 70.0,
+        "raw": "HP 최대치 70% UP",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "MP 최대치"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 40.0,
+        "raw": "MP 최대치 40% UP",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "물리 저항"
+        ],
+        "group": "resist",
+        "dir": "UP",
+        "value": 30.0,
+        "raw": "물리 저항 30% UP",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "마법 저항"
+        ],
+        "group": "resist",
+        "dir": "UP",
+        "value": 30.0,
+        "turns": 2,
+        "raw": "마법 저항 30% UP(2턴)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stat_flat",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 150.0,
+        "basis": "",
+        "cap": "",
+        "turns": 3,
+        "raw": "속도 150 DOWN(3턴)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "other",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "dmg",
+        "what": "아군 전체의 마법 공격으로 가하는 대미지",
+        "value": 120.0,
+        "dir": "UP",
+        "raw": "아군 전체의 마법 공격으로 가하는 대미지 120% UP",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "action",
+        "what": "「고별의 포옹」 실행",
+        "raw": "가창 효과 발동 중 턴 종료 시 「고별의 포옹」 실행",
+        "target": "아군 전체",
+        "mode": "가창 효과",
+        "cond": "가창 효과 발동 중 턴 종료 시",
+        "r": "mode",
+        "tm": "턴 종료",
+        "tc": "아군 전체"
+       }
+      ],
+      "en": "Bonded Lullaby"
+     },
+     {
+      "name": "영면의 연꽃",
+      "tag": "",
+      "mp": 17,
+      "lines": [
+       "적 전체에 그림자 속성 마법 공격(약)",
+       "공격 대상에게 다음 효과 부여",
+       "수면"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "그림자",
+        "atk": "마법",
+        "hits": 1,
+        "power": "약",
+        "mult": null,
+        "preempt": false,
+        "raw": "적 전체에 그림자 속성 마법 공격(약)",
+        "target": "",
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
+       },
+       {
+        "k": "ailment",
+        "name": "수면",
+        "raw": "수면",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       }
+      ],
+      "en": "Sleeping Lotus"
+     },
+     {
+      "name": "유법주",
+      "tag": "",
+      "mp": 47,
+      "lines": [
+       "아군 전체에 다음 효과 부여",
+       "HP 회복 50% + 치유(HP 최대치 30%, 3회) + 상태 이상 회복"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "heal",
+        "what": "HP",
+        "value": 50.0,
+        "flat": false,
+        "raw": "HP 회복 50%",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "recover",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "buff",
+        "name": "치유",
+        "guess": true,
+        "times": 3,
+        "raw": "치유(HP 최대치 30%, 3회)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "recover",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "heal",
+        "what": "상태 이상 회복",
+        "raw": "상태 이상 회복",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "recover",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       }
+      ],
+      "en": "Curative Charm"
+     },
+     {
+      "name": "호법주",
+      "tag": "",
+      "mp": 20,
+      "lines": [
+       "전방의 「지팡이」 특성 아군에게 다음 효과 부여",
+       "실드(스즈누이의 최대 HP 30%만큼/최대 10000/5턴)",
+       "날리기 무효(3회)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "guard",
+        "what": "실드",
+        "detail": "스즈누이의 최대 HP 30%만큼/최대 10000/5턴",
+        "turns": 5,
+        "raw": "실드(스즈누이의 최대 HP 30%만큼/최대 10000/5턴)",
+        "target": "전방의 「지팡이」 특성 아군",
+        "mode": "",
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "특정 아군"
+       },
+       {
+        "k": "guard",
+        "what": "날리기 무효",
+        "times": 3,
+        "raw": "날리기 무효(3회)",
+        "target": "전방의 「지팡이」 특성 아군",
+        "mode": "",
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "특정 아군"
+       }
+      ],
+      "en": "Warding Charm"
+     },
+     {
+      "name": "박애의 포옹",
+      "tag": "",
+      "mp": 55,
+      "lines": [
+       "아군 전체에 다음 효과 부여",
+       "HP 회복 70% + MP 회복 15%",
+       "모든 속성 저항 50% UP(1턴) + 숙업 1 축적",
+       "【추가 효과】",
+       "영소 상태 시 이 스킬이 「고별의 포옹」(으)로 변화"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "heal",
+        "what": "HP",
+        "value": 70.0,
+        "flat": false,
+        "raw": "HP 회복 70%",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "recover",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "heal",
+        "what": "MP",
+        "value": 15.0,
+        "flat": false,
+        "raw": "MP 회복 15%",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "모든 속성 저항"
+        ],
+        "group": "resist",
+        "dir": "UP",
+        "value": 50.0,
+        "turns": 1,
+        "raw": "모든 속성 저항 50% UP(1턴)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "surv_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stack",
+        "name": "숙업",
+        "value": "1",
+        "op": "축적",
+        "raw": "숙업 1 축적",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "action",
+        "what": "이 스킬이 「고별의 포옹」(으)로 변화",
+        "raw": "영소 상태 시 이 스킬이 「고별의 포옹」(으)로 변화",
+        "target": "아군 전체",
+        "mode": "추가 효과",
+        "cond": "영소 상태 시",
+        "r": "mode",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       }
+      ],
+      "en": "Gentle Embrace"
+     },
+     {
+      "name": "고별의 포옹",
+      "tag": "",
+      "mp": 55,
+      "lines": [
+       "아군 전체에 다음 효과 부여",
+       "루나틱",
+       "+ 루나틱",
+       "+ 루나틱",
+       "(1턴) + 마법 크리티컬율 100% UP(10회 행동)",
+       "적과 아군 전체에 다음 효과 부여",
+       "힘 150 DOWN + 지능 150 DOWN(1턴)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "buff",
+        "name": "루나틱",
+        "raw": "루나틱",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "buff",
+        "name": "루나틱",
+        "raw": "루나틱",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "buff",
+        "name": "루나틱",
+        "raw": "루나틱",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "meta",
+        "what": "지속",
+        "turns": 1,
+        "raw": "(1턴)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "meta",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "마법 크리티컬율"
+        ],
+        "group": "crit",
+        "dir": "UP",
+        "value": 100.0,
+        "actions": 10,
+        "raw": "마법 크리티컬율 100% UP(10회 행동)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stat_flat",
+        "stats": [
+         "힘"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 150.0,
+        "basis": "",
+        "cap": "",
+        "raw": "힘 150 DOWN",
+        "target": "적과 아군 전체",
+        "mode": "",
+        "r": "other",
+        "tm": "사용 시",
+        "tc": "적과 아군"
+       },
+       {
+        "k": "stat_flat",
+        "stats": [
+         "지능"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 150.0,
+        "basis": "",
+        "cap": "",
+        "turns": 1,
+        "raw": "지능 150 DOWN(1턴)",
+        "target": "적과 아군 전체",
+        "mode": "",
+        "r": "other",
+        "tm": "사용 시",
+        "tc": "적과 아군"
+       }
+      ],
+      "en": "Final Embrace"
+     },
+     {
+      "name": "환영명가",
+      "tag": "",
+      "mp": 80,
+      "lines": [
+       "아군 전체에 다음 효과 부여",
+       "지능 50% UP + 속도 50% UP + 지팡이 장착자 대미지 50% UP + 정신 통일(3턴)",
+       "【추가 효과】",
+       "영소 상태 시 버프 효과량 증가(2배)",
+       "아군 전체에 다음 효과 부여",
+       "마법 오버 터프니스(3턴)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "stat_pct",
+        "stats": [
+         "지능"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 50.0,
+        "raw": "지능 50% UP",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 50.0,
+        "raw": "속도 50% UP",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "tempo",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "dmg",
+        "what": "지팡이 장착자 대미지",
+        "value": 50.0,
+        "dir": "UP",
+        "raw": "지팡이 장착자 대미지 50% UP",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "buff",
+        "name": "정신 통일",
+        "turns": 3,
+        "raw": "정신 통일(3턴)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "power",
+        "what": "효과량 증가",
+        "detail": "2배",
+        "raw": "영소 상태 시 버프 효과량 증가(2배)",
+        "target": "아군 전체",
+        "mode": "추가 효과",
+        "cond": "영소 상태 시",
+        "r": "power",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "buff",
+        "name": "마법 오버 터프니스",
+        "guess": true,
+        "turns": 3,
+        "raw": "마법 오버 터프니스(3턴)",
+        "target": "아군 전체",
+        "mode": "추가 효과",
+        "r": "state_unknown",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       }
+      ],
+      "en": "Fated Providence"
+     }
+    ],
+    "abilities": [
+     {
+      "lines": [
+       "전방에서 턴 시작 시 아군 전방에 숙업이 합계 10 이상 축적 시 일반 공격이 「그림자 보내기」로 변화"
+      ],
+      "effects": [
+       {
+        "k": "action",
+        "what": "아군 전방에 숙업이 합계 10 이상 축적 시 일반 공격이 「그림자 보내기」로 변화",
+        "raw": "전방에서 턴 시작 시 아군 전방에 숙업이 합계 10 이상 축적 시 일반 공격이 「그림자 보내기」로 변화",
+        "target": "",
+        "mode": "",
+        "cond": "전방에서 턴 시작 시",
+        "r": "mode",
+        "tm": "턴 시작"
+       }
+      ]
+     },
+     {
+      "lines": [
+       "ZONE 어빌리티 「숙연」"
+      ],
+      "effects": [
+       {
+        "k": "zone",
+        "what": "ZONE 어빌리티",
+        "raw": "ZONE 어빌리티 「숙연」",
+        "target": "",
+        "mode": "",
+        "r": "zone",
+        "tm": "상시·조건"
+       }
+      ]
+     }
+    ],
+    "stacks": [
+     {
+      "name": "숙업",
+      "tag": "",
+      "mp": null,
+      "lines": [
+       "축적 수에 따라 HP 최대치 1000 UP",
+       "최대 축적 수:",
+       "10",
+       "축적 조건:",
+       "스킬 「박애의 포옹」 사용 시 축적",
+       "모드 체인지"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "stat_flat",
+        "stats": [
+         "HP 최대치"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 1000.0,
+        "basis": "축적 수에 따라",
+        "cap": "",
+        "raw": "축적 수에 따라 HP 최대치 1000 UP",
+        "target": "",
+        "mode": "",
+        "r": "surv_buff",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "meta",
+        "what": "최대 축적 수",
+        "detail": "10",
+        "raw": "최대 축적 수: 10",
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "action",
+        "what": "모드 체인지",
+        "raw": "모드 체인지",
+        "target": "",
+        "mode": "",
+        "r": "mode",
+        "tm": "상시·조건"
+       }
+      ],
+      "en": "Karmic Fortune"
+     },
+     {
+      "name": "영소",
+      "tag": "",
+      "mp": null,
+      "lines": [
+       "스킬 위력 1.2배",
+       "전방에서 턴 시작 시 아군 전방에 숙업이 합계 10 이상 축적 시 변화하는 일반 공격 변화 스킬 「그림자 보내기」를 사용하면 영소 상태로 변화"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "power",
+        "what": "스킬 위력",
+        "detail": "1.2배",
+        "raw": "스킬 위력 1.2배",
+        "target": "",
+        "mode": "",
+        "r": "power",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "action",
+        "what": "아군 전방에 숙업이 합계 10 이상 축적 시 변화하는 일반 공격 변화 스킬 「그림자 보내기」를 사용하면 영소 상태로 변화",
+        "raw": "전방에서 턴 시작 시 아군 전방에 숙업이 합계 10 이상 축적 시 변화하는 일반 공격 변화 스킬 「그림자 보내기」를 사용하면 영소 상태로 변화",
+        "target": "",
+        "mode": "",
+        "cond": "전방에서 턴 시작 시",
+        "r": "mode",
+        "tm": "턴 시작"
+       }
+      ],
+      "en": "Shadowbloom"
+     }
+    ],
+    "chain": [
+     {
+      "name": "줄초상",
+      "tag": "",
+      "mp": null,
+      "lines": [
+       "발동 조건:",
+       "자신 이외의 아군이 마법 공격 스킬 사용 시",
+       "턴 중 최대 발동 횟수 4회",
+       "발동 효과:",
+       "체인 어빌리티 전용 스킬 「줄초상」 실행",
+       "적 전체에 그림자 속성 마법 공격(극, 5배)",
+       "아군 전체에 다음 효과 부여",
+       "HP 회복 20%",
+       "추가 효과",
+       "영소 상태 시 위력 증가(2배)",
+       "ZONE 어빌리티",
+       "ZONE 어빌리티 「숙연」:",
+       "아군 전방의 HP를 합계 1000 회복할 때마다 숙연 1 축적",
+       "(1회당 최대 20 축적)",
+       "축적 수에 따라 마법 공격 대미지 UP",
+       "아군이 대미지를 받을 때마다 숙연 1 소비",
+       "성도 각성 후 스텔라 보드를 개방하면 다음을 사용할 수 있습니다"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "meta",
+        "what": "발동 조건",
+        "detail": "자신 이외의 아군이 마법 공격 스킬 사용 시",
+        "raw": "발동 조건: 자신 이외의 아군이 마법 공격 스킬 사용 시",
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "meta",
+        "what": "턴 중 최대 발동 횟수",
+        "detail": "4회",
+        "raw": "턴 중 최대 발동 횟수 4회",
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "meta",
+        "what": "발동 효과",
+        "detail": "체인 어빌리티 전용 스킬 「줄초상」 실행",
+        "raw": "발동 효과: 체인 어빌리티 전용 스킬 「줄초상」 실행",
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "그림자",
+        "atk": "마법",
+        "hits": 1,
+        "power": "극",
+        "mult": 5.0,
+        "preempt": false,
+        "raw": "적 전체에 그림자 속성 마법 공격(극, 5배)",
+        "target": "",
+        "mode": "",
+        "r": "attack",
+        "tm": "상시·조건",
+        "tc": "적 전체"
+       },
+       {
+        "k": "heal",
+        "what": "HP",
+        "value": 20.0,
+        "flat": false,
+        "raw": "HP 회복 20%",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "recover",
+        "tm": "상시·조건",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "buff",
+        "name": "추가 효과",
+        "guess": true,
+        "raw": "추가 효과",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "상시·조건",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "power",
+        "what": "위력 증가",
+        "detail": "2배",
+        "raw": "영소 상태 시 위력 증가(2배)",
+        "target": "아군 전체",
+        "mode": "",
+        "cond": "영소 상태 시",
+        "r": "power",
+        "tm": "상시·조건",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "zone",
+        "what": "ZONE 어빌리티",
+        "raw": "ZONE 어빌리티",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "zone",
+        "tm": "상시·조건",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "zone",
+        "what": "ZONE 어빌리티",
+        "raw": "ZONE 어빌리티 「숙연」:",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "zone",
+        "tm": "상시·조건",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stack",
+        "name": "숙연",
+        "value": "1",
+        "op": "축적",
+        "raw": "아군 전방의 HP를 합계 1000 회복할 때마다 숙연 1 축적",
+        "target": "아군 전체",
+        "mode": "",
+        "cond": "아군 전방의 HP를 합계 1000 회복할 때마다",
+        "r": "resource",
+        "tm": "상시·조건",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "other",
+        "times": 1,
+        "raw": "(1회당 최대 20 축적)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "other",
+        "tm": "상시·조건",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "dmg",
+        "what": "축적 수에 따라 마법 공격 대미지",
+        "dir": "UP",
+        "raw": "축적 수에 따라 마법 공격 대미지 UP",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "상시·조건",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "stack",
+        "name": "숙연",
+        "value": "1",
+        "op": "소비",
+        "raw": "아군이 대미지를 받을 때마다 숙연 1 소비",
+        "target": "아군 전체",
+        "mode": "",
+        "cond": "아군이 대미지를 받을 때마다",
+        "r": "resource",
+        "tm": "피격",
+        "tc": "아군 전체"
+       }
+      ],
+      "en": "Communal Rites"
+     }
+    ],
+    "stellar_skills": [
+     {
+      "name": "영장 고별의 꽃",
+      "tag": "스텔라 버스트 시",
+      "mp": 102,
+      "lines": [
+       "적 전체에 그림자 속성 마법 공격 3회(극대)",
+       "환마진 미전개 시 전개 중인 ZONE을 파괴하고",
+       "극 환마진 전개 + ZONE 어빌리티",
+       "20 축적",
+       "공격 대상에게 다음 효과 부여",
+       "힘 30% DOWN + 지능 30% DOWN + 속도 50% DOWN + 정신 50% DOWN + 마법 저항 50% DOWN(3턴) + 페인(영구 지속, 대상의 저항 무시)",
+       "아군 전체에 다음 효과 부여",
+       "디버프 리버설(1턴)",
+       "【추가 효과】",
+       "영소 상태 시 위력 증가(40배)"
+      ],
+      "notes": [
+       "※스텔라 보드에서 강화된 상태입니다"
+      ],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "그림자",
+        "atk": "마법",
+        "hits": 3,
+        "power": "극대",
+        "mult": null,
+        "preempt": false,
+        "raw": "적 전체에 그림자 속성 마법 공격 3회(극대)",
+        "target": "",
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
+       },
+       {
+        "k": "zone",
+        "what": "ZONE을 파괴",
+        "raw": "환마진 미전개 시 전개 중인 ZONE을 파괴하고",
+        "target": "",
+        "mode": "",
+        "cond": "환마진 미전개 시",
+        "r": "zone",
+        "tm": "사용 시"
+       },
+       {
+        "k": "zone",
+        "what": "극 환마진 전개",
+        "raw": "극 환마진 전개",
+        "target": "",
+        "mode": "",
+        "r": "zone",
+        "tm": "사용 시"
+       },
+       {
+        "k": "zone",
+        "what": "ZONE 어빌리티",
+        "raw": "ZONE 어빌리티",
+        "target": "",
+        "mode": "",
+        "r": "zone",
+        "tm": "사용 시"
+       },
+       {
+        "k": "stack",
+        "name": "",
+        "value": "20",
+        "op": "축적",
+        "raw": "20 축적",
+        "target": "",
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "힘"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 30.0,
+        "raw": "힘 30% DOWN",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "지능"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 30.0,
+        "raw": "지능 30% DOWN",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 50.0,
+        "raw": "속도 50% DOWN",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "정신"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 50.0,
+        "raw": "정신 50% DOWN",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "마법 저항"
+        ],
+        "group": "resist",
+        "dir": "DOWN",
+        "value": 50.0,
+        "turns": 3,
+        "raw": "마법 저항 50% DOWN(3턴)",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "ailment",
+        "name": "페인",
+        "perm": true,
+        "ignore_res": true,
+        "raw": "페인(영구 지속, 대상의 저항 무시)",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "buff",
+        "name": "디버프 리버설",
+        "turns": 1,
+        "raw": "디버프 리버설(1턴)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "surv_state",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "power",
+        "what": "위력 증가",
+        "detail": "40배",
+        "raw": "영소 상태 시 위력 증가(40배)",
+        "target": "아군 전체",
+        "mode": "추가 효과",
+        "cond": "영소 상태 시",
+        "r": "power",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       }
+      ],
+      "en": "Funerary Bouquet"
+     },
+     {
+      "name": "마법 오버 터프니스",
+      "tag": "",
+      "mp": null,
+      "lines": [
+       "자신의 HP 최대치가 높을수록 지능 UP",
+       "HP 최대치의 상한치: 30000",
+       "증가하는 지능의 최대치: 600"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "stat_pct",
+        "stats": [
+         "HP 최대치가 높을수록 지능"
+        ],
+        "group": "etc",
+        "dir": "UP",
+        "value": null,
+        "basis": "",
+        "max": true,
+        "raw": "자신의 HP 최대치가 높을수록 지능 UP",
+        "target": "",
+        "mode": "",
+        "r": "other",
+        "tm": "사용 시"
+       },
+       {
+        "k": "other",
+        "raw": "HP 최대치의 상한치: 30000",
+        "target": "",
+        "mode": "",
+        "r": "other",
+        "tm": "사용 시"
+       },
+       {
+        "k": "other",
+        "raw": "증가하는 지능의 최대치: 600",
+        "target": "",
+        "mode": "",
+        "r": "other",
+        "tm": "사용 시"
+       }
+      ],
+      "en": "Arcane Awakening"
+     }
+    ],
+    "stellar_abilities": [
+     {
+      "lines": [
+       "전방에서 전투 시작 시 극 환마진 전개 + 숙연 50 축적"
+      ],
+      "effects": [
+       {
+        "k": "zone",
+        "what": "극 환마진 전개",
+        "raw": "전방에서 전투 시작 시 극 환마진 전개",
+        "target": "",
+        "mode": "",
+        "cond": "전방에서 전투 시작 시",
+        "r": "zone",
+        "tm": "전투 시작"
+       },
+       {
+        "k": "stack",
+        "name": "숙연",
+        "value": "50",
+        "op": "축적",
+        "raw": "숙연 50 축적",
+        "target": "",
+        "mode": "",
+        "cond": "전방에서 전투 시작 시",
+        "r": "resource",
+        "tm": "전투 시작"
+       }
+      ]
+     }
+    ],
+    "tenmei_ability": [
+     {
+      "lines": [
+       "전방에 「지팡이」 특성의 아군이 3명 이상일 경우 효과 발동"
+      ],
+      "effects": [
+       {
+        "k": "action",
+        "what": "효과 발동",
+        "raw": "전방에 「지팡이」 특성의 아군이 3명 이상일 경우 효과 발동",
+        "target": "",
+        "mode": "",
+        "cond": "전방에 「지팡이」 특성의 아군이 3명 이상일 경우",
+        "r": "mode",
+        "tm": "상시·조건"
+       }
+      ]
+     },
+     {
+      "lines": [
+       "배틀 중 자신의 행동 시 축적하는 명의 힘 증가(중)"
+      ],
+      "effects": [
+       {
+        "k": "af",
+        "what": "축적하는 명의 힘 증가(중)",
+        "raw": "배틀 중 자신의 행동 시 축적하는 명의 힘 증가(중)",
+        "target": "",
+        "mode": "",
+        "cond": "배틀 중 자신의 행동 시",
+        "r": "resource",
+        "tm": "상시·조건"
+       }
+      ]
+     }
+    ],
+    "sb_enhance": [
+     {
+      "lines": [
+       "스텔라 버스트 발동 시 명의 힘이 많을 경우 발동"
+      ],
+      "effects": [
+       {
+        "k": "af",
+        "what": "명의 힘이 많을 경우 발동",
+        "raw": "스텔라 버스트 발동 시 명의 힘이 많을 경우 발동",
+        "target": "",
+        "mode": "",
+        "cond": "스텔라 버스트 발동 시",
+        "r": "resource",
+        "tm": "스텔라 버스트"
+       }
+      ]
+     },
+     {
+      "lines": [
+       "아군 전체에 버티기 부여"
+      ],
+      "effects": [
+       {
+        "k": "buff",
+        "name": "버티기",
+        "scope": "아군 전체",
+        "raw": "아군 전체에 버티기 부여",
+        "target": "",
+        "mode": "",
+        "r": "surv_state",
+        "tm": "스텔라 버스트",
+        "tc": "아군 전체"
+       }
+      ]
+     },
+     {
+      "lines": [
+       "새로운 「이장」이 상점에 추가됩니다"
+      ],
+      "effects": [
+       {
+        "k": "other",
+        "raw": "새로운 「이장」이 상점에 추가됩니다",
+        "target": "",
+        "mode": "",
+        "r": "other",
+        "tm": "스텔라 버스트"
+       }
+      ]
+     },
+     {
+      "lines": [
+       "스노 페더"
+      ],
+      "effects": [
+       {
+        "k": "buff",
+        "name": "스노 페더",
+        "guess": true,
+        "raw": "스노 페더",
+        "target": "",
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "스텔라 버스트"
+       }
+      ]
+     },
+     {
+      "lines": [
+       "・메리나"
+      ],
+      "effects": []
+     },
+     {
+      "lines": [
+       "・틸릴"
+      ],
+      "effects": []
+     },
+     {
+      "lines": [
+       "・로제타"
+      ],
+      "effects": []
+     }
+    ]
+   }
+  }
+ ]
+}

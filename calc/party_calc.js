@@ -195,7 +195,7 @@
   const whoOk = (who, w) => !!w && (baseName(w.nameEn) === who || (w.traits || []).some(t => who.toLowerCase().startsWith(String(t).toLowerCase())));
   const envOk = (cond, env) => !!env && (cond === "severe" ? !!env.severe : env.type === cond);
   function equipFor(items, atk, opt) {
-    const out = { equip: [], punish: 0, punishV: [], skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, groups: [], weak: 0, slots: {}, skillMul: 1, src: [] };
+    const out = { equip: [], punish: 0, punishV: [], skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, groups: [], slots: {}, skillMul: 1, src: [] };
     // slot = 정밀 엔진(ae_pipeline) 칸 — 근사 엔진에는 모두 곱(groups)으로 들어간다
     const mult = (it, label, x, slot = "condE", raw = x) => {
       if (x > 0) { out.groups.push(x / 100); (out.slots[slot] = out.slots[slot] || []).push(raw); out.src.push(`${it.name}: ${label} +${+x.toFixed(2)}%`); }
@@ -217,7 +217,8 @@
         return t.src.length > 0 || t.crit + t.mcrit + t.critDmg + t.mcritDmg > 0;
       })();
       for (const f of [...(it.fx || []).filter(f => f.k !== "etc"), ...(own || []).filter(f => oreOn || !f.ore)]) {
-        if (f.zone && !(opt.zone && opt.zone.name.includes(f.zone))) continue;
+        // ZONE 조건: 「Another Zone」 = 각성 ZONE 아무거나 · awakened = 그 ZONE 을 각성했을 때만(E. Power of Offense) — 전에는 둘 다 안 봤다(2026-11-03)
+        if (f.zone && !(f.zone === "Another Zone" ? opt.zoneAwake : opt.zone && opt.zone.name.includes(f.zone) && (!f.awakened || opt.zoneAwake))) continue;
         if (f.env && !envOk(f.env, opt.env)) continue;
         if (f.loc && f.loc !== opt.loc) continue;                       // 지역 한정(wyrmrest_isle · wyrmrest_isle/darkrealm) — opt.loc 이 같을 때만
         if (f.who && !whoOk(f.who, opt._who)) continue;                  // 「(Noahxis only)」 — 그 캐릭터(또는 성격)가 낄 때만, 누군지 모르면 뺀다(2026-10-14)
@@ -226,11 +227,14 @@
         else if (f.k === "dmg") {
           const ok = f.when === "type" || f.when === "all" || (f.when === "nontype" && !atk.element) || f.when === atk.element
             || (f.when === "maxhp" && opt.maxHp) || (f.when === "lowhp" && opt.lowHp);
-          if (ok) { out.equip.push(v); out.src.push(`${it.name}: ${f.when} +${f.v}%`); }
+          // ZONE 조건 대미지 = 딩님 계산기 49행 「각성 ZONE 시」 · 50행 「ZONE 시 대미지 UP」(각자 칸, 속성 대미지 35행 합이 아님 — 빌더 대조 2026-11-03)
+          if (ok && f.zone) mult(it, `${f.zone} 시`, f.v, f.awakened || f.zone === "Another Zone" ? "zoneAwake" : "zoneCond");
+          else if (ok) { out.equip.push(v); out.src.push(`${it.name}: ${f.when} +${f.v}%`); }
         } else if (f.k === "punish" && opt.punish && opt.punish.includes(f.when)) { out.punish++; out.punishV.push(f.v || 30); out.src.push(`${it.name}: ${f.when} ×${1 + (f.v || 30) / 100}`); }
-        // 약점 공격 강화 글래스터(Weak Point Strike)도 「Not stackable」 — 여러 개 껴도 최댓값 하나(2026-10-17, 전에는 3개가 쌓였다)
-        else if (f.k === "skillfx" && f.when === "weak" && opt._weak) uniq("weakfx", it, "약점 공격", v);
-        else if (f.k === "weak" && opt._weak) uniq("weak", it, "약점 배율", f.v);
+        // 약점 대미지 강화 — 무기 · 방어구 · 배지 · 글래스터(Weak Point Strike · Moonlit Guidance) · 광석이 모두 같은 효과 「적의 약점 상성에 가하는 대미지 +N%, 효과 중복 불가」
+        //   → 장비 전체에서 최댓값 하나, 딩님 계산기 43행 「공격 대미지 UP」(메모 시트 순서 약점 대미지 강화 → MP 소비 → 적 수). 26행 약점 배율이 아님
+        //   (2026-11-03 어나더에덴 빌더 대조 — 전에는 무기 · 광석 = 약점 배율 +N/100, 글래스터 = 45행으로 따로 쌓였다)
+        else if ((f.k === "weak" || (f.k === "skillfx" && f.when === "weak")) && opt._weak) uniq("weak", it, "약점 대미지 강화", f.v);
         else if (f.k === "crit_rate") out[f.magic ? "mcrit" : "crit"] += v;
         else if (f.k === "crit_dmg") out[f.magic ? "mcritDmg" : "critDmg"] += v;
         else if (f.k === "growth") mult(it, "성장", Math.min(f.per * (opt.turns || 0), f.max), "growthAtk");
@@ -251,11 +255,9 @@
         else if (f.k === "skillmod" && f.total && atk.skill === f.skill) { out.skillMul *= f.total / (f.total - f.v); out.src.push(`${it.name}: ${f.skill} 배율 +${f.v}%p`); }
       }
     }
-    for (const [key, u] of Object.entries(once)) {
-      if (key === "weak") { out.weak += u.x / 100; out.src.push(`${u.it.name}: 약점 배율 +${u.x}%`); }
-      else if (key === "weakfx") { out.skillFx.push(u.x); out.src.push(`${u.it.name}: 약점 +${+(u.x * 100).toFixed(2)}%`); }
-      else mult(u.it, u.label, u.x, u.slot, u.raw);
-    }
+    const CONDE = ["weak", "mpatk", "enemies"];   // 43행 안 곱하는 순서(메모 시트)
+    const keys = Object.keys(once).sort((a, b) => (CONDE.indexOf(a) + 1 || 99) - (CONDE.indexOf(b) + 1 || 99));
+    for (const key of keys) { const u = once[key]; mult(u.it, u.label, u.x, u.slot, u.raw); }
     return out;
   }
 
@@ -285,12 +287,18 @@
       if (keys.some(x => (enemy[k] || []).includes(x))) return a;           // 약점 > 경감 > 무효 > 흡수
     return "norm";
   }
-  function zoneMult(zone, atk) {
+  // 「다른 속성」 = 속성 공격 중 up 속성이 아닌 것(무속성 제외). zone.cond(2026-11-03, 위키 Stances 조건 원문 — 빌더 대조로 발견):
+  //   weak/resist = 그 상성이면 up · 다른 속성 값을 cond.v[보통, 각성]으로 대신 · afFull = AF 게이지 가득일 때만(opt.afFull, 기본 = 조건부 효과 포함)
+  function zoneMult(zone, atk, aff, opt = {}) {
     if (!zone) return 0;
     const has = (types, x) => types.includes(x);
+    const c = zone.cond, upHit = has(zone.up.types, "전체") || has(zone.up.types, atk.element) || has(zone.up.types, atk.atk);
+    const other = t => has(t, "다른 속성") && !!atk.element && !upHit;
+    if (c && c.when === "afFull" && !(opt.afFull ?? !!opt.cond)) return 0;
+    if (c && c.up && aff === c.when && atk.element) { const i = zone.awake ? 1 : 0; return upHit ? c.up[i] / 100 : other(zone.down.types) ? c.other[i] / 100 : 0; }
     let z = 0;
-    if (has(zone.up.types, "전체") || has(zone.up.types, atk.element) || has(zone.up.types, atk.atk)) z += (zone.up.v || 0) / 100;
-    if (has(zone.down.types, atk.element) || has(zone.down.types, atk.atk)) z -= (zone.down.v || 0) / 100;
+    if (upHit) z += (zone.up.v || 0) / 100;
+    if (has(zone.down.types, atk.element) || has(zone.down.types, atk.atk) || other(zone.down.types)) z -= (zone.down.v || 0) / 100;
     return z;
   }
 
@@ -456,11 +464,11 @@
       buff: { pwr: net(ag, "pwr", () => C.groupNet(ag.pwr)), int: net(ag, "int", () => C.groupNet(ag.int)), spd: net(ag, "spd", () => C.groupNet(ag.spd)) },
       enemy: { def: (en.end || 0) * (1 - net(eg, "def", () => C.groupNet({ buffs: eg.def }))),
         mdef: (en.spr || 0) * (1 - net(eg, "mdef", () => C.groupNet({ buffs: eg.mdef }))) },
-      affinity: aff, skillMult: baseMult / 100 * eq.skillMul, skillFx: eq.skillFx, zone: zoneMult(opt.zone, atk),
+      affinity: aff, skillMult: baseMult / 100 * eq.skillMul, skillFx: eq.skillFx, zone: zoneMult(opt.zone, atk, aff, opt),
       resDown: { phys: net(eg, "p" + atk.atk, () => C.groupNet({ buffs: [...eg.phys, ...(eg.atk[atk.atk] || [])] })),
         type: net(eg, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(eg.type["*"] || []), ...(eg.type[typeKey] || [])] : [] })),
         magic: net(eg, "magic", () => C.groupNet({ buffs: eg.magic })) },
-      groups, punish: eq.punish, punishV: eq.punishV, equip: eq.equip, weakBuff: eq.weak + ev.weak + (sx.shingan ? 1 : 0) + ag.weak.reduce((a, b) => a + b, 0), single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
+      groups, punish: eq.punish, punishV: eq.punishV, equip: eq.equip, weakBuff: ev.weak + (sx.shingan ? 1 : 0) + ag.weak.reduce((a, b) => a + b, 0), single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
     };
     const critDmg = magic ? C.additive([...ag.mcritDmg, eq.mcritDmg]) : C.additive([...ag.critDmg, eq.critDmg]);
     // 오버 크리: 크리 대미지 ×2 확률 = (크리율 − 100%) / 1000% (위키 Status Effects)
@@ -494,7 +502,7 @@
           weak: o.weakBuff ? [o.weakBuff * 100] : [], typeE: eq.equip.map(x => x * 100), statusE: [...eq.punishV, ...(sl.statusE || [])],
           enhance: sl.enhance, fallen: sl.fallen, condE: sl.condE, kesshi: sx.kesshi * 100 || undefined, shingan: sx.shingan * 100 || undefined,
           condNB: o.skillFx.map(x => x * 100), critDmg: pct(critDmg), overCrit: oc * 100 || undefined, aim: sum(sl.aim) || undefined,
-          zoneAwake: sl.zoneAwake, lsAlly: sl.lsAlly, overthrowE: sl.overthrowE, growthAtk: sl.growthAtk, wins: (sl.wins || [])[0],
+          zoneAwake: sl.zoneAwake, zoneCond: sl.zoneCond, lsAlly: sl.lsAlly, overthrowE: sl.overthrowE, growthAtk: sl.growthAtk, wins: (sl.wins || [])[0],
           zone: pct(o.zone), cheer: ev.groups.map(x => x * 100), aura: bud ? bud.aura.map(x => x * 100) : [], break: sx.brk * 100 || undefined } });
       return { normal: r.avg, crit: r.critAvg * critX, p, expected: p * r.critAvg * critX + (1 - p) * r.avg };
     } });

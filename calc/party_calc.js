@@ -36,7 +36,7 @@
   //   s.fx 를 바꾸면 s._contrib 를 지울 것
   const newAG = () => ({ pwr: { buffs: [] }, int: { buffs: [] }, spd: { buffs: [] }, type: {}, dmg: { buffs: [] }, wdmg: {},
     crit: [], mcrit: [], critDmg: [], mcritDmg: [], weak: [], focusPhys: [], focusMag: [], sureCrit: false, overthrow: false,
-    mindseye: false, risktaker: false, overcrit: false, movercrit: false, hawk: [], src: [] });
+    mindseye: false, risktaker: false, overcrit: false, movercrit: false, multihit: false, hawk: [], src: [] });
   const newEG = () => ({ phys: [], magic: [], type: {}, atk: {}, def: [], mdef: [], breaks: [], src: [] });
   function mergeInto(g, h) {
     for (const [k, x] of Object.entries(h)) {
@@ -93,6 +93,7 @@
     return m.get(key);
   }
   // 상태 효과(2026-10-13, data/calc/statuses.json) — 루나틱 심안 · 결사 · 오버 크리 · 호시탐탐 · 브레이크(대상). 이름(+루나틱은 원문)으로 판정
+  const MULTI_UP = [1, 1.25, 1.5, 2, 3];   // 다단 강화 n번째 타 배율(index = n − 1, 5타 이후 3)
   const ATK_EN = { slash: "베기", piercing: "찌르기", pierce: "찌르기", blunt: "타격", magic: "마법" };
   function statusOf(u) {
     const n = u.name || "", raw = u.raw || "";
@@ -101,6 +102,7 @@
     if (n === "오버 크리티컬") return { id: "overcrit" };
     if (n === "마법 오버 크리티컬") return { id: "movercrit" };
     if (n === "호시탐탐" || n === "Eagle Eyes") return { id: "eagle" };
+    if (n === "다단 강화" || /^multi-?upgrade$/i.test(n)) return { id: "multihit" };   // 딩님 원천은 k other, 위키 원천은 k buff(11-04)
     if (n === "브레이크") return { id: "break" };
     let m = n.match(/^엘리멘탈 브레이크\((.+)\)$/);
     if (m) return { id: "ebreak", which: m[1] };
@@ -139,7 +141,7 @@
       if (ws.length) for (const w of ws) (g.wdmg[w] = g.wdmg[w] || []).push(v);
       else g.dmg.buffs.push(v);
       g.src.push(`${s.c.nameKo}: ${u.what} +${u.value}%`);
-    } else if (u.k === "buff") {
+    } else if (u.k === "buff" || (u.k === "other" && u.name === "다단 강화")) {
       if (u.name === "정신 통일") { g.focusMag.push(0.0023); g.src.push(`${s.c.nameKo}: 정신 통일`); }
       else if (u.name === "심기일체") { g.focusPhys.push(0.0023); g.src.push(`${s.c.nameKo}: 심기일체`); }
       else if (u.name === "크리티컬 발생 확정") { g.sureCrit = true; g.src.push(`${s.c.nameKo}: 크리티컬 확정`); }
@@ -479,12 +481,22 @@
     // 25억 경감(opt.cap === false 면 끔) — 1타마다. 최적화 목표가 캡을 모르면 1타가 큰 조합을 과대평가한다(2026-10-15, 추천 상위가 1타 수십억)
     const capF = opt.cap === false ? v => v : C.softCap;
     const hitOf = ob => [capF(C.damage({ ...ob, crit: false }).total), capF(C.damage({ ...ob, crit: true, critDmg }).total * (1 + oc) * critX)];
-    const [n0, c0] = hitOf(o), [normal, crit] = sx.brk ? hitOf({ ...o, groups: [...groups, 1] }) : [n0, c0];
     const p = (ag.sureCrit || sx.kesshi) ? 1 : Math.max(0, Math.min(1, rate));
-    // perUse = 1회 사용 기대 대미지(타수만큼) — 스킬 · 장비 · 파티 비교는 이걸로(1타끼리 비교하면 다단 히트가 저평가된다, 2026-10-15)
-    const hits = Math.max(1, atk.hits || 1), exp1 = p * crit + (1 - p) * normal, rest = p * c0 + (1 - p) * n0;
-    const kb = Math.min(hits, nBrk);
-    const res = { normal, crit, p, expected: exp1, rest, hits, perUse: exp1 * kb + rest * (hits - kb), o, conds: cx.on,
+    // 다단 강화(Multi-upgrade, 2026-11-04 빌더 대조 — statuses.json 에 있었으나 미반영): 한 행동의 n번째 타 위력 ×1 · 1.25 · 1.5 · 2 · 3(이후 3, 위키 Damage Formula/Multipliers).
+    //   딩님 v4.016 = 위력 % UP 칸(합산). opt.hitOffset = 이 공격 앞에 같은 행동에서 이미 친 타수(시나리오가 넘긴다). 25억 경감은 타마다
+    const hits = Math.max(1, atk.hits || 1), h0 = opt.hitOffset || 0;
+    const mhOf = j => (ag.multihit ? MULTI_UP[Math.min(h0 + j, MULTI_UP.length - 1)] : 1);
+    const memoH = new Map(), expOf = (f, b) => {
+      const key = f + (b ? "b" : "");
+      if (!memoH.has(key)) { const ob = f === 1 ? o : { ...o, skillMult: o.skillMult * f }, [n, c] = hitOf(b ? { ...ob, groups: [...groups, 1] } : ob); memoH.set(key, [n, c, p * c + (1 - p) * n]); }
+      return memoH.get(key);
+    };
+    const kb = Math.min(hits, nBrk), f0 = mhOf(0);
+    const [normal, crit, exp1] = expOf(f0, kb > 0), rest = expOf(f0, false)[2];
+    let perUse = 0;
+    // perUse = 1회 사용 기대 대미지(타수만큼) — 스킬 · 장비 · 파티 비교는 이걸로(1타끼리 비교하면 다단 히트가 저평가된다, 2026-10-15). 브레이크 = 앞 kb 타
+    for (let j = 0; j < hits; j++) perUse += expOf(mhOf(j), j < kb)[2];
+    const res = { normal, crit, p, expected: exp1, rest, hits, perUse, o, conds: cx.on,
       get why() { return [...ag.src, ...eg.src, ...eq.src, ...ev.src, ...cx.on.map(c => `조건: ${c.label} ×${c.x}`), ...(kb ? [`브레이크: 첫 ${kb}타 ×2`] : [])]; } };
     // 정밀값(ae_pipeline — 딩님 계산기와 정수 일치 엔진): 난수 전 구간 평균. 근사보다 0~0.4% 낮다(단계마다 버림)
     Object.defineProperty(res, "precise", { enumerable: false, get() {
@@ -498,7 +510,7 @@
         elemental: o.elemental, affinity: o.affinity, cap: opt.cap !== false,
         stats: { mp: st.mp || 0, atk: (st.pwr || 0) + w.atk, matk: (st.int || 0) + w.matk, pwr: st.pwr || 0, int: st.int || 0, spd: st.spd || 0 },
         enemy: { lv: (opt.enemy && opt.enemy.lv) || 0, def: en.end || 0, mdef: en.spr || 0 },
-        fx: { pct: { pwr: pct(o.buff.pwr), int: pct(o.buff.int), spd: pct(o.buff.spd), def: negPct(defNet), mdef: negPct(mdefNet) },
+        fx: { power: f0 > 1 ? [(f0 - 1) * 100] : [], pct: { pwr: pct(o.buff.pwr), int: pct(o.buff.int), spd: pct(o.buff.spd), def: negPct(defNet), mdef: negPct(mdefNet) },
           resPhysMag: negPct(magic ? o.resDown.magic : o.resDown.phys), resType: negPct(o.resDown.type),
           typeNE: pct(typeNet), wielder: pct(dmgNet), hawk: focusV ? [focusV * 100, 0] : [],
           weak: o.weakBuff ? [o.weakBuff * 100] : [], typeE: eq.equip.map(x => x * 100), statusE: [...eq.punishV, ...(sl.statusE || [])],

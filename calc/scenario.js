@@ -161,7 +161,7 @@
       if (mode) for (const f of mode.fx || []) apply(sim, ci, { ...f, timing: undefined, turns: u.turns ?? null, cond: undefined }, "모드: " + mode.name);
       return;
     }
-    if (!ENGINE.has(u.k)) return;
+    if (!ENGINE.has(u.k) && !(u.k === "other" && u.name === "다단 강화")) return;   // 다단 강화 = 딩님 원천은 k other(상태 효과) — party_calc 가 상태로 읽는다(11-04)
     const key = slotKey(ci, u), old = sim.live.get(key);
     // 겹은 같은 스킬을 다시 걸 때만 오른다 — 다른 스킬이 같은 칸을 덮어쓰면 1부터(전에는 앞 스킬 겹을 이어받아 첫 시전이 2겹이 됐다)
     const stacks = u.maxStack > 1 ? Math.min(u.maxStack, (old && old.skill === skName ? old.stacks : 0) + 1) : 1;
@@ -201,7 +201,7 @@
     let key;
     if (memo) {
       const live = [...sim.live.entries()].map(([k, e]) => `${k}#${e.stacks}#${e.left || e.u.value}`).sort().join(";");
-      key = `${sim.gear}|${ci}|${sk.name}|${part.power ?? part.mult}x${part.hits || 1}${part.element || ""}${part.atk || ""}|${(sim.zone || {}).name || ""}${sim.zone && sim.zone.awake ? "!" : ""}|${sim.turn}|${sim.af ? 1 : 0}${sim.sb.on ? "S" : ""}|${live}`;
+      key = `${sim.gear}|${ci}|${sk.name}|${part.power ?? part.mult}x${part.hits || 1}${part.element || ""}${part.atk || ""}|${(sim.zone || {}).name || ""}${sim.zone && sim.zone.awake ? "!" : ""}|${sim.turn}|${sim.af ? 1 : 0}${sim.sb.on ? "S" : ""}|h${part._h0 || 0}|${live}`;
       if (memo.has(key)) return memo.get(key);
     }
     const v = attackRaw(sim, ci, sk, part);
@@ -222,7 +222,7 @@
       if (p >= 1) { sure.add(s); maybe.delete(s); } else maybe.set(s, Math.max(maybe.get(s) || 0, p));
     }
     // breakOn: 시나리오가 건 브레이크 축적은 확정 사실(남은 개수 left 로 소모) — 정적 식의 「조건부일 때만」 기본값을 켠다
-    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, zoneAwake: !!(sim.zone && sim.zone.awake), turns: sim.turn, af: sim.af, punish, breakOn: sim.opt.breakOn ?? true, normalAtk: sk.kind === "normal" }); return r ? r.perUse : 0; };
+    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, zoneAwake: !!(sim.zone && sim.zone.awake), turns: sim.turn, af: sim.af, punish, breakOn: sim.opt.breakOn ?? true, normalAtk: sk.kind === "normal", hitOffset: part._h0 || 0 }); return r ? r.perUse : 0; };
     const mb = [...maybe];
     let v = 0;
     for (let mask = 0; mask < 1 << mb.length; mask++) {
@@ -258,7 +258,8 @@
     sim.res[ci] -= cost;
     let d = 0, lastAtk = null, hadAtk = false;
     const onHit = () => { for (const u of sim.onHit[ci] || (sim.onHit[ci] = equipOnHit(m, sim.opt))) apply(sim, ci, u, "장비: " + u._equip); };   // 장비 「공격 시」
-    const endAction = () => { if (hadAtk) { consume(sim, ci, lastAtk); onHit(); } hadAtk = false; };
+    let hitN = 0;                                                             // 다단 강화 — 이 행동(move)에서 이미 친 타수. 행동 경계에서 0(위키 Multipliers: 1 move 안 모든 부분 · 반복은 이어짐)
+    const endAction = () => { if (hadAtk) { consume(sim, ci, lastAtk); onHit(); } hadAtk = false; hitN = 0; };
     const steps = sk.steps ? sk.steps.slice() : [...(sk.attacks || []).map((a, i) => ({ t: "atk", i, cond: a.cond })), ...(sk.fx || []).map((u, i) => ({ t: "fx", i, cond: u.cond }))];   // 복사 — 분할 처리가 done 표식을 찍는다
     const fxUnits = sk.fx || [];
     for (let k = 0; k < steps.length; k++) {
@@ -281,11 +282,11 @@
           const brkLive = [...sim.live.values()].some(e => e.left && sideOf(e.u) === "e");
           if (a.split && hits > 1 && (follow.length || brkLive)) {
             for (let h = 0; h < hits; h++) {
-              d += attack(sim, ci, sk, { ...a, hits: 1 });
+              d += attack(sim, ci, sk, { ...a, hits: 1, _h0: hitN }); hitN++;
               consumeBreak(sim, a, 1);
               if (h === 0) for (const j of follow) { if (condOk(sim, m, steps[j].cond, via)) apply(sim, ci, { ...fxUnits[steps[j].i], cond: undefined }, sk.name, sk); steps[j] = { t: "done" }; }
             }
-          } else { d += attack(sim, ci, sk, a); consumeBreak(sim, a, hits); }
+          } else { d += attack(sim, ci, sk, { ...a, _h0: hitN }); hitN += hits; consumeBreak(sim, a, hits); }
         }
         else if (s2.t === "exec" && s2.skill) { endAction(); for (let n = 0; n < (s2.n || 1); n++) d += act(sim, ci, s2.skill, scored, sk.name, depth + 1); }
         else if (s2.t === "next") endAction();

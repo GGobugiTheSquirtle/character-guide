@@ -193,6 +193,7 @@
   //   환경 조건(f.env: severe · special · weather · atmos · ground)은 opt.env(data/calc/envs.json 한 항목 — 계열 type · 심화 severe)로 판정
   const baseName = n => (n || "").replace(/\s+(AS|ES|Alter)$/, "").replace(/\s*\((Another|Extra) Style\)$/, "");
   const whoOk = (who, w) => !!w && (baseName(w.nameEn) === who || (w.traits || []).some(t => who.toLowerCase().startsWith(String(t).toLowerCase())));
+  const zkey = n => String(n || "").toLowerCase().replace(/[^a-z]/g, "");   // 「Double Strike Stance - Magic Slash」(장비) = 「…: Magic Slash」(zones) — 구두점 무시(11-04)
   const envOk = (cond, env) => !!env && (cond === "severe" ? !!env.severe : env.type === cond);
   function equipFor(items, atk, opt) {
     const out = { equip: [], punish: 0, punishV: [], skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, groups: [], slots: {}, skillMul: 1, src: [] };
@@ -218,7 +219,7 @@
       })();
       for (const f of [...(it.fx || []).filter(f => f.k !== "etc"), ...(own || []).filter(f => oreOn || !f.ore)]) {
         // ZONE 조건: 「Another Zone」 = 각성 ZONE 아무거나 · awakened = 그 ZONE 을 각성했을 때만(E. Power of Offense) — 전에는 둘 다 안 봤다(2026-11-03)
-        if (f.zone && !(f.zone === "Another Zone" ? opt.zoneAwake : opt.zone && opt.zone.name.includes(f.zone) && (!f.awakened || opt.zoneAwake))) continue;
+        if (f.zone && !(f.zone === "Another Zone" ? opt.zoneAwake : opt.zone && zkey(opt.zone.name).includes(zkey(f.zone)) && (!f.awakened || opt.zoneAwake))) continue;
         if (f.env && !envOk(f.env, opt.env)) continue;
         if (f.loc && f.loc !== opt.loc) continue;                       // 지역 한정(wyrmrest_isle · wyrmrest_isle/darkrealm) — opt.loc 이 같을 때만
         if (f.who && !whoOk(f.who, opt._who)) continue;                  // 「(Noahxis only)」 — 그 캐릭터(또는 성격)가 낄 때만, 누군지 모르면 뺀다(2026-10-14)

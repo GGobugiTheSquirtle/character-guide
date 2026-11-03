@@ -36,7 +36,7 @@
   //   s.fx 를 바꾸면 s._contrib 를 지울 것
   const newAG = () => ({ pwr: { buffs: [] }, int: { buffs: [] }, spd: { buffs: [] }, type: {}, dmg: { buffs: [] }, wdmg: {},
     crit: [], mcrit: [], critDmg: [], mcritDmg: [], weak: [], focusPhys: [], focusMag: [], sureCrit: false, overthrow: false,
-    mindseye: false, risktaker: false, overcrit: false, movercrit: false, multihit: false, hawk: [], src: [] });
+    mindseye: false, risktaker: false, overcrit: false, movercrit: false, multihit: false, vanguard: false, hawk: [], src: [] });
   const newEG = () => ({ phys: [], magic: [], type: {}, atk: {}, def: [], mdef: [], breaks: [], src: [] });
   function mergeInto(g, h) {
     for (const [k, x] of Object.entries(h)) {
@@ -102,7 +102,8 @@
     if (n === "오버 크리티컬") return { id: "overcrit" };
     if (n === "마법 오버 크리티컬") return { id: "movercrit" };
     if (n === "호시탐탐" || n === "Eagle Eyes") return { id: "eagle" };
-    if (n === "다단 강화" || /^multi-?upgrade$/i.test(n)) return { id: "multihit" };   // 딩님 원천은 k other, 위키 원천은 k buff(11-04)
+    if (n === "다단 강화" || /^multi-?upgrade$/i.test(n)) return { id: "multihit" };
+    if (n === "솔선" || (n.startsWith("루나틱") && (/솔선/.test(n) || /vanguard/i.test(raw)))) return { id: "vanguard" };   // 딩님 원천은 k other, 위키 원천은 k buff(11-04)
     if (n === "브레이크") return { id: "break" };
     let m = n.match(/^엘리멘탈 브레이크\((.+)\)$/);
     if (m) return { id: "ebreak", which: m[1] };
@@ -454,6 +455,9 @@
     const bMatch = b => b === "e:" + atk.element || b === "a:" + atk.atk;
     const nBrk = brk ? Math.max(eg.breaks.includes("*") ? 1 : 0, eg.breaks.filter(bMatch).length) : 0;
     const sx = { shingan: lun && ag.mindseye ? 0.5 : 0, kesshi: lun && ag.risktaker ? 0.7 : 0, brk: nBrk ? 1 : 0 };
+    // 루나틱 솔선(2026-11-04 빌더 대조) — 초기 내구만큼 힘 · 초기 정신만큼 지능 = 상태 효과 고정값(딩님 14 · 15행). 초기 = 캐릭터 + 장비(빌더 「솔선의 초기 내구 · 정신」)
+    const fl0 = m.flatFx || {}, van = lun && ag.vanguard;
+    const flatFx = van ? { ...fl0, pwr: (fl0.pwr || 0) + (st.end || 0), int: (fl0.int || 0) + (st.spr || 0) } : (m.flatFx || undefined);
     for (const x of [sx.shingan, sx.kesshi]) if (x) groups.push(x);
     // 방어 무시(공격 단위 ignoreDef — 발경참 · 흉랑체, 10-18 영상 대조로 공백 발견) = 그 공격만 적 내구 · 정신 0
     const en = atk._ignoreDef ? { ...(opt.enemy || {}), end: 0, spr: 0 } : (opt.enemy || { end: 0, spr: 0 });
@@ -472,7 +476,7 @@
       resDown: { phys: net(eg, "p" + atk.atk, () => C.groupNet({ buffs: [...eg.phys, ...(eg.atk[atk.atk] || [])] })),
         type: net(eg, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(eg.type["*"] || []), ...(eg.type[typeKey] || [])] : [] })),
         magic: net(eg, "magic", () => C.groupNet({ buffs: eg.magic })) },
-      stacks: m.flatFx || undefined,                                       // 상태 효과 고정값(scenario flatFx) — 공격력 · 약점 기준에만, /32 배율엔 안 들어감(ae_calc stacks = 딩님 14~16행)
+      stacks: flatFx,                                       // 상태 효과 고정값(scenario flatFx) — 공격력 · 약점 기준에만, /32 배율엔 안 들어감(ae_calc stacks = 딩님 14~16행)
       groups, punish: eq.punish, punishV: eq.punishV, equip: eq.equip, weakBuff: ev.weak + (sx.shingan ? 1 : 0) + ag.weak.reduce((a, b) => a + b, 0), single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
     };
     const critDmg = magic ? C.additive([...ag.mcritDmg, eq.mcritDmg]) : C.additive([...ag.critDmg, eq.critDmg]);
@@ -511,7 +515,7 @@
         elemental: o.elemental, affinity: o.affinity, cap: opt.cap !== false,
         stats: { mp: st.mp || 0, atk: (st.pwr || 0) + w.atk, matk: (st.int || 0) + w.matk, pwr: st.pwr || 0, int: st.int || 0, spd: st.spd || 0 },
         enemy: { lv: (opt.enemy && opt.enemy.lv) || 0, def: en.end || 0, mdef: en.spr || 0 },
-        fx: { power: f0 > 1 ? [(f0 - 1) * 100] : [], flat: m.flatFx ? Object.fromEntries(Object.entries(m.flatFx).map(([k, v]) => [k, [v]])) : {}, pct: { pwr: pct(o.buff.pwr), int: pct(o.buff.int), spd: pct(o.buff.spd), def: negPct(defNet), mdef: negPct(mdefNet) },
+        fx: { power: f0 > 1 ? [(f0 - 1) * 100] : [], flat: flatFx ? Object.fromEntries(Object.entries(flatFx).map(([k, v]) => [k, [v]])) : {}, pct: { pwr: pct(o.buff.pwr), int: pct(o.buff.int), spd: pct(o.buff.spd), def: negPct(defNet), mdef: negPct(mdefNet) },
           resPhysMag: negPct(magic ? o.resDown.magic : o.resDown.phys), resType: negPct(o.resDown.type),
           typeNE: pct(typeNet), wielder: pct(dmgNet), hawk: focusV ? [focusV * 100, 0] : [],
           weak: o.weakBuff ? [o.weakBuff * 100] : [], typeE: eq.equip.map(x => x * 100), statusE: [...eq.punishV, ...(sl.statusE || [])],

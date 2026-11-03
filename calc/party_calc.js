@@ -244,7 +244,8 @@
         else if (f.k === "crit_dmg") out[f.magic ? "mcritDmg" : "critDmg"] += v;
         else if (f.k === "growth") mult(it, "성장", Math.min(f.per * (opt.turns || 0), f.max), "growthAtk");
         else if (f.k === "aim" && !opt.af) uniq("aim", it, "겨누어 쏘기", f.v, "aim");
-        else if (f.k === "mpatk" && atk.mp > 0 && !opt.normalAtk) uniq("mpatk", it, "MP 소비 공격", f.v);
+        // MP 소비 공격 — 모든 공격(일반 공격 · MP 0 포함). 위키 Recommendation Ore 「Rose with Thorn: Always works」 + 빌더 「일반 공격에도 적용」(11-04, 전에는 MP 쓰는 스킬만)
+        else if (f.k === "mpatk") uniq("mpatk", it, "MP 소비 공격", f.v);
         else if (f.k === "overthrow" && opt.enemy && opt.enemy.lv) mult(it, "하극상", Math.floor(opt.enemy.lv * opt.enemy.lv / f.d * 100) / 100, "overthrowE", f.d);
         else if (f.k === "zonedmg" && opt.zoneAwake) mult(it, "ZONE 각성", f.v, "zoneAwake");
         else if (f.k === "wins" && opt.wins) uniq("wins", it, "누계 승리", f.v, "wins");   // 계산기 입력 55행이 한 칸 — 여러 개면 최댓값 하나(빌더와 같게, 11-03)

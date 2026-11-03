@@ -226,7 +226,8 @@
         if (f.k === "stat") out.stats[f.stat] = (out.stats[f.stat] || 0) + f.v;
         else if (f.k === "dmg") {
           const ok = f.when === "type" || f.when === "all" || (f.when === "nontype" && !atk.element) || f.when === atk.element
-            || (f.when === "maxhp" && opt.maxHp) || (f.when === "lowhp" && opt.lowHp);
+            || (f.when === "maxhp" && opt.maxHp) || (f.when === "lowhp" && opt.lowHp)
+            || (f.when === "normal" && opt.normalAtk);                         // 일반 공격 대미지 UP(37행 — 속성 · HP 와 같은 바탕에서 가산). 전에는 when normal 을 몰라 늘 꺼짐(11-03)
           // ZONE 조건 대미지 = 딩님 계산기 49행 「각성 ZONE 시」 · 50행 「ZONE 시 대미지 UP」(각자 칸, 속성 대미지 35행 합이 아님 — 빌더 대조 2026-11-03)
           if (ok && f.zone) mult(it, `${f.zone} 시`, f.v, f.awakened || f.zone === "Another Zone" ? "zoneAwake" : "zoneCond");
           else if (ok) { out.equip.push(v); out.src.push(`${it.name}: ${f.when} +${f.v}%`); }
@@ -242,7 +243,7 @@
         else if (f.k === "mpatk" && atk.mp > 0 && !opt.normalAtk) uniq("mpatk", it, "MP 소비 공격", f.v);
         else if (f.k === "overthrow" && opt.enemy && opt.enemy.lv) mult(it, "하극상", Math.floor(opt.enemy.lv * opt.enemy.lv / f.d * 100) / 100, "overthrowE", f.d);
         else if (f.k === "zonedmg" && opt.zoneAwake) mult(it, "ZONE 각성", f.v, "zoneAwake");
-        else if (f.k === "wins" && opt.wins) mult(it, "누계 승리", f.v, "wins");
+        else if (f.k === "wins" && opt.wins) uniq("wins", it, "누계 승리", f.v, "wins");   // 계산기 입력 55행이 한 칸 — 여러 개면 최댓값 하나(빌더와 같게, 11-03)
         else if (f.k === "lsally") mult(it, f.side === "light" ? "천 아군" : "명 아군", f.per * ((f.side === "light" ? opt.lightAllies : opt.shadowAllies) || 0), "lsAlly");
         else if (f.k === "seal" && opt.sealed) uniq("seal", it, "봉인 인핸스", f.v, "enhance");
         // 페인 · 독 · 분노 인핸스(자신이 그 상태 — opt.selfStatus ['pain'|'poison'|'rage']) · 그 상태일 때 스탯+ (2026-10-15, 그동안 엔진이 안 읽던 키)

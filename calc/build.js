@@ -71,7 +71,7 @@
 
   // party: 멤버(계산 멤버 + actions), opt: 전투 조건. conf = { passes: 2, equipSkills: false, tick(msg) } → { slots, plan, scores:{A,B,C}, perTurn, evals }
   function optimize(party, opt, conf = {}) {
-    conf = { passes: 3, screen: 4, cond: !!opt.cond, carryStarts: true, ...conf };
+    conf = { passes: 3, screen: 4, cond: !!opt.cond, carryStarts: true, pairMoves: true, ...conf };
     const memo = new Map();
     const gslots = (conf.gear && conf.gear.conf && conf.gear.conf.grastaSlots) || 4;
     let team = party.map(m => {
@@ -89,12 +89,14 @@
         for (let ci = 0; ci < team.length; ci++) {
           const cand = candidates(team[ci], cf).filter(n => !team[ci].slots.includes(n));
           const tries = [];
-          for (let k = 0; k < 4; k++) for (const n of cand) {
-            const from = team[ci].slots[k];
-            const t2 = team.map((m, i) => { if (i !== ci) return m; const sl = m.slots.map((x, j) => (j === k ? n : x)); return { ...fitGrasta(m, sl), slots: sl }; });
-            const start = swapIn(cur.plan, ci, from, n);
+          const put = ch => {                                   // ch = [[칸, 새 스킬], …]
+            const t2 = team.map((m, i) => { if (i !== ci) return m; const sl = m.slots.slice(); for (const [k, n] of ch) sl[k] = n; return { ...fitGrasta(m, sl), slots: sl }; });
+            const start = ch.reduce((p, [k, n]) => swapIn(p, ci, team[ci].slots[k], n), cur.plan);
             tries.push({ t2, start, q: quick(t2, start) });
-          }
+          };
+          for (let k = 0; k < 4; k++) for (const n of cand) put([[k, n]]);
+          // 두 칸 동시(cf.pair) — 한 칸씩은 손해라 못 넘는 조합(아래 pairMoves)
+          if (cf.pair) for (let k1 = 0; k1 < 4; k1++) for (let k2 = k1 + 1; k2 < 4; k2++) for (const n1 of cand) for (const n2 of cand) if (n1 !== n2) put([[k1, n1], [k2, n2]]);
           tries.sort((a, b) => b.q - a.q);
           for (const t of tries.slice(0, cf.screen)) {
             const r = PL.plan(t.t2, opt, { ...inner, start: t.start });
@@ -165,6 +167,15 @@
         if (!top || cur.score > top.cur.score * (1 + 1e-9)) top = { team, cur, hist: gearHist.slice() };
       }
       ({ team, cur } = top); gearHist.splice(0, gearHist.length, ...top.hist);
+      // 두 칸 동시 이동(conf.pairMoves, 기본 켬, 11-04) — 최고 갈래에서 멤버마다 스킬칸 두 칸을 함께 바꿔 본다 → 바뀌면 장비 한 번 더.
+      //   거는 쪽 + 받는 쪽(독을 거는 스킬 + 「독 대상 ×2」 Rust 스킬)처럼 하나만 넣으면 손해인 짝을 넘는다. 대표 3파티 +6.3% · 0 · +94%, 평가 +7% · +0.5% · +18%
+      if (conf.pairMoves) {
+        const keep = { team, cur };
+        slotPass({ ...conf, via: !!conf.grantsOf, passes: 2, pair: true });
+        if (team !== keep.team) gearPass(1);
+        if (cur.score < keep.cur.score) ({ team, cur } = keep);
+        if (conf.tick) conf.tick(`두 칸 동시: A ${(keep.cur.score / 1e8).toFixed(2)} → ${(cur.score / 1e8).toFixed(2)}억`);
+      }
     } else if (conf.grantsOf) slotPass({ ...conf, via: true, passes: 2 });
     // 후열 셔틀(10-18) — conf.back = [{c, cc, pool?}] 은 공격 · 효과 없이 공유 그라스타만 나른다. 칸마다 후보를 바꿔 A 점수(계획 고정)가 오르면 채택 → 다시 계획.
     //   후보 = pool(없으면 장비 후보 중 공유 그라스타). 획득 가능 수(limit)는 전방이 낀 것까지 세고, 같은 그라스타를 둘이 나르면 둘 다 들어간다(공유분 중첩, 10-15 사용자 확인)

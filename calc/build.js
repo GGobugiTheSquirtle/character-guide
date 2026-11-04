@@ -71,7 +71,7 @@
 
   // party: 멤버(계산 멤버 + actions), opt: 전투 조건. conf = { passes: 2, equipSkills: false, tick(msg) } → { slots, plan, scores:{A,B,C}, perTurn, evals }
   function optimize(party, opt, conf = {}) {
-    conf = { passes: 3, screen: 4, cond: !!opt.cond, ...conf };
+    conf = { passes: 3, screen: 4, cond: !!opt.cond, carryStarts: true, ...conf };
     const memo = new Map();
     const gslots = (conf.gear && conf.gear.conf && conf.gear.conf.grastaSlots) || 4;
     let team = party.map(m => {
@@ -109,7 +109,8 @@
     // 장비 — 계획의 T2 효과 스냅숏으로 partyGear(고정 그라스타는 그대로), 새 장비로 다시 계획
     const gearHist = [];
     const O = conf.gear && (root.AEOpt || require("./optimizer.js"));
-    const gearPass = rounds => {
+    const gearPass = (rounds, carry) => {
+      const gconf = carry ? { ...(conf.gear.conf || {}), objective: "carry", carry } : conf.gear.conf || {};
       for (let round = 0; round < rounds; round++) {
         const snap = S.run(team, { af: cur.plan.af, turns: [cur.plan.turns[0]] }, opt, { memo: new Map() });
         const members = team.map((m, ci) => {
@@ -123,7 +124,7 @@
           return { ...m, fx: S.liveFx(snap.live, ci), attack: part ? S.toAttack(part, sk) : undefined, _contrib: null };
         });
         const punish = [...new Set([...(opt.punish || []), ...S.liveStates(snap.live)])];      // 파티가 건 페인 · 독(정적 식은 대상 상태를 모른다)
-        const g = O.partyGear(members, { ...opt, zone: snap.zone || opt.zone, turns: 2, punish }, conf.gear.poolsOf, conf.gear.conf || {});
+        const g = O.partyGear(members, { ...opt, zone: snap.zone || opt.zone, turns: 2, punish }, conf.gear.poolsOf, gconf);
         evals += g.evals;
         team = team.map((m, i) => { const x = g.team[i]; return { ...m, weapon: x.weapon, armor: x.armor, badges: x.badges, grasta: x.grasta, special: (x.gear && x.gear.special) || [] }; });
         // 부여 무기 — 「공격 시 적 저항 다운 · 페인/독」 무기만 시나리오 점수로(계획 고정). 다른 멤버가 든 무기는 건너뜀
@@ -142,13 +143,28 @@
       }
     };
     slotPass(conf);
+    const starts = [];
     if (conf.gear) {
-      gearPass(conf.gearRounds ?? 1);                      // 2회차는 매번 같은 값이었다(실측 4인 3건) — 스킬칸 재탐색 뒤 한 번 더 돈다
-      // 장비가 찬 뒤 스킬칸을 한 번 더(스킬 ↔ 장비 번갈아 — 실제 4인 +2.4%). 부여 스킬은 이때 연다: 그라스타 칸 기회비용을 치르게
-      const keep = { team, cur };
-      slotPass({ ...conf, via: !!conf.grantsOf, passes: 2 });
-      if (team !== keep.team) gearPass(1);
-      if (cur.score < keep.cur.score) ({ team, cur } = keep);
+      // 주력 다중 시작(conf.carryStarts, 기본 켬, 11-04) — 첫 장비 배분이 개수 제한 장비(Pain · Agony 그라스타 등)를 누구에게 줄지 정하고, 뒤 단계는 그 주력에 묶인다
+      //   (실제 4인: 기본 59.7억에 멈춤, 밀디 주력 빌드 80.5억). 기본 갈래 + 멤버마다 「그 멤버 주력 가중」 첫 배분 갈래 → 갈래마다 같은 뒷단계 → 최댓값
+      //   대표 3파티 이득 +4.6% · +52% · +0.01%, 시간 약 2배(첫 스킬칸 탐색 · 메모 공유) — docs/ae-damage-pipeline.md §9
+      const fork = { team, cur, hist: gearHist.length };
+      const seeds = [null, ...(conf.carryStarts ? team.map(m => m.c.id) : [])];
+      let top = null;
+      for (const seed of seeds) {
+        ({ team, cur } = fork); gearHist.length = fork.hist;
+        gearPass(conf.gearRounds ?? 1, seed);              // 2회차는 매번 같은 값이었다(실측 4인 3건) — 스킬칸 재탐색 뒤 한 번 더 돈다
+        if (seed) gearPass(1);                             // 주력 가중을 풀고 파티 전체 기준으로 다듬는다
+        // 장비가 찬 뒤 스킬칸을 한 번 더(스킬 ↔ 장비 번갈아 — 실제 4인 +2.4%). 부여 스킬은 이때 연다: 그라스타 칸 기회비용을 치르게
+        const keep = { team, cur };
+        slotPass({ ...conf, via: !!conf.grantsOf, passes: 2 });
+        if (team !== keep.team) gearPass(1);
+        if (cur.score < keep.cur.score) ({ team, cur } = keep);
+        starts.push({ carry: seed, score: cur.score });
+        if (conf.tick) conf.tick(`시작 ${seed || "기본"}: A ${(cur.score / 1e8).toFixed(2)}억`);
+        if (!top || cur.score > top.cur.score * (1 + 1e-9)) top = { team, cur, hist: gearHist.slice() };
+      }
+      ({ team, cur } = top); gearHist.splice(0, gearHist.length, ...top.hist);
     } else if (conf.grantsOf) slotPass({ ...conf, via: true, passes: 2 });
     // 후열 셔틀(10-18) — conf.back = [{c, cc, pool?}] 은 공격 · 효과 없이 공유 그라스타만 나른다. 칸마다 후보를 바꿔 A 점수(계획 고정)가 오르면 채택 → 다시 계획.
     //   후보 = pool(없으면 장비 후보 중 공유 그라스타). 획득 가능 수(limit)는 전방이 낀 것까지 세고, 같은 그라스타를 둘이 나르면 둘 다 들어간다(공유분 중첩, 10-15 사용자 확인)
@@ -176,7 +192,7 @@
     const fin = PL.plan(team, opt, { af: true, afCasts: 6, turns: 3, restarts: 8, memo, start: cur.plan });
     const b = PL.plan(team, opt, { af: false, turns: 1, restarts: 4, memo });
     const c = PL.plan(team, opt, { af: false, turns: 3, restarts: 4, memo });
-    return { team, slots: team.map(m => m.slots), via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)), plan: fin.plan, perTurn: fin.res.perTurn, perMember: fin.res.perMember, log: fin.res.log, gearHist,
+    return { team, slots: team.map(m => m.slots), via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)), plan: fin.plan, perTurn: fin.res.perTurn, perMember: fin.res.perMember, log: fin.res.log, gearHist, starts,
       scores: { A: fin.score, B: b.score, C: c.score }, plans: { B: b.plan, C: c.plan }, evals: evals + fin.evals + b.evals + c.evals,
       contrib: contributions(team, fin.plan, opt), back: opt.back || [] };
   }

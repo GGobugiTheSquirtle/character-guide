@@ -311,7 +311,25 @@
   // 공격의 조건부 배수(atk.conds) 중 지금 켜진 것 — {all: 곱, crit: 크리 전용 곱, on: [조건]} (2026-10-15 S7)
   //   상성 · 대상 상태(opt.punish · opt.targetStates) · 크리 · HP(opt.maxHp/lowHp) · 존(opt.zone · zoneAwake) · 적 수 · 선후(opt.enemyFirst)
   //   · AF(opt.af) · 스텔라(opt.stellar)는 자동, 자기 상태 · 스택 · 비례 · 턴 · 기타는 opt.states(라벨 목록)에 있을 때만
-  function condMult(atk, aff, opt, brk) {
+  //   11-04 자동 추가(위키 원천 라벨 — 상태로 확실히 판정되는 것만): 턴(첫 턴 · 처음 N턴 = opt.turns, 전투 1회 · 첫 사용 = opt.firstUse — 시나리오가 넘김) ·
+  //     「When in Lunatic」 = 루나틱 플래그 · 「N or more <속성> Characters are in the frontline」 = 실제 전방 · 「when enemy has pain」 = 대상 페인.
+  //     모드 · 고유 스택 · 비례(×10~×60, 그 누적 흐름을 시나리오가 모름)는 그대로 opt.states · 조건부 포함에서만
+  const EL_EN = { fire: "fire", water: "water", wind: "wind", earth: "earth", thunder: "thunder", crystal: "crystal", shade: "shade" };
+  function autoCond(c, opt, x) {
+    const l = c.label || "";
+    let r;
+    if (c.t === "turn") {
+      if ((r = /first (\d+) turns/i.exec(l))) return (opt.turns || 0) >= 1 && opt.turns <= +r[1];
+      if (/first turn/i.test(l)) return opt.turns === 1;
+      if (/once per battle|first time/i.test(l)) return !!opt.firstUse;
+    }
+    if (c.t === "state" && /in Lunatic/i.test(l)) return !!x.lun;
+    if (c.t === "other" && /enemy has pain/i.test(l)) return x.tgt.includes("pain");
+    if (c.t === "other" && (r = /(\d+) or more (\w+) Characters are in the frontline/i.exec(l)) && EL_EN[r[2].toLowerCase()])
+      return (x.members || []).filter(m => m.pos !== "back" && m.c && m.c.element === EL_EN[r[2].toLowerCase()]).length >= +r[1];
+    return false;
+  }
+  function condMult(atk, aff, opt, brk, x = {}) {
     const out = { all: 1, crit: 1, on: [] };
     const tgt = [...(opt.punish || []), ...(opt.targetStates || [])];
     const zn = opt.zone && opt.zone.name ? opt.zone.name.toLowerCase() : "";
@@ -324,7 +342,7 @@
           : c.on === "any" ? !!opt.zone : zn.includes(String(c.on).toLowerCase()))
         : c.t === "enemies" ? (opt.enemyCount || 1) >= 2 : c.t === "enemyFirst" ? !!opt.enemyFirst
         : c.t === "af" ? !!opt.af : c.t === "stellar" ? !!opt.stellar
-        : (opt.states || []).includes(c.label);
+        : (opt.states || []).includes(c.label) || autoCond(c, opt, { ...x, tgt });
       if (!on) continue;
       if (c.t === "crit") out.crit *= c.x; else out.all *= c.x;
       out.on.push(c);
@@ -464,7 +482,7 @@
     const en = atk._ignoreDef ? { ...(opt.enemy || {}), end: 0, spr: 0 } : (opt.enemy || { end: 0, spr: 0 });
     // skillMult — 범위 배율(150~18000%)의 위값(multMax)은 조건부라 opt.cond 일 때만(모든 조건 최대).
     // 아니면 아래값 × 켜진 조건 배수(atk.conds, 2026-10-15 S7) — 위값을 넘지 않는다. 크리 조건은 크리 타격에만
-    const cx = condMult(atk, aff, opt, brk);
+    const cx = condMult(atk, aff, opt, brk, { lun, members });
     const cap = atk.multMax || Infinity;
     const baseMult = (opt.cond && atk.multMax) || Math.min(cap, (atk.mult || 0) * cx.all);
     const critX = Math.min(cx.crit, cap / Math.max(baseMult, 1e-9)) * (bud ? bud.critAura.reduce((a, v) => a * (1 + v), 1) : 1);

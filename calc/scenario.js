@@ -77,7 +77,7 @@
   const withFlat = (m, fl) => (Object.keys(fl).length ? { ...m, stats: { ...m.stats, ...Object.fromEntries(Object.keys(fl).map(k => [k, ((m.stats || {})[k] || 0) + fl[k]])) } } : m);
 
   function newSim(party, opt, memo) {
-    return { party, opt, memo, turn: 0, af: false, zone: opt.zone || null, live: new Map(), log: [], dmg: [], byMember: [], onHit: [], res: party.map(() => 0),
+    return { party, opt, memo, turn: 0, af: false, zone: opt.zone || null, live: new Map(), log: [], dmg: [], byMember: [], onHit: [], res: party.map(() => 0), used: new Map(), first: party.map(() => false),
       sb: { light: 0, shadow: 0, on: false, fired: 0 } };
   }
   // ── 스텔라 버스트(E3-3, 10-18 — 위키 Stellar Awakening §Building · §Flux, 사용자 「행동 수로 차고 어빌리티 · 공명으로 축적량이 다르며 발동 뒤 버프가 있다」) ──
@@ -201,7 +201,7 @@
     let key;
     if (memo) {
       const live = [...sim.live.entries()].map(([k, e]) => `${k}#${e.stacks}#${e.left || e.u.value}`).sort().join(";");
-      key = `${sim.gear}|${ci}|${sk.name}|${part.power ?? part.mult}x${part.hits || 1}${part.element || ""}${part.atk || ""}|${(sim.zone || {}).name || ""}${sim.zone && sim.zone.awake ? "!" : ""}|${sim.turn}|${sim.af ? 1 : 0}${sim.sb.on ? "S" : ""}|h${part._h0 || 0}|${live}`;
+      key = `${sim.gear}|${ci}|${sk.name}|${part.power ?? part.mult}x${part.hits || 1}${part.element || ""}${part.atk || ""}|${(sim.zone || {}).name || ""}${sim.zone && sim.zone.awake ? "!" : ""}|${sim.turn}|${sim.af ? 1 : 0}${sim.sb.on ? "S" : ""}|h${part._h0 || 0}${sim.first[ci] ? "F" : ""}|${live}`;
       if (memo.has(key)) return memo.get(key);
     }
     const v = attackRaw(sim, ci, sk, part);
@@ -225,7 +225,7 @@
       if (p >= 1) { sure.add(s); maybe.delete(s); } else maybe.set(s, Math.max(maybe.get(s) || 0, p));
     }
     // breakOn: 시나리오가 건 브레이크 축적은 확정 사실(남은 개수 left 로 소모) — 정적 식의 「조건부일 때만」 기본값을 켠다
-    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, zoneAwake: !!(sim.zone && sim.zone.awake), turns: sim.turn, af: sim.af, punish, breakOn: sim.opt.breakOn ?? true, lunatic: sim.opt.lunatic ?? true, normalAtk: sk.kind === "normal", hitOffset: part._h0 || 0 }); return r ? r.perUse : 0; };
+    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, zoneAwake: !!(sim.zone && sim.zone.awake), turns: sim.turn, af: sim.af, punish, breakOn: sim.opt.breakOn ?? true, lunatic: sim.opt.lunatic ?? true, normalAtk: sk.kind === "normal", hitOffset: part._h0 || 0, firstUse: !!sim.first[ci] }); return r ? r.perUse : 0; };
     const mb = [...maybe];
     let v = 0;
     for (let mask = 0; mask < 1 << mb.length; mask++) {
@@ -259,6 +259,7 @@
     const cost = resCost(sk, via);
     if (cost && sim.res[ci] < cost) { sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: 0, skip: "자원 부족" }); return 0; }
     sim.res[ci] -= cost;
+    if (!depth) { const k = `${ci}|${sk.name}`; sim.first[ci] = !sim.used.get(k); sim.used.set(k, (sim.used.get(k) || 0) + 1); }   // 「전투 1회 · 첫 사용」 조건(11-04)
     let d = 0, lastAtk = null, hadAtk = false;
     const onHit = () => { for (const u of sim.onHit[ci] || (sim.onHit[ci] = equipOnHit(m, sim.opt))) apply(sim, ci, u, "장비: " + u._equip); };   // 장비 「공격 시」
     let hitN = 0;                                                             // 다단 강화 — 이 행동(move)에서 이미 친 타수. 행동 경계에서 0(위키 Multipliers: 1 move 안 모든 부분 · 반복은 이어짐)

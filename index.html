@@ -1668,7 +1668,7 @@ async function renderOpt() {
   wrap.appendChild(el("h3", { class: "party-h", text: "최적 세팅 — 장비 · 파티 추천" }));
   wrap.appendChild(el("div", { class: "skko-src", text: "7. 대미지 추정과 같은 정적 모델(버프 · 디버프 · 존을 다 깐 뒤 스킬 1회 기대값) 위에서 가장 큰 값을 찾습니다. 인게임 대조 전 추정치 · 턴 순서 미반영." }));
   const tabs = el("div", { class: "view-toggle", style: "margin:10px 0 14px" });
-  for (const [k, t] of [["gear", "캐릭터창 · 장비 추천"], ["party", "파티 추천"], ["build", "파티 빌드 (AF → 3턴)"], ["inv", `보유 목록 (캐릭터 ${STATE.inv.chars.length})`]]) {
+  for (const [k, t] of [["gear", "캐릭터창 · 장비 추천"], ["party", "파티 추천"], ["build", "파티 빌드"], ["inv", `보유 목록 (캐릭터 ${STATE.inv.chars.length})`]]) {
     const b = el("button", { class: "view-btn" + (STATE.ov.tab === k ? " active" : ""), text: t });
     b.addEventListener('click', () => { STATE.ov.tab = k; saveOv(); renderOpt(); });
     tabs.appendChild(b);
@@ -1994,7 +1994,7 @@ function renderBuildTab(box, db) {
     showBuildResult(out, STATE.buildRes);
     run.disabled = false;
   });
-  box.appendChild(el("div", { class: "skko-src", style: "margin-top:12px", text:
+  if ((O.buildMode || "peak") === "sim") box.appendChild(el("div", { class: "skko-src", style: "margin-top:12px", text:
     "스킬칸 = 멤버마다 칸 하나씩 다른 스킬로 바꿔 보며 점수가 오르면 채택 · AF = 캐릭터당 6회 시전, 대미지는 점수 밖(버프 · 디버프를 까는 턴) · 2~4턴은 속도순으로 1회씩. " +
     "지속(건 턴 = 0턴) · 누적(A + A/2 × (n−1)) · 「N회 행동」 소모 · 덮어쓰기는 위키 규칙. 자원(구슬 · 카운트 · 게이지)을 쓰는 스킬과 조건부 공격(스텔라 버스트 시 등)은 「조건부 효과 포함」일 때만. " +
     "장비 최적화 때는 그라스타가 주는 스킬(존 전개 · 무기별 기도 · 공격 — 스킬칸 하나를 쓴다고 가정)과 무기의 「공격 시 적 저항 다운 · 페인/독」(확률은 기대값)까지 봅니다. 대상 페인 · 독은 파티가 실제로 건 뒤부터 켜집니다(화면 토글을 켜면 처음부터). " +

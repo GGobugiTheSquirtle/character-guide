@@ -1930,7 +1930,7 @@ const buildInWorker = (msg, tick) => new Promise((res, rej) => {
   try { w = new Worker("calc/build_worker.js"); } catch (e) {
     const conf = { tick };
     if (msg.gear) { const cache = new Map(); conf.gear = { poolsOf: m => cache.get(m.c.id) || cache.set(m.c.id, AEOpt.ownedPools(msg.db, m.cc, m.c.traits, msg.inv).pools).get(m.c.id), conf: msg.gearConf }; conf.grantsOf = m => conf.gear.poolsOf(m).grasta.filter(g => g.grant && !g.ore); }
-    try { const { team, ...r } = AEBuild.optimize(msg.team, msg.opt, conf); return res({ ...r, gear: team.map(m => ({ weapon: m.weapon, armor: m.armor, grasta: m.grasta || [], badges: m.badges || [], special: m.special || [] })) }); }
+    try { const { team, ...r } = (msg.mode === "peak" ? AEBuild.optimizePeak : AEBuild.optimize)(msg.team, msg.opt, conf); return res({ ...r, gear: team.map(m => ({ weapon: m.weapon, armor: m.armor, grasta: m.grasta || [], badges: m.badges || [], special: m.special || [] })) }); }
     catch (e2) { return rej(e2); }
   }
   w.onmessage = e => { if (e.data.tick) return tick(e.data.tick); w.terminate(); e.data.error ? rej(new Error(e.data.error)) : res(e.data.done); };
@@ -1952,6 +1952,12 @@ function renderBuildTab(box, db) {
     row.appendChild(chip);
   }
   if (ids.length < FRONT_N) row.appendChild(charPicker(db, null, x => { O.buildIds = [...new Set([...ids, x.id])]; saveOv(); rr(); }, "추가"));
+  // 방식(11-05 사용자 「4개 다 활용 · 고점 기준 · 단순하게」) — 고점 = 스킬칸 4개 효과 전부 최대 누적 + 가장 센 공격 1회(기본) / 턴 시뮬 = AF 6회 → 2~4턴
+  const msel = el("select", { class: "fx-input" });
+  for (const [v, t] of [["peak", "방식: 고점 (4스킬 효과 전부 · 최대 누적)"], ["sim", "방식: 턴 시뮬 (AF → 3턴)"]]) msel.appendChild(el("option", { text: t, attrs: { value: v } }));
+  msel.value = O.buildMode || "peak";
+  msel.addEventListener('change', () => { O.buildMode = msel.value; saveOv(); rr(); });
+  row.appendChild(msel);
   const gsel = el("select", { class: "fx-input" });
   for (const [v, t] of [["opt", "장비: 이 계획에 맞춰 최적화 (수십 초)"], ["saved", "장비: 저장된 것 그대로"]]) gsel.appendChild(el("option", { text: t, attrs: { value: v } }));
   gsel.value = O.buildGear || "opt";
@@ -1963,7 +1969,7 @@ function renderBuildTab(box, db) {
   box.append(el("div", { children: [run, prog] }));
   const out = el("div", { style: "margin-top:12px" });
   box.appendChild(out);
-  const key = JSON.stringify([ids, O.buildGear, S.gslots, S.ownedOnly, S.zone, S.enemy, S.cond, S.maxHp, S.pain, DETAIL_KEYS.map(k => S[k]), S.buddy, S.buddyUp, S.buddyStacks]);
+  const key = JSON.stringify([ids, O.buildMode || "peak", O.buildGear, S.gslots, S.ownedOnly, S.zone, S.enemy, S.cond, S.maxHp, S.pain, DETAIL_KEYS.map(k => S[k]), S.buddy, S.buddyUp, S.buddyStacks]);
   if (STATE.buildRes && STATE.buildRes.key === key) showBuildResult(out, STATE.buildRes);
   run.addEventListener('click', async () => {
     if (ids.length < 2) { prog.textContent = "멤버를 2명 이상 넣으세요."; return; }
@@ -1977,7 +1983,7 @@ function renderBuildTab(box, db) {
       team.push({ ...m, fx: [], actions: act });                                 // 효과는 시나리오가 스킬 시전으로 건다
     }
     const inv = S.ownedOnly ? STATE.inv : null;
-    const msg = { team, opt, gear: (O.buildGear || "opt") === "opt", inv,
+    const msg = { team, opt, mode: O.buildMode || "peak", gear: (O.buildGear || "opt") === "opt", inv,
       gearConf: { grastaSlots: S.gslots || 4, badgeSlots: 2, counts: inv ? { ...inv.w, ...inv.a, ...inv.g, ...inv.b } : null },
       db: { weapons: db.weapons, armor: db.armor, grasta: db.grasta, badges: db.badges, ores: db.ores } };
     let res;
@@ -1996,6 +2002,7 @@ function renderBuildTab(box, db) {
 }
 function showBuildResult(out, r) {
   const pct = x => `${(x * 100).toFixed(1)}%`, nm = id => { const c = STATE.all.find(x => x.id === id); return c ? c.nameKo : id; };
+  if (r.scores && r.scores.repeat != null) return showPeakResult(out, r, nm);
   out.appendChild(el("div", { class: "pt", style: "margin-bottom:8px", children: [el("b", { text: `A ${fmtN(r.scores.A)}` }),
     document.createTextNode(` (AF 뒤 3턴 합) · B ${fmtN(r.scores.B)} (AF 없이 1턴) · C ${fmtN(r.scores.C)} (AF 없이 3턴)` + (r.gearHist.length ? ` · 장비 회차별 A ${r.gearHist.map(fmtN).join(" → ")}` : ""))] }));
   const tbl = el("table", { class: "skill-table party-table" });
@@ -2026,6 +2033,36 @@ function showBuildResult(out, r) {
   save.addEventListener('click', () => {
     r.ids.forEach((id, ci) => { const g = r.gear[ci]; if (g && g.weapon) saveGear(id, { ...g, grasta: g.grasta.filter(x => !g.special.some(y => y.name === x.name)) }); });
     STATE.party = r.ids.length === FRONT_N ? [...r.ids, ...STATE.party.slice(FRONT_N).filter(id => !r.ids.includes(id))].slice(0, PARTY_MAX) : [...r.ids];   // 후방은 그대로
+    saveParty(); setView("party");
+  });
+  out.appendChild(save);
+}
+
+// 고점 빌드 결과 — 반복 고점(1회성 끔, 이걸로 골랐다) · 순간 최고점(첫 사용 · 첫 턴 등 1회성까지). 스텔라 버스트 기술 딜은 아직 따로
+function showPeakResult(out, r, nm) {
+  const z = r.zone ? `${r.zone.name}${r.zone.awake ? " (각성)" : ""}` : "없음";
+  out.appendChild(el("div", { class: "pt", style: "margin-bottom:8px", children: [el("b", { text: `반복 고점 ${fmtN(r.scores.repeat)}` }),
+    document.createTextNode(` · 순간 최고점 ${fmtN(r.scores.burst)} (1회성 포함) · 존 ${z}`)] }));
+  const tbl = el("table", { class: "skill-table party-table" });
+  tbl.appendChild(el("thead", { children: [el("tr", { children: ["멤버", "스킬칸 4", "고점 공격 (반복 / 순간)", "장비"].map(h => el("th", { text: h })) })] }));
+  const tb = el("tbody");
+  r.ids.forEach((id, ci) => {
+    const g = r.gear[ci] || {};
+    tb.appendChild(el("tr", { children: [
+      el("td", { children: [el("b", { text: nm(id) }), el("div", { class: "skko-src", text: r.scores.repeat ? `${((r.perMember[ci] / r.scores.repeat) * 100).toFixed(1)}%` : "" })] }),
+      el("td", { class: "pt", text: (r.slots[ci] || []).map((n, k) => (r.via && r.via[ci] && r.via[ci][k] ? `${n} (그라스타 ${r.via[ci][k]})` : n)).join(" · ") }),
+      el("td", { class: "pt", text: `${r.attackOf[ci] || "—"} ${fmtN(r.perMember[ci])}` + (r.attackOfBurst[ci] && (r.perMemberBurst[ci] > r.perMember[ci] * 1.001) ? ` / ${r.attackOfBurst[ci]} ${fmtN(r.perMemberBurst[ci])}` : "") }),
+      el("td", { class: "skko-src", text: [g.weapon, g.armor, ...(g.grasta || []), ...(g.badges || [])].filter(Boolean).map(x => x.name).join(" · ") || "—" })] }));
+  });
+  tbl.appendChild(tb);
+  out.appendChild(el("div", { class: "table-scroll", children: [tbl] }));
+  out.appendChild(el("div", { class: "skko-src", style: "margin-top:8px", text:
+    "고점 = 스킬칸 4개 효과(버프 · 디버프 · 존 · 모드)를 전부 최대 누적으로 건 상태에서 멤버마다 가장 센 공격 1회의 합. AF 에서 4개를 다 칠 수 있다는 가정 — 지속 · 순서 · 자원은 안 본다(자원은 찬 것으로). " +
+    "존은 파티가 펼 수 있는 것 중 합이 가장 큰 것. 반복 고점은 첫 턴 · 첫 사용 · 전투 1회 · 스텔라 버스트 시점 효과를 끈 값, 순간 최고점은 켠 값. 스텔라 버스트 기술의 딜은 아직 넣지 않았다." }));
+  const save = el("button", { class: "slot-btn", style: "margin-top:10px", text: "이 장비 저장 → 파티 구성으로" });
+  save.addEventListener('click', () => {
+    r.ids.forEach((id, ci) => { const g = r.gear[ci]; if (g && g.weapon) saveGear(id, { ...g, grasta: g.grasta.filter(x => !(g.special || []).some(y => y.name === x.name)) }); });
+    STATE.party = r.ids.length === FRONT_N ? [...r.ids, ...STATE.party.slice(FRONT_N).filter(id => !r.ids.includes(id))].slice(0, PARTY_MAX) : [...r.ids];
     saveParty(); setView("party");
   });
   out.appendChild(save);

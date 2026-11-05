@@ -404,6 +404,9 @@ const assumeLine = () => el("div", { class: "assume", text: "추정치 · 최대
 // Init & data load
 // ─────────────────────────────────────
 async function init() {
+  const route = parseHash();
+  if (route.view) STATE.view = route.view;
+  if (route.tab) STATE.ov.tab = route.tab;
   buildFilters();
   document.getElementById('sheet-close').addEventListener('click', () => openSheet(false));
   document.getElementById('sheet-dim').addEventListener('click', () => openSheet(false));
@@ -435,6 +438,9 @@ async function init() {
     stats.append("캐릭터 ", strong(data.meta.total), "명 · 상세 자료 ", strong(data.meta.with_full), "명");
     stats.title = `외부 자료(game-info · 나무위키)와 이름이 연결된 캐릭터 ${data.meta.with_mapping}명`;
     render();
+    if (route.char) openModal(route.char, true);
+    window.addEventListener('popstate', onPop);
+    window.addEventListener('hashchange', () => { if (!STATE.backPending) applyRoute(); });
   } catch (e) {
     const grid = document.getElementById('grid');
     clear(grid);
@@ -647,20 +653,45 @@ function renderListBar(n) {
 // ─────────────────────────────────────
 function setView(key) {
   STATE.view = key;
-  document.querySelectorAll('#view-toggle .view-btn').forEach(x => x.classList.toggle('active', x.dataset.view === key));
+  markViewButtons();
   render();
+  syncHash();
+}
+const markViewButtons = () => document.querySelectorAll('#view-toggle .view-btn').forEach(x => x.classList.toggle('active', x.dataset.view === STATE.view));
+
+// 주소 = 화면(2026-11-05 UX 검토 §2) — #chars · #quests · #dungeons · #party · #opt/<탭> · #c/<캐릭터 id>.
+//   전엔 주소에 화면이 안 남아 휴대폰 뒤로 가기가 모달 대신 사이트를 닫았고, 새로고침하면 캐릭터 탭 · 캐릭터 링크 공유 불가.
+//   상태 → 렌더가 먼저고 주소는 뒤따른다(pushState 는 이벤트를 안 낸다) — 뒤로 가기 · 주소 직접 수정(popstate · hashchange)만 주소 → 상태
+const VIEWS = ["chars", "quests", "dungeons", "party", "opt"], OPT_TABS = ["gear", "party", "build", "inv"];
+const viewHash = () => "#" + (STATE.view === "opt" ? "opt/" + (STATE.ov.tab || "gear") : STATE.view);
+function syncHash() {
+  // 모달이 열려 있으면 #c/<id> 유지 · 우리가 부른 뒤로 가기(모달 닫기)가 끝나기 전엔 밀지 않는다 — 끝난 뒤 onPop 이 맞춘다
+  if (STATE.modalId || STATE.backPending) return;
+  if (location.hash !== viewHash()) history.pushState(null, "", viewHash());
+}
+function parseHash() {
+  const [a, b] = (decodeURIComponent(location.hash.slice(1)) || "chars").split("/");   // 주소 없음 = 첫 화면(캐릭터)
+  return { view: VIEWS.includes(a) ? a : null, tab: a === "opt" && OPT_TABS.includes(b) ? b : null, char: a === "c" && b ? b : null };
+}
+function applyRoute() {
+  const r = parseHash();
+  if (r.char) { if (STATE.modalId !== r.char) openModal(r.char, true); return; }
+  if (STATE.modalId) closeModal(true);
+  let changed = false;
+  if (r.view && r.view !== STATE.view) { STATE.view = r.view; changed = true; }
+  if (r.tab && r.tab !== STATE.ov.tab) { STATE.ov.tab = r.tab; saveOv(); changed = true; }
+  if (changed) { markViewButtons(); render(); }
+}
+function onPop() {
+  if (STATE.backPending) { STATE.backPending = false; syncHash(); return; }   // 모달 닫기의 뒤로 가기 — 그 사이 바뀐 화면을 주소에 맞춘다
+  applyRoute();
 }
 function buildViewToggle() {
   const wrap = document.getElementById('view-toggle');
   if (!wrap) return;
   for (const [key, label] of [["chars", "캐릭터"], ["quests", "퀘스트 해금"], ["dungeons", "조건템 던전"], ["party", "파티 구성"], ["opt", "최적 세팅"]]) {
     const b = el("button", { class: "view-btn" + (STATE.view === key ? " active" : ""), text: label, dataset: { view: key } });
-    b.addEventListener('click', () => {
-      STATE.view = key;
-      wrap.querySelectorAll('.view-btn').forEach(x => x.classList.remove('active'));
-      b.classList.add('active');
-      render();
-    });
+    b.addEventListener('click', () => setView(key));
     wrap.appendChild(b);
   }
 }
@@ -937,7 +968,9 @@ function buildCard(c) {
 // ─────────────────────────────────────
 // Modal
 // ─────────────────────────────────────
-async function openModal(id) {
+async function openModal(id, fromRoute) {
+  STATE.modalId = id;
+  if (!fromRoute) { history.pushState(null, "", "#c/" + encodeURIComponent(id)); STATE.modalPushed = true; }
   const modal = document.getElementById('modal');
   const body = document.getElementById('modal-body');
   modal.classList.add('open');
@@ -978,7 +1011,7 @@ async function openModal(id) {
 
 function closeBtn() {
   const b = el("button", { class: "modal-close", text: "×" });
-  b.addEventListener('click', closeModal);
+  b.addEventListener('click', () => closeModal());          // 이벤트 객체가 fromRoute 로 들어가지 않게
   return b;
 }
 
@@ -1812,7 +1845,7 @@ async function renderOpt() {
   const tabs = el("div", { class: "view-toggle", style: "margin:10px 0 14px" });
   for (const [k, t] of [["gear", "캐릭터창 · 장비 추천"], ["party", "파티 추천"], ["build", "파티 빌드"], ["inv", `보유 목록 (캐릭터 ${STATE.inv.chars.length}명)`]]) {
     const b = el("button", { class: "view-btn" + (STATE.ov.tab === k ? " active" : ""), text: t });
-    b.addEventListener('click', () => { STATE.ov.tab = k; saveOv(); renderOpt(); });
+    b.addEventListener('click', () => { STATE.ov.tab = k; saveOv(); renderOpt(); syncHash(); });
     tabs.appendChild(b);
   }
   wrap.appendChild(tabs);
@@ -2476,9 +2509,14 @@ function findPrefix(sections, prefix) {
   return "";
 }
 
-function closeModal() {
+function closeModal(fromRoute) {
   document.getElementById('modal').classList.remove('open');
   document.body.style.overflow = '';
+  if (!STATE.modalId) return;
+  STATE.modalId = null;
+  if (fromRoute) { STATE.modalPushed = false; return; }
+  if (STATE.modalPushed) { STATE.modalPushed = false; STATE.backPending = true; history.back(); }
+  else history.replaceState(null, "", viewHash());
 }
 
 // 검색

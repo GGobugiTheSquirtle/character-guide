@@ -225,7 +225,31 @@
   .list-bar .legend { font-size: 11px; }
   .assume { font-size: 12px; color: var(--accent); background: var(--panel-2); border-left: 3px solid var(--gold-dim); border-radius: 0 6px 6px 0; padding: 5px 10px; margin: 8px 0; }
   details.method { margin-top: 8px; }
-  @media (max-width: 640px) { .header-row .view-toggle { flex: 1 1 100%; } }
+  .only-m, .sheet-head, #sheet-dim { display: none; }
+  .af-chip::after { content: " ×"; }
+  /* 휴대폰(2026-11-05 UX 검토 §1 #1 · #6) — 첫 화면을 헤더 · 필터가 차지(첫 카드 y≈615)해서 필터는 아래 시트로, 누를 곳은 44px */
+  @media (max-width: 640px) {
+    header { padding: 10px 16px; }
+    .header-row { gap: 10px; }
+    .title small, .stats { display: none; }
+    .header-row .view-toggle { flex: 1 1 100%; }
+    .only-m { display: inline-flex; }
+    .filters { display: none; }
+    .filters.open { display: block; position: fixed; left: 0; right: 0; bottom: 0; max-height: 78vh; overflow-y: auto; z-index: 150; padding: 0 16px 16px;
+      border-top: 1px solid var(--gold-dim); border-radius: 14px 14px 0 0; box-shadow: 0 -8px 30px rgba(0,0,0,0.6); }
+    .filters.open ~ #sheet-dim { display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 140; }
+    .sheet-head { display: flex; gap: 8px; align-items: center; position: sticky; top: 0; background: var(--panel); padding: 12px 0 10px; margin-bottom: 4px; border-bottom: 1px solid var(--line); z-index: 1; }
+    .sheet-head b { color: var(--gold); flex: 1; font-size: 15px; }
+    .filter-row { flex-direction: column; gap: 14px; }
+    .view-btn, .slot-btn, .chip, .fx-input, .cw-num, .modal-close { min-height: 44px; }
+    .chip, .slot-btn { display: inline-flex; align-items: center; }
+    .skko-tags .chip { min-height: 36px; }
+    label.pt { min-height: 44px; display: inline-flex; align-items: center; gap: 4px; }
+    .slot-btn { padding: 0 12px; font-size: 13px; }
+    .modal { padding: 0; }
+    .modal-body { border-radius: 0; padding: 20px 16px; min-height: 100vh; }
+    .modal-close { min-width: 44px; top: 4px; right: 4px; }
+  }
 </style>
 <!-- goatcounter:begin -->
 <script>window.goatcounter={path:function(p){return location.host+p}}</script>
@@ -244,8 +268,10 @@
 </header>
 
 <div class="filters" id="filters">
+  <div class="sheet-head"><b>필터</b><button class="slot-btn" id="sheet-reset">전체 해제</button><button class="view-btn active" id="sheet-close">결과 보기</button></div>
   <div class="filter-row" id="filter-row"></div>
 </div>
+<div id="sheet-dim"></div>
 
 <div class="container">
   <div id="list-bar" class="list-bar"></div>
@@ -307,6 +333,7 @@ const ELEM_CELL_KO = {
   "闇": "그림자", "陰": "그림자", "結晶": "결정", "晶": "결정", "無": "무",
 };
 
+const TOGGLE_DEFS = [["sa", "성도 각성 지원"], ["hasFull", "상세 정보 있음"], ["skillsKo", "공식 한국어 스킬"]];
 const FILTER_DEFS = [
   { label: "속성", key: "element", values: [["", "전체"], ["fire","불"], ["water","물"], ["earth","땅"], ["wind","바람"], ["thunder","뇌"], ["shade","그림자"], ["crystal","결정"], ["null","무"]] },
   { label: "무기", key: "weapon",  values: [["", "전체"], ["sword","검"], ["katana","도"], ["axe","도끼"], ["lance","창"], ["bow","활"], ["fist","권갑"], ["staff","지팡이"], ["hammer","망치"]] },
@@ -345,6 +372,9 @@ const assumeLine = () => el("div", { class: "assume", text: "추정치 · 최대
 // ─────────────────────────────────────
 async function init() {
   buildFilters();
+  document.getElementById('sheet-close').addEventListener('click', () => openSheet(false));
+  document.getElementById('sheet-dim').addEventListener('click', () => openSheet(false));
+  document.getElementById('sheet-reset').addEventListener('click', resetFilters);
   buildViewToggle();
   try {
     const [res, resR, resQ] = await Promise.all([
@@ -399,7 +429,7 @@ function buildFilters() {
   // 토글 필터
   const toggleGroup = el("div", { class: "filter-group" });
   toggleGroup.appendChild(el("span", { class: "filter-label", text: "기타" }));
-  for (const [key, label] of [["sa", "성도 각성 지원"], ["hasFull", "상세 정보 있음"], ["skillsKo", "공식 한국어 스킬"]]) {
+  for (const [key, label] of TOGGLE_DEFS) {
     const chip = el("span", { class: "chip", text: label, dataset: { filter: key } });
     chip.addEventListener('click', () => {
       chip.classList.toggle('active');
@@ -543,11 +573,34 @@ function syncFilterChips() {
   document.querySelectorAll('#filter-row .chip[data-role]').forEach(ch => ch.classList.toggle('active', f.roles.includes(ch.dataset.role)));
   renderEffectChips();
 }
+// 켠 필터 목록(검색어 제외) — 요약 칩 · 「필터(n)」 개수
+function activeFilters() {
+  const f = STATE.filters, out = [];
+  for (const def of FILTER_DEFS) if (f[def.key]) out.push({ text: `${def.label}: ${(def.values.find(v => v[0] === f[def.key]) || [])[1]}`, off: () => { f[def.key] = ""; } });
+  for (const [k, label] of TOGGLE_DEFS) if (f[k]) out.push({ text: label, off: () => { f[k] = false; } });
+  for (const t of f.effects) out.push({ text: "효과: " + t, off: () => { f.effects = f.effects.filter(x => x !== t); } });
+  for (const r of f.roles) out.push({ text: "역할: " + ROLE_KO[r], off: () => { f.roles = f.roles.filter(x => x !== r); } });
+  return out;
+}
+function openSheet(on) {
+  document.getElementById('filters').classList.toggle('open', on);
+  document.body.style.overflow = on ? 'hidden' : '';
+  if (!on) document.getElementById('list-bar').scrollIntoView({ block: "nearest" });
+}
 // 목록 바 — 몇 명이 보이는지 · 전체 해제 · ✓/~/? 뜻(휴대폰엔 마우스 올림 설명이 없다)
 function renderListBar(n) {
   const bar = document.getElementById('list-bar');
   clear(bar);
   bar.appendChild(el("span", { children: [strong(n), document.createTextNode(`명 표시 / 전체 ${STATE.all.length}명`)] }));
+  const act = activeFilters();
+  const open = el("button", { class: "view-btn only-m" + (act.length ? " active" : ""), text: `필터${act.length ? `(${act.length})` : ""}` });
+  open.addEventListener('click', () => openSheet(true));
+  bar.prepend(open);
+  for (const a of act) {                                   // 시트를 닫아도 무엇이 켜졌는지 보이게 — 누르면 그 필터만 끈다
+    const chip = el("span", { class: "chip active af-chip only-m", text: a.text, attrs: { title: "이 필터 끄기" } });
+    chip.addEventListener('click', () => { a.off(); syncFilterChips(); render(); });
+    bar.appendChild(chip);
+  }
   if (anyFilter()) {
     const b = el("button", { class: "slot-btn", text: "전체 해제", attrs: { title: "필터 · 검색어를 모두 지운다" } });
     b.addEventListener('click', resetFilters);
@@ -795,6 +848,7 @@ function render() {
 
   const list = applyFilters();
   renderListBar(list.length);
+  document.getElementById('sheet-close').textContent = `${list.length}명 보기`;
   clear(grid);
   if (!list.length) {
     grid.appendChild(el("div", { class: "empty-state", text: "필터 조건에 맞는 캐릭이 없습니다." }));
@@ -1184,6 +1238,11 @@ function buildSlots() {
       const slot = el("div", { class: "slot" + (c ? "" : " empty") });
       slot.appendChild(el("div", { class: "slot-no", text: String(i + 1) }));
       slot.appendChild(el("div", { class: "slot-name", text: c ? c.nameKo : "빈 칸" }));
+      if (!c) {
+        const add = el("button", { class: "slot-btn", text: "＋ 멤버 선택" });
+        add.addEventListener('click', () => { const inp = document.getElementById('party-add'); if (inp) { inp.scrollIntoView({ block: "center" }); inp.focus(); } });
+        slot.appendChild(add);
+      }
       if (c) {
         const ctl = el("div", { class: "slot-ctl" });
         const front = i < FRONT_N;
@@ -1223,7 +1282,7 @@ async function renderParty() {
   const pick = el("div", { class: "filter-group", style: "margin:10px 0 8px" });
   const dl = el("datalist", { attrs: { id: "party-cands" } });
   for (const c of STATE.all.filter(hasSkills)) dl.appendChild(el("option", { attrs: { value: c.nameKo } }));
-  const input = el("input", { class: "fx-input", attrs: { list: "party-cands", placeholder: `멤버 추가 (최대 ${PARTY_MAX})` } });
+  const input = el("input", { class: "fx-input", attrs: { id: "party-add", list: "party-cands", placeholder: `멤버 추가 (최대 ${PARTY_MAX})` } });
   input.addEventListener('change', () => {
     const c = STATE.all.find(x => x.nameKo === input.value.trim() && hasSkills(x));
     if (c && !STATE.party.includes(c.id)) {

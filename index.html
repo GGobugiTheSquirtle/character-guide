@@ -1295,6 +1295,11 @@ async function renderParty() {
   pick.append(dl, input);
   wrap.appendChild(pick);
   wrap.appendChild(buildSlots());
+  if (STATE.party.slice(0, FRONT_N).filter(Boolean).length >= 2) {
+    const toBuild = el("button", { class: "view-btn", text: "이 4명으로 빌드 계산 →", attrs: { title: "최적 세팅 「파티 빌드」를 이 파티의 전방 멤버로 연다" } });
+    toBuild.addEventListener('click', () => { delete STATE.ov.buildIds; STATE.ov.tab = "build"; saveOv(); setView("opt"); });
+    wrap.appendChild(el("div", { style: "margin:-4px 0 14px", children: [toBuild] }));
+  }
   if (!STATE.party.some(Boolean)) { wrap.appendChild(el("div", { class: "empty-state", text: "멤버를 추가하세요." })); return; }
 
   const members = [];
@@ -1793,6 +1798,21 @@ async function renderOpt() {
   else renderGearTab(box, db);
 }
 
+// 파티 공유(2026-11-05 UX 검토 §1 #2) — 파티 구성 · 파티 추천 · 파티 빌드가 같은 4명을 따로 넣고 갈라졌다.
+//   빌드는 저장된 명단(O.buildIds)이 없으면 파티 구성 전방을 따라가고, 다르면 차이 줄 + 「현재 파티 불러오기」
+const partyFront = db => STATE.party.slice(0, FRONT_N).filter(id => id && db.chars[id]);
+const nameOf = id => { const c = STATE.all.find(x => x.id === id); return c ? c.nameKo : id; };
+function partyDiffLine(front, mine, onLoad, what) {
+  const same = front.length === mine.length && front.every(id => mine.includes(id));
+  const line = el("div", { class: "pt more", style: "margin:2px 0 8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap" });
+  if (!front.length) { line.textContent = "파티 구성에 전방 멤버가 없습니다."; return line; }
+  if (same) { line.textContent = `파티 구성 전방과 같음 (${front.map(nameOf).join(" · ")})`; return line; }
+  const b = el("button", { class: "slot-btn", text: "현재 파티 불러오기", attrs: { title: "파티 구성의 전방 멤버로 바꾼다" } });
+  b.addEventListener('click', onLoad);
+  line.append(el("span", { class: "role-gap", text: "⚠" }), document.createTextNode(`${what}이 파티 구성 전방(${front.map(nameOf).join(" · ")})과 다릅니다.`), b);
+  return line;
+}
+
 // ── 캐릭터창 · 장비 추천 ─────────────────────────────
 function charPicker(db, cur, onPick, ph) {
   if (!document.getElementById("ov-chars")) {
@@ -1964,6 +1984,16 @@ async function renderPartyTab(box, db) {
   }
   if (fixed.length < 3) fx.appendChild(charPicker(db, null, x => { O.fixed = [...new Set([...fixed, x.id])]; saveOv(); rr(); }, "추가 (선택)"));
   box.appendChild(fx);
+  const front = partyFront(db), outside = fixed.filter(id => !front.includes(id));
+  const pl = el("div", { class: "pt more", style: "margin:0 0 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap" });
+  if (front.length) {
+    const b = el("button", { class: "slot-btn", text: "현재 파티 불러오기", attrs: { title: "파티 구성 전방을 「꼭 넣을 멤버」로 — 4명이면 추천 대신 그 파티의 점수 · 장비만 계산" } });
+    b.addEventListener('click', () => { O.fixed = [...front]; saveOv(); rr(); });
+    pl.append(document.createTextNode(`파티 구성 전방: ${front.map(nameOf).join(" · ")}`), b);
+  }
+  if (outside.length) pl.append(el("span", { class: "role-gap", text: `⚠ 꼭 넣을 멤버 중 파티 구성에 없는 캐릭터: ${outside.map(nameOf).join(" · ")}` }));
+  if (fixed.length >= FRONT_N) pl.append(el("span", { text: "4명 모두 고정 — 추천 대신 이 파티의 점수만 계산합니다. 한 명을 빼면 그 자리를 추천합니다." }));
+  box.appendChild(pl);
   const ros = (O.roster || (owned.length ? "owned" : "all")) === "owned" ? owned : Object.keys(db.chars);
   if (!ros.length) { box.appendChild(el("div", { class: "empty-state", text: "보유 목록이 비었습니다 — 「보유 목록」 탭에서 캐릭터를 넣거나 「전체 캐릭터」로 바꾸세요." })); return; }
   const run = el("button", { class: "view-btn active", text: "추천 파티 찾기" });
@@ -2053,7 +2083,8 @@ function renderBuildTab(box, db) {
   box.appendChild(buildCondBar(db, rr, { gear: true }));
   const opt = { ...calcOpt(db), zones: db.zones };
   box.appendChild(enemyLine(opt.enemy));
-  const ids = (O.buildIds || STATE.party.slice(0, FRONT_N)).filter(id => id && db.chars[id]).slice(0, FRONT_N);
+  const front = partyFront(db);
+  const ids = (O.buildIds || front).filter(id => id && db.chars[id]).slice(0, FRONT_N);
   const row = el("div", { class: "filter-group", style: "gap:6px;align-items:center;margin:8px 0" });
   row.appendChild(el("span", { class: "filter-label", text: "전방 멤버" }));
   for (const id of ids) {
@@ -2063,6 +2094,7 @@ function renderBuildTab(box, db) {
     row.appendChild(chip);
   }
   if (ids.length < FRONT_N) row.appendChild(charPicker(db, null, x => { O.buildIds = [...new Set([...ids, x.id])]; saveOv(); rr(); }, "추가"));
+  const diff = partyDiffLine(front, ids, () => { delete O.buildIds; saveOv(); rr(); }, "빌드 멤버");
   // 방식(11-05 사용자 「4개 다 활용 · 고점 기준 · 단순하게」) — 고점 = 스킬칸 4개 효과 전부 최대 누적 + 가장 센 공격 1회(기본) / 턴 시뮬 = AF 6회 → 2~4턴
   const msel = el("select", { class: "fx-input" });
   for (const [v, t] of [["peak", "방식: 고점 (4스킬 효과 전부 · 최대 누적)"], ["sim", "방식: 턴 시뮬 (AF → 3턴)"]]) msel.appendChild(el("option", { text: t, attrs: { value: v } }));
@@ -2074,7 +2106,7 @@ function renderBuildTab(box, db) {
   gsel.value = O.buildGear || "opt";
   gsel.addEventListener('change', () => { O.buildGear = gsel.value; saveOv(); });
   row.appendChild(gsel);
-  box.appendChild(row);
+  box.append(row, diff);
   const run = el("button", { class: "view-btn active", text: "빌드 계산" });
   const prog = el("span", { class: "pt more", style: "margin-left:10px" });
   box.append(el("div", { children: [run, prog] }));

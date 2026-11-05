@@ -226,6 +226,19 @@
   .assume { font-size: 12px; color: var(--accent); background: var(--panel-2); border-left: 3px solid var(--gold-dim); border-radius: 0 6px 6px 0; padding: 5px 10px; margin: 8px 0; }
   details.method { margin-top: 8px; }
   .only-m, .sheet-head, #sheet-dim { display: none; }
+  /* 캐릭터 고르기 드롭다운 */
+  .cp { position: relative; display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .cp-list { position: absolute; top: calc(100% + 4px); left: 0; z-index: 120; width: 300px; max-width: calc(100vw - 32px); max-height: 340px; overflow-y: auto;
+    background: var(--panel); border: 1px solid var(--gold-dim); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+  .cp-opt { display: flex; gap: 8px; align-items: center; padding: 6px 10px; cursor: pointer; min-height: 44px; }
+  .cp-opt.on, .cp-opt:hover { background: var(--panel-2); }
+  .cp-opt img, .cp-opt .cp-noimg { width: 32px; height: 32px; border-radius: 4px; flex-shrink: 0; background: var(--panel-2); }
+  .cp-txt { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
+  .cp-name { font-size: 13px; color: var(--text); }
+  .cp-sub { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cp-why { margin-left: auto; font-size: 11px; color: var(--red); white-space: nowrap; }
+  .cp-msg { font-size: 11px; color: var(--red); }
+  .cp-msg:empty { display: none; }
   .af-chip::after { content: " ×"; }
   /* 휴대폰(2026-11-05 UX 검토 §1 #1 · #6) — 첫 화면을 헤더 · 필터가 차지(첫 카드 y≈615)해서 필터는 아래 시트로, 누를 곳은 44px */
   @media (max-width: 640px) {
@@ -1280,19 +1293,14 @@ async function renderParty() {
   wrap.appendChild(el("div", { class: "skko-src", text: `파티에 넣을 수 있는 캐릭터 ${nKo + nEn}명 = 공식 한국어 스킬 ${nKo}명 + 위키 영어 스킬(자동 분해) ${nEn}명. 성도 각성은 완료 상태로 계산. 「전방에서 / 후방에서」 효과는 그 자리에 있을 때만 셉니다.` }));
   // 고르기
   const pick = el("div", { class: "filter-group", style: "margin:10px 0 8px" });
-  const dl = el("datalist", { attrs: { id: "party-cands" } });
-  for (const c of STATE.all.filter(hasSkills)) dl.appendChild(el("option", { attrs: { value: c.nameKo } }));
-  const input = el("input", { class: "fx-input", attrs: { id: "party-add", list: "party-cands", placeholder: `멤버 추가 (최대 ${PARTY_MAX})` } });
-  input.addEventListener('change', () => {
-    const c = STATE.all.find(x => x.nameKo === input.value.trim() && hasSkills(x));
-    if (c && !STATE.party.includes(c.id)) {
+  const input = pickerInput({ id: "party-add", pool: hasSkills, ph: `멤버 추가 (최대 ${PARTY_MAX}) — 한/영/일 이름 일부`,
+    check: c => STATE.party.includes(c.id) ? "이미 포함" : STATE.party.filter(Boolean).length >= PARTY_MAX ? `칸이 다 찼음 (${PARTY_MAX}명)` : null,
+    onPick: c => {
       const hole = STATE.party.indexOf(null);
-      if (hole >= 0) STATE.party[hole] = c.id; else if (STATE.party.length < PARTY_MAX) STATE.party.push(c.id);
+      if (hole >= 0) STATE.party[hole] = c.id; else STATE.party.push(c.id);
       saveParty(); renderParty();
-    }
-    input.value = "";
-  });
-  pick.append(dl, input);
+    } });
+  pick.append(input);
   wrap.appendChild(pick);
   wrap.appendChild(buildSlots());
   if (STATE.party.slice(0, FRONT_N).filter(Boolean).length >= 2) {
@@ -1814,15 +1822,60 @@ function partyDiffLine(front, mine, onLoad, what) {
 }
 
 // ── 캐릭터창 · 장비 추천 ─────────────────────────────
-function charPicker(db, cur, onPick, ph) {
-  if (!document.getElementById("ov-chars")) {
-    const dl = el("datalist", { attrs: { id: "ov-chars" } });
-    for (const c of STATE.all) if (db.chars[c.id]) dl.appendChild(el("option", { attrs: { value: c.nameKo } }));
-    document.body.appendChild(dl);
-  }
-  const inp = el("input", { class: "fx-input", attrs: { list: "ov-chars", placeholder: ph, value: cur ? cur.nameKo : "" } });
-  inp.addEventListener('change', () => { const c = STATE.all.find(x => x.nameKo === inp.value.trim() && db.chars[x.id]); if (c) onPick(c); else inp.value = cur ? cur.nameKo : ""; });
-  return inp;
+// 계산 데이터가 있는 캐릭터만 — check(c) 는 못 넣는 이유(「이미 포함」 · 「칸이 다 찼음」) 또는 null
+function charPicker(db, cur, onPick, ph, check) {
+  return pickerInput({ pool: c => !!db.chars[c.id], cur, onPick, ph, check });
+}
+// 캐릭터 고르기 입력(2026-11-05 UX 검토 §1 #3) — 전엔 datalist + 한국어 이름 완전 일치만이라 「Aldo」 · 「알」은 말없이 지워졌다.
+//   한/영/일 부분 일치(nameMatch — 목록 검색과 같은 규칙) 드롭다운 + 스타일 · 속성 · 무기, 못 넣으면 이유를 입력 옆에 한 줄
+function pickerInput({ pool, cur, onPick, ph, check, id }) {
+  const wrap = el("span", { class: "cp" });
+  const inp = el("input", { class: "fx-input", attrs: { placeholder: ph, value: cur ? cur.nameKo : "", autocomplete: "off", role: "combobox", "aria-autocomplete": "list", "aria-expanded": "false", ...(id ? { id } : {}) } });
+  const msg = el("span", { class: "cp-msg", attrs: { "aria-live": "polite" } });
+  const list = el("div", { class: "cp-list", attrs: { role: "listbox" } });
+  list.hidden = true;
+  let hits = [], hi = 0;
+  const say = t => { msg.textContent = t || ""; };
+  const close = () => { list.hidden = true; inp.setAttribute("aria-expanded", "false"); };
+  const mark = () => [...list.children].forEach((o, i) => o.classList.toggle("on", i === hi));
+  const choose = c => {
+    const why = check && check(c);
+    if (why) { say(`${c.nameKo}: ${why}`); return; }
+    close(); say(""); inp.value = cur ? c.nameKo : "";
+    onPick(c);
+  };
+  const show = () => {
+    const q = inp.value.trim();
+    clear(list); hi = 0;
+    hits = q ? STATE.all.filter(c => pool(c) && nameMatch(c, q)).slice(0, 8) : [];
+    if (!q) { close(); say(""); return; }
+    if (!hits.length) { close(); say(`「${q}」 결과 없음`); return; }
+    say("");
+    hits.forEach((c, i) => {
+      const opt = el("div", { class: "cp-opt" + (i === hi ? " on" : ""), attrs: { role: "option" } });
+      opt.appendChild(c.icon ? el("img", { attrs: { src: "images/icons/" + c.icon, alt: "", loading: "lazy" } }) : el("span", { class: "cp-noimg" }));
+      opt.appendChild(el("span", { class: "cp-txt", children: [el("span", { class: "cp-name", text: c.nameKo }),
+        el("span", { class: "cp-sub", text: [c.style || "NS", ELEM_KO[c.element], WEAP_KO[c.weapon], c.nameEn].filter(Boolean).join(" · ") })] }));
+      const why = check && check(c);
+      if (why) opt.appendChild(el("span", { class: "cp-why", text: why }));
+      opt.addEventListener('mousedown', e => { e.preventDefault(); choose(c); });   // blur 보다 먼저
+      list.appendChild(opt);
+    });
+    list.hidden = false; inp.setAttribute("aria-expanded", "true");
+  };
+  inp.addEventListener('input', show);
+  inp.addEventListener('keydown', e => {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      if (!hits.length) return;
+      e.preventDefault(); hi = (hi + (e.key === "ArrowDown" ? 1 : hits.length - 1)) % hits.length; mark();
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (!list.hidden && hits[hi]) choose(hits[hi]); else if (inp.value.trim()) show();
+    } else if (e.key === "Escape" && !list.hidden) { e.stopPropagation(); close(); }    // 모달 닫기 Esc 와 겹치지 않게
+  });
+  inp.addEventListener('blur', () => setTimeout(() => { close(); if (cur && inp.value.trim() !== cur.nameKo) { inp.value = cur.nameKo; say(""); } }, 150));
+  wrap.append(inp, msg, list);
+  return wrap;
 }
 // 외부 버프 내역(S8) — 항목마다 표준(중앙값) · 최대 · 주는 캐릭터 수 · 가장 센 캐릭터, 켜고 끄기(STATE.ov.presetOff)
 function presetDetails(st, atk, lvl, rr) {
@@ -1982,7 +2035,8 @@ async function renderPartyTab(box, db) {
     chip.addEventListener('click', () => { O.fixed = fixed.filter(x => x !== id); saveOv(); rr(); });
     fx.appendChild(chip);
   }
-  if (fixed.length < 3) fx.appendChild(charPicker(db, null, x => { O.fixed = [...new Set([...fixed, x.id])]; saveOv(); rr(); }, "추가 (선택)"));
+  fx.appendChild(charPicker(db, null, x => { O.fixed = [...new Set([...fixed, x.id])]; saveOv(); rr(); }, "추가 (선택)",
+    c => fixed.includes(c.id) ? "이미 포함" : fixed.length >= 3 ? "칸이 다 찼음 (고정은 3명까지)" : null));
   box.appendChild(fx);
   const front = partyFront(db), outside = fixed.filter(id => !front.includes(id));
   const pl = el("div", { class: "pt more", style: "margin:0 0 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap" });
@@ -2093,7 +2147,8 @@ function renderBuildTab(box, db) {
     chip.addEventListener('click', () => { O.buildIds = ids.filter(x => x !== id); saveOv(); rr(); });
     row.appendChild(chip);
   }
-  if (ids.length < FRONT_N) row.appendChild(charPicker(db, null, x => { O.buildIds = [...new Set([...ids, x.id])]; saveOv(); rr(); }, "추가"));
+  row.appendChild(charPicker(db, null, x => { O.buildIds = [...new Set([...ids, x.id])]; saveOv(); rr(); }, "추가",
+    c => ids.includes(c.id) ? "이미 포함" : ids.length >= FRONT_N ? `칸이 다 찼음 (전방 ${FRONT_N}명)` : null));
   const diff = partyDiffLine(front, ids, () => { delete O.buildIds; saveOv(); rr(); }, "빌드 멤버");
   // 방식(11-05 사용자 「4개 다 활용 · 고점 기준 · 단순하게」) — 고점 = 스킬칸 4개 효과 전부 최대 누적 + 가장 센 공격 1회(기본) / 턴 시뮬 = AF 6회 → 2~4턴
   const msel = el("select", { class: "fx-input" });
@@ -2237,7 +2292,7 @@ function renderInvTab(box, db) {
   const none = el("button", { class: "slot-btn", text: "비우기" });
   none.addEventListener('click', () => { if (confirm("보유 캐릭터를 모두 지울까요?")) { inv.chars = []; saveInv(); rr(); } });
   s1.append(ta, el("div", { class: "filter-group", style: "gap:6px;margin:6px 0", children: [addBtn,
-    charPicker(db, null, x => { if (!inv.chars.includes(x.id)) inv.chars.push(x.id); saveInv(); rr(); }, "한 명씩 추가"), all, none] }));
+    charPicker(db, null, x => { inv.chars.push(x.id); saveInv(); rr(); }, "한 명씩 추가", c => inv.chars.includes(c.id) ? "이미 포함" : null), all, none] }));
   const chips = el("div", { class: "inv-chips" });
   for (const id of inv.chars) {
     const c = STATE.all.find(x => x.id === id);

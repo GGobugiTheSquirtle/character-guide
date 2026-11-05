@@ -341,7 +341,7 @@
         : c.t === "zone" ? (c.on === "another" || c.on === "awake" ? !!opt.zoneAwake && (!c.name || zn.includes(c.name.toLowerCase()))
           : c.on === "any" ? !!opt.zone : zn.includes(String(c.on).toLowerCase()))
         : c.t === "enemies" ? (opt.enemyCount || 1) >= 2 : c.t === "enemyFirst" ? !!opt.enemyFirst
-        : c.t === "af" ? !!opt.af : c.t === "stellar" ? !!opt.stellar
+        : c.t === "af" ? (/not in/i.test(c.label || "") ? !opt.af : !!opt.af) : c.t === "stellar" ? !!opt.stellar
         : (opt.states || []).includes(c.label) || autoCond(c, opt, { ...x, tgt });
       if (!on) continue;
       if (c.t === "crit") out.crit *= c.x; else out.all *= c.x;

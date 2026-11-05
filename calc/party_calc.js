@@ -110,8 +110,8 @@
     if ((m = n.match(/^웨폰 브레이크\((.+)\)$/))) return { id: "wbreak", which: m[1].split(/\s+/).map(x => ATK_EN[x.toLowerCase()] || x) };
     return null;
   }
-  const WEAPON_WORDS = [["검", /(?<![가-힣])검|sword/i], ["도끼", /도끼|ax(?:e)?/i], ["도", /(?<![가-힣])도(?![끼가-힣])|katana/i], ["창", /(?<![가-힣])창|lance|spear/i],
-    ["활", /(?<![가-힣])활|bow/i], ["권갑", /권갑|fist/i], ["망치", /망치|hammer/i], ["지팡이", /지팡이|staff/i]];
+  const WEAPON_WORDS = [["검", /(?<![가-힣])검|sword/i], ["도끼", /도끼|\bax(?:e)?\b/i], ["도", /(?<![가-힣])도(?![끼가-힣])|katana/i], ["창", /(?<![가-힣])창|lance|spear/i],
+    ["활", /(?<![가-힣])활|\bbow/i], ["권갑", /권갑|fist/i], ["망치", /망치|hammer/i], ["지팡이", /지팡이|staff/i]];
   const weaponsOf = t => (/장착자|equipped/i.test(t) && !/모든 무기|any weapon|all weapon/i.test(t) ? WEAPON_WORDS.filter(([, r]) => r.test(t)).map(([w]) => w) : []);
   function addAlly(g, u, s) {
     const v = (u.value || 0) / 100;

@@ -142,8 +142,8 @@
   .sources a:hover { color: var(--gold); border-color: var(--gold-dim); }
 
   /* 영입 조건 · 조건템 (2026-09-22) */
-  .view-toggle { display: flex; gap: 6px; }
-  .view-btn { padding: 5px 12px; border: 1px solid var(--line); background: var(--panel-2); color: var(--muted); border-radius: 6px; font-size: 12px; cursor: pointer; font-family: inherit; }
+  .view-toggle { display: flex; gap: 6px; overflow-x: auto; max-width: 100%; min-width: 0; scrollbar-width: thin; }   /* 탭은 한 줄 — 좁으면 가로로 민다 */
+  .view-btn { padding: 5px 12px; border: 1px solid var(--line); background: var(--panel-2); color: var(--muted); border-radius: 6px; font-size: 12px; cursor: pointer; font-family: inherit; white-space: nowrap; }
   .view-btn:hover { border-color: var(--gold-dim); color: var(--text); }
   .view-btn.active { background: var(--gold); border-color: var(--gold); color: #2a2317; font-weight: 600; }
 
@@ -219,6 +219,13 @@
   .inv-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
   .inv-chips .chip, .filter-group .chip { font-size: 11px; padding: 2px 8px; }
   @media (max-width: 860px) { .cw { grid-template-columns: 1fr; } .container { padding: 12px 16px 60px; } }
+  /* 목록 바 · 계산 가정 줄 · 계산 방법 접기 (2026-11-05 UX 검토) */
+  .list-bar { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-bottom: 12px; font-size: 12px; color: var(--muted); }
+  .list-bar b { color: var(--gold); }
+  .list-bar .legend { font-size: 11px; }
+  .assume { font-size: 12px; color: var(--accent); background: var(--panel-2); border-left: 3px solid var(--gold-dim); border-radius: 0 6px 6px 0; padding: 5px 10px; margin: 8px 0; }
+  details.method { margin-top: 8px; }
+  @media (max-width: 640px) { .header-row .view-toggle { flex: 1 1 100%; } }
 </style>
 <!-- goatcounter:begin -->
 <script>window.goatcounter={path:function(p){return location.host+p}}</script>
@@ -241,6 +248,7 @@
 </div>
 
 <div class="container">
+  <div id="list-bar" class="list-bar"></div>
   <div id="grid" class="grid"><div class="loading">데이터 로딩 중…</div></div>
   <div id="quest-view" hidden></div>
   <div id="dungeon-view" hidden></div>
@@ -323,6 +331,14 @@ function clear(node) { while (node.firstChild) node.removeChild(node.firstChild)
 function badgeEl(text, extraClass = "") {
   return el("span", { class: "badge " + extraClass, text });
 }
+// 「계산 방법 자세히」 접기 — 검증 수치 · 탐색 횟수 같은 내부 값은 여기로(2026-11-05 UX 검토: 보이는 글은 보통 말 한 줄)
+function methodDetails(text, summary = "계산 방법 자세히") {
+  const d = el("details", { class: "skko-raw method" });
+  d.append(el("summary", { text: summary }), document.createTextNode(text));
+  return d;
+}
+// 결과 바로 위 가정 한 줄 — 최대 육성 기준이라 내 계정보다 높게 읽히기 쉽다(GPT 검토 · CALC_ASSUME 이 작은 글씨 안에만 있었다)
+const assumeLine = () => el("div", { class: "assume", text: "추정치 · 최대 육성 기준(최대 레벨 · 성도 각성 · 명암 255 · 무기 최대 강화). 「캐릭터창」에 내 스탯을 넣은 캐릭터는 그 값으로 계산합니다." });
 
 // ─────────────────────────────────────
 // Init & data load
@@ -353,7 +369,8 @@ async function init() {
     }
     const stats = document.getElementById('stats');
     clear(stats);
-    stats.append("총 ", strong(data.meta.total), "명 · 매핑 ", strong(data.meta.with_mapping), " · 상세 ", strong(data.meta.with_full));
+    stats.append("캐릭터 ", strong(data.meta.total), "명 · 상세 자료 ", strong(data.meta.with_full), "명");
+    stats.title = `외부 자료(game-info · 나무위키)와 이름이 연결된 캐릭터 ${data.meta.with_mapping}명`;
     render();
   } catch (e) {
     const grid = document.getElementById('grid');
@@ -382,7 +399,7 @@ function buildFilters() {
   // 토글 필터
   const toggleGroup = el("div", { class: "filter-group" });
   toggleGroup.appendChild(el("span", { class: "filter-label", text: "기타" }));
-  for (const [key, label] of [["sa", "SA 보유"], ["hasFull", "상세 정보 있음"], ["skillsKo", "공식 한국어 스킬"]]) {
+  for (const [key, label] of [["sa", "성도 각성 지원"], ["hasFull", "상세 정보 있음"], ["skillsKo", "공식 한국어 스킬"]]) {
     const chip = el("span", { class: "chip", text: label, dataset: { filter: key } });
     chip.addEventListener('click', () => {
       chip.classList.toggle('active');
@@ -414,7 +431,7 @@ function buildRoleFilter() {
   const group = el("div", { class: "filter-group" });
   group.appendChild(el("span", { class: "filter-label", text: "역할" }));
   for (const r of PARTY_ROLES) {
-    const chip = el("span", { class: "chip", text: ROLE_KO[r], attrs: { title: ROLE_HINT[r] || "" } });
+    const chip = el("span", { class: "chip", text: ROLE_KO[r], attrs: { title: ROLE_HINT[r] || "" }, dataset: { role: r } });
     chip.addEventListener('click', () => {
       chip.classList.toggle('active');
       const f = STATE.filters;
@@ -499,15 +516,44 @@ function applyFilters() {
   } else if (f.recruit) {
     list = list.filter(c => STATE.recruit[c.id]?.recruit?.kind === f.recruit);
   }
-  if (STATE.search) {
-    const q = STATE.search.toLowerCase();
-    list = list.filter(c =>
-      (c.nameKo || "").toLowerCase().includes(q) ||
-      (c.nameEn || "").toLowerCase().includes(q) ||
-      (c.name_jp || "").toLowerCase().includes(q)
-    );
-  }
+  if (STATE.search) list = list.filter(c => nameMatch(c, STATE.search));
   return list;
+}
+// 한/영/일 이름 부분 일치 — 목록 검색 · 캐릭터 고르기 입력이 같은 규칙을 쓴다
+function nameMatch(c, q) {
+  q = q.toLowerCase();
+  return (c.nameKo || "").toLowerCase().includes(q) || (c.nameEn || "").toLowerCase().includes(q) || (c.name_jp || "").toLowerCase().includes(q);
+}
+const FILTER_INIT = () => ({ element: "", weapon: "", style: "", sa: false, hasFull: false, recruit: "", skillsKo: false, effects: [], roles: [] });
+const anyFilter = () => { const f = STATE.filters; return !!(STATE.search || f.element || f.weapon || f.style || f.sa || f.hasFull || f.recruit || f.skillsKo || f.effects.length || f.roles.length); };
+// 전체 해제 — 상태를 처음으로 되돌리고 칩 표시를 상태에 다시 맞춘다
+function resetFilters() {
+  STATE.filters = FILTER_INIT();
+  STATE.search = "";
+  document.getElementById('search').value = "";
+  syncFilterChips();
+  render();
+}
+function syncFilterChips() {
+  const f = STATE.filters;
+  document.querySelectorAll('#filter-row .chip[data-filter]').forEach(ch => {
+    const k = ch.dataset.filter;
+    ch.classList.toggle('active', "value" in ch.dataset ? f[k] === ch.dataset.value : !!f[k]);
+  });
+  document.querySelectorAll('#filter-row .chip[data-role]').forEach(ch => ch.classList.toggle('active', f.roles.includes(ch.dataset.role)));
+  renderEffectChips();
+}
+// 목록 바 — 몇 명이 보이는지 · 전체 해제 · ✓/~/? 뜻(휴대폰엔 마우스 올림 설명이 없다)
+function renderListBar(n) {
+  const bar = document.getElementById('list-bar');
+  clear(bar);
+  bar.appendChild(el("span", { children: [strong(n), document.createTextNode(`명 표시 / 전체 ${STATE.all.length}명`)] }));
+  if (anyFilter()) {
+    const b = el("button", { class: "slot-btn", text: "전체 해제", attrs: { title: "필터 · 검색어를 모두 지운다" } });
+    b.addEventListener('click', resetFilters);
+    bar.appendChild(b);
+  }
+  bar.appendChild(el("span", { class: "legend", text: "카드 오른쪽 위 ✓ · ~ · ? = 이름 ↔ 외부 자료 연결 신뢰도(높음 · 보통 · 낮음)" }));
 }
 
 // ─────────────────────────────────────
@@ -741,12 +787,14 @@ function render() {
   document.getElementById('party-view').hidden = STATE.view !== "party";
   document.getElementById('opt-view').hidden = STATE.view !== "opt";
   filters.hidden = STATE.view !== "chars";
+  document.getElementById('list-bar').hidden = STATE.view !== "chars";
   if (STATE.view === "party") { renderParty(); return; }
   if (STATE.view === "opt") { renderOpt(); return; }
   if (STATE.view === "quests") { renderQuests(); return; }
   if (STATE.view === "dungeons") { renderDungeons(); return; }
 
   const list = applyFilters();
+  renderListBar(list.length);
   clear(grid);
   if (!list.length) {
     grid.appendChild(el("div", { class: "empty-state", text: "필터 조건에 맞는 캐릭이 없습니다." }));
@@ -876,7 +924,7 @@ function buildStubNotice(c) {
   notice.appendChild(document.createTextNode("이 캐릭은 자동 매핑이 완료되지 않아 풀데이터가 없습니다."));
   notice.appendChild(el("br"));
   notice.appendChild(el("small", {
-    text: `한국명: ${c.nameKo} · 영문: ${c.nameEn} · 매핑 confidence: ${c.confidence}`,
+    text: `한국명: ${c.nameKo} · 영문: ${c.nameEn} · 자동 연결 신뢰도: ${c.confidence}`,
     style: "display:block;margin-top:8px"
   }));
   if (c.urls && c.urls.namu) {
@@ -1025,7 +1073,8 @@ function buildSkillsSection(c, lang) {
     }
     sec.appendChild(tags);
     if (c.roles) sec.appendChild(el("div", { class: "skko-src", text: "역할: " + PARTY_ROLES.filter(r => c.roles[r]).map(r => `${ROLE_KO[r]} ${c.roles[r]}`).join(" · ") }));
-    if (lang === "en") sec.appendChild(el("div", { class: "skko-src", text: "영어 문장 자동 분해 — 공식 한국어 61명과 대조한 역할 일치: 정밀도 0.84 · 재현율 0.77. 칩에 마우스를 올리면 원문." }));
+    if (lang === "en") sec.append(el("div", { class: "skko-src", text: "영어 원문을 자동으로 나눈 결과라 일부 효과가 빠지거나 틀릴 수 있습니다. 스킬마다 「원문」을 펼치면 영어 원문이 보입니다." }),
+      methodDetails("자동 분해 정확도 — 공식 한국어 스킬이 있는 61명과 역할을 대조: 정밀도 0.84(자동으로 붙인 역할 중 맞은 비율) · 재현율 0.77(실제 역할 중 찾아낸 비율)."));
   }
   const host = el("div", { class: "loading", text: "로딩 중…" });
   sec.appendChild(host);
@@ -1169,7 +1218,7 @@ async function renderParty() {
   host.appendChild(wrap);
   wrap.appendChild(el("h3", { class: "party-h", text: "파티 구성 — 역할 · 속성 · ZONE · 배치 점검" }));
   const nKo = STATE.all.filter(c => c.skills_ko).length, nEn = STATE.all.filter(c => !c.skills_ko && c.skills_en).length;
-  wrap.appendChild(el("div", { class: "skko-src", text: `공식 한국어 스킬 ${nKo}명 + 위키 영어 스킬(자동 분해) ${nEn}명. 성도 각성은 완료 상태로 계산. 「전방에서 / 후방에서」 효과는 그 자리에 있을 때만 셉니다.` }));
+  wrap.appendChild(el("div", { class: "skko-src", text: `파티에 넣을 수 있는 캐릭터 ${nKo + nEn}명 = 공식 한국어 스킬 ${nKo}명 + 위키 영어 스킬(자동 분해) ${nEn}명. 성도 각성은 완료 상태로 계산. 「전방에서 / 후방에서」 효과는 그 자리에 있을 때만 셉니다.` }));
   // 고르기
   const pick = el("div", { class: "filter-group", style: "margin:10px 0 8px" });
   const dl = el("datalist", { attrs: { id: "party-cands" } });
@@ -1601,6 +1650,7 @@ async function renderCalc(wrap, members) {
   const opt = calcOpt(db);
   sec.appendChild(enemyLine(opt.enemy));
   const team = members.map(m => calcMember(db, m.c, m.pos) || { ...m, attack: null });
+  sec.appendChild(assumeLine());
   const tbl = el("table", { class: "skill-table party-table" });
   tbl.appendChild(el("thead", { children: [el("tr", { children: ["멤버", "스킬", "장비", "일반 (1타)", "크리 (확률)", "1회 기대값", "정밀", "근거"].map(h => el("th", { text: h })) })] }));
   const tb = el("tbody");
@@ -1634,7 +1684,7 @@ async function renderCalc(wrap, members) {
   sec.appendChild(el("div", { class: "table-scroll", children: [tbl] }));
   sec.appendChild(el("div", { class: "pt", children: [el("b", { text: `전방 1회씩 합계 기대값: ${fmtN(sum)}` }),
     document.createTextNode(sumP ? ` · 정밀 ${fmtN(sumP)} (${((sumP / sum - 1) * 100).toFixed(2)}%)` : "")] }));
-  sec.appendChild(el("div", { class: "skko-src", text: CALC_ASSUME }));
+  sec.appendChild(methodDetails(CALC_ASSUME));
 }
 const CALC_ASSUME = "정밀 = 단계마다 소수점 버림(딩님 「AE 대미지 계산기」 순서 · 규칙, 크레딧 딩님) — 기대값보다 0~0.5% 낮다. 스킬 효과 수치(딩님 표 작성 캐릭터는 정본) · 공격 배율 일부 출처: 카페 딩님 「어나더 에덴 스킬 DB」. 성도 각성 스탯 일부: 공유 스탯 표(2026-10-16). 루나틱(심안 · 결사) · 브레이크 · 호시탐탐 · VC · 전용 장비 스킬 · SB 발동 시 효과는 「조건부 효과 포함」일 때. " +
   "가정 — 스탯: 최대 레벨 + 성도 각성 + 명암 255 + 다른 스타일 보드 완성 보너스(캐릭터창 값을 넣으면 그것) · 무작위 배지는 주 스탯 최대치 · 부 스탯 제외 · 무기: 위키 최대 강화 · 스킬 배율: 위키 최대 레벨(범위면 기본값, 「조건부 효과 포함」이면 위값) · 크리: 행운/16% + 크리율 가산 · " +
@@ -1666,9 +1716,9 @@ async function renderOpt() {
   const wrap = el("div", { class: "party" });
   host.appendChild(wrap);
   wrap.appendChild(el("h3", { class: "party-h", text: "최적 세팅 — 장비 · 파티 추천" }));
-  wrap.appendChild(el("div", { class: "skko-src", text: "7. 대미지 추정과 같은 정적 모델(버프 · 디버프 · 존을 다 깐 뒤 스킬 1회 기대값) 위에서 가장 큰 값을 찾습니다. 인게임 대조 전 추정치 · 턴 순서 미반영." }));
+  wrap.appendChild(el("div", { class: "skko-src", text: "버프 · 디버프 · 존을 모두 건 상태에서 스킬 1회 대미지가 가장 큰 장비 · 파티를 찾습니다. 게임 화면과 대조하기 전의 추정치이고, 턴 순서는 보지 않습니다." }));
   const tabs = el("div", { class: "view-toggle", style: "margin:10px 0 14px" });
-  for (const [k, t] of [["gear", "캐릭터창 · 장비 추천"], ["party", "파티 추천"], ["build", "파티 빌드"], ["inv", `보유 목록 (캐릭터 ${STATE.inv.chars.length})`]]) {
+  for (const [k, t] of [["gear", "캐릭터창 · 장비 추천"], ["party", "파티 추천"], ["build", "파티 빌드"], ["inv", `보유 목록 (캐릭터 ${STATE.inv.chars.length}명)`]]) {
     const b = el("button", { class: "view-btn" + (STATE.ov.tab === k ? " active" : ""), text: t });
     b.addEventListener('click', () => { STATE.ov.tab = k; saveOv(); renderOpt(); });
     tabs.appendChild(b);
@@ -1811,15 +1861,15 @@ function renderGearTab(box, db) {
   const apply = el("button", { class: "view-btn active", text: "추천 장비 적용" });
   apply.addEventListener('click', () => { saveGear(c.id, res.gear, res.attack); rr(); });
   const sum = el("div", { class: "cw-box", style: "margin-top:12px" });
-  sum.append(el("h4", { text: "기대값 (스킬 1회)" }),
+  sum.append(el("h4", { text: "기대값 (스킬 1회)" }), assumeLine(),
     el("div", { class: "pt", text: `현재 — ${cur.attack.skill}: ${dCur ? fmtN(dCur.perUse) : "—"}` }),
     el("div", { class: "pt", children: [el("b", { class: "role-ok", text: `추천 — ${res.attack.skill}: ${fmtN(dRec.perUse)}` }),
       document.createTextNode(gain == null ? "" : `  (${gain >= 0 ? "+" : ""}${(gain * 100).toFixed(1)}%)`)] }),
-    el("div", { class: "skko-src", style: "margin:6px 0", text: `버프: ${ctx.selectedOptions[0].text} · 후보: ${STATE.calc.ownedOnly ? "보유 목록" : "전체 장비"} · 평가 ${res.evals.toLocaleString()}회 · 공격 ${attacks.length}개 비교 · 그라스타 ${STATE.calc.gslots || 4}칸 · 배지 2칸 · 특수 1칸` }),
+    el("div", { class: "skko-src", style: "margin:6px 0", text: `버프: ${ctx.selectedOptions[0].text} · 후보: ${STATE.calc.ownedOnly ? "보유 목록" : "전체 장비"} · 그라스타 ${STATE.calc.gslots || 4}칸 · 배지 2칸 · 특수 1칸` }),
     apply, el("div", { style: "margin-top:8px", children: [whyDetails(dRec)] }));
   if (STATE.calc.ownedOnly && !gearPools(db, m).pools.weapons.length) sum.appendChild(el("div", { class: "pt role-gap", text: `보유 목록에 ${m.cc.weapon} 무기가 없습니다.` }));
   box.appendChild(sum);
-  box.appendChild(el("div", { class: "skko-src", style: "margin-top:10px", text: "장비 최적화 = 한 칸씩 모든 후보로 바꿔 보며 더 오르지 않을 때까지 반복(축소 공간 전수 탐색과 24/24 일치). " + CALC_ASSUME }));
+  box.appendChild(methodDetails(`장비 최적화 = 한 칸씩 모든 후보로 바꿔 보며 더 오르지 않을 때까지 반복(축소 공간 전수 탐색과 24/24 일치). 이번 계산: 평가 ${res.evals.toLocaleString()}회 · 공격 ${attacks.length}개 비교. ` + CALC_ASSUME));
 }
 
 // ── 파티 추천 ─────────────────────────────────────
@@ -1838,7 +1888,7 @@ async function renderPartyTab(box, db) {
   };
   const owned = STATE.inv.chars.filter(id => db.chars[id]);
   bar.append(
-    sel("roster", [["owned", `보유 캐릭터 (${owned.length}명)`], ["all", `전체 캐릭터 (${Object.keys(db.chars).length}명)`]], owned.length ? "owned" : "all"),
+    sel("roster", [["owned", `보유 캐릭터 (${owned.length}명)`], ["all", `계산 가능 캐릭터 전체 (${Object.keys(db.chars).length}명)`]], owned.length ? "owned" : "all"),
     sel("objective", [["sum", "목표: 전방 4명 합계"], ["carry", "목표: 주력 1명 최대"]], "sum"),
     sel("zoneMode", [["auto", "존: 파티원이 전개하는 것 중 최고"], ["none", "존: 없음"], ["fixed", "존: 직접 고르기"]], "auto"),
     sel("gearMode", [["saved", "장비: 저장된 것 그대로"], ["party", "장비: 상위 3 파티에 공동 최적화 (파티당 수 초)"]], "saved"));
@@ -1881,15 +1931,17 @@ async function renderPartyTab(box, db) {
         gearRunner: (team, o, g) => { prog.textContent = "상위 3 파티 장비 맞추는 중(백그라운드 3개 동시)…"; return gearRun(team, o, g); },
         gear: { grastaSlots: S.gslots || 4, badgeSlots: 2, counts: inv ? { ...inv.w, ...inv.a, ...inv.g, ...inv.b } : null } })
       : await AEOpt.partySearch(cands, opt, sconf);
-    prog.textContent = `${cands.length}명(가지치기 후 ${r.pool}) · ${r.evals.toLocaleString()}${geared ? "회" : "팀"} 평가 · ${((performance.now() - t0) / 1000).toFixed(1)}초`;
+    prog.textContent = `후보 ${cands.length}명 · ${((performance.now() - t0) / 1000).toFixed(1)}초 걸림`;
+    prog.title = `가지치기 후 ${r.pool}명 · ${r.evals.toLocaleString()}${geared ? "회" : "팀"} 평가`;
     STATE.ovRes = { key, ...r, opt };
     showPartyResult(out, db, STATE.ovRes);
     run.disabled = false;
   });
-  box.appendChild(el("div", { class: "skko-src", style: "margin-top:12px", text: "탐색 = 단독 딜 상위 8명에서 각각 출발 → 한 명씩 가장 좋은 멤버로 채움 → 한 자리씩 바꿔 오르지 않을 때까지(무작위 12명 명단 20개 — 4명 전수 탐색 1위와 20/20 일치). " +
-    "전방 4명만 평가 · 장비는 저장된 것(없으면 무기 최고 공격력, 그라스타 · 배지 없음). 「공동 최적화」면 그 상위 3 파티마다 네 명 장비를 함께 맞춘 뒤 다시 순위 — 1개뿐인 무기 · 그라스타는 한 명만, 공유 그라스타가 올리는 파티원 대미지까지 셉니다. 같은 캐릭터의 다른 스타일은 한 파티에 하나만." }));
+  box.appendChild(methodDetails("탐색 = 단독 딜 상위 8명에서 각각 출발 → 한 명씩 가장 좋은 멤버로 채움 → 한 자리씩 바꿔 오르지 않을 때까지(무작위 12명 명단 20개 — 4명 전수 탐색 1위와 20/20 일치). " +
+    "전방 4명만 평가 · 장비는 저장된 것(없으면 무기 최고 공격력, 그라스타 · 배지 없음). 「공동 최적화」면 그 상위 3 파티마다 네 명 장비를 함께 맞춘 뒤 다시 순위 — 1개뿐인 무기 · 그라스타는 한 명만, 공유 그라스타가 올리는 파티원 대미지까지 셉니다. 같은 캐릭터의 다른 스타일은 한 파티에 하나만."));
 }
 function showPartyResult(out, db, r) {
+  out.appendChild(assumeLine());
   const tbl = el("table", { class: "skill-table party-table" });
   tbl.appendChild(el("thead", { children: [el("tr", { children: ["#", "파티 (스킬 · 1회 기대값)", "존", r.list.some(p => p.base != null) ? "점수 (장비 전 → 후)" : "점수", ""].map(h => el("th", { text: h })) })] }));
   const tb = el("tbody");
@@ -1947,7 +1999,7 @@ function renderBuildTab(box, db) {
   row.appendChild(el("span", { class: "filter-label", text: "전방 멤버" }));
   for (const id of ids) {
     const c = STATE.all.find(x => x.id === id);
-    const chip = el("span", { class: "chip active fx-sel", text: (c ? c.nameKo : id) + " ✕" });
+    const chip = el("span", { class: "chip active fx-sel", text: c ? c.nameKo : id });
     chip.addEventListener('click', () => { O.buildIds = ids.filter(x => x !== id); saveOv(); rr(); });
     row.appendChild(chip);
   }
@@ -1989,19 +2041,21 @@ function renderBuildTab(box, db) {
     let res;
     try { res = await buildInWorker(msg, t => { prog.textContent = `계산 중 — ${t} · ${sec()}초`; }); }
     catch (e) { prog.textContent = "계산 실패: " + e.message; run.disabled = false; return; }
-    prog.textContent = `${sec()}초 · 평가 ${res.evals.toLocaleString()}회`;
+    prog.textContent = `${sec()}초 걸림`;
+    prog.title = `평가 ${res.evals.toLocaleString()}회`;
     STATE.buildRes = { key, ids, ...res };
     showBuildResult(out, STATE.buildRes);
     run.disabled = false;
   });
-  if ((O.buildMode || "peak") === "sim") box.appendChild(el("div", { class: "skko-src", style: "margin-top:12px", text:
+  if ((O.buildMode || "peak") === "sim") box.appendChild(methodDetails(
     "스킬칸 = 멤버마다 칸 하나씩 다른 스킬로 바꿔 보며 점수가 오르면 채택 · AF = 캐릭터당 6회 시전, 대미지는 점수 밖(버프 · 디버프를 까는 턴) · 2~4턴은 속도순으로 1회씩. " +
     "지속(건 턴 = 0턴) · 누적(A + A/2 × (n−1)) · 「N회 행동」 소모 · 덮어쓰기는 위키 규칙. 자원(구슬 · 카운트 · 게이지)을 쓰는 스킬과 조건부 공격(스텔라 버스트 시 등)은 「조건부 효과 포함」일 때만. " +
     "장비 최적화 때는 그라스타가 주는 스킬(존 전개 · 무기별 기도 · 공격 — 스킬칸 하나를 쓴다고 가정)과 무기의 「공격 시 적 저항 다운 · 페인/독」(확률은 기대값)까지 봅니다. 대상 페인 · 독은 파티가 실제로 건 뒤부터 켜집니다(화면 토글을 켜면 처음부터). " +
-    "MP · 후방 멤버 · 전용 장비가 주는 스킬(딩님 「장비 습득 스킬」)은 아직 안 셉니다. 스킬 데이터: 카페 딩님 스킬 DB(178명, 출처: 카페 딩님 스킬 검색기) · 나머지 198명은 위키 문장 자동 해석. 인게임 대조 전 추정치." }));
+    "MP · 후방 멤버 · 전용 장비가 주는 스킬(딩님 「장비 습득 스킬」)은 아직 안 셉니다. 스킬 데이터: 카페 딩님 스킬 DB(178명, 출처: 카페 딩님 스킬 검색기) · 나머지 198명은 위키 문장 자동 해석. 인게임 대조 전 추정치."));
 }
 function showBuildResult(out, r) {
   const pct = x => `${(x * 100).toFixed(1)}%`, nm = id => { const c = STATE.all.find(x => x.id === id); return c ? c.nameKo : id; };
+  out.appendChild(assumeLine());
   if (r.scores && r.scores.repeat != null) return showPeakResult(out, r, nm);
   out.appendChild(el("div", { class: "pt", style: "margin-bottom:8px", children: [el("b", { text: `A ${fmtN(r.scores.A)}` }),
     document.createTextNode(` (AF 뒤 3턴 합) · B ${fmtN(r.scores.B)} (AF 없이 1턴) · C ${fmtN(r.scores.C)} (AF 없이 3턴)` + (r.gearHist.length ? ` · 장비 회차별 A ${r.gearHist.map(fmtN).join(" → ")}` : ""))] }));
@@ -2056,9 +2110,10 @@ function showPeakResult(out, r, nm) {
   });
   tbl.appendChild(tb);
   out.appendChild(el("div", { class: "table-scroll", children: [tbl] }));
-  out.appendChild(el("div", { class: "skko-src", style: "margin-top:8px", text:
+  out.appendChild(el("div", { class: "skko-src", style: "margin-top:8px", text: "고점 = 스킬칸 4개 효과를 모두 최대로 쌓은 상태에서 멤버마다 가장 센 공격 1회의 합. 반복 고점은 1회성 효과(첫 턴 · 첫 사용 등)를 뺀 값입니다." }));
+  out.appendChild(methodDetails(
     "고점 = 스킬칸 4개 효과(버프 · 디버프 · 존 · 모드)를 전부 최대 누적으로 건 상태에서 멤버마다 가장 센 공격 1회의 합. AF 에서 4개를 다 칠 수 있다는 가정 — 지속 · 순서 · 자원은 안 본다(자원은 찬 것으로). " +
-    "존은 파티가 펼 수 있는 것 중 합이 가장 큰 것. 반복 고점은 첫 턴 · 첫 사용 · 전투 1회 · 스텔라 버스트 시점 효과를 끈 값, 순간 최고점은 켠 값. 스텔라 버스트 기술의 딜은 아직 넣지 않았다." }));
+    "존은 파티가 펼 수 있는 것 중 합이 가장 큰 것. 반복 고점은 첫 턴 · 첫 사용 · 전투 1회 · 스텔라 버스트 시점 효과를 끈 값, 순간 최고점은 켠 값. 스텔라 버스트 기술의 딜은 아직 넣지 않았다."));
   const save = el("button", { class: "slot-btn", style: "margin-top:10px", text: "이 장비 저장 → 파티 구성으로" });
   save.addEventListener('click', () => {
     r.ids.forEach((id, ci) => { const g = r.gear[ci]; if (g && g.weapon) saveGear(id, { ...g, grasta: g.grasta.filter(x => !(g.special || []).some(y => y.name === x.name)) }); });
@@ -2178,7 +2233,7 @@ function closeModal() {
 // 검색
 document.getElementById('search').addEventListener('input', e => {
   STATE.search = e.target.value.trim();
-  render();
+  if (STATE.view !== "chars") setView("chars"); else render();
 });
 // 모달 닫기 (배경/ESC)
 document.getElementById('modal').addEventListener('click', e => {

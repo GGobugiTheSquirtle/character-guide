@@ -71,8 +71,8 @@
 
   // party: 멤버(계산 멤버 + actions), opt: 전투 조건. conf = { passes: 2, equipSkills: false, tick(msg) } → { slots, plan, scores:{A,B,C}, perTurn, evals }
   function optimize(party, opt, conf = {}) {
-    conf = { passes: 3, screen: 4, cond: !!opt.cond, carryStarts: true, pairMoves: true, ...conf };
-    const memo = new Map();
+    conf = { passes: 3, screen: 4, cond: !!opt.cond, carryStarts: true, pairMoves: true, punishStart: true, ...conf };
+    let memo = new Map();
     const gslots = (conf.gear && conf.gear.conf && conf.gear.conf.grastaSlots) || 4;
     let team = party.map(m => {
       const x = withGrants({ ...m, gslots }, conf), sl = x.slots && x.slots.length ? x.slots.slice(0, 4) : initialSlots(x, conf);
@@ -151,12 +151,26 @@
       //   (실제 4인: 기본 59.7억에 멈춤, 밀디 주력 빌드 80.5억). 기본 갈래 + 멤버마다 「그 멤버 주력 가중」 첫 배분 갈래 → 갈래마다 같은 뒷단계 → 최댓값
       //   대표 3파티 이득 +4.6% · +52% · +0.01%, 시간 약 2배(첫 스킬칸 탐색 · 메모 공유) — docs/ae-damage-pipeline.md §9
       const fork = { team, cur, hist: gearHist.length };
-      const seeds = [null, ...(conf.carryStarts ? team.map(m => m.c.id) : [])];
+      const seeds = [null, ...(conf.carryStarts ? team.map(m => m.c.id) : []), ...(conf.punishStart ? ["punish"] : [])];
       let top = null;
       for (const seed of seeds) {
         ({ team, cur } = fork); gearHist.length = fork.hist;
-        gearPass(conf.gearRounds ?? 1, seed);              // 2회차는 매번 같은 값이었다(실측 4인 3건) — 스킬칸 재탐색 뒤 한 번 더 돈다
-        if (seed) gearPass(1);                             // 주력 가중을 풀고 파티 전체 기준으로 다듬는다
+        if (seed === "punish") {
+          // 대상 상태 가정 갈래(conf.punishStart, 11-05) — 받는 쪽(「Rust ○○」 페인 ×2 · 독 ×2, 「페인 대상 +30%」 그라스타)과 거는 쪽(무기 「공격 시 페인/독」, 멤버 여럿)은
+          //   하나씩 바꾸면 서로 없이 손해라 같이 못 들어온다(국화의 검객 파티: 옛 빌드 2.68억 · 탐색 1.96억). 대상이 페인 · 독이라고 가정하고 받는 쪽을 먼저 채운 뒤,
+          //   실제 조건으로 돌아와 장비 단계의 「부여 무기」 비교가 거는 무기를 하나씩 채택하게 한다. 가정 단계는 메모를 따로(메모 키에 punish 가 없다)
+          //   5파티: 1.96 → 3.08억(+57%, Scar Slicer 페인 + Rust Earth Edge) · 레비아 파티 +7.8% · 나머지 0, 평가 +20~28% → 기본 켬
+          const real = opt, realMemo = memo;
+          opt = { ...real, punish: [...new Set([...(real.punish || []), "pain", "poison"])] }; memo = new Map(); inner.memo = memo;
+          cur = PL.plan(team, opt, { ...inner, start: cur.plan }); evals += cur.evals;
+          gearPass(1);
+          slotPass({ ...conf, via: !!conf.grantsOf, passes: 2 });
+          gearPass(1);
+          opt = real; memo = realMemo; inner.memo = memo;
+          cur = PL.plan(team, opt, { ...inner, start: cur.plan }); evals += cur.evals;
+        }
+        gearPass(conf.gearRounds ?? 1, seed === "punish" ? null : seed);   // 2회차는 매번 같은 값이었다(실측 4인 3건) — 스킬칸 재탐색 뒤 한 번 더 돈다
+        if (seed && seed !== "punish") gearPass(1);        // 주력 가중을 풀고 파티 전체 기준으로 다듬는다
         // 장비가 찬 뒤 스킬칸을 한 번 더(스킬 ↔ 장비 번갈아 — 실제 4인 +2.4%). 부여 스킬은 이때 연다: 그라스타 칸 기회비용을 치르게
         const keep = { team, cur };
         slotPass({ ...conf, via: !!conf.grantsOf, passes: 2 });

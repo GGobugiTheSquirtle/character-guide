@@ -132,7 +132,7 @@
   }
   // 스텝 조건(E3) — 「X 로 발동 시」 = 연속 실행 경로(via), 「X 로 발동하지 않았을 시」, 「X 습득 시」 = 그 스킬이 있으면 참(최대 빌드), 그 밖은 「조건부 효과 포함」(opt.cond)
   function condOk(sim, m, cond, via) {
-    if (!cond) return true;
+    if (!cond || /^awakens any/i.test(cond)) return true;                 // 위키 「Another Zone」 본문(조건 아님, 11-05)
     if (/^스텔라 버스트 시$/.test(cond)) return !!sim.sb.on;                 // SB 안에서 실행 중일 때
     let x;
     if ((x = /^「(.+?)」로 발동 시$/.exec(cond))) return via === x[1];
@@ -141,10 +141,19 @@
     return !!sim.opt.cond;
   }
   function apply(sim, ci, u, skName, sk) {
+    // 위키 「Another Zone」 스킬 — 본문(「Awakens any … Zones」)이 cond 칸 · 설명 첫 줄에 있고 효과 단위는 안내 줄뿐 → 각성 단위로
+    if (u.k === "zone" && !u.name && (/^awakens any/i.test(u.cond || "") || /^awakens any/i.test((sk && sk.desc) || ""))) u = { ...u, k: "zoneAwake", cond: undefined };
     if (u.cond && !sim.opt.cond) return;
     if (!needOk(sim, ci, u.need)) return;
     // 존 — 「극 X」 = ANOTHER ZONE(증가 효과 ×2, 2턴 뒤 존까지 사라짐) · 「절 X」 = Radical(×2, 5턴) · zoneAwake 단위 = 지금 존 각성(위키 Zones §Awakened, 구조 지도 §4.5). 그라스타 부여 존은 영어 이름
     if (u.k === "zone" || u.k === "zoneAwake") {
+      // 위키 원천은 이름 없이 문구만 — 「Deploy X Stance」 = 존 전개, 「awaken Another Zone」 · Another Zone 스킬(조건 「Awakens any … Zones」) = 각성. 그 밖 안내 줄은 버린다(11-05: 전엔 이름만 봐서 위키 존 98개가 한 번도 안 펴졌다)
+      if (u.k === "zone" && !u.name) {
+        const d = /^Deploy (.+?)(?:\s*\(.*\))?\s*$/i.exec(u.what || "");
+        if (d) u = { ...u, name: d[1] };
+        else if (/^awaken another zone/i.test(u.what || "")) u = { ...u, k: "zoneAwake" };
+        else return;
+      }
       const aw = /^극 /.test(u.name || "") ? 2 : /^절 /.test(u.name || "") ? 5 : u.k === "zoneAwake" ? 2 : 0;
       const base = (u.name || "").replace(/^(극|절) /, "");
       const z = u.k === "zoneAwake" ? (sim.zone && (sim.zone.base || sim.zone)) : (sim.opt.zones || []).find(x => x.name === (ZONE_KO[base] || base));

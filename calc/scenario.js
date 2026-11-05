@@ -25,8 +25,13 @@
     const dep = a.dep === "pwr" && magic ? "magicpwr" : magic ? "magic" : a.dep === "int" ? "int" : a.dep === "spd" ? "spd" : "pwr";
     const mult = a.power ?? a.mult, multMax = a.powerMax ?? a.multMax;
     return { skill: sk.name, mult, multMax, hits: a.hits || 1, element: a.element || "", atk: a.atk || "", scope: a.scope || "", dep,
-      conds: a.conds, mp: sk.mp || 0, sec: "skills", _sure: !!a.sureCrit, _fixed: !!a.fixed, _ignoreDef: !!a.ignoreDef };
+      conds: a.conds, mp: sk.mp || 0, sec: "skills", _sure: !!a.sureCrit, _fixed: !!a.fixed, _ignoreDef: !!a.ignoreDef, _burstMax: burstMax(sk) };
   }
+  // 위값이 1회성 · 마무리에서 나오는 스킬(설명문, 11-05) — 「스텔라 버스트 시 위력 N배」 · 「스텔라 버스트로 발동한 횟수」 · 「대상 HP 비율이 낮을수록」.
+  //   고점 반복(peak "repeat")에서 조건 칸이 빈 공격(딩님 원천)은 이때 위값 대신 기본값(셴화 테서렉트 ×60 = 대상 HP 낮을수록 — 반복 고점에 들어가 106억이 됐다)
+  const BURST_MAX = /스텔라 버스트 시[^※\n]*?위력[^※\n]*?배|스텔라 버스트로 발동한 횟수|대상의 HP 비율이 낮을수록|target'?s? (?:current )?HP (?:percentage )?(?:is )?(?:lower|decreases)/i;
+  const bmCache = new WeakMap();
+  const burstMax = sk => { if (!bmCache.has(sk)) bmCache.set(sk, BURST_MAX.test(sk.desc || "")); return bmCache.get(sk); };
   const sideOf = u => (/적/.test(u.tc || "") ? "e" : "a");
   // 장비 효과는 스킬 효과와 따로 한 칸(출처가 다르면 덮어쓰지 않는다 — 위키 Buffs 「같은 시전자 × 출처」)
   const slotKey = (caster, u) => [caster, u.k, (u.stats || []).join(",") || u.name || u.what || "", u.dir || "", sideOf(u), u._equip ? "eq" : ""].join("|");
@@ -133,6 +138,7 @@
   // 스텝 조건(E3) — 「X 로 발동 시」 = 연속 실행 경로(via), 「X 로 발동하지 않았을 시」, 「X 습득 시」 = 그 스킬이 있으면 참(최대 빌드), 그 밖은 「조건부 효과 포함」(opt.cond)
   function condOk(sim, m, cond, via) {
     if (!cond || /^awakens any/i.test(cond)) return true;                 // 위키 「Another Zone」 본문(조건 아님, 11-05)
+    if (sim.opt.peak === "repeat" && ONE_SHOT.test(cond)) return false;   // 반복 고점 — 1회성 스텝(전투 1회 · 첫 턴)은 끈다
     if (/^스텔라 버스트 시$/.test(cond)) return !!sim.sb.on;                 // SB 안에서 실행 중일 때
     let x;
     if ((x = /^「(.+?)」로 발동 시$/.exec(cond))) return via === x[1];
@@ -371,11 +377,66 @@
     return { perTurn, perMember, score: want.reduce((s, t) => s + (perTurn[t] || 0), 0), log: sim.log, live: sim.live, zone: sim.zone, res: sim.res, sb: sim.sb };
   }
 
+  // 고점 한 장면(2026-11-05, 사용자 「AF 에서 4개 다 칠 수 있으니 4개 다 활용 · 고점 기준 · 단순하게」) — 턴 · 지속 · 자원 · 순서를 안 본다.
+  //   멤버마다 패시브(ability) + 스킬칸 4개의 효과 단위를 전부 최대 누적으로 걸고(같은 칸은 큰 값이 남게 작은 값부터), 장비 「공격 시」 부여도 걸린 것으로 둔다.
+  //   존 = 파티가 펼 수 있는 존 중 점수가 가장 높은 것(+ 각성 단위가 있으면 각성). 그 상태에서 멤버마다 스킬칸 · 일반 공격 중 가장 센 것 1회 → 합.
+  //   conf.mode "repeat"(기본, 반복 고점) = 1회성(첫 턴 · 첫 사용 · 전투 1회 · 스텔라 버스트 시점 효과)을 끔 / "burst" = 순간 최고점. 스텔라 버스트 기술 자체는 아직 안 넣는다(따로 다룰 것)
+  const ONE_SHOT = /first turn|first time|once per battle|first \d+ turns|최초|첫 턴|전투 중 1회|1회 한정/i;
+  function peak(party, opt, conf = {}) {
+    const mode = conf.mode || "repeat";
+    const o = { ...opt, cond: true, peak: mode, lunatic: true, breakOn: true, maxHp: true };
+    const skip = u => mode === "repeat" && (u.timing === "sb" || ONE_SHOT.test(u.cond || ""));
+    const units = party.map(m => {
+      const out = [];
+      for (const sk of m.actions.skills || []) if ((m.slots || []).includes(sk.name) || sk.kind === "ability")
+        for (const u of sk.fx || []) if (!skip(u)) out.push({ u, sk });
+      return out.sort((a, b) => (+a.u.value || 0) - (+b.u.value || 0));
+    });
+    const zseen = new Set(), zones = [null];
+    for (const x of units.flatMap(l => l.filter(y => y.u.k === "zone"))) { const k = x.u.name || x.u.what || ""; if (!zseen.has(k)) { zseen.add(k); zones.push(x); } }
+    const AWK = /^awakens? (another zone|any)/i;                         // 위키 원천 각성 — 「awaken Another Zone」 · Another Zone 스킬 본문(cond · 설명)
+    const awake = units.some(l => l.some(({ u, sk }) => u.k === "zoneAwake" || /^(극|절) /.test(u.name || "") || (u.k === "zone" && !u.name && (AWK.test(u.what || "") || AWK.test(u.cond || "") || AWK.test(sk.desc || "")))));
+    const sig = party.map(m => [m.weapon && m.weapon.name, m.armor && m.armor.name, ...(m.grasta || []).map(g => g.name), "/", ...(m.badges || []).map(x => x.name), "/", ...(m.slots || [])].join(",")).join("|");
+    const build = z => {
+      const sim = newSim(party, o, conf.memo || null);
+      sim.gear = `P${mode}|${sig}`; sim.turn = 2; sim.res = party.map(() => Infinity);   // 자원은 찬 것으로(구슬 소비 · 변화한 일반 공격)
+      party.forEach((m, ci) => {
+        for (const { u, sk } of units[ci]) {
+          if (u.k === "zone" || u.k === "zoneAwake") continue;
+          for (let k = 0; k < Math.max(1, u.maxStack || 1); k++) apply(sim, ci, { ...u, turns: null, times: null }, sk.name, sk);
+        }
+        for (const u of equipOnHit(m, o)) apply(sim, ci, { ...u, turns: null }, "장비: " + u._equip);
+      });
+      if (z) { apply(sim, 0, { ...z.u, turns: null }, z.sk.name, z.sk); if (awake && sim.zone && !sim.zone.awake) sim.zone = { ...sim.zone, up: { ...sim.zone.up, v: (sim.zone.up.v || 0) * 2 }, awake: true, base: sim.zone, until: Infinity }; }
+      return sim;
+    };
+    // 장면 복사 — 효과 칸(live)만 얕게 베낀다(act 가 새 칸을 넣고 브레이크 남은 수를 깎는다)
+    const fork = base => { const sim = { ...base, live: new Map([...base.live].map(([k, e]) => [k, { ...e }])), res: base.res.slice(), first: base.first.slice(), used: new Map(),
+      dmg: [], byMember: [], log: [], onHit: [], sb: { ...base.sb } }; return sim; };
+    let top = null;
+    for (const z of zones) {
+      const base = build(z);
+      // 멤버 · 후보마다 장면을 복사해 act 를 돌린다 — 연속 실행 · 반복 · 브레이크 소모가 그대로, 장면끼리 섞이지 않게
+      const per = party.map((m, ci) => {
+        let best = { d: 0, name: null };
+        for (const n of [...(m.slots || []), (normalOf(m) || {}).name].filter(Boolean)) {
+          if (!(m.actions.skills || []).some(s => s.name === n)) continue;
+          const d = act(fork(base), ci, n, true);
+          if (d > best.d) best = { d, name: n };
+        }
+        return best;
+      });
+      const score = per.reduce((s, x) => s + x.d, 0);
+      if (!top || score > top.score) top = { score, perMember: per.map(x => x.d), attackOf: per.map(x => x.name), zone: base.zone, live: base.live };
+    }
+    return top;
+  }
+
   // 살아 있는 효과 → 멤버별 fx(빌드의 장비 단계가 정적 계산에 넣는다)
   const liveFx = (live, ci) => fxOf({ live }, ci);
   // 살아 있는 대상 상태(확률 0.5 이상) — 장비 단계의 정적 식에 opt.punish 로
   const liveStates = live => [...new Set([...live.values()].filter(e => tstateOf(e.u) && (e.u.p ?? 1) >= 0.5).map(e => tstateOf(e.u)))];
-  const api = { run, toAttack, liveFx, liveStates, normalOf, ZONE_KO };
+  const api = { run, peak, toAttack, liveFx, liveStates, normalOf, ZONE_KO };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEScenario = api;
 })(typeof window !== "undefined" ? window : globalThis);

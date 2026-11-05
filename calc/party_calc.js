@@ -329,11 +329,20 @@
       return (x.members || []).filter(m => m.pos !== "back" && m.c && m.c.element === EL_EN[r[2].toLowerCase()]).length >= +r[1];
     return false;
   }
+  const PEAK_FREE = new Set(["state", "stack", "scale", "turn", "stellar", "af", "hp"]);
   function condMult(atk, aff, opt, brk, x = {}) {
     const out = { all: 1, crit: 1, on: [] };
     const tgt = [...(opt.punish || []), ...(opt.targetStates || [])];
     const zn = opt.zone && opt.zone.name ? opt.zone.name.toLowerCase() : "";
     for (const c of atk.conds || []) {
+      // 고점(opt.peak, 11-05 사용자 「4개 다 쓸 수 있다 · 고점 기준 · 단순하게」): 상황이 정하는 조건(상성 · 대상 상태 · 존 · 적 수 · 크리 · 파티 구성)은 실제대로,
+      //   나머지(누적 · 모드 · 비례 · HP · AF · 턴 · 스텔라)는 켠다 — 단 반복 고점("repeat")은 1회성(턴 = 첫 턴 · 첫 사용 · 전투 1회, 스텔라)을 끈다. 순간 최고점("burst")은 전부
+      if (x.peak && (PEAK_FREE.has(c.t) || (c.t === "other" && !/enemy has pain|Characters are in the frontline/i.test(c.label || "")))) {
+        if (x.peak === "repeat" && (c.t === "turn" || c.t === "stellar")) continue;
+        if (c.t === "crit") out.crit *= c.x; else out.all *= c.x;
+        out.on.push(c);
+        continue;
+      }
       const on = c.t === "weak" ? aff === "weak" : c.t === "resist" ? aff === "resist"
         : c.t === "target" ? (c.on === "ailment" ? tgt.length > 0 : c.on === "break" ? !!brk : tgt.includes(c.on))
         : c.t === "crit" ? true
@@ -482,9 +491,11 @@
     const en = atk._ignoreDef ? { ...(opt.enemy || {}), end: 0, spr: 0 } : (opt.enemy || { end: 0, spr: 0 });
     // skillMult — 범위 배율(150~18000%)의 위값(multMax)은 조건부라 opt.cond 일 때만(모든 조건 최대).
     // 아니면 아래값 × 켜진 조건 배수(atk.conds, 2026-10-15 S7) — 위값을 넘지 않는다. 크리 조건은 크리 타격에만
-    const cx = condMult(atk, aff, opt, brk, { lun, members });
+    const cx = condMult(atk, aff, opt, brk, { lun, members, peak: opt.peak });
     const cap = atk.multMax || Infinity;
-    const baseMult = (opt.cond && atk.multMax) || Math.min(cap, (atk.mult || 0) * cx.all);
+    //   고점: 조건이 적혀 있으면 아래값 × 켜진 조건(1회성을 뺄 수 있게), 없으면 위값(누적 최대 등 — 원인이 안 적힌 범위). 반복 고점에서 위값이 1회성 · 마무리(_burstMax)면 아래값
+    const baseMult = opt.peak ? ((atk.conds || []).length ? Math.min(cap, (atk.mult || 0) * cx.all) : opt.peak === "repeat" && atk._burstMax ? atk.mult || 0 : atk.multMax || atk.mult || 0)
+      : (opt.cond && atk.multMax) || Math.min(cap, (atk.mult || 0) * cx.all);
     const critX = Math.min(cx.crit, cap / Math.max(baseMult, 1e-9)) * (bud ? bud.critAura.reduce((a, v) => a * (1 + v), 1) : 1);
     const o = {
       dep: atk.dep, elemental: !!atk.element, stat: st, weapon: { atk: (m.weapon || {}).atk || 0, matk: (m.weapon || {}).matk || 0 },

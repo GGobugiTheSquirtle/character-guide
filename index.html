@@ -247,6 +247,18 @@
   @media (prefers-reduced-motion: reduce) { .pbar i { animation: none; left: 0; width: 100%; opacity: 0.5; } }
   .stale { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 12px; color: var(--red); border: 1px solid #6b3a3c; background: rgba(198,96,98,0.08); border-radius: 6px; padding: 6px 10px; margin-bottom: 8px; }
   .stale-res { opacity: 0.55; }
+  /* 빌드 결과 — 영문 꼬리표 · 휴대폰 카드 · 복사 알림 */
+  .en-tag { font-size: 9px; color: var(--muted); border: 1px solid var(--line); border-radius: 3px; padding: 0 4px; margin-left: 6px; vertical-align: middle; white-space: nowrap; }
+  .bcards { display: none; }
+  .bcard { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
+  .bcard-h { display: flex; gap: 8px; align-items: baseline; margin-bottom: 4px; }
+  .bcard-row { display: flex; gap: 8px; padding: 5px 0; border-top: 1px solid var(--line); }
+  .bcard-row .gear-k { width: 64px; font-size: 11px; }
+  .bcard-row .pt { flex: 1; min-width: 0; }
+  @media (max-width: 640px) { .bcards { display: block; } .btable { display: none; } }
+  #toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 16px); opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s;
+    background: var(--gold); color: #2a2317; font-size: 13px; font-weight: 600; padding: 10px 16px; border-radius: 8px; z-index: 300; }
+  #toast.on { opacity: 1; transform: translate(-50%, 0); }
   .af-chip::after { content: " ×"; }
   /* 휴대폰(2026-11-05 UX 검토 §1 #1 · #6) — 첫 화면을 헤더 · 필터가 차지(첫 카드 y≈615)해서 필터는 아래 시트로, 누를 곳은 44px */
   @media (max-width: 640px) {
@@ -2246,6 +2258,66 @@ function renderBuildTab(box, db) {
     "장비 최적화 때는 그라스타가 주는 스킬(존 전개 · 무기별 기도 · 공격 — 스킬칸 하나를 쓴다고 가정)과 무기의 「공격 시 적 저항 다운 · 페인/독」(확률은 기대값)까지 봅니다. 대상 페인 · 독은 파티가 실제로 건 뒤부터 켜집니다(화면 토글을 켜면 처음부터). " +
     "MP · 후방 멤버 · 전용 장비가 주는 스킬(딩님 「장비 습득 스킬」)은 아직 안 셉니다. 스킬 데이터: 카페 딩님 스킬 DB(178명, 출처: 카페 딩님 스킬 검색기) · 나머지 198명은 위키 문장 자동 해석. 인게임 대조 전 추정치."));
 }
+// 이름 칸 — 계산 DB 는 위키 영어라 한국어가 없는 이름이 많다. 한국어 장비 시트와 이름으로 잇지 않으므로(CLAUDE.md) 번역 대신 「영문」 꼬리표
+const HANGUL = /[가-힣]/;
+function namesCell(tag, names, cls) {
+  const list = names.filter(Boolean);
+  const node = el(tag, { class: cls, text: list.join(" · ") || "—" });
+  if (list.some(n => !HANGUL.test(n))) node.appendChild(el("span", { class: "en-tag", text: "영문", attrs: { title: "게임 한국어 이름이 아니라 위키 영어 이름" } }));
+  return node;
+}
+const gearNames = g => [g.weapon, g.armor, ...(g.grasta || []), ...(g.badges || [])].filter(Boolean).map(x => x.name);
+const gearCopy = g => [g.weapon && "무기 " + g.weapon.name, g.armor && "방어구 " + g.armor.name, (g.grasta || []).length && "그라스타 " + g.grasta.map(x => x.name).join(", "),
+  (g.badges || []).length && "배지 " + g.badges.map(x => x.name).join(", ")].filter(Boolean).join(" · ") || "—";
+const slotNames = (r, ci) => (r.slots[ci] || []).map((n, k) => (r.via && r.via[ci] && r.via[ci][k] ? `${n} (그라스타 ${r.via[ci][k]})` : n));
+// 멤버별 결과 — 넓은 화면은 표, 휴대폰은 멤버마다 카드(같은 데이터, 2026-11-05 UX 검토 §1 #5). fields = [[제목, 이름 배열]] · 마지막 칸 = 장비(작은 글씨)
+function memberResult(out, members) {
+  const heads = members.length ? members[0].fields.map(f => f[0]) : [];
+  const tbl = el("table", { class: "skill-table party-table" });
+  tbl.appendChild(el("thead", { children: [el("tr", { children: ["멤버", ...heads].map(h => el("th", { text: h })) })] }));
+  const tb = el("tbody"), cards = el("div", { class: "bcards" });
+  for (const m of members) {
+    tb.appendChild(el("tr", { children: [el("td", { children: [el("b", { text: m.name }), el("div", { class: "skko-src", text: m.share })] }),
+      ...m.fields.map(([, v], i) => namesCell("td", v, i === m.fields.length - 1 ? "skko-src" : "pt"))] }));
+    cards.appendChild(el("div", { class: "bcard", children: [el("div", { class: "bcard-h", children: [el("b", { text: m.name }), el("span", { class: "skko-src", text: m.share })] }),
+      ...m.fields.map(([h, v]) => el("div", { class: "bcard-row", children: [el("span", { class: "gear-k", text: h }), namesCell("span", v, "pt")] }))] }));
+  }
+  tbl.appendChild(tb);
+  out.append(el("div", { class: "table-scroll btable", children: [tbl] }), cards);
+}
+// 요약 복사 — 게임에 옮겨 적기 좋은 글자(멤버 · 스킬 4 · 장비 · 점수)
+function copyBtn(textFn) {
+  const b = el("button", { class: "slot-btn", style: "margin:10px 0 0 8px", text: "요약 복사", attrs: { title: "멤버 · 스킬 4 · 무기 · 방어구 · 그라스타 · 배지 · 점수를 글자로 복사" } });
+  b.addEventListener('click', async () => {
+    const t = textFn();
+    let ok = false;
+    try { await navigator.clipboard.writeText(t); ok = true; } catch {
+      const ta = el("textarea", { style: "position:fixed;top:0;opacity:0" });                       // http · 오래된 브라우저 대체
+      ta.value = t; document.body.appendChild(ta); ta.select();
+      try { ok = document.execCommand("copy"); } catch {}
+      ta.remove();
+    }
+    toast(ok ? "요약을 복사했습니다" : "복사 실패 — 브라우저가 클립보드를 막았습니다");
+  });
+  return b;
+}
+function toast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) { t = el("div", { attrs: { id: "toast", role: "status" } }); document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 1800);
+}
+function saveBuildBtn(r, stale) {
+  const save = el("button", { class: "slot-btn", style: "margin-top:10px", text: "이 장비 저장 → 파티 구성으로" });
+  if (stale) { save.disabled = true; save.title = "조건이 바뀌었습니다 — 다시 계산한 뒤 저장"; }
+  save.addEventListener('click', () => {
+    r.ids.forEach((id, ci) => { const g = r.gear[ci]; if (g && g.weapon) saveGear(id, { ...g, grasta: g.grasta.filter(x => !(g.special || []).some(y => y.name === x.name)) }); });
+    STATE.party = r.ids.length === FRONT_N ? [...r.ids, ...STATE.party.slice(FRONT_N).filter(id => !r.ids.includes(id))].slice(0, PARTY_MAX) : [...r.ids];   // 후방은 그대로
+    saveParty(); setView("party");
+  });
+  return save;
+}
+
 // again = 조건이 바뀐 옛 결과면 「다시 계산」 함수(없으면 지금 조건의 결과)
 function showBuildResult(out, r, again) {
   const pct = x => `${(x * 100).toFixed(1)}%`, nm = id => { const c = STATE.all.find(x => x.id === id); return c ? c.nameKo : id; };
@@ -2260,22 +2332,13 @@ function showBuildResult(out, r, again) {
   }
   out.appendChild(assumeLine());
   if (r.scores && r.scores.repeat != null) return showPeakResult(out, r, nm, !!again);
+  const head = `A ${fmtN(r.scores.A)} (AF 뒤 3턴 합) · B ${fmtN(r.scores.B)} (AF 없이 1턴) · C ${fmtN(r.scores.C)} (AF 없이 3턴)`;
   out.appendChild(el("div", { class: "pt", style: "margin-bottom:8px", children: [el("b", { text: `A ${fmtN(r.scores.A)}` }),
-    document.createTextNode(` (AF 뒤 3턴 합) · B ${fmtN(r.scores.B)} (AF 없이 1턴) · C ${fmtN(r.scores.C)} (AF 없이 3턴)` + (r.gearHist.length ? ` · 장비 회차별 A ${r.gearHist.map(fmtN).join(" → ")}` : ""))] }));
-  const tbl = el("table", { class: "skill-table party-table" });
-  tbl.appendChild(el("thead", { children: [el("tr", { children: ["멤버 (A 몫)", "스킬칸 4", "AF 6회", "2 → 3 → 4턴", "장비"].map(h => el("th", { text: h })) })] }));
-  const tb = el("tbody");
-  r.ids.forEach((id, ci) => {
-    const g = r.gear[ci] || {}, share = r.contrib.base ? r.contrib.perMember[ci] / r.contrib.base : 0;
-    tb.appendChild(el("tr", { children: [
-      el("td", { children: [el("b", { text: nm(id) }), el("div", { class: "skko-src", text: pct(share) })] }),
-      el("td", { class: "pt", text: (r.slots[ci] || []).map((n, k) => (r.via && r.via[ci] && r.via[ci][k] ? `${n} (그라스타 ${r.via[ci][k]})` : n)).join(" · ") }),
-      el("td", { class: "pt", text: ((r.plan.af || [])[ci] || []).map(x => x || "—").join(" → ") }),
-      el("td", { class: "pt", text: r.plan.turns.map(t => t[ci] || "—").join(" → ") }),
-      el("td", { class: "skko-src", text: [g.weapon, g.armor, ...(g.grasta || []), ...(g.badges || [])].filter(Boolean).map(x => x.name).join(" · ") || "—" })] }));
-  });
-  tbl.appendChild(tb);
-  out.appendChild(el("div", { class: "table-scroll", children: [tbl] }));
+    document.createTextNode(head.slice(`A ${fmtN(r.scores.A)}`.length) + (r.gearHist.length ? ` · 장비 회차별 A ${r.gearHist.map(fmtN).join(" → ")}` : ""))] }));
+  const share = ci => pct(r.contrib.base ? r.contrib.perMember[ci] / r.contrib.base : 0);
+  memberResult(out, r.ids.map((id, ci) => ({ name: nm(id), share: share(ci), fields: [["스킬칸 4", slotNames(r, ci)],
+    ["AF 6회", [((r.plan.af || [])[ci] || []).map(x => x || "—").join(" → ")]], ["2 → 3 → 4턴", [r.plan.turns.map(t => t[ci] || "—").join(" → ")]],
+    ["장비", gearNames(r.gear[ci] || {})]] })));
   // 기회비용 — 멤버마다 큰 칸 6개
   out.appendChild(el("div", { class: "skko-src", style: "margin-top:12px", text: "칸별 기회비용 — 그 칸을 빼고(계획은 그대로) 다시 셌을 때 A 가 줄어드는 비율. 자기 몫 = 그 멤버 자신의 대미지 감소, 파티 몫 = 다른 멤버 대미지 감소." }));
   const ct = el("table", { class: "skill-table party-table" });
@@ -2286,14 +2349,10 @@ function showBuildResult(out, r, again) {
     el("td", { text: pct(x.own / r.contrib.base) }), el("td", { text: pct(x.party / r.contrib.base) })] }))));
   ct.appendChild(cb);
   out.appendChild(el("div", { class: "table-scroll", children: [ct] }));
-  const save = el("button", { class: "slot-btn", style: "margin-top:10px", text: "이 장비 저장 → 파티 구성으로" });
-  if (again) { save.disabled = true; save.title = "조건이 바뀌었습니다 — 다시 계산한 뒤 저장"; }
-  save.addEventListener('click', () => {
-    r.ids.forEach((id, ci) => { const g = r.gear[ci]; if (g && g.weapon) saveGear(id, { ...g, grasta: g.grasta.filter(x => !g.special.some(y => y.name === x.name)) }); });
-    STATE.party = r.ids.length === FRONT_N ? [...r.ids, ...STATE.party.slice(FRONT_N).filter(id => !r.ids.includes(id))].slice(0, PARTY_MAX) : [...r.ids];   // 후방은 그대로
-    saveParty(); setView("party");
-  });
-  out.appendChild(save);
+  const copy = () => [`어나더에덴 파티 빌드 (턴 시뮬) — ${head}`,
+    ...r.ids.flatMap((id, ci) => [`${ci + 1}. ${nm(id)} (A 몫 ${share(ci)})`, `   스킬: ${slotNames(r, ci).join(" / ")}`, `   장비: ${gearCopy(r.gear[ci] || {})}`]),
+    "※ 추정치 · 최대 육성 기준"].join("\n");
+  out.append(saveBuildBtn(r, !!again), copyBtn(copy));
 }
 
 // 고점 빌드 결과 — 반복 고점(1회성 끔, 이걸로 골랐다) · 순간 최고점(첫 사용 · 첫 턴 등 1회성까지). 스텔라 버스트 기술 딜은 아직 따로
@@ -2301,31 +2360,18 @@ function showPeakResult(out, r, nm, stale) {
   const z = r.zone ? `${r.zone.name}${r.zone.awake ? " (각성)" : ""}` : "없음";
   out.appendChild(el("div", { class: "pt", style: "margin-bottom:8px", children: [el("b", { text: `반복 고점 ${fmtN(r.scores.repeat)}` }),
     document.createTextNode(` · 순간 최고점 ${fmtN(r.scores.burst)} (1회성 포함) · 존 ${z}`)] }));
-  const tbl = el("table", { class: "skill-table party-table" });
-  tbl.appendChild(el("thead", { children: [el("tr", { children: ["멤버", "스킬칸 4", "고점 공격 (반복 / 순간)", "장비"].map(h => el("th", { text: h })) })] }));
-  const tb = el("tbody");
-  r.ids.forEach((id, ci) => {
-    const g = r.gear[ci] || {};
-    tb.appendChild(el("tr", { children: [
-      el("td", { children: [el("b", { text: nm(id) }), el("div", { class: "skko-src", text: r.scores.repeat ? `${((r.perMember[ci] / r.scores.repeat) * 100).toFixed(1)}%` : "" })] }),
-      el("td", { class: "pt", text: (r.slots[ci] || []).map((n, k) => (r.via && r.via[ci] && r.via[ci][k] ? `${n} (그라스타 ${r.via[ci][k]})` : n)).join(" · ") }),
-      el("td", { class: "pt", text: `${r.attackOf[ci] || "—"} ${fmtN(r.perMember[ci])}` + (r.attackOfBurst[ci] && (r.perMemberBurst[ci] > r.perMember[ci] * 1.001) ? ` / ${r.attackOfBurst[ci]} ${fmtN(r.perMemberBurst[ci])}` : "") }),
-      el("td", { class: "skko-src", text: [g.weapon, g.armor, ...(g.grasta || []), ...(g.badges || [])].filter(Boolean).map(x => x.name).join(" · ") || "—" })] }));
-  });
-  tbl.appendChild(tb);
-  out.appendChild(el("div", { class: "table-scroll", children: [tbl] }));
+  const share = ci => (r.scores.repeat ? `${((r.perMember[ci] / r.scores.repeat) * 100).toFixed(1)}%` : "");
+  const atk = ci => `${r.attackOf[ci] || "—"} ${fmtN(r.perMember[ci])}` + (r.attackOfBurst[ci] && (r.perMemberBurst[ci] > r.perMember[ci] * 1.001) ? ` / ${r.attackOfBurst[ci]} ${fmtN(r.perMemberBurst[ci])}` : "");
+  memberResult(out, r.ids.map((id, ci) => ({ name: nm(id), share: share(ci), fields: [["스킬칸 4", slotNames(r, ci)],
+    ["고점 공격 (반복 / 순간)", [atk(ci)]], ["장비", gearNames(r.gear[ci] || {})]] })));
   out.appendChild(el("div", { class: "skko-src", style: "margin-top:8px", text: "고점 = 스킬칸 4개 효과를 모두 최대로 쌓은 상태에서 멤버마다 가장 센 공격 1회의 합. 반복 고점은 1회성 효과(첫 턴 · 첫 사용 등)를 뺀 값입니다." }));
   out.appendChild(methodDetails(
     "고점 = 스킬칸 4개 효과(버프 · 디버프 · 존 · 모드)를 전부 최대 누적으로 건 상태에서 멤버마다 가장 센 공격 1회의 합. AF 에서 4개를 다 칠 수 있다는 가정 — 지속 · 순서 · 자원은 안 본다(자원은 찬 것으로). " +
     "존은 파티가 펼 수 있는 것 중 합이 가장 큰 것. 반복 고점은 첫 턴 · 첫 사용 · 전투 1회 · 스텔라 버스트 시점 효과를 끈 값, 순간 최고점은 켠 값. 스텔라 버스트 기술의 딜은 아직 넣지 않았다."));
-  const save = el("button", { class: "slot-btn", style: "margin-top:10px", text: "이 장비 저장 → 파티 구성으로" });
-  if (stale) { save.disabled = true; save.title = "조건이 바뀌었습니다 — 다시 계산한 뒤 저장"; }
-  save.addEventListener('click', () => {
-    r.ids.forEach((id, ci) => { const g = r.gear[ci]; if (g && g.weapon) saveGear(id, { ...g, grasta: g.grasta.filter(x => !(g.special || []).some(y => y.name === x.name)) }); });
-    STATE.party = r.ids.length === FRONT_N ? [...r.ids, ...STATE.party.slice(FRONT_N).filter(id => !r.ids.includes(id))].slice(0, PARTY_MAX) : [...r.ids];
-    saveParty(); setView("party");
-  });
-  out.appendChild(save);
+  const copy = () => [`어나더에덴 파티 빌드 (고점) — 반복 고점 ${fmtN(r.scores.repeat)} · 순간 최고점 ${fmtN(r.scores.burst)} · 존 ${z}`,
+    ...r.ids.flatMap((id, ci) => [`${ci + 1}. ${nm(id)} (${share(ci)})`, `   스킬: ${slotNames(r, ci).join(" / ")}`, `   장비: ${gearCopy(r.gear[ci] || {})}`, `   고점 공격: ${atk(ci)}`]),
+    "※ 추정치 · 최대 육성 기준"].join("\n");
+  out.append(saveBuildBtn(r, stale), copyBtn(copy));
 }
 
 // ── 보유 목록 ─────────────────────────────────────

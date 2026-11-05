@@ -75,7 +75,9 @@
   .modal-header h2 { font-family: 'Noto Serif KR', serif; font-size: 26px; color: var(--gold); margin: 0; }
   .modal-header .name-meta { font-size: 13px; color: var(--muted); margin-top: 4px; }
   .modal-header .meta-badges { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
-  .section { margin-bottom: 28px; }
+  .section { margin-bottom: 28px; scroll-margin-top: 56px; }
+  /* 모달 바로가기 — 스크롤해도 위에 붙어 있다 */
+  .mjump { position: sticky; top: 0; z-index: 2; display: flex; gap: 6px; flex-wrap: wrap; background: var(--panel); padding: 8px 0; margin: -12px 0 16px; border-bottom: 1px solid var(--line); }
   .section h3 { font-family: 'Noto Serif KR', serif; font-size: 16px; color: var(--gold); margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
   .section h4 { font-size: 13px; color: var(--accent); margin: 14px 0 8px; }
   .section .text-block, .section p { font-size: 13px; line-height: 1.7; color: var(--text); white-space: pre-wrap; word-break: keep-all; }
@@ -225,7 +227,7 @@
   .list-bar b { color: var(--gold); }
   .list-bar .legend { font-size: 11px; }
   .assume { font-size: 12px; color: var(--accent); background: var(--panel-2); border-left: 3px solid var(--gold-dim); border-radius: 0 6px 6px 0; padding: 5px 10px; margin: 8px 0; }
-  details.method { margin-top: 8px; }
+  details.method { margin: 8px 0; }
   .only-m, .sheet-head, #sheet-dim { display: none; }
   /* 키보드 포커스 — 카드 · 칩 · 버튼이 어디 있는지 보이게 */
   .card:focus-visible, .chip:focus-visible, .dungeon-card li:focus-visible, .quest-recruits .who:focus-visible, .view-btn:focus-visible, .slot-btn:focus-visible, .modal-close:focus-visible, .cp-opt:focus-visible {
@@ -988,27 +990,51 @@ async function openModal(id, fromRoute) {
   if (!c) { body.appendChild(el("div", { class: "empty-state", text: "캐릭을 찾을 수 없습니다." })); return; }
 
   body.appendChild(buildModalHeader(c));
+  // 바로가기(2026-11-05 UX 검토 §2) — 영입 · 재료가 스킬보다 먼저라 스킬까지 길게 내려야 했다. 순서는 그대로 두고 한 번에 가는 버튼
+  const jump = el("div", { class: "mjump", attrs: { role: "navigation", "aria-label": "이 캐릭터 안 바로가기" } });
+  body.appendChild(jump);
+  const jumps = {};
+  const paintJump = () => {
+    clear(jump);
+    for (const [k, label] of [["skills", "스킬"], ["recruit", "영입 · 재료"], ["etc", "기타"]]) {
+      const t = jumps[k];
+      if (!t) continue;
+      const b = el("button", { class: "slot-btn", text: label });
+      b.addEventListener('click', () => t.scrollIntoView({ behavior: "smooth", block: "start" }));
+      jump.appendChild(b);
+    }
+    jump.hidden = jump.childElementCount < 2;
+  };
 
   // 영입 조건 · 조건템 — 상세본 유무와 무관하게 먼저 (2026-09-22)
   const recSec = buildRecruitSection(id);
   if (recSec) body.appendChild(recSec);
   const bookSec = buildBooksSection(id);
   if (bookSec) body.appendChild(bookSec);
-  if (c.skills_ko) body.appendChild(buildSkillsSection(c, "ko"));   // 상세본 없는 신규 캐릭도 공식 스킬은 보인다
-  if (c.skills_en) body.appendChild(buildSkillsSection(c, "en"));   // 위키 영어 — 공식 한국어가 있으면 접어 둔 대조용
+  jumps.recruit = recSec || bookSec;
+  if (c.skills_ko) body.appendChild(jumps.skills = buildSkillsSection(c, "ko"));   // 상세본 없는 신규 캐릭도 공식 스킬은 보인다
+  if (c.skills_en) { const en = buildSkillsSection(c, "en"); body.appendChild(en); jumps.skills = jumps.skills || en; }   // 위키 영어 — 공식 한국어가 있으면 접어 둔 대조용
 
   if (!c.has_full) {
-    body.appendChild(buildStubNotice(c));
+    body.appendChild(jumps.etc = buildStubNotice(c));
+    paintJump();
     return;
   }
+  paintJump();
 
   const loader = el("div", { class: "loading", text: "로딩 중…" });
   body.appendChild(loader);
   try {
     const res = await fetch(`data/full/${c.id}.json`);
     const full = await res.json();
+    if (STATE.modalId !== id) return;                                  // 읽는 사이 닫았거나 다른 캐릭터를 열었다
     loader.remove();
+    const mark = body.lastChild;
     appendModalContent(body, full);
+    jumps.etc = mark.nextSibling;
+    // 스킬 섹션이 상세본(game-info 스킬표)에만 있는 캐릭터
+    jumps.skills = jumps.skills || [...body.querySelectorAll('.section')].find(x => /^스킬/.test((x.querySelector('h3') || {}).textContent || ""));
+    paintJump();
   } catch (e) {
     loader.remove();
     body.appendChild(el("div", { class: "empty-state", text: "상세 데이터 로드 실패: " + e.message }));

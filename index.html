@@ -227,6 +227,9 @@
   .assume { font-size: 12px; color: var(--accent); background: var(--panel-2); border-left: 3px solid var(--gold-dim); border-radius: 0 6px 6px 0; padding: 5px 10px; margin: 8px 0; }
   details.method { margin-top: 8px; }
   .only-m, .sheet-head, #sheet-dim { display: none; }
+  /* 키보드 포커스 — 카드 · 칩 · 버튼이 어디 있는지 보이게 */
+  .card:focus-visible, .chip:focus-visible, .dungeon-card li:focus-visible, .quest-recruits .who:focus-visible, .view-btn:focus-visible, .slot-btn:focus-visible, .modal-close:focus-visible, .cp-opt:focus-visible {
+    outline: 2px solid var(--gold); outline-offset: 2px; }
   /* 캐릭터 고르기 드롭다운 */
   .cp { position: relative; display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
   .cp-list { position: absolute; top: calc(100% + 4px); left: 0; z-index: 120; width: 300px; max-width: calc(100vw - 32px); max-height: 340px; overflow-y: auto;
@@ -316,7 +319,7 @@
 </div>
 
 <div class="modal" id="modal">
-  <div class="modal-body" id="modal-body"></div>
+  <div class="modal-body" id="modal-body" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1"></div>
 </div>
 
 <template id="card-tpl">
@@ -969,6 +972,7 @@ function buildCard(c) {
 // Modal
 // ─────────────────────────────────────
 async function openModal(id, fromRoute) {
+  if (!STATE.modalId) STATE.modalReturn = document.activeElement;          // 닫으면 포커스를 여기로(보통 누른 카드)
   STATE.modalId = id;
   if (!fromRoute) { history.pushState(null, "", "#c/" + encodeURIComponent(id)); STATE.modalPushed = true; }
   const modal = document.getElementById('modal');
@@ -976,7 +980,9 @@ async function openModal(id, fromRoute) {
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
   clear(body);
-  body.appendChild(closeBtn());
+  const xb = closeBtn();
+  body.appendChild(xb);
+  xb.focus();                                                             // 포커스를 모달 안으로
 
   const c = STATE.all.find(x => x.id === id);
   if (!c) { body.appendChild(el("div", { class: "empty-state", text: "캐릭을 찾을 수 없습니다." })); return; }
@@ -1029,7 +1035,7 @@ function buildModalHeader(c) {
 
   const info = el("div", {
     children: [
-      el("h2", { text: c.nameKo || "" }),
+      el("h2", { text: c.nameKo || "", attrs: { id: "modal-title" } }),
       el("div", { class: "name-meta", text: (c.nameEn || "") + " · " + (c.name_jp || "—") }),
       badges,
     ]
@@ -2513,7 +2519,11 @@ function closeModal(fromRoute) {
   document.getElementById('modal').classList.remove('open');
   document.body.style.overflow = '';
   if (!STATE.modalId) return;
-  STATE.modalId = null;
+  const back = STATE.modalReturn, id = STATE.modalId;
+  STATE.modalId = null; STATE.modalReturn = null;
+  // 포커스 복귀 — 누른 요소가 다시 그려져 사라졌으면 같은 캐릭터 카드로
+  const to = back && back.isConnected && back !== document.body ? back : document.querySelector(`.card[data-id="${CSS.escape(id)}"]`);
+  if (to) to.focus({ preventScroll: true });
   if (fromRoute) { STATE.modalPushed = false; return; }
   if (STATE.modalPushed) { STATE.modalPushed = false; STATE.backPending = true; history.back(); }
   else history.replaceState(null, "", viewHash());
@@ -2528,7 +2538,37 @@ document.getElementById('search').addEventListener('input', e => {
 document.getElementById('modal').addEventListener('click', e => {
   if (e.target.id === 'modal') closeModal();
 });
-window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  // 모달 안에서 Tab 이 배경으로 빠지지 않게(aria-modal 만으론 키보드가 갇히지 않는다)
+  if (e.key === 'Tab' && STATE.modalId) {
+    const body = document.getElementById('modal-body');
+    const f = [...body.querySelectorAll('button, [href], input, select, textarea, summary, [tabindex]:not([tabindex="-1"])')].filter(x => !x.disabled && x.offsetParent !== null);
+    if (!f.length) return;
+    const i = f.indexOf(document.activeElement);
+    if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && (i === f.length - 1 || i < 0)) { e.preventDefault(); f[0].focus(); }
+  }
+});
+// 누를 수 있는 div · span(카드 · 칩 · 던전 줄 · 영입 이름)을 키보드로도 — 만드는 곳이 스무 군데라 생기는 순간 한 곳에서 붙인다(2026-11-05 UX 검토 §1 #7)
+const PRESSABLE = ".card, .chip, .dungeon-card li, .quest-recruits .who";
+const mkPressable = n => {
+  if (n.hasAttribute('role')) return;
+  n.setAttribute('role', 'button'); n.tabIndex = 0;
+  if (n.classList.contains('card')) n.setAttribute('aria-label', (n.querySelector('.nameKo') || n).textContent + " 상세 보기");
+  if (n.closest('#filters')) n.setAttribute('aria-pressed', String(n.classList.contains('active')));
+};
+new MutationObserver(ms => {
+  for (const m of ms) {
+    if (m.type === "attributes") { if (m.target.closest('#filters') && m.target.classList.contains('chip')) m.target.setAttribute('aria-pressed', String(m.target.classList.contains('active'))); continue; }
+    for (const n of m.addedNodes) if (n.nodeType === 1) { if (n.matches(PRESSABLE)) mkPressable(n); n.querySelectorAll(PRESSABLE).forEach(mkPressable); }
+  }
+}).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
+document.querySelectorAll(PRESSABLE).forEach(mkPressable);
+document.addEventListener('keydown', e => {
+  const t = e.target;
+  if ((e.key === "Enter" || e.key === " ") && t.getAttribute && t.getAttribute('role') === 'button' && !/^(BUTTON|A|INPUT|SELECT|TEXTAREA|SUMMARY)$/.test(t.tagName)) { e.preventDefault(); t.click(); }
+});
 
 init();
 </script>

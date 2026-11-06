@@ -534,14 +534,13 @@
     const res = { normal, crit, p, expected: exp1, rest, hits, perUse, o, conds: cx.on,
       get why() { return [...ag.src, ...eg.src, ...eq.src, ...ev.src, ...cx.on.map(c => `조건: ${c.label} ×${c.x}`), ...(kb ? [`브레이크: 첫 ${kb}타 ×2`] : [])]; } };
     // 정밀값(ae_pipeline — 딩님 계산기와 정수 일치 엔진): 난수 전 구간 평균. 근사보다 0~0.4% 낮다(단계마다 버림)
-    Object.defineProperty(res, "precise", { enumerable: false, get() {
-      const P = root.AEPipe || (typeof require === "function" ? require("./ae_pipeline.js") : null);
-      if (!P) return null;
+    // pipeInput = 정밀 엔진 입력 그대로(칸별 진단 _tools/character/diagnose_party.cjs 가 칸을 하나씩 빼 본다, 2026-11-07)
+    Object.defineProperty(res, "pipeInput", { enumerable: false, get() {
       const KIND = { pwr: "phys", int: "int_phys", spd: "spd_phys", magic: "magic", magicpwr: "pwr_magic" };
       const w = o.weapon, pct = x => (x ? [x * 100] : []), negPct = x => (x ? [-x * 100] : []);
       const defNet = net(eg, "def", () => C.groupNet({ buffs: eg.def })), mdefNet = net(eg, "mdef", () => C.groupNet({ buffs: eg.mdef }));
       const sl = eq.slots, sum = a => (a || []).reduce((x, y) => x + y, 0);
-      const r = P.compute({ caster: "ally", kind: KIND[atk.dep] || "phys", power: o.skillMult * 100, scope: o.single ? "single" : "all",
+      return { caster: "ally", kind: KIND[atk.dep] || "phys", power: o.skillMult * 100, scope: o.single ? "single" : "all",
         elemental: o.elemental, affinity: o.affinity, cap: opt.cap !== false,
         stats: { mp: st.mp || 0, atk: (st.pwr || 0) + w.atk, matk: (st.int || 0) + w.matk, pwr: st.pwr || 0, int: st.int || 0, spd: st.spd || 0 },
         enemy: { lv: (opt.enemy && opt.enemy.lv) || 0, def: en.end || 0, mdef: en.spr || 0 },
@@ -552,7 +551,12 @@
           enhance: sl.enhance, fallen: sl.fallen, condE: sl.condE, kesshi: sx.kesshi * 100 || undefined, shingan: sx.shingan * 100 || undefined,
           condNB: o.skillFx.map(x => x * 100), critDmg: pct(critDmg), overCrit: oc * 100 || undefined, aim: sum(sl.aim) || undefined,
           zoneAwake: sl.zoneAwake, zoneCond: sl.zoneCond, lsAlly: sl.lsAlly, overthrowE: sl.overthrowE, growthAtk: sl.growthAtk, wins: (sl.wins || [])[0],
-          zone: pct(o.zone), cheer: ev.groups.map(x => x * 100), aura: bud ? bud.aura.map(x => x * 100) : [], break: sx.brk * 100 || undefined } });
+          zone: pct(o.zone), cheer: ev.groups.map(x => x * 100), aura: bud ? bud.aura.map(x => x * 100) : [], break: sx.brk * 100 || undefined } };
+    } });
+    Object.defineProperty(res, "precise", { enumerable: false, get() {
+      const P = root.AEPipe || (typeof require === "function" ? require("./ae_pipeline.js") : null);
+      if (!P) return null;
+      const r = P.compute(res.pipeInput);
       return { normal: r.avg, crit: r.critAvg * critX, p, expected: p * r.critAvg * critX + (1 - p) * r.avg };
     } });
     return res;

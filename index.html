@@ -1405,7 +1405,8 @@ const withGear = (m, g) => ({ ...m, ...g, grasta: [...g.grasta, ...(g.special ||
 const STAT_KEYS = [["hp", "HP"], ["mp", "MP"], ["pwr", "힘"], ["int", "지능"], ["spd", "속도"], ["end", "내구"], ["spr", "정신"], ["lck", "행운"]];
 // 기본 공격 — MP 를 쓰는 일반 스킬 중 최고 배율(MP 0 · 없음 특수 발동은 조건부이거나 직접 고를 때만) — AEOpt.attackPool
 const defaultAttack = atks => AEOpt.attackPool(atks, !!STATE.calc.cond)[0] || atks[0];
-const atkLabel = a => `${a.skill} · ${a.mult}${a.multMax ? "~" + a.multMax : ""}%${a.element ? " " + a.element : ""} ${a.atk}${a.sec !== "skills" ? " [성도/SB]" : ""}`;
+const aname = a => (a.ko ? `${a.ko} (${a.skill})` : a.skill);   // 공격 스킬 표시 이름 — 한국어(공지 짝 · 서명 1:1 확정분, attack_names.py) + 영어 키
+const atkLabel = a => `${aname(a)} · ${a.mult}${a.multMax ? "~" + a.multMax : ""}%${a.element ? " " + a.element : ""} ${a.atk}${a.sec !== "skills" ? " [성도/SB]" : ""}`;
 
 // 계산 멤버 — 저장된 장비 · 공격 · 캐릭터창 스탯(장비 제외 값)을 입힌다. fx 는 data/calc/fx.json(계산에 닿는 효과만)
 function calcMember(db, c, pos = "front") {
@@ -1734,7 +1735,7 @@ function presetDetails(st, atk, lvl, rr) {
   const det = el("details", { class: "cw-box", style: "margin:0 0 12px" });
   det.open = !!O.presetOpen;
   det.addEventListener('toggle', () => { O.presetOpen = det.open; saveOv(); });
-  det.appendChild(el("summary", { text: `외부 버프(${lvl === "max" ? "최대" : "표준"}) 내역 — ${atk.skill}(${atk.element || "무속성"} ${atk.atk}) 기준 · 끈 항목 ${off.length}` }));
+  det.appendChild(el("summary", { text: `외부 버프(${lvl === "max" ? "최대" : "표준"}) 내역 — ${aname(atk)}(${atk.element || "무속성"} ${atk.atk}) 기준 · 끈 항목 ${off.length}` }));
   const t = el("table", { class: "skill-table", style: "min-width:560px" });     // 좁은 화면은 표만 옆으로 민다(이름이 글자마다 끊기지 않게)
   t.appendChild(el("thead", { children: [el("tr", { children: ["켬", "항목", "표준", "최대", "주는 캐릭터", "가장 센"].map(h => el("th", { text: h })) })] }));
   const tb = el("tbody");
@@ -1844,8 +1845,8 @@ function renderGearTab(box, db) {
   apply.addEventListener('click', () => { saveGear(c.id, res.gear, res.attack); rr(); });
   const sum = el("div", { class: "cw-box", style: "margin-top:12px" });
   sum.append(el("h4", { text: "기대값 (스킬 1회)" }),
-    el("div", { class: "pt", text: `현재 — ${cur.attack.skill}: ${dCur ? fmtN(dCur.perUse) : "—"}` }),
-    el("div", { class: "pt", children: [el("b", { class: "role-ok", text: `추천 — ${res.attack.skill}: ${fmtN(dRec.perUse)}` }),
+    el("div", { class: "pt", text: `현재 — ${aname(cur.attack)}: ${dCur ? fmtN(dCur.perUse) : "—"}` }),
+    el("div", { class: "pt", children: [el("b", { class: "role-ok", text: `추천 — ${aname(res.attack)}: ${fmtN(dRec.perUse)}` }),
       document.createTextNode(gain == null ? "" : `  (${gain >= 0 ? "+" : ""}${(gain * 100).toFixed(1)}%)`)] }),
     el("div", { class: "skko-src", style: "margin:6px 0", text: `버프: ${ctx.selectedOptions[0].text} · 후보: ${STATE.calc.ownedOnly ? "보유 목록" : "전체 장비"} · 평가 ${res.evals.toLocaleString()}회 · 공격 ${attacks.length}개 비교 · 그라스타 ${STATE.calc.gslots || 4}칸 · 배지 2칸 · 특수 1칸` }),
     apply, el("div", { style: "margin-top:8px", children: [whyDetails(dRec)] }));
@@ -1930,7 +1931,7 @@ function showPartyResult(out, db, r) {
     for (const x of p.per) {
       const c = STATE.all.find(y => y.id === x.id);
       who.appendChild(el("div", { class: "pt", children: [el("b", { text: c ? c.nameKo : x.id }),
-        document.createTextNode(` — ${x.attack ? x.attack.skill : "공격 없음"} · ${fmtN(x.expected)}`)] }));
+        document.createTextNode(` — ${x.attack ? aname(x.attack) : "공격 없음"} · ${fmtN(x.expected)}`)] }));
       if (x.gear) who.appendChild(el("div", { class: "skko-src", style: "margin:0 0 4px 10px",
         text: [x.gear.weapon, x.gear.armor, ...x.gear.grasta, ...(x.gear.badges || []), ...(x.gear.special || [])].filter(Boolean).map(gname).join(" · ") }));
     }

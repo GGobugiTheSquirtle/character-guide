@@ -287,7 +287,7 @@ const STATE = {
   view: "chars",      // chars | dungeons | quests
 };
 
-const ELEM_KO = {fire:"불",water:"물",earth:"땅",wind:"바람",thunder:"뇌",shade:"그림자",crystal:"결정","null":"무"};
+const ELEM_KO = {fire:"불",water:"물",earth:"땅",wind:"바람",thunder:"번개",shade:"그림자",crystal:"결정","null":"무"};
 const WEAP_KO = {sword:"검",katana:"도",axe:"도끼",lance:"창",bow:"활",fist:"권갑",staff:"지팡이",hammer:"망치"};
 
 // 스킬표 일본어 헤더 → 한국어
@@ -297,12 +297,12 @@ const SKILL_HEADER_KO = {
 };
 // 스킬표 속성 셀 일본어 → 한국어 (단일 한자 약식)
 const ELEM_CELL_KO = {
-  "火": "불", "水": "물", "地": "땅", "風": "바람", "雷": "뇌",
+  "火": "불", "水": "물", "地": "땅", "風": "바람", "雷": "번개",
   "闇": "그림자", "陰": "그림자", "結晶": "결정", "晶": "결정", "無": "무",
 };
 
 const FILTER_DEFS = [
-  { label: "속성", key: "element", values: [["", "전체"], ["fire","불"], ["water","물"], ["earth","땅"], ["wind","바람"], ["thunder","뇌"], ["shade","그림자"], ["crystal","결정"], ["null","무"]] },
+  { label: "속성", key: "element", values: [["", "전체"], ["fire","불"], ["water","물"], ["earth","땅"], ["wind","바람"], ["thunder","번개"], ["shade","그림자"], ["crystal","결정"], ["null","무"]] },
   { label: "무기", key: "weapon",  values: [["", "전체"], ["sword","검"], ["katana","도"], ["axe","도끼"], ["lance","창"], ["bow","활"], ["fist","권갑"], ["staff","지팡이"], ["hammer","망치"]] },
   { label: "스타일", key: "style", values: [["", "전체"], ["NS","NS"], ["AS","AS"], ["ES","ES"], ["Alter","Alter"]] },
   { label: "영입", key: "recruit", values: [["", "전체"], ["free","무료"], ["gacha","가챠"], ["books","조건템 있음"]] },

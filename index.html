@@ -114,6 +114,7 @@
   .fx.k-stack b, .fx.k-power b, .fx.k-action b, .fx.k-af b, .fx.k-dispel b, .fx.k-cost b { color: var(--muted); }
   .fx.k-other { color: var(--muted); border-style: dashed; }
   .skko-raw { margin-top: 6px; font-size: 11px; color: var(--muted); white-space: pre-wrap; }
+  .skko-text { margin: 6px 0 4px; font-size: 12px; line-height: 1.55; color: var(--text); white-space: pre-wrap; }
   .skko-raw summary { cursor: pointer; }
   .badge.skko { background: rgba(108,142,193,0.12); color: var(--blue); border-color: #3a4d6b; }
   /* 파티 구성 (2026-10-07) */
@@ -382,7 +383,7 @@ function buildFilters() {
   // 토글 필터
   const toggleGroup = el("div", { class: "filter-group" });
   toggleGroup.appendChild(el("span", { class: "filter-label", text: "기타" }));
-  for (const [key, label] of [["sa", "SA 보유"], ["hasFull", "상세 정보 있음"], ["skillsKo", "공식 한국어 스킬"]]) {
+  for (const [key, label] of [["sa", "SA 보유"], ["hasFull", "상세 정보 있음"], ["skillsKo", "한국어 스킬(딩님 DB · 공식)"]]) {
     const chip = el("span", { class: "chip", text: label, dataset: { filter: key } });
     chip.addEventListener('click', () => {
       chip.classList.toggle('active');
@@ -491,7 +492,7 @@ function applyFilters() {
   if (f.style)   list = list.filter(c => c.style === f.style || (f.style === "Alter" && c.style?.startsWith("Alter")));
   if (f.sa)      list = list.filter(c => c.sa);
   if (f.hasFull) list = list.filter(c => c.has_full);
-  if (f.skillsKo) list = list.filter(c => c.skills_ko);
+  if (f.skillsKo) list = list.filter(c => c.skills_ding || c.skills_ko);
   if (f.roles.length) list = list.filter(c => f.roles.every(r => (c.roles || {})[r]));
   if (f.effects.length) list = list.filter(c => f.effects.every(t => (c.effect_tags || []).includes(t)));
   if (f.recruit === "books") {
@@ -785,7 +786,8 @@ function buildCard(c) {
   if (c.style && c.style !== 'NS') badges.appendChild(badgeEl(c.style, "style-" + c.style.replace(/\s/g, '-')));
   if (c.sa) badges.appendChild(badgeEl("SA", "sa"));
   if (STATE.recruit[c.id]?.recruit?.kind === "free") badges.appendChild(badgeEl("무료", "free"));
-  if (c.skills_ko) badges.appendChild(badgeEl("공식 스킬", "skko"));
+  if (c.skills_ding) badges.appendChild(badgeEl("딩님 DB", "skko"));
+  else if (c.skills_ko) badges.appendChild(badgeEl("공식 스킬", "skko"));
 
   // confidence
   const conf = c.confidence || 0;
@@ -820,8 +822,9 @@ async function openModal(id) {
   if (recSec) body.appendChild(recSec);
   const bookSec = buildBooksSection(id);
   if (bookSec) body.appendChild(bookSec);
-  if (c.skills_ko) body.appendChild(buildSkillsSection(c, "ko"));   // 상세본 없는 신규 캐릭도 공식 스킬은 보인다
-  if (c.skills_en) body.appendChild(buildSkillsSection(c, "en"));   // 위키 영어 — 공식 한국어가 있으면 접어 둔 대조용
+  if (c.skills_ding) body.appendChild(buildSkillsSection(c, "ding"));   // 한국어 스킬 1순위 = 딩님 DB(2026-11-07 출처 순서)
+  if (c.skills_ko) body.appendChild(buildSkillsSection(c, "ko"));       // 공식 공지 — 딩님이 있으면 접어 둔 대조용
+  if (c.skills_en) body.appendChild(buildSkillsSection(c, "en"));       // 위키 영어 — 한국어가 있으면 접어 둔 대조용
 
   if (!c.has_full) {
     body.appendChild(buildStubNotice(c));
@@ -1005,15 +1008,17 @@ function fxChip(u) {
     chip.appendChild(el("span", { class: "cond", text: " @" + u.target }));
   return chip;
 }
-// lang "ko" = 공식 공지(data/skills_ko) · "en" = 위키 영어(data/skills_en, _tools/character/build_skills_en.py).
-// 영어도 효과는 같은 한국어 체계로 분해돼 있다 — 칩은 같고 원문만 영어
+// lang "ding" = 카페 딩님 스킬 DB(data/skills_ding, _tools/character/build_skills_ding.py — 한국어 1순위) ·
+// "ko" = 공식 공지(data/skills_ko) · "en" = 위키 영어(data/skills_en, _tools/character/build_skills_en.py).
+// 효과 칩은 셋 다 같은 한국어 체계(프로젝트 표기)로 분해돼 있다
 const SKILL_SRC = {
+  ding: { dir: "skills_ding", title: "스킬 (한국어 · 출처: 카페 딩님 스킬 DB)" },
   ko: { dir: "skills_ko", title: "공식 스킬 (한국어 · 인게임 공지)" },
   en: { dir: "skills_en", title: "위키 스킬 (영문 원문 · 효과는 자동 분해)" },
 };
 function buildSkillsSection(c, lang) {
   const src = SKILL_SRC[lang];
-  const folded = lang === "en" && c.skills_ko;                    // 공식 한국어가 정본 — 영어는 대조용으로 접는다
+  const folded = lang !== skillLang(c);                           // 1순위(딩님 → 공지 → 위키)만 펼치고 나머지는 대조용으로 접는다
   const sec = el(folded ? "details" : "div", { class: "section" });
   sec.appendChild(el(folded ? "summary" : "h3", { text: folded ? src.title + " — 대조용" : src.title, class: folded ? "filter-label" : "" }));
   if (!folded) {
@@ -1034,6 +1039,8 @@ function buildSkillsSection(c, lang) {
     for (const b of d.blocks) {
       const blk = el("div", { class: "skko-block" });
       if (b.kind === "wiki") blk.appendChild(el("div", { class: "skko-src", text: `anothereden.wiki 「${b.who}」 · 스킬 문서 Cargo HeroSkills` }));
+      else if (b.kind === "ding") blk.appendChild(el("div", { class: "skko-src",
+        text: `출처: 카페 딩님 스킬 DB 「${b.who}」${b.status ? " · " + b.status : ""} · ${d.fetched} 받음 — 본문 = 인게임 설명(프로젝트 표기), 접힌 칸 = 딩님 교정 · 인게임 원문` }));
       else {
         blk.appendChild(el("h4", { text: b.kind === "sa" ? `성도 각성 「${b.class}」` : "신규 소개" }));
         blk.appendChild(el("div", { class: "skko-src", text: `공지 #${b.notice}` + (b.class_en ? ` · ${b.class_en}` : "") }));
@@ -1052,13 +1059,19 @@ function buildSkillsSection(c, lang) {
             if (it.en) nm.appendChild(el("span", { class: "tag", text: it.en }));
             box.appendChild(nm);
           }
+          if (it.text) box.appendChild(el("div", { class: "skko-text", text: it.text.join("\n") }));   // 딩님 — 문장이 본문
           const list = el("div", { class: "fx-list" });
           for (const u of it.effects) if (u.k !== "meta" && !u.explain) list.appendChild(fxChip(u));
           box.appendChild(list);
-          const raw = el("details", { class: "skko-raw" });
-          raw.appendChild(el("summary", { text: "원문" }));
-          raw.appendChild(document.createTextNode([...it.lines, ...(it.notes || [])].join("\n")));
-          box.appendChild(raw);
+          const fold = (title, text) => {
+            const dt = el("details", { class: "skko-raw" });
+            dt.appendChild(el("summary", { text: title }));
+            dt.appendChild(document.createTextNode(text));
+            box.appendChild(dt);
+          };
+          if (it.fix) fold("딩님 교정", it.fix);
+          if (!it.text) fold("원문", [...it.lines, ...(it.notes || [])].join("\n"));
+          else if (it.lines.length && it.lines.join("\n") !== it.text.join("\n")) fold("인게임 원문", it.lines.join("\n"));
           blk.appendChild(box);
         }
       }
@@ -1077,9 +1090,10 @@ const ELEMS = ["불", "물", "땅", "바람", "번개", "그림자", "결정"];
 STATE.party = (() => { try { return JSON.parse(localStorage.getItem('cg-party') || '[]').slice(0, PARTY_MAX); } catch { return []; } })();
 STATE.skfx = {};
 function saveParty() { try { localStorage.setItem('cg-party', JSON.stringify(STATE.party)); } catch {} }
-const hasSkills = c => c && (c.skills_ko || c.skills_en);
-async function loadSkills(c) {                        // 공식 한국어가 있으면 그것, 없으면 위키 영어
-  const dir = c.skills_ko ? "skills_ko" : "skills_en";
+const hasSkills = c => c && (c.skills_ding || c.skills_ko || c.skills_en);
+const skillLang = c => c.skills_ding ? "ding" : c.skills_ko ? "ko" : "en";   // 한국어 스킬 출처 순서(CLAUDE.md 번역 규칙 0)
+async function loadSkills(c) {                        // 딩님 DB → 공식 공지 → 위키 영어
+  const dir = SKILL_SRC[skillLang(c)].dir;
   const key = dir + "/" + c.id;
   if (!STATE.skfx[key]) STATE.skfx[key] = await fetch(`data/${dir}/${c.id}.json`).then(r => r.json());
   return STATE.skfx[key];
@@ -1168,8 +1182,9 @@ async function renderParty() {
   const wrap = el("div", { class: "party" });
   host.appendChild(wrap);
   wrap.appendChild(el("h3", { class: "party-h", text: "파티 구성 — 역할 · 속성 · ZONE · 배치 점검" }));
-  const nKo = STATE.all.filter(c => c.skills_ko).length, nEn = STATE.all.filter(c => !c.skills_ko && c.skills_en).length;
-  wrap.appendChild(el("div", { class: "skko-src", text: `공식 한국어 스킬 ${nKo}명 + 위키 영어 스킬(자동 분해) ${nEn}명. 성도 각성은 완료 상태로 계산. 「전방에서 / 후방에서」 효과는 그 자리에 있을 때만 셉니다.` }));
+  const nDing = STATE.all.filter(c => skillLang(c) === "ding" && hasSkills(c)).length, nKo = STATE.all.filter(c => skillLang(c) === "ko" && hasSkills(c)).length,
+    nEn = STATE.all.filter(c => skillLang(c) === "en" && c.skills_en).length;
+  wrap.appendChild(el("div", { class: "skko-src", text: `카페 딩님 스킬 DB ${nDing}명 + 공식 한국어 스킬 ${nKo}명 + 위키 영어 스킬(자동 분해) ${nEn}명. 성도 각성은 완료 상태로 계산. 「전방에서 / 후방에서」 효과는 그 자리에 있을 때만 셉니다.` }));
   // 고르기
   const pick = el("div", { class: "filter-group", style: "margin:10px 0 8px" });
   const dl = el("datalist", { attrs: { id: "party-cands" } });
@@ -1202,7 +1217,7 @@ async function renderParty() {
   // 1. 역할 커버리지 — 지금 자리에서 발동하는 효과만
   const t1 = el("table", { class: "skill-table party-table" });
   const hr = el("tr", { children: [el("th", { text: "역할" })] });
-  for (const m of members) hr.appendChild(el("th", { text: label(m), attrs: { title: m.c.skills_ko ? "공식 한국어 스킬" : "위키 영어 스킬(자동 분해)" } }));
+  for (const m of members) hr.appendChild(el("th", { text: label(m), attrs: { title: { ding: "카페 딩님 스킬 DB", ko: "공식 한국어 스킬", en: "위키 영어 스킬(자동 분해)" }[skillLang(m.c)] } }));
   t1.appendChild(el("thead", { children: [hr] }));
   const tb = el("tbody");
   const trTr = el("tr", { children: [el("td", { text: "특성", attrs: { title: "anothereden.wiki 캐릭터 문서 personalities" } })] });

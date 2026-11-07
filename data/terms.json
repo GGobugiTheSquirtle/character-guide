@@ -1031,10 +1031,7 @@
    "ko": "배리어 관통",
    "src": "pair",
    "n_ko": 32,
-   "n_en": 20,
-   "aliases_en": [
-    "Barrier Piercing"
-   ]
+   "n_en": 20
   },
   {
    "id": "st_buff_reversal",
@@ -1204,15 +1201,11 @@
   {
    "id": "st_petrification",
    "cat": "state_ailment",
-   "en": "Petrification",
+   "en": "Stone / Petrified",
    "ko": "석화",
    "src": "pair",
    "n_ko": 14,
-   "n_en": 0,
-   "aliases_en": [
-    "Petrify",
-    "Stone / Petrified"
-   ]
+   "n_en": 0
   },
   {
    "id": "st_fear",

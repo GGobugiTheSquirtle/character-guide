@@ -4650,8 +4650,8 @@
     "category_jp": "外史",
     "category": "외사",
     "quest_jp": "望郷の魂と逆星の旅人",
-    "quest": "망향의 혼과 역성의 나그네",
-    "quest_src": "est",
+    "quest": "망향의 혼과 역성의 여행자",
+    "quest_src": "local",
     "step": "프롤로그",
     "note": ""
    },

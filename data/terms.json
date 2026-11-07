@@ -335,11 +335,14 @@
   {
    "id": "w_axe",
    "cat": "weapon",
-   "en": "Axe",
+   "en": "Ax",
    "ko": "도끼",
    "src": "notice",
    "n_ko": 83,
-   "n_en": 3
+   "n_en": 74,
+   "aliases_en": [
+    "Axe"
+   ]
   },
   {
    "id": "w_lance",
@@ -348,7 +351,10 @@
    "ko": "창",
    "src": "notice",
    "n_ko": 163,
-   "n_en": 105
+   "n_en": 105,
+   "aliases_en": [
+    "Spear"
+   ]
   },
   {
    "id": "w_bow",
@@ -366,7 +372,10 @@
    "ko": "권갑",
    "src": "notice",
    "n_ko": 75,
-   "n_en": 73
+   "n_en": 73,
+   "aliases_en": [
+    "Fist"
+   ]
   },
   {
    "id": "w_hammer",
@@ -456,7 +465,10 @@
    "ko": "번개",
    "src": "notice",
    "n_ko": 48,
-   "n_en": 57
+   "n_en": 57,
+   "aliases_en": [
+    "Lightning"
+   ]
   },
   {
    "id": "e_shade",

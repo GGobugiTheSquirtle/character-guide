@@ -243,6 +243,7 @@
         "namu": "https://namu.wiki/w/%ED%95%98%EB%83%90%EB%AA%A8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Hameow"
       },
+      "skills_ding": true,
       "effect_tags": [
         "가하는 대미지가 UP",
         "마법 저항 DOWN",
@@ -252,8 +253,7 @@
         "state_unknown": 2,
         "atk_debuff": 4,
         "mode": 1
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "flammelapis_es",
@@ -328,6 +328,7 @@
         "surv_buff": 2
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "Clergy",
         "검",
@@ -336,8 +337,7 @@
         "물",
         "Demon Sword",
         "바르오키"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "ruvi",
@@ -474,13 +474,13 @@
         "state_unknown": 1
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "검",
         "결정",
         "Clergy",
         "Glutton"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "dark_devourer_alter",
@@ -551,6 +551,7 @@
         "surv_buff": 2
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "Sweet tooth",
         "지팡이",
@@ -558,8 +559,7 @@
         "Napper",
         "Future Revolutionary",
         "그림자"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "mare",
@@ -587,6 +587,7 @@
         "namu": "https://namu.wiki/w/%EB%A9%94%EC%96%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Mare"
       },
+      "skills_ding": true,
       "effect_tags": [
         "MP 치유",
         "MP 회복",
@@ -603,8 +604,7 @@
         "recover": 1,
         "mode": 2,
         "state_unknown": 3
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "spirika",
@@ -675,6 +675,7 @@
         "recover": 4,
         "power": 3
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "고양이 애호가",
@@ -683,8 +684,7 @@
         "Dog lover",
         "Estrangement",
         "Star"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "violet_lancer_as",
@@ -845,14 +845,14 @@
         "recover": 8,
         "surv_buff": 10
       },
+      "skills_ding": true,
       "traits": [
         "검",
         "바람",
         "용",
         "Cursed",
         "Scars of the Wheel of Time"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "noble_specturr",
@@ -1069,13 +1069,13 @@
         "state_unknown": 3
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "권갑",
         "불",
         "Royalty",
         "고양이 애호가"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "cerius_as",
@@ -1208,12 +1208,12 @@
         "tempo": 1
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "IDA 스쿨",
         "검",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "porcelain_pixie_as",
@@ -1344,13 +1344,13 @@
         "power": 4,
         "mode": 2
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "Royalty",
         "Amnesia",
         "FFIX"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "steiner",
@@ -1412,12 +1412,12 @@
         "resource": 5,
         "surv_buff": 4
       },
+      "skills_ding": true,
       "traits": [
         "검",
         "Weapons",
         "FFIX"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "verdanta",
@@ -1538,6 +1538,7 @@
         "mode": 3,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "Estrangement",
@@ -1545,8 +1546,7 @@
         "불",
         "물",
         "번개"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "zidane",
@@ -1620,14 +1620,14 @@
         "mode": 5,
         "surv_buff": 4
       },
+      "skills_ding": true,
       "traits": [
         "도",
         "바람",
         "Outlaw",
         "Lovesick",
         "FFIX"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "silver_striker_as",
@@ -1760,13 +1760,13 @@
         "atk_debuff": 1
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "창",
         "그림자",
         "Future Revolutionary",
         "Bookworm"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "mildy",
@@ -1851,13 +1851,13 @@
         "atk_state": 1
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "결정",
         "Future Revolutionary",
         "Minstrel"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "dream_weaver_as",
@@ -2067,13 +2067,13 @@
         "atk_state": 4
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "도끼",
         "그림자",
         "Beast",
         "Glasses"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "myrus_es",
@@ -2139,13 +2139,13 @@
         "mode": 2
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "Beast",
         "도끼",
         "Lovesick",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "black_clad_sw_as",
@@ -2551,13 +2551,13 @@
         "mode": 2
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "활",
         "땅",
         "Outlaw",
         "Gun"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "red_clad_flam_as",
@@ -2713,14 +2713,14 @@
         "surv_buff": 2
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "망치",
         "번개",
         "Miner",
         "Chronos Empire",
         "Glasses"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "gunce_as",
@@ -2748,6 +2748,7 @@
         "namu": "https://namu.wiki/w/%EA%B1%B4%EC%8A%A4%20AS%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Gunce_(Another_Style)"
       },
+      "skills_ding": true,
       "effect_tags": [
         "AF·천명",
         "HP 회복",
@@ -2763,8 +2764,7 @@
         "zone": 1,
         "resource": 1,
         "state_unknown": 4
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "aldo_as",
@@ -2837,6 +2837,7 @@
         "surv_buff": 2,
         "tempo": 1
       },
+      "skills_ding": true,
       "traits": [
         "주인공",
         "Guiding Light",
@@ -2851,8 +2852,7 @@
         "Arcadia",
         "Itto-Ryu",
         "Demon Sword"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "nilya",
@@ -2921,6 +2921,7 @@
         "state_unknown": 1,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "권갑",
         "결정",
@@ -2928,8 +2929,7 @@
         "Dog lover",
         "Forager",
         "MMA"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "jilya",
@@ -2957,6 +2957,7 @@
         "namu": "https://namu.wiki/w/%EC%A7%80%EB%A5%B4%EC%95%BC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Jilya"
       },
+      "skills_ding": true,
       "effect_tags": [
         "MP 회복",
         "ZONE 전개: 【휘정진",
@@ -2977,8 +2978,7 @@
         "mode": 1,
         "state_unknown": 3,
         "atk_buff": 2
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "shion_es",
@@ -3050,6 +3050,7 @@
         "atk_state": 5,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "동방",
@@ -3059,8 +3060,7 @@
         "Itto-Ryu",
         "번개",
         "Land of Mi"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "laika",
@@ -3088,6 +3088,7 @@
         "namu": "https://namu.wiki/w/%EB%9D%BC%EC%9D%B4%EC%B9%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Laika"
       },
+      "skills_ding": true,
       "effect_tags": [
         "AF·천명",
         "가하는 대미지가 UP",
@@ -3108,8 +3109,7 @@
         "atk_buff": 2,
         "surv_state": 1,
         "resource": 1
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "senya_as",
@@ -3184,6 +3184,7 @@
         "surv_buff": 2,
         "surv_debuff": 1
       },
+      "skills_ding": true,
       "traits": [
         "도",
         "불",
@@ -3194,8 +3195,7 @@
         "Fairy",
         "Itto-Ryu",
         "Land of Mi"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "jet_tactician_as",
@@ -3276,6 +3276,7 @@
         "namu": "https://namu.wiki/w/%EC%BF%A0%EB%9D%BC%EB%A7%88%EB%A3%A8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Kuramaru"
       },
+      "skills_ding": true,
       "effect_tags": [
         "마법 저항 UP",
         "물리 저항 UP",
@@ -3290,8 +3291,7 @@
         "mode": 1,
         "state_unknown": 1,
         "atk_debuff": 1
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "komachi_as",
@@ -3429,14 +3429,14 @@
         "atk_debuff": 4,
         "surv_state": 7
       },
+      "skills_ding": true,
       "traits": [
         "활",
         "물",
         "동방",
         "Fairy",
         "Minstrel"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "krervo_as",
@@ -3584,6 +3584,7 @@
         "atk_buff": 3,
         "surv_state": 1
       },
+      "skills_ding": true,
       "traits": [
         "망치",
         "그림자",
@@ -3591,8 +3592,7 @@
         "Fairy",
         "Sharp Ears",
         "Funeral"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "forlorn_thespian_alter",
@@ -3737,6 +3737,7 @@
         "state_unknown": 2,
         "atk_state": 2
       },
+      "skills_ding": true,
       "traits": [
         "활",
         "동방",
@@ -3746,8 +3747,7 @@
         "바람",
         "Land of Mi",
         "Spirit Talker"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "elseal_as",
@@ -3908,13 +3908,13 @@
         "tempo": 2,
         "dot": 1
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "Glasses",
         "Atelier",
         "Bookworm"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "id",
@@ -3984,12 +3984,12 @@
         "surv_buff": 8,
         "surv_debuff": 1
       },
+      "skills_ding": true,
       "traits": [
         "권갑",
         "땅",
         "연옥계"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "hazama",
@@ -4017,6 +4017,7 @@
         "namu": "https://namu.wiki/w/%ED%8B%88%ED%8B%88%EC%9D%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Hazama"
       },
+      "skills_ding": true,
       "effect_tags": [
         "ZONE 전개: 극 굉타진",
         "대미지 UP",
@@ -4031,8 +4032,7 @@
         "power": 2,
         "zone": 1,
         "state_unknown": 4
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "klaudia",
@@ -4119,13 +4119,13 @@
         "tempo": 4,
         "dot": 1
       },
+      "skills_ding": true,
       "traits": [
         "활",
         "물",
         "Atelier",
         "Cooking"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "ryza",
@@ -4212,14 +4212,14 @@
         "atk_debuff": 8,
         "dot": 1
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "불",
         "Atelier",
         "Forager",
         "Miner"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "izuna",
@@ -4486,12 +4486,12 @@
         "mode": 6,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "도",
         "바람",
         "Avenger"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "senya",
@@ -4560,6 +4560,7 @@
         "zone": 2,
         "surv_debuff": 1
       },
+      "skills_ding": true,
       "traits": [
         "도",
         "불",
@@ -4570,8 +4571,7 @@
         "Hood",
         "Fairy",
         "Land of Mi"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "shigure_es",
@@ -4646,6 +4646,7 @@
         "zone": 4,
         "tempo": 2
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "동방",
@@ -4656,8 +4657,7 @@
         "Itto-Ryu",
         "바람",
         "Land of Mi"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "lingli_as",
@@ -4784,14 +4784,14 @@
         "surv_buff": 8,
         "state_unknown": 2
       },
+      "skills_ding": true,
       "traits": [
         "권갑",
         "물",
         "KOF",
         "Sweet tooth",
         "MMA"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "kyo",
@@ -4853,14 +4853,14 @@
         "zone": 1,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "권갑",
         "불",
         "Mounted",
         "KOF",
         "MMA"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "mai",
@@ -4924,6 +4924,7 @@
         "zone": 1,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "권갑",
         "불",
@@ -4931,8 +4932,7 @@
         "Lovesick",
         "KOF",
         "MMA"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "thornbound_witch_alter",
@@ -5073,13 +5073,13 @@
         "zone": 1,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "권갑",
         "땅",
         "KOF",
         "MMA"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "zilva_as",
@@ -5220,6 +5220,7 @@
         "state_unknown": 5,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "도끼",
         "번개",
@@ -5227,8 +5228,7 @@
         "Dragon Killer",
         "연옥계",
         "Arcadia"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "undercover_scribe_alter",
@@ -5376,6 +5376,7 @@
         "tempo": 1,
         "surv_state": 1
       },
+      "skills_ding": true,
       "traits": [
         "검",
         "Military",
@@ -5383,8 +5384,7 @@
         "Chronos Empire",
         "불",
         "Outlaw"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "tetra_as",
@@ -5412,6 +5412,7 @@
         "namu": "https://namu.wiki/w/%ED%85%8C%ED%8A%B8%EB%9D%BC%20AS%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Tetra_(Another_Style)"
       },
+      "skills_ding": true,
       "effect_tags": [
         "HP 회복",
         "마법 크리티컬율 UP",
@@ -5431,8 +5432,7 @@
         "resource": 1,
         "state_unknown": 4,
         "atk_buff": 2
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "feinne_as",
@@ -5508,6 +5508,7 @@
         "zone": 4,
         "mode": 4
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "Cooking",
@@ -5515,8 +5516,7 @@
         "바르오키",
         "Geo",
         "Demon Sword"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "jillfunny",
@@ -5647,6 +5647,7 @@
         "namu": "https://namu.wiki/w/%ED%8A%9C%EC%8B%9C%EC%95%84%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Thys%C3%ADa"
       },
+      "skills_ding": true,
       "effect_tags": [
         "MP 회복",
         "ZONE 전개: 【성해진",
@@ -5664,8 +5665,7 @@
         "state_unknown": 4,
         "surv_debuff": 1,
         "surv_buff": 1
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "mazrika",
@@ -5744,6 +5744,7 @@
         "tempo": 1,
         "mode": 4
       },
+      "skills_ding": true,
       "traits": [
         "Sweet tooth",
         "Beast",
@@ -5752,8 +5753,7 @@
         "Hood",
         "연옥계",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "yakumo_as",
@@ -5827,14 +5827,14 @@
         "atk_debuff": 2,
         "surv_debuff": 6
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "KMS",
         "Estrangement",
         "그림자",
         "Glasses"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "kumos_as",
@@ -5862,6 +5862,7 @@
         "namu": "https://namu.wiki/w/%ED%81%90%EB%AA%A8%EC%8A%A4%20AS%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Kumos_(Another_Style)"
       },
+      "skills_ding": true,
       "effect_tags": [
         "MP 회복",
         "그림자 속성 저항 DOWN",
@@ -5879,8 +5880,7 @@
         "resource": 2,
         "recover": 1,
         "mode": 1
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "virtual_reflection_alter",
@@ -6110,14 +6110,14 @@
         "atk_debuff": 6,
         "mode": 3
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "KMS",
         "Scientist",
         "동방",
         "Synth Human"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "kuchinawa",
@@ -6190,12 +6190,12 @@
         "surv_buff": 2,
         "surv_state": 1
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "땅",
         "Arcadia"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "daisy_as",
@@ -6536,6 +6536,7 @@
         "namu": "https://namu.wiki/w/%EB%9D%BC%EC%9D%B4%EB%A6%AC%EC%8A%A4%28%EA%B3%B5%EA%B2%A9%29%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Iridian_(Attack)"
       },
+      "skills_ding": true,
       "effect_tags": [
         "ZONE 기타",
         "디버프 해제",
@@ -6552,8 +6553,7 @@
         "recover": 1,
         "mode": 1,
         "state_unknown": 3
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "iridian_defense",
@@ -6581,6 +6581,7 @@
         "namu": "https://namu.wiki/w/%EB%9D%BC%EC%9D%B4%EB%A6%AC%EC%8A%A4%28%EB%B0%A9%EC%96%B4%29%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Iridian_(Defense)"
       },
+      "skills_ding": true,
       "effect_tags": [
         "ZONE 기타",
         "디버프 해제",
@@ -6599,8 +6600,7 @@
         "mode": 1,
         "state_unknown": 3,
         "atk_debuff": 1
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "iridian_heal",
@@ -6628,6 +6628,7 @@
         "namu": "https://namu.wiki/w/%EB%9D%BC%EC%9D%B4%EB%A6%AC%EC%8A%A4%28%EC%A7%80%EC%9B%90%29%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Iridian_(Heal)"
       },
+      "skills_ding": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -6646,8 +6647,7 @@
         "mode": 1,
         "state_unknown": 3,
         "atk_debuff": 1
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "blooming_blade_alter",
@@ -6793,14 +6793,14 @@
         "state_unknown": 7,
         "recover": 5
       },
+      "skills_ding": true,
       "traits": [
         "Sweet tooth",
         "Clergy",
         "서방",
         "검",
         "결정"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "moke",
@@ -6828,6 +6828,7 @@
         "namu": "https://namu.wiki/w/%EB%AA%A8%EC%BC%80%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Moke"
       },
+      "skills_ding": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 기타",
@@ -6847,8 +6848,7 @@
         "mode": 2,
         "state_unknown": 3,
         "atk_buff": 2
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "alma_as",
@@ -6918,6 +6918,7 @@
         "state_unknown": 7,
         "zone": 1
       },
+      "skills_ding": true,
       "traits": [
         "활",
         "고양이 애호가",
@@ -6925,8 +6926,7 @@
         "Alchemist",
         "결정",
         "Glasses"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "wenefica",
@@ -6997,6 +6997,7 @@
         "zone": 5,
         "atk_state": 1
       },
+      "skills_ding": true,
       "traits": [
         "활",
         "물",
@@ -7004,8 +7005,7 @@
         "Cursed",
         "바르오키",
         "Avenger"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "cyrus_albright",
@@ -7061,6 +7061,7 @@
         "atk_state": 2,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "불",
@@ -7068,8 +7069,7 @@
         "번개",
         "Bookworm",
         "Traveler"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "oboro",
@@ -7199,12 +7199,12 @@
         "surv_state": 3,
         "mode": 2
       },
+      "skills_ding": true,
       "traits": [
         "활",
         "불",
         "Traveler"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "tithi",
@@ -7283,12 +7283,12 @@
         "tempo": 2,
         "mode": 2
       },
+      "skills_ding": true,
       "traits": [
         "권갑",
         "번개",
         "Traveler"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "cerius",
@@ -7424,6 +7424,7 @@
         "surv_debuff": 5,
         "state_unknown": 1
       },
+      "skills_ding": true,
       "traits": [
         "창",
         "물",
@@ -7431,8 +7432,7 @@
         "Dragon Killer",
         "Arcadia",
         "용"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "pom_as",
@@ -7492,14 +7492,14 @@
         "zone": 6,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "Scientist",
         "Forager",
         "지팡이",
         "Gun",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "orleya_as",
@@ -7571,13 +7571,13 @@
         "state_unknown": 1,
         "atk_state": 1
       },
+      "skills_ding": true,
       "traits": [
         "도끼",
         "Estrangement",
         "불",
         "번개"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "porcelain_pixie_alter",
@@ -7726,6 +7726,7 @@
         "surv_buff": 2,
         "resource": 4
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "번개",
@@ -7733,8 +7734,7 @@
         "Prince of Time",
         "Paradoxical Dreamers' Leader",
         "Future Revolutionary"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "velette",
@@ -7806,13 +7806,13 @@
         "state_unknown": 1,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "망치",
         "번개",
         "Miner",
         "Chronos Empire"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "gunce",
@@ -7840,6 +7840,7 @@
         "namu": "https://namu.wiki/w/%EA%B1%B4%EC%8A%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Gunce"
       },
+      "skills_ding": true,
       "effect_tags": [
         "AF·천명",
         "ZONE 전개: 극 초뢰진",
@@ -7855,8 +7856,7 @@
         "zone": 1,
         "resource": 1,
         "state_unknown": 3
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "hyuga",
@@ -7884,6 +7884,7 @@
         "namu": "https://namu.wiki/w/%ED%9C%B4%EC%9A%B0%EA%B0%80%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Hyuga"
       },
+      "skills_ding": true,
       "effect_tags": [
         "대미지 UP",
         "물리 저항 DOWN",
@@ -7897,8 +7898,7 @@
         "atk_debuff": 1,
         "surv_buff": 1,
         "state_unknown": 2
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "parisa_as",
@@ -8096,13 +8096,13 @@
         "surv_state": 4,
         "recover": 1
       },
+      "skills_ding": true,
       "traits": [
         "IDA 스쿨",
         "지팡이",
         "Estrangement",
         "바람"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "noahxis_as",
@@ -8164,12 +8164,12 @@
         "atk_state": 2,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "망치",
         "Scientist",
         "바람"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "felmina_es",
@@ -8429,13 +8429,13 @@
         "surv_state": 1,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "Mask",
         "도끼",
         "연옥계",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "limil",
@@ -8463,6 +8463,7 @@
         "namu": "https://namu.wiki/w/%EB%A6%B4%EB%A0%88%EB%85%B8%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Limil"
       },
+      "skills_ding": true,
       "effect_tags": [
         "ZONE 전개: 극 황참진",
         "검, 도, 도끼 장착자 대미지 UP",
@@ -8477,8 +8478,7 @@
         "power": 3,
         "zone": 1,
         "state_unknown": 4
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "pizzica_as",
@@ -8545,13 +8545,13 @@
         "power": 1,
         "surv_state": 7
       },
+      "skills_ding": true,
       "traits": [
         "Minstrel",
         "Northern",
         "활",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "pisce",
@@ -8579,6 +8579,7 @@
         "namu": "https://namu.wiki/w/%ED%94%BC%EC%8A%A4%EC%BC%80%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Pisce"
       },
+      "skills_ding": true,
       "effect_tags": [
         "HP 회복",
         "모든 속성 공격력 UP",
@@ -8588,8 +8589,7 @@
         "recover": 2,
         "atk_buff": 2,
         "state_unknown": 2
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "nona_as",
@@ -8649,6 +8649,7 @@
         "zone": 1,
         "state_unknown": 1
       },
+      "skills_ding": true,
       "traits": [
         "활",
         "Royalty",
@@ -8656,8 +8657,7 @@
         "Hood",
         "물",
         "그림자"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "sesta",
@@ -8719,12 +8719,12 @@
         "zone": 1,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "도",
         "바람",
         "Avenger"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "toova_es",
@@ -8924,14 +8924,14 @@
         "zone": 3,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "Glasses",
         "IDA 스쿨",
         "Outlaw",
         "권갑",
         "땅"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "beautiful_stranger_alter",
@@ -9052,13 +9052,13 @@
         "mode": 5,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "KMS",
         "Estrangement",
         "그림자"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "kumos",
@@ -9086,6 +9086,7 @@
         "namu": "https://namu.wiki/w/%ED%81%90%EB%AA%A8%EC%8A%A4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Kumos"
       },
+      "skills_ding": true,
       "effect_tags": [
         "MP 회복",
         "그림자 속성 저항 DOWN",
@@ -9102,8 +9103,7 @@
         "resource": 1,
         "atk_state": 1,
         "mode": 1
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "dewey_as",
@@ -9513,6 +9513,7 @@
         "mode": 4
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "권갑",
         "Glasses",
@@ -9520,8 +9521,7 @@
         "바르오키",
         "Gun",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "korobo",
@@ -9549,6 +9549,7 @@
         "namu": "https://namu.wiki/w/%EC%BD%94%EB%A1%9C%EB%B3%B4%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Korobo"
       },
+      "skills_ding": true,
       "effect_tags": [
         "AF·천명",
         "모든 상태 이상 저항 UP",
@@ -9560,8 +9561,7 @@
         "mode": 1,
         "state_unknown": 3,
         "surv_buff": 1
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "minalca",
@@ -9623,6 +9623,7 @@
         "surv_state": 4,
         "state_unknown": 1
       },
+      "skills_ding": true,
       "traits": [
         "검",
         "Military",
@@ -9630,8 +9631,7 @@
         "Chronos Empire",
         "불",
         "Outlaw"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "tetra",
@@ -9659,6 +9659,7 @@
         "namu": "https://namu.wiki/w/%ED%85%8C%ED%8A%B8%EB%9D%BC%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Tetra"
       },
+      "skills_ding": true,
       "effect_tags": [
         "HP 회복",
         "마법 크리티컬율 UP",
@@ -9677,8 +9678,7 @@
         "mode": 2,
         "state_unknown": 3,
         "atk_buff": 2
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "mordy",
@@ -9706,6 +9706,7 @@
         "namu": "https://namu.wiki/w/%EB%AA%A8%EB%A5%B4%EB%94%94%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Mordy"
       },
+      "skills_ding": true,
       "effect_tags": [
         "속도 UP",
         "힘 UP"
@@ -9715,8 +9716,7 @@
         "atk_buff": 2,
         "tempo": 1,
         "state_unknown": 2
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "minimander",
@@ -9744,14 +9744,14 @@
         "namu": "https://namu.wiki/w/%EC%98%AC%EC%B1%99%EC%9D%B4%EB%A7%A8%EB%8D%94%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Minimander"
       },
+      "skills_ding": true,
       "effect_tags": [
         "바람 속성 저항 UP"
       ],
       "roles": {
         "attack": 1,
         "surv_buff": 1
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "lord_ukulele",
@@ -9779,6 +9779,7 @@
         "namu": "https://namu.wiki/w/%EC%9A%B0%EC%BF%A8%EB%A0%90%EB%A0%88%20%EB%8B%98%28%EC%96%B4%EB%82%98%EB%8D%94%20%EC%97%90%EB%8D%B4%29",
         "ae_wiki": "https://anothereden.wiki/w/Lord_Ukulele"
       },
+      "skills_ding": true,
       "effect_tags": [
         "땅 속성 저항 DOWN",
         "속도 DOWN",
@@ -9787,8 +9788,7 @@
       "roles": {
         "surv_debuff": 2,
         "atk_debuff": 1
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "flammelapis_as",
@@ -9849,6 +9849,7 @@
         "tempo": 1,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "Clergy",
         "지팡이",
@@ -9857,8 +9858,7 @@
         "물",
         "Demon Sword",
         "바르오키"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "iphi",
@@ -10051,6 +10051,7 @@
         "power": 2,
         "tempo": 1
       },
+      "skills_ding": true,
       "traits": [
         "도끼",
         "동방",
@@ -10060,8 +10061,7 @@
         "땅",
         "Land of Mi",
         "Spirit Talker"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "alphen",
@@ -10116,6 +10116,7 @@
         "surv_buff": 2,
         "zone": 2
       },
+      "skills_ding": true,
       "traits": [
         "검",
         "Mask",
@@ -10123,8 +10124,7 @@
         "Tales of",
         "Concerto Artes",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "colette",
@@ -10183,13 +10183,13 @@
         "state_unknown": 1,
         "surv_state": 2
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "Dog lover",
         "Tales of",
         "Concerto Artes"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "moonlight_flower_alter",
@@ -10252,12 +10252,12 @@
         "resource": 4,
         "surv_state": 8
       },
+      "skills_ding": true,
       "traits": [
         "검",
         "IDA 스쿨",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "lloyd",
@@ -10312,13 +10312,13 @@
         "recover": 1,
         "surv_buff": 4
       },
+      "skills_ding": true,
       "traits": [
         "도",
         "Tales of",
         "Concerto Artes",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "shionne",
@@ -10378,6 +10378,7 @@
         "surv_buff": 4,
         "surv_state": 2
       },
+      "skills_ding": true,
       "traits": [
         "활",
         "Cursed",
@@ -10386,8 +10387,7 @@
         "Tales of",
         "Concerto Artes",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "biaka_as",
@@ -10655,14 +10655,14 @@
         "state_unknown": 1,
         "surv_state": 4
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "Minstrel",
         "Cursed",
         "불",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "soira_as",
@@ -10780,11 +10780,11 @@
         "surv_buff": 4,
         "mode": 1
       },
+      "skills_ding": true,
       "traits": [
         "권갑",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "yukino_as",
@@ -10848,13 +10848,13 @@
         "surv_debuff": 1,
         "state_unknown": 1
       },
+      "skills_ding": true,
       "traits": [
         "동방",
         "활",
         "Fairy",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "lele_as",
@@ -10911,13 +10911,13 @@
         "resource": 2,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "지팡이",
         "Animal Talker",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "alma",
@@ -10977,6 +10977,7 @@
         "zone": 4,
         "atk_buff": 4
       },
+      "skills_ding": true,
       "traits": [
         "활",
         "고양이 애호가",
@@ -10984,8 +10985,7 @@
         "Alchemist",
         "결정",
         "Glasses"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "yipha_as",
@@ -11102,6 +11102,7 @@
         "atk_buff": 3,
         "tempo": 3
       },
+      "skills_ding": true,
       "traits": [
         "동방",
         "Sweet tooth",
@@ -11109,8 +11110,7 @@
         "Lovesick",
         "바람",
         "Land of Mi"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "jet_tactician_alter",
@@ -11226,13 +11226,13 @@
         "resource": 1,
         "mode": 1
       },
+      "skills_ding": true,
       "traits": [
         "Miglance Palace",
         "검",
         "Shield",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "miyu_es",
@@ -11354,12 +11354,12 @@
         "power": 2,
         "surv_buff": 3
       },
+      "skills_ding": true,
       "traits": [
         "망치",
         "Scientist",
         "바람"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "nona",
@@ -11418,6 +11418,7 @@
         "tempo": 1,
         "atk_state": 1
       },
+      "skills_ding": true,
       "traits": [
         "활",
         "Royalty",
@@ -11425,8 +11426,7 @@
         "Hood",
         "물",
         "그림자"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "orleya",
@@ -11491,13 +11491,13 @@
         "atk_state": 1,
         "surv_state": 1
       },
+      "skills_ding": true,
       "traits": [
         "도끼",
         "Estrangement",
         "불",
         "번개"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "milsha_as",
@@ -11560,6 +11560,7 @@
         "atk_state": 1,
         "zone": 5
       },
+      "skills_ding": true,
       "traits": [
         "Minstrel",
         "창",
@@ -11567,8 +11568,7 @@
         "Fishman",
         "땅",
         "그림자"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "philo_as",
@@ -11621,12 +11621,12 @@
         "surv_buff": 3,
         "surv_debuff": 8
       },
+      "skills_ding": true,
       "traits": [
         "도끼",
         "Woodcutter",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "otoha_as",
@@ -11740,12 +11740,12 @@
         "atk_debuff": 1,
         "zone": 2
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "IDA 스쿨",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "suzette_es",
@@ -11961,12 +11961,12 @@
         "tempo": 4,
         "atk_debuff": 8
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "Scars of the Wheel of Time",
         "결정"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "violet_lancer_alter",
@@ -12089,6 +12089,7 @@
         "state_unknown": 3,
         "surv_buff": 10
       },
+      "skills_ding": true,
       "traits": [
         "Clergy",
         "지팡이",
@@ -12097,8 +12098,7 @@
         "물",
         "Demon Sword",
         "바르오키"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "mistrare_as",
@@ -12230,14 +12230,14 @@
         "surv_state": 5,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "Sweet tooth",
         "도끼",
         "Gourmet",
         "로스트 랩",
         "바람"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "red_clad_flam_alter",
@@ -12301,6 +12301,7 @@
         "atk_state": 1,
         "recover": 5
       },
+      "skills_ding": true,
       "traits": [
         "권갑",
         "Gun",
@@ -12309,8 +12310,7 @@
         "결정",
         "IDA 스쿨",
         "Hood"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "zeviro_as",
@@ -12504,13 +12504,13 @@
         "surv_state": 2,
         "zone": 4
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "용",
         "물",
         "결정"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "curio",
@@ -12574,6 +12574,7 @@
         "state_unknown": 4,
         "atk_state": 2
       },
+      "skills_ding": true,
       "traits": [
         "도",
         "Sweet tooth",
@@ -12583,8 +12584,7 @@
         "Power to Rule",
         "바람",
         "그림자"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "isuka_es",
@@ -12776,6 +12776,7 @@
         "resource": 2,
         "dot": 3
       },
+      "skills_ding": true,
       "traits": [
         "Dragon Palace",
         "지팡이",
@@ -12783,8 +12784,7 @@
         "Fishman",
         "Bind",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "nagi_es",
@@ -12847,6 +12847,7 @@
         "atk_state": 1,
         "zone": 4
       },
+      "skills_ding": true,
       "traits": [
         "Dragon Palace",
         "지팡이",
@@ -12854,8 +12855,7 @@
         "Glutton",
         "물",
         "결정"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "harle",
@@ -12948,14 +12948,14 @@
         "surv_debuff": 4,
         "surv_state": 2
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "New Time Drift",
         "Scars of the Wheel of Time",
         "불",
         "그림자"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "kid",
@@ -13048,13 +13048,13 @@
         "surv_buff": 14,
         "mode": 4
       },
+      "skills_ding": true,
       "traits": [
         "도",
         "New Radical Dreamers",
         "Scars of the Wheel of Time",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "kikyo_as",
@@ -13113,6 +13113,7 @@
         "surv_buff": 6,
         "recover": 1
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "동방",
@@ -13120,8 +13121,7 @@
         "Avenger",
         "Mounted",
         "바람"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "serge",
@@ -13210,13 +13210,13 @@
         "surv_debuff": 4,
         "mode": 2
       },
+      "skills_ding": true,
       "traits": [
         "검",
         "New Radical Dreamers",
         "New Time Drift",
         "Scars of the Wheel of Time"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "pizzica",
@@ -13278,13 +13278,13 @@
         "state_unknown": 2,
         "surv_state": 4
       },
+      "skills_ding": true,
       "traits": [
         "Minstrel",
         "Northern",
         "활",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "sheila_as",
@@ -13339,14 +13339,14 @@
         "surv_buff": 7,
         "recover": 2
       },
+      "skills_ding": true,
       "traits": [
         "Dragon Palace",
         "창",
         "Royalty",
         "Fishman",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "hardy_as",
@@ -13403,6 +13403,7 @@
         "state_unknown": 1,
         "atk_buff": 5
       },
+      "skills_ding": true,
       "traits": [
         "권갑",
         "Weapons",
@@ -13412,8 +13413,7 @@
         "Gun",
         "Sweet tooth",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "chiyo_as",
@@ -13526,14 +13526,14 @@
         "mode": 6,
         "state_unknown": 1
       },
+      "skills_ding": true,
       "traits": [
         "도",
         "바르오키",
         "Cursed",
         "바람",
         "번개"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "myunfa_as",
@@ -13720,6 +13720,7 @@
         "state_unknown": 1,
         "surv_debuff": 8
       },
+      "skills_ding": true,
       "traits": [
         "도끼",
         "동방",
@@ -13729,8 +13730,7 @@
         "땅",
         "Land of Mi",
         "Spirit Talker"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "tsukiha_es",
@@ -13783,6 +13783,7 @@
         "surv_buff": 2,
         "zone": 4
       },
+      "skills_ding": true,
       "traits": [
         "동방",
         "Mask",
@@ -13793,8 +13794,7 @@
         "Fairy",
         "바람",
         "Land of Ro"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "tsubame_as",
@@ -13910,13 +13910,13 @@
         "surv_buff": 2,
         "recover": 4
       },
+      "skills_ding": true,
       "traits": [
         "IDA 스쿨",
         "지팡이",
         "Estrangement",
         "바람"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "clarte_as",
@@ -13978,6 +13978,7 @@
         "mode": 1,
         "state_unknown": 1
       },
+      "skills_ding": true,
       "traits": [
         "서방",
         "지팡이",
@@ -13985,8 +13986,7 @@
         "Geo",
         "땅",
         "결정"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "thillelille_as",
@@ -14045,6 +14045,7 @@
         "mode": 5,
         "state_unknown": 1
       },
+      "skills_ding": true,
       "traits": [
         "Sweet tooth",
         "Clergy",
@@ -14052,8 +14053,7 @@
         "검",
         "불",
         "그림자"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "tiramisu_as",
@@ -14162,6 +14162,7 @@
         "zone": 4,
         "tempo": 1
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "동방",
@@ -14172,8 +14173,7 @@
         "Itto-Ryu",
         "물",
         "Land of Mi"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "melina_es",
@@ -14301,6 +14301,7 @@
         "resource": 1,
         "power": 2
       },
+      "skills_ding": true,
       "traits": [
         "Beast",
         "지팡이",
@@ -14308,8 +14309,7 @@
         "Animal Talker",
         "연옥계",
         "바람"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "ewella",
@@ -14553,12 +14553,12 @@
         "recover": 5,
         "zone": 2
       },
+      "skills_ding": true,
       "traits": [
         "IDA 스쿨",
         "창",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "milsha",
@@ -14615,6 +14615,7 @@
         "tempo": 5,
         "atk_state": 1
       },
+      "skills_ding": true,
       "traits": [
         "Minstrel",
         "창",
@@ -14622,8 +14623,7 @@
         "Fishman",
         "땅",
         "그림자"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "ewan_as",
@@ -14682,6 +14682,7 @@
         "zone": 4,
         "surv_buff": 4
       },
+      "skills_ding": true,
       "traits": [
         "Glasses",
         "Sweet tooth",
@@ -14690,8 +14691,7 @@
         "Weapons",
         "Cursed",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "ilulu_as",
@@ -15047,13 +15047,13 @@
         "surv_buff": 4,
         "atk_debuff": 1
       },
+      "skills_ding": true,
       "traits": [
         "동방",
         "활",
         "Fairy",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "tsukiha_as",
@@ -15108,6 +15108,7 @@
         "resource": 6,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "동방",
         "Mask",
@@ -15118,8 +15119,7 @@
         "Fairy",
         "불",
         "Land of Ro"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "bertrand_as",
@@ -15236,13 +15236,13 @@
         "resource": 1,
         "zone": 2
       },
+      "skills_ding": true,
       "traits": [
         "검",
         "Tales of",
         "Concerto Artes",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "milla",
@@ -15300,13 +15300,13 @@
         "resource": 1,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "검",
         "Tales of",
         "Concerto Artes",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "velvet",
@@ -15368,13 +15368,13 @@
         "surv_buff": 6,
         "tempo": 1
       },
+      "skills_ding": true,
       "traits": [
         "검",
         "Tales of",
         "Concerto Artes",
         "땅"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "yuri",
@@ -15431,13 +15431,13 @@
         "state_unknown": 1,
         "resource": 3
       },
+      "skills_ding": true,
       "traits": [
         "도",
         "Tales of",
         "Concerto Artes",
         "바람"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "clarte",
@@ -15493,6 +15493,7 @@
         "atk_state": 1,
         "atk_buff": 3
       },
+      "skills_ding": true,
       "traits": [
         "서방",
         "지팡이",
@@ -15500,8 +15501,7 @@
         "Geo",
         "땅",
         "결정"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "mistrare",
@@ -15637,14 +15637,14 @@
         "atk_state": 1,
         "surv_buff": 4
       },
+      "skills_ding": true,
       "traits": [
         "Mask",
         "망치",
         "Phantom Thieves of Hearts",
         "Gun",
         "번개"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "victor",
@@ -15715,14 +15715,14 @@
         "surv_buff": 4
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "도",
         "바르오키",
         "Cursed",
         "바람",
         "번개"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "violet",
@@ -15771,6 +15771,7 @@
         "surv_debuff": 1,
         "mode": 1
       },
+      "skills_ding": true,
       "traits": [
         "Mask",
         "검",
@@ -15778,8 +15779,7 @@
         "Glutton",
         "Gun",
         "땅"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "foran_as",
@@ -15904,6 +15904,7 @@
         "surv_buff": 2
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "Sweet tooth",
         "Clergy",
@@ -15911,8 +15912,7 @@
         "검",
         "불",
         "그림자"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "ciel_as",
@@ -16125,6 +16125,7 @@
         "zone": 4,
         "atk_buff": 1
       },
+      "skills_ding": true,
       "traits": [
         "권갑",
         "Weapons",
@@ -16134,8 +16135,7 @@
         "Gun",
         "Sweet tooth",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "sophia",
@@ -16189,6 +16189,7 @@
         "recover": 2,
         "surv_state": 1
       },
+      "skills_ding": true,
       "traits": [
         "도끼",
         "Weapons",
@@ -16197,8 +16198,7 @@
         "Gourmet",
         "Bind",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "cynthia",
@@ -16483,13 +16483,13 @@
         "zone": 4,
         "surv_state": 3
       },
+      "skills_ding": true,
       "traits": [
         "Miglance Palace",
         "검",
         "Shield",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "myrus_as",
@@ -16543,12 +16543,12 @@
         "tempo": 1,
         "resource": 2
       },
+      "skills_ding": true,
       "traits": [
         "Beast",
         "지팡이",
         "땅"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "renri_as",
@@ -16607,14 +16607,14 @@
         "surv_buff": 3,
         "tempo": 4
       },
+      "skills_ding": true,
       "traits": [
         "Glasses",
         "Sweet tooth",
         "도끼",
         "COA",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "tiramisu",
@@ -16727,14 +16727,14 @@
         "recover": 1,
         "resource": 5
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "도",
         "Hood",
         "Amnesia",
         "땅"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "felmina_as",
@@ -16972,14 +16972,14 @@
         "zone": 2,
         "tempo": 1
       },
+      "skills_ding": true,
       "traits": [
         "Beast",
         "활",
         "Spirit Talker",
         "Royalty",
         "Demon Sword"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "kikyo",
@@ -17034,6 +17034,7 @@
         "surv_buff": 2,
         "atk_debuff": 4
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "동방",
@@ -17041,8 +17042,7 @@
         "Avenger",
         "Mounted",
         "바람"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "nikeh_as",
@@ -17401,12 +17401,12 @@
         "dot": 1,
         "zone": 2
       },
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "용",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "yuna_as",
@@ -17642,12 +17642,12 @@
         "power": 6
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "IDA 스쿨",
         "창",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "mana",
@@ -17703,11 +17703,11 @@
         "tempo": 1,
         "atk_debuff": 1
       },
+      "skills_ding": true,
       "traits": [
         "IDA 스쿨",
         "활"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "mariel_as",
@@ -17815,6 +17815,7 @@
         "mode": 1,
         "power": 3
       },
+      "skills_ding": true,
       "traits": [
         "Beast",
         "지팡이",
@@ -17822,8 +17823,7 @@
         "Animal Talker",
         "연옥계",
         "바람"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "lokido_as",
@@ -17989,12 +17989,12 @@
         "resource": 1,
         "surv_debuff": 1
       },
+      "skills_ding": true,
       "traits": [
         "도끼",
         "Woodcutter",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "nagi_as",
@@ -18046,14 +18046,14 @@
         "atk_buff": 6,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "Dragon Palace",
         "도끼",
         "Royalty",
         "Glutton",
         "땅"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "akane_as",
@@ -18104,14 +18104,14 @@
         "power": 3,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "동방",
         "도",
         "불",
         "Land of Mi",
         "Itto-Ryu"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "joker",
@@ -18162,6 +18162,7 @@
         "mode": 1,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "Mask",
         "Glasses",
@@ -18169,8 +18170,7 @@
         "Phantom Thieves of Hearts",
         "Gun",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "morgana",
@@ -18222,14 +18222,14 @@
         "mode": 1,
         "surv_buff": 4
       },
+      "skills_ding": true,
       "traits": [
         "검",
         "Phantom Thieves of Hearts",
         "Lovesick",
         "Amnesia",
         "바람"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "rosetta",
@@ -18334,6 +18334,7 @@
         "power": 3,
         "surv_buff": 6
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "동방",
@@ -18344,8 +18345,7 @@
         "Itto-Ryu",
         "물",
         "Land of Mi"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "tsubame",
@@ -18578,6 +18578,7 @@
         "mode": 3,
         "tempo": 1
       },
+      "skills_ding": true,
       "traits": [
         "Synth Human",
         "창",
@@ -18585,8 +18586,7 @@
         "Outlaw",
         "Gun",
         "땅"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "hozuki",
@@ -18693,14 +18693,14 @@
         "surv_buff": 2,
         "atk_buff": 4
       },
+      "skills_ding": true,
       "traits": [
         "활",
         "Avenger",
         "Dragon Killer",
         "Dog lover",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "ilulu",
@@ -19036,6 +19036,7 @@
         "surv_state": 2,
         "state_unknown": 2
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "동방",
@@ -19045,8 +19046,7 @@
         "Itto-Ryu",
         "불",
         "Land of Mi"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "veina",
@@ -19152,14 +19152,14 @@
         "surv_debuff": 5,
         "power": 3
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "도",
         "Hood",
         "Amnesia",
         "땅"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "toova_as",
@@ -19287,14 +19287,14 @@
         "resource": 4
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "Glasses",
         "Sweet tooth",
         "도끼",
         "COA",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "shannon",
@@ -19449,12 +19449,12 @@
         "atk_debuff": 1,
         "surv_buff": 6
       },
+      "skills_ding": true,
       "traits": [
         "IDA 스쿨",
         "지팡이",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "claude",
@@ -19610,12 +19610,12 @@
         "surv_debuff": 2,
         "surv_buff": 4
       },
+      "skills_ding": true,
       "traits": [
         "IDA 스쿨",
         "지팡이",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "tsukiha",
@@ -19680,6 +19680,7 @@
         "surv_buff": 2,
         "resource": 4
       },
+      "skills_ding": true,
       "traits": [
         "동방",
         "Mask",
@@ -19690,8 +19691,7 @@
         "Fairy",
         "불",
         "Land of Ro"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "bertrand",
@@ -19907,14 +19907,14 @@
         "mode": 5,
         "surv_state": 2
       },
+      "skills_ding": true,
       "traits": [
         "Beast",
         "Luring Shadow",
         "검",
         "Royalty",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "suzette_as",
@@ -20045,12 +20045,12 @@
         "mode": 2
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "Beast",
         "지팡이",
         "땅"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "good_macky",
@@ -20243,14 +20243,14 @@
         "surv_buff": 6,
         "tempo": 2
       },
+      "skills_ding": true,
       "traits": [
         "Scientist",
         "Forager",
         "지팡이",
         "KMS",
         "IDA 스쿨"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "zilva",
@@ -20408,14 +20408,14 @@
         "power": 1,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "Glasses",
         "IDA 스쿨",
         "Outlaw",
         "권갑",
         "땅"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "cetie",
@@ -20572,6 +20572,7 @@
         "mode": 5,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "Glasses",
         "Sweet tooth",
@@ -20580,8 +20581,7 @@
         "Weapons",
         "Cursed",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "erina",
@@ -20681,6 +20681,7 @@
         "surv_debuff": 1,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "Dragon Palace",
         "지팡이",
@@ -20688,8 +20689,7 @@
         "Fishman",
         "Bind",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "nagi",
@@ -20740,14 +20740,14 @@
         "power": 3,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "Dragon Palace",
         "도끼",
         "Royalty",
         "Glutton",
         "땅"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "chiyo",
@@ -20836,14 +20836,14 @@
         "atk_buff": 1,
         "surv_buff": 1
       },
+      "skills_ding": true,
       "traits": [
         "Dragon Palace",
         "창",
         "Royalty",
         "Fishman",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "gariyu",
@@ -20917,12 +20917,12 @@
         "atk_debuff": 4
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "용",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "yuna",
@@ -21152,12 +21152,12 @@
         "power": 1,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "IDA 스쿨",
         "창",
         "불"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "ruina",
@@ -21250,6 +21250,7 @@
         "power": 2,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "동방",
         "Sweet tooth",
@@ -21257,8 +21258,7 @@
         "Lovesick",
         "바람",
         "Land of Mi"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "laclair",
@@ -21311,14 +21311,14 @@
         "surv_buff": 2
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "활",
         "Avenger",
         "Dragon Killer",
         "Dog lover",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "samora",
@@ -21456,6 +21456,7 @@
         "power": 3,
         "surv_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "Miglance Palace",
         "검",
@@ -21463,8 +21464,7 @@
         "Amnesia",
         "땅",
         "Demon Sword"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "nero",
@@ -21571,14 +21571,14 @@
         "recover": 2,
         "mode": 2
       },
+      "skills_ding": true,
       "traits": [
         "동방",
         "도",
         "불",
         "Land of Mi",
         "Itto-Ryu"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "aldo",
@@ -21642,6 +21642,7 @@
         "tempo": 4,
         "surv_buff": 6
       },
+      "skills_ding": true,
       "traits": [
         "주인공",
         "Guiding Light",
@@ -21656,8 +21657,7 @@
         "Arcadia",
         "Itto-Ryu",
         "Demon Sword"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "amy",
@@ -21716,6 +21716,7 @@
         "surv_buff": 2
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "Blacksmith",
         "Cooking",
@@ -21723,8 +21724,7 @@
         "Spirit-fused",
         "Avenger",
         "바람"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "benedict",
@@ -21774,14 +21774,14 @@
         "atk_buff": 4,
         "surv_state": 2
       },
+      "skills_ding": true,
       "traits": [
         "Forager",
         "도끼",
         "Outlaw",
         "Woodcutter",
         "바람"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "bivette",
@@ -21994,14 +21994,14 @@
         "resource": 4
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "동방",
         "Guiding Light",
         "도",
         "Cursed",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "feinne",
@@ -22064,6 +22064,7 @@
         "mode": 1,
         "atk_buff": 2
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "Cooking",
@@ -22071,8 +22072,7 @@
         "바르오키",
         "Geo",
         "Demon Sword"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "helena",
@@ -22141,13 +22141,13 @@
         "mode": 6,
         "resource": 4
       },
+      "skills_ding": true,
       "traits": [
         "Mask",
         "Synth Human",
         "지팡이",
         "땅"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "lokido",
@@ -22530,6 +22530,7 @@
         "resource": 8,
         "mode": 2
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "Miner",
@@ -22537,8 +22538,7 @@
         "KMS",
         "Machinery",
         "땅"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "sevyn",
@@ -22664,6 +22664,7 @@
         "surv_buff": 2,
         "mode": 2
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "동방",
@@ -22673,8 +22674,7 @@
         "Itto-Ryu",
         "불",
         "Land of Mi"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "suzette",
@@ -23176,13 +23176,13 @@
         "atk_debuff": 3,
         "surv_buff": 1
       },
+      "skills_ding": true,
       "traits": [
         "고양이 애호가",
         "지팡이",
         "Animal Talker",
         "물"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "lingli",
@@ -23543,13 +23543,13 @@
         "atk_debuff": 3,
         "surv_buff": 1
       },
+      "skills_ding": true,
       "traits": [
         "Scientist",
         "Forager",
         "지팡이",
         "Gun"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "raven",
@@ -23663,6 +23663,7 @@
         "surv_state": 1
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "활",
         "권갑",
@@ -23672,8 +23673,7 @@
         "로스트 랩",
         "물",
         "Amnesia"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "rufus",
@@ -24856,6 +24856,7 @@
         "zone": 7
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "Scientist",
         "권갑",
@@ -24866,8 +24867,7 @@
         "로스트 랩",
         "Amnesia",
         "IDA 스쿨"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "theodorus",
@@ -25134,6 +25134,7 @@
       "urls": {
         "ae_wiki": "https://anothereden.wiki/w/Choco"
       },
+      "skills_ding": true,
       "effect_tags": [
         "HP 회복",
         "MP 회복",
@@ -25149,8 +25150,7 @@
         "atk_buff": 3,
         "mode": 1,
         "state_unknown": 3
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "xianhua_as",
@@ -25224,14 +25224,14 @@
         "mode": 2
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "지팡이",
         "KMS",
         "Scientist",
         "동방",
         "Synth Human"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "twinkling_illustrator_alter",
@@ -25371,6 +25371,7 @@
         "surv_buff": 4
       },
       "skills_en": true,
+      "skills_ding": true,
       "traits": [
         "Sweet tooth",
         "도끼",
@@ -25381,8 +25382,7 @@
         "연옥계",
         "Estrangement",
         "그림자"
-      ],
-      "skills_ding": true
+      ]
     },
     {
       "id": "jillfunny_as",
@@ -25516,6 +25516,7 @@
       "urls": {
         "ae_wiki": "https://anothereden.wiki/w/Labor_Laika"
       },
+      "skills_ding": true,
       "effect_tags": [
         "ZONE 전개: 견수진",
         "간헐적으로 차지량 UP (수치)",
@@ -25533,8 +25534,7 @@
         "state_unknown": 4,
         "atk_buff": 1,
         "surv_debuff": 1
-      },
-      "skills_ding": true
+      }
     },
     {
       "id": "ramiu",

@@ -12,11 +12,6 @@
   "use strict";
   const P = root.AEParty || require("./party_calc.js");
   const C = root.AECalc || require("./ae_calc.js");
-  const ZONE_KO = { "열화진": "Raging Fire Stance", "수천진": "Sacred Water Stance", "지열진": "Torn Earth Stance", "풍왕진": "Wind King Stance",
-    "초뢰진": "Thundering Stance", "각음진": "Biting Shade Stance", "휘정진": "Crystalline Stance", "황참진": "Dazzling Slash Stance",
-    "순돌진": "Piercing Flash Stance", "굉타진": "Roaring Bash Stance", "환마진": "Magic Fates Stance", "월광진": "Moonlight Stance",
-    "섬격진": "Flash Strike Stance", "성해진": "Sea of Stars Stance", "견수진": "Defense Wall", "쌍격진 참마": "Double Strike Stance: Magic Slash",
-    "쌍격진 참돌": "Double Strike Stance: Piercing Slash" };
   const ENGINE = new Set(["stat_pct", "dmg", "buff", "ailment", "stack"]);
 
   // 행동 단위 공격 → party_calc 공격(1타 위력 · 타수 · dep)
@@ -162,7 +157,7 @@
       }
       const aw = /^극 /.test(u.name || "") ? 2 : /^절 /.test(u.name || "") ? 5 : u.k === "zoneAwake" ? 2 : 0;
       const base = (u.name || "").replace(/^(극|절) /, "");
-      const z = u.k === "zoneAwake" ? (sim.zone && (sim.zone.base || sim.zone)) : (sim.opt.zones || []).find(x => x.name === (ZONE_KO[base] || base));
+      const z = u.k === "zoneAwake" ? (sim.zone && (sim.zone.base || sim.zone)) : (sim.opt.zones || []).find(x => x.name === base || x.ko === base);   // zones.json ko = 용어집(terms) 한국어
       if (!z) return;
       sim.zone = aw ? { ...z, up: { ...z.up, v: (z.up.v || 0) * 2 }, awake: true, base: z, until: sim.turn + aw } : z;
       return;
@@ -436,7 +431,7 @@
   const liveFx = (live, ci) => fxOf({ live }, ci);
   // 살아 있는 대상 상태(확률 0.5 이상) — 장비 단계의 정적 식에 opt.punish 로
   const liveStates = live => [...new Set([...live.values()].filter(e => tstateOf(e.u) && (e.u.p ?? 1) >= 0.5).map(e => tstateOf(e.u)))];
-  const api = { run, peak, toAttack, liveFx, liveStates, normalOf, ZONE_KO };
+  const api = { run, peak, toAttack, liveFx, liveStates, normalOf };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEScenario = api;
 })(typeof window !== "undefined" ? window : globalThis);

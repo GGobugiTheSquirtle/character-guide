@@ -332,13 +332,15 @@ async function init() {
   buildFilters();
   buildViewToggle();
   try {
-    const [res, resR, resQ] = await Promise.all([
+    const [res, resR, resQ, resC] = await Promise.all([
       fetch('data/index.json'),
       fetch('data/recruit.json').catch(() => null),
       fetch('data/quests.json').catch(() => null),
+      fetch('data/calc/classes_ko.json').catch(() => null),
     ]);
     const data = await res.json();
     STATE.all = data.characters;
+    STATE.classes = resC && resC.ok ? (await resC.json()).by_id || {} : {};   // ★5 클래스 한국어(classes_ko.json — 스킬표 · 공지 · 아카 · 딩님 이절/개전/경전록)
     if (resR && resR.ok) {
       const rec = await resR.json();
       STATE.recruit = rec.characters || {};
@@ -866,6 +868,8 @@ function buildModalHeader(c) {
     children: [
       el("h2", { text: c.nameKo || "" }),
       el("div", { class: "name-meta", text: (c.nameEn || "") + " · " + (c.name_jp || "—") }),
+      ...((STATE.classes || {})[c.id] ? [el("div", { class: "name-meta", text: "★5 클래스 「" + STATE.classes[c.id].join(" / ") + "」",
+        attrs: { title: "classes_ko.json — 스킬표 · 인게임 공지 · 아카 와정말요님 직업서 표 · 카페 딩님 「이절, 개전, 경전록 목록」" } })] : []),
       badges,
     ]
   });
@@ -1474,7 +1478,7 @@ function buildCondBar(db, rerender, o = {}) {
   if (o.zone !== false) {
     const zsel = el("select", { class: "fx-input" });
     zsel.appendChild(el("option", { text: "존 없음", attrs: { value: "" } }));
-    for (const z of db.zones) zsel.appendChild(el("option", { text: `${z.name} (${z.up.types.join("·")} +${z.up.v ?? "?"}%)`, attrs: { value: z.name } }));
+    for (const z of db.zones) zsel.appendChild(el("option", { text: `${z.ko || z.name} (${z.up.types.join("·")} +${z.up.v ?? "?"}%)`, attrs: { value: z.name } }));
     zsel.value = S.zone || "";
     zsel.addEventListener('change', () => { S.zone = zsel.value; saveCalc(); rerender(); });
     bar.append(zsel);
@@ -1768,7 +1772,7 @@ function renderGearTab(box, db) {
   asel.value = O.atk && O.atk[c.id] || "";
   asel.addEventListener('change', () => { O.atk = { ...(O.atk || {}), [c.id]: asel.value }; saveOv(); rr(); });
   box.appendChild(el("div", { class: "filter-group", style: "margin:6px 0 12px", children: [asel,
-    el("span", { class: "pt more", text: `${m.cc.weapon} · ${c.elementKo || ""} · 특성 ${(c.traits || []).join(" · ") || "—"}${m.zones.length ? " · 존 " + m.zones.join(", ") : ""}` })] }));
+    el("span", { class: "pt more", text: `${m.cc.weapon} · ${c.elementKo || ""} · 특성 ${(c.traits || []).join(" · ") || "—"}${m.zones.length ? " · 존 " + m.zones.map(n => ((STATE.calcDb?.zones || []).find(z => z.name === n) || {}).ko || n).join(", ") : ""}` })] }));
   const fixedAtk = m.atks.find(a => a.skill === asel.value);
   const attacks = fixedAtk ? [fixedAtk] : AEOpt.attackPool(m.atks, opt.cond);
   const cur = { ...m, attack: fixedAtk || m.attack };

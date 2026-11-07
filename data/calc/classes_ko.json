@@ -2073,7 +2073,8 @@
 },
 "호오즈키": {
 "AS": [
-"귀린금호"
+"귀린금호",
+"이나리노카미"
 ],
 "NS": [
 "구미호"
@@ -2130,5 +2131,894 @@
 "notice"
 ]
 }
+},
+"by_id": {
+"melpiphia_as": [
+"모리구"
+],
+"kuchinawa_as": [
+"아이테르"
+],
+"flammelapis_es": [
+"클리브 솔리스"
+],
+"ruvi": [
+"어트랙터"
+],
+"eleanor": [
+"서도사"
+],
+"dark_devourer_alter": [
+"나이트메어"
+],
+"spirika": [
+"육등성 소녀"
+],
+"violet_lancer_as": [
+"프로세르피나"
+],
+"glenn": [
+"아카시아 용기사"
+],
+"noble_specturr": [
+"음양묘"
+],
+"lovinia_as": [
+"하토르"
+],
+"meryt": [
+"바스테트"
+],
+"cerius_as": [
+"타케미나카타"
+],
+"hismena_es": [
+"프라가라흐"
+],
+"porcelain_pixie_as": [
+"샤스티"
+],
+"garnet": [
+"순진한 여왕"
+],
+"steiner": [
+"근위 기사"
+],
+"verdanta": [
+"그랜드 제너럴"
+],
+"vivi": [
+"흑마도사"
+],
+"silver_striker_as": [
+"이그노랜스"
+],
+"clughorn": [
+"아르크투루스"
+],
+"mildy": [
+"알페카"
+],
+"dream_weaver_as": [
+"디오니소스"
+],
+"nina": [
+"아라크네"
+],
+"vares": [
+"아틀라스"
+],
+"myrus_es": [
+"웨네트"
+],
+"black_clad_sw_as": [
+"에뚜알르"
+],
+"raven_as": [
+"프로핏"
+],
+"ruby_sleeved_merchant_alter": [
+"대흑천"
+],
+"cyan_scyther_as": [
+"스위트 레이디"
+],
+"linaria": [
+"디텍티브"
+],
+"selfless_seeker_alter": [
+"볼뢰르"
+],
+"red_clad_flam_as": [
+"라스트 헤이븐"
+],
+"velette_as": [
+"아크로지스트"
+],
+"aldo_as": [
+"크로노 브레이버"
+],
+"nilya": [
+"아노말리 데브리"
+],
+"shion_es": [
+"후츠노미타마"
+],
+"senya_as": [
+"아메노토츠카"
+],
+"jet_tactician_as": [
+"오오쿠니누시"
+],
+"komachi_as": [
+"사쿠야비메"
+],
+"hoarfrost_songstress_alter": [
+"아메노우즈메"
+],
+"krervo_as": [
+"리바이버"
+],
+"kagurame": [
+"야오비쿠니"
+],
+"forlorn_thespian_alter": [
+"테아트랄 베트"
+],
+"necoco_es": [
+"네코마타 곤겐"
+],
+"elseal_as": [
+"카메나이"
+],
+"empel": [
+"기예 연금술사",
+"유랑 연금술사"
+],
+"id": [
+"니르바나"
+],
+"klaudia": [
+"정숙한 연주자"
+],
+"ryza": [
+"기예 연금술사"
+],
+"izuna": [
+"카라스텐구"
+],
+"rufus_as": [
+"블레이즈 히어로"
+],
+"nocturne_ninja_alter": [
+"펠리스 로드"
+],
+"sesta_as": [
+"바나르간드"
+],
+"senya": [
+"이자나기"
+],
+"shigure_es": [
+"아메노무라쿠모"
+],
+"lingli_as": [
+"구천현녀"
+],
+"kula": [
+"아이스 돌"
+],
+"kyo": [
+"화염불탁"
+],
+"mai": [
+"매혹의 여성 닌자"
+],
+"thornbound_witch_alter": [
+"브라이어 로즈"
+],
+"terry": [
+"전설의 늑대"
+],
+"zilva_as": [
+"울프헤딘"
+],
+"utpalaka": [
+"드래곤 리퍼"
+],
+"undercover_scribe_alter": [
+"엔포서"
+],
+"minalca_as": [
+"에리스"
+],
+"feinne_as": [
+"돌아온 소녀"
+],
+"jillfunny": [
+"검성"
+],
+"mazrika": [
+"에우리디케"
+],
+"yakumo_as": [
+"회그니스"
+],
+"virtual_reflection_alter": [
+"뮤즈"
+],
+"anabel_es": [
+"예성기사"
+],
+"xianhua": [
+"태을진인"
+],
+"kuchinawa": [
+"헤르메스"
+],
+"daisy_as": [
+"프리티비"
+],
+"ewella_as": [
+"오베론"
+],
+"sazanca": [
+"스쿠나히코나"
+],
+"melpiphia": [
+"오라클"
+],
+"blooming_blade_alter": [
+"타쿠하타치지히메"
+],
+"thillelille_es": [
+"새크라멘트"
+],
+"alma_as": [
+"에포크 메이커"
+],
+"wenefica": [
+"웨네피카"
+],
+"oboro": [
+"나루카미"
+],
+"partitio": [
+"신상백"
+],
+"tithi": [
+"무도희"
+],
+"cerius": [
+"올레루스"
+],
+"wryz": [
+"벌룡 공주"
+],
+"pom_as": [
+"베누스"
+],
+"orleya_as": [
+"시그드리파"
+],
+"porcelain_pixie_alter": [
+"쟈닌"
+],
+"kamlanage": [
+"스테로페스"
+],
+"velette": [
+"드림 디거"
+],
+"parisa_as": [
+"폴리힘니아"
+],
+"dream_weaver_alter": [
+"오르페우스"
+],
+"melody_as": [
+"메데이아"
+],
+"noahxis_as": [
+"이니시에이터"
+],
+"felmina_es": [
+"에리니에스"
+],
+"elseal": [
+"메일드 쉽",
+"메일드 십"
+],
+"premaya_as": [
+"브라이더번트"
+],
+"crimson_reaper_alter": [
+"타나토스"
+],
+"pizzica_as": [
+"에라토"
+],
+"nona_as": [
+"우르드"
+],
+"sesta": [
+"펜리르",
+"펜릴"
+],
+"toova_es": [
+"에레쉬키갈"
+],
+"lovely_as": [
+"러브 버드"
+],
+"beautiful_stranger_alter": [
+"디케"
+],
+"yakumo": [
+"다인슬라이프"
+],
+"dewey_as": [
+"팬텀 시프"
+],
+"vermillion_whip_alter": [
+"우카노미타마"
+],
+"mariel_es": [
+"아르카눔"
+],
+"heena_as": [
+"조루리히메"
+],
+"garambarrel_as": [
+"이미르"
+],
+"ashtear": [
+"유레카"
+],
+"minalca": [
+"네메시스"
+],
+"flammelapis_as": [
+"볼바"
+],
+"iphi": [
+"카르밀라"
+],
+"noble_blossom_alter": [
+"미야비노카미"
+],
+"necoco_as": [
+"오덕묘"
+],
+"alphen": [
+"불꽃의 검"
+],
+"colette": [
+"엔젤릭"
+],
+"moonlight_flower_alter": [
+"프로일라인"
+],
+"lloyd": [
+"검성"
+],
+"biaka_as": [
+"언노운 로즈"
+],
+"cynthia_as": [
+"아베스타"
+],
+"claude_es": [
+"케류켈"
+],
+"aisha": [
+"아그니 바루나"
+],
+"soira_as": [
+"아리스토크라크",
+"아리스토크라트"
+],
+"uquaji": [
+"메타모르포시스"
+],
+"yukino_as": [
+"오카미노카미"
+],
+"lele_as": [
+"미러클 워커"
+],
+"alma": [
+"치트리니타스"
+],
+"yipha_as": [
+"유노"
+],
+"jet_tactician_alter": [
+"오모이카네"
+],
+"radias_as": [
+"태양 기사"
+],
+"miyu_es": [
+"아테나"
+],
+"noahxis": [
+"루인즈 루퍼"
+],
+"orleya": [
+"발키리"
+],
+"milsha_as": [
+"하르피스 모니아"
+],
+"philo_as": [
+"비슈롱"
+],
+"otoha_as": [
+"묘다라천녀"
+],
+"mayu": [
+"우라냐"
+],
+"suzette_es": [
+"루시퍼",
+"루시페르"
+],
+"silver_striker_alter": [
+"레셰프"
+],
+"violet_lancer_alter": [
+"페르세포네"
+],
+"flammelapis": [
+"스카디"
+],
+"mistrare_as": [
+"플루마 디아나"
+],
+"cyan_scyther_alter": [
+"체르노 보그"
+],
+"red_clad_flam_alter": [
+"레드 스콜피온"
+],
+"zeviro_as": [
+"소울 키퍼"
+],
+"black_clad_sw_alter": [
+"유다"
+],
+"eva": [
+"드래고미라주"
+],
+"isuka_es": [
+"유스티티아"
+],
+"daisy": [
+"염마"
+],
+"nagi_es": [
+"크리툴리툴"
+],
+"kid": [
+"래디컬 드리머"
+],
+"kikyo_as": [
+"트랜스포터"
+],
+"serge": [
+"조정자"
+],
+"pizzica": [
+"시레나리아"
+],
+"sheila_as": [
+"토요타마히메"
+],
+"hardy_as": [
+"매버릭"
+],
+"chiyo_as": [
+"사요리히메"
+],
+"victor_as": [
+"오메테오틀"
+],
+"myunfa_as": [
+"샤스티",
+"옥차낭랑"
+],
+"garambarrel": [
+"흐룽그니르"
+],
+"necoco": [
+"금화묘"
+],
+"tsukiha_es": [
+"시나츠히메노카미"
+],
+"tsubame_as": [
+"펠레쿨루스"
+],
+"melody": [
+"리베트"
+],
+"thillelille_as": [
+"어비스 리버레이터"
+],
+"tiramisu_as": [
+"드라코 노두스"
+],
+"shigure_as": [
+"스사노오"
+],
+"melina_es": [
+"헤카톤케일"
+],
+"dunarith_as": [
+"디오니소스",
+"제일러 그나드"
+],
+"ewella": [
+"라졸리 메데이아",
+"라줄리 메데이아"
+],
+"miyu_as": [
+"미네르바"
+],
+"radica_as": [
+"포르투나"
+],
+"hismena_as": [
+"아랴드바르",
+"흰 장미 공주"
+],
+"milsha": [
+"에페라네노스"
+],
+"ewan_as": [
+"커스 시커"
+],
+"ilulu_as": [
+"리비티나"
+],
+"hozuki_as": [
+"귀린금호",
+"이나리노카미"
+],
+"rosetta_as": [
+"리미타토르"
+],
+"melissa": [
+"슬레이어"
+],
+"heena": [
+"카라쿠레나이"
+],
+"yukino": [
+"우츠타히메"
+],
+"tsukiha_as": [
+"마리시텐",
+"사라시나히메"
+],
+"bertrand_as": [
+"미글 아스피다"
+],
+"cress": [
+"시공 검사"
+],
+"velvet": [
+"엠프리스 크로우"
+],
+"mistrare": [
+"이사야"
+],
+"victor": [
+"인드라"
+],
+"foran_as": [
+"하스타 안티카"
+],
+"thillelille": [
+"어비스 데보티"
+],
+"ciel_as": [
+"멜로 디바"
+],
+"yipha": [
+"브링로트"
+],
+"shannon_as": [
+"뷰티 볼리스",
+"뷰티 폴리스"
+],
+"hardy": [
+"그레이 하운드"
+],
+"sophia": [
+"위그드라실"
+],
+"cynthia": [
+"그리므와르"
+],
+"veina_as": [
+"티타니아"
+],
+"zeviro": [
+"데몬 리퍼"
+],
+"anabel_as": [
+"신성 기사"
+],
+"radias": [
+"홍염 기사",
+"홍염기사"
+],
+"myrus_as": [
+"키벨레"
+],
+"renri_as": [
+"언더커버"
+],
+"tiramisu": [
+"드래곤 룰러"
+],
+"elga_as": [
+"오르코 필리아"
+],
+"felmina_as": [
+"라브로스키어"
+],
+"myunfa": [
+"진"
+],
+"cetie_as": [
+"크림슨 레이"
+],
+"kikyo": [
+"릴라 블리츠"
+],
+"nikeh_as": [
+"야소마가츠히"
+],
+"claude_as": [
+"마그나 렉스"
+],
+"premaya": [
+"듀얼 페르소나"
+],
+"yuna_as": [
+"미즈하노메"
+],
+"shanie_as": [
+"브륀힐드"
+],
+"ruina_as": [
+"루프트 알브"
+],
+"hismena": [
+"브류나크"
+],
+"mana": [
+"화이트 스노"
+],
+"mariel_as": [
+"하이 프리스티스"
+],
+"dunarith": [
+"소울 브링거",
+"소울브링어"
+],
+"lokido_as": [
+"피에르테 베트"
+],
+"lovely": [
+"러블리 셰프"
+],
+"philo": [
+"아무르타트"
+],
+"nagi_as": [
+"텐타클메어"
+],
+"akane_as": [
+"미카하야히"
+],
+"morgana": [
+"가이드"
+],
+"rosetta": [
+"저지먼트"
+],
+"shigure": [
+"와타츠미",
+"해신"
+],
+"tsubame": [
+"섀도 로드"
+],
+"melina_as": [
+"퍼니시먼트"
+],
+"biaka": [
+"코만듀어"
+],
+"galliard": [
+"반역자"
+],
+"hozuki": [
+"구미호"
+],
+"laclair_as": [
+"블랑 므뇌르"
+],
+"ilulu": [
+"그림 리퍼"
+],
+"radica": [
+"디비네이터"
+],
+"dewey": [
+"템페스터"
+],
+"shion_as": [
+"오오쿠니누시",
+"타케미카즈치"
+],
+"veina": [
+"아우라"
+],
+"elga": [
+"저거너트"
+],
+"toova_as": [
+"커스 브라이드"
+],
+"renri": [
+"인스펙터"
+],
+"shannon": [
+"화이트 나이트"
+],
+"isuka_as": [
+"스텔라"
+],
+"saki_as": [
+"얼음의 꽃"
+],
+"claude": [
+"페일노트"
+],
+"mighty_as": [
+"히프노시스트"
+],
+"tsukiha": [
+"무라사메"
+],
+"bertrand": [
+"이스쿠두"
+],
+"felmina": [
+"이스마일"
+],
+"guildna": [
+"마왕"
+],
+"suzette_as": [
+"불꽃 나비 소녀"
+],
+"myrus": [
+"라팽"
+],
+"melina": [
+"말아흐"
+],
+"shanie": [
+"아크 나이트",
+"아크나이트"
+],
+"cerrine": [
+"엠프리스"
+],
+"cetie": [
+"에이전트"
+],
+"ewan": [
+"네고시에이터"
+],
+"nagi": [
+"팔지 사신"
+],
+"gariyu": [
+"플레임 로드"
+],
+"yuna": [
+"무녀"
+],
+"isuka": [
+"애드미럴"
+],
+"azami": [
+"아마테라스"
+],
+"laclair": [
+"민스트럴"
+],
+"anabel": [
+"성기사"
+],
+"deirdre": [
+"명합 기사"
+],
+"aldo": [
+"드래곤 베어러"
+],
+"amy": [
+"갓 핸드"
+],
+"benedict": [
+"럼버 잭"
+],
+"bria": [
+"아레스 다이아"
+],
+"ciel": [
+"라일라"
+],
+"feinne": [
+"고귀한 소녀"
+],
+"helena": [
+"제노 레기온"
+],
+"lokido": [
+"티탄"
+],
+"mariel": [
+"하이어로팬트"
+],
+"mighty": [
+"아쿠아 룰러"
+],
+"miyu": [
+"프린세스"
+],
+"prai": [
+"상투스"
+],
+"riica": [
+"그라티넬"
+],
+"shion": [
+"카구츠치"
+],
+"suzette": [
+"드라고나"
+],
+"toova": [
+"지오맨서"
+],
+"havoc": [
+"마크 달렛"
+],
+"theodorus": [
+"파라독소니케스"
+],
+"erina_as": [
+"영야난국"
+],
+"xianhua_as": [
+"혼원노군"
+],
+"jorna": [
+"여명낙앵"
+],
+"jillfunny_as": [
+"루블라디우스"
+],
+"darunis_as": [
+"파트로클로스"
+]
 }
 }

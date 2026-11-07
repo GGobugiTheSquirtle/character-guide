@@ -3,7 +3,7 @@
   "verified": false,
   "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {
-    "Mantra": { "max": 10, "per": [ { "stat": "크리티컬율", "v": 10 }, { "stat": "마법 크리티컬율", "v": 10 }, { "stat": "불 속성 공격", "v": 5 } ] }
+    "Mantra": { "max": 10, "per": [ { "stat": "물리 크리티컬율", "v": 10 }, { "stat": "마법 크리티컬율", "v": 10 }, { "stat": "불 속성 공격력", "v": 5 } ] }
   },
   "states": {},
   "skills": [
@@ -46,7 +46,7 @@
     { "name": "Destructive Defense", "kind": "active", "mp": 42, "tier": "pre",
       "steps": [ { "do": "other", "text": "20% damage on self" },
                  { "do": "buff", "to": "party", "stat": "물리 저항", "v": 30, "dur": { "turns": 3 } },
-                 { "do": "buff", "to": "party", "stat": "속성 저항", "v": 30, "dur": { "turns": 3 } },
+                 { "do": "buff", "to": "party", "stat": "모든 속성 저항", "v": 30, "dur": { "turns": 3 } },
                  { "do": "buff", "to": "party", "stat": "MP 소모", "v": -30, "dur": { "turns": 3 } } ],
       "notes": "MP consumption of all party members -30% (3 turns) → stat 「MP 소모」(v1 반영)" }
   ],

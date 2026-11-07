@@ -502,7 +502,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "결정 속성 공격"
+         "결정 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "UP",

@@ -37,7 +37,7 @@
   const slotKey = (caster, u) => [caster, u.k, (u.stats || []).join(",") || u.name || u.what || "", u.dir || "", sideOf(u), u._equip ? "eq" : ""].join("|");
 
   // 장비 「공격 시」 부여 → 효과 단위(build_calc_db equip_fx k inflict). 지속 = 원문 N턴(없으면 3)
-  const RES_KO = { slash: "베기 저항", pierce: "찌르기 저항", blunt: "타격 저항", physical: "물리 저항", magic: "마법 저항", type: "속성 저항",
+  const RES_KO = { slash: "베기 저항", pierce: "찌르기 저항", blunt: "타격 저항", physical: "물리 저항", magic: "마법 저항", type: "모든 속성 저항",
     fire: "불 속성 저항", water: "물 속성 저항", earth: "땅 속성 저항", wind: "바람 속성 저항", thunder: "번개 속성 저항", shade: "그림자 속성 저항", crystal: "결정 속성 저항" };
   function equipOnHit(m, opt) {
     const out = [];

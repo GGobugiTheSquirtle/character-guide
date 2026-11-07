@@ -98,7 +98,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "땅 속성 공격"
+         "땅 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "UP",
@@ -218,7 +218,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "크리티컬율"
+         "물리 크리티컬율"
         ],
         "group": "crit",
         "dir": "UP",
@@ -305,7 +305,7 @@
        },
        {
         "k": "dmg",
-        "what": "크리티컬 대미지",
+        "what": "물리 크리티컬 위력",
         "value": 25.0,
         "dir": "UP",
         "turns": 3,

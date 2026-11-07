@@ -217,12 +217,17 @@
       ],
       "effects": [
        {
-        "k": "other",
+        "k": "guard",
+        "what": "배리어",
+        "value": 50.0,
+        "scope": "아군 전체",
+        "until_turn_end": true,
         "raw": "턴 종료 시까지 아군 전체에 대미지를 50% 감소시키는 배리어 부여",
         "target": "",
         "mode": "",
-        "r": "other",
-        "tm": "스텔라 버스트"
+        "r": "surv_state",
+        "tm": "스텔라 버스트",
+        "tc": "아군 전체"
        }
       ]
      },
@@ -293,7 +298,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "크리티컬율"
+         "물리 크리티컬율"
         ],
         "group": "crit",
         "dir": "UP",
@@ -308,7 +313,7 @@
        },
        {
         "k": "dmg",
-        "what": "크리티컬 대미지",
+        "what": "물리 크리티컬 위력",
         "value": 40.0,
         "dir": "UP",
         "turns": 3,
@@ -980,7 +985,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "크리티컬율"
+         "물리 크리티컬율"
         ],
         "group": "crit",
         "dir": "UP",
@@ -1103,7 +1108,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "크리티컬율"
+         "물리 크리티컬율"
         ],
         "group": "crit",
         "dir": "UP",

@@ -33,7 +33,7 @@
                  { "do": "attack", "elem": "바람", "type": "베기", "dep": "pwr", "target": "all", "hits": 2, "mult": 800,
                    "if": [ { "text": "enemy hadn't been damaged this turn" } ] },
                  { "do": "other", "text": "Inflict Break (damage of next hit is doubled, removed when the target receives damage)" },
-                 { "do": "buff", "to": "self", "stat": "크리티컬 대미지", "v": 30, "dur": { "turns": 3 } } ],
+                 { "do": "buff", "to": "self", "stat": "물리 크리티컬 위력", "v": 30, "dur": { "turns": 3 } } ],
       "notes": "+400% damage (x5) 조건은 text — 엔진은 늘 160%. 「Hits calculated separately」— 2타째도 x5 인지(1타가 피해를 준 뒤) 원문으로 판단 불가" },
     { "name": "Hold Ground", "kind": "trigger", "on": "battle_start",
       "steps": [ { "do": "other", "text": "Apply Hold Ground on self: when character's HP reduces to 0, stop at 1 HP instead (1 time)" } ] },

@@ -778,7 +778,7 @@
        },
        {
         "k": "dmg",
-        "what": "크리티컬 대미지",
+        "what": "물리 크리티컬 위력",
         "value": 50.0,
         "dir": "UP",
         "turns": 3,
@@ -926,7 +926,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "바람 속성 공격"
+         "바람 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "UP",
@@ -942,7 +942,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "결정 속성 공격"
+         "결정 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "UP",

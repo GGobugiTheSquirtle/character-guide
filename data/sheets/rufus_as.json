@@ -5,7 +5,7 @@
   "stacks": {
     "Blazing": { "max": 10, "decay": { "turn_end": 1 },
       "per": [ { "stat": "힘", "flat": 20 }, { "stat": "지능", "flat": 20 }, { "stat": "행운", "flat": 20 },
-               { "stat": "크리티컬율", "v": 15 }, { "stat": "마법 크리티컬율", "v": 15 } ] }
+               { "stat": "물리 크리티컬율", "v": 15 }, { "stat": "마법 크리티컬율", "v": 15 } ] }
   },
   "states": { "Prayer": {} },
   "skills": [
@@ -30,17 +30,17 @@
         { "do": "buff", "to": "party", "stat": "힘", "v": 75, "dur": { "turns": 10 }, "if": [ { "zone": "Raging Fire Stance", "awakened": true } ] },
         { "do": "buff", "to": "party", "stat": "지능", "v": 75, "dur": { "turns": 10 }, "if": [ { "zone": "Raging Fire Stance", "awakened": true } ] },
         { "do": "buff", "to": "party", "stat": "속도", "v": 75, "dur": { "turns": 10 }, "if": [ { "zone": "Raging Fire Stance", "awakened": true } ] },
-        { "do": "buff", "to": "party", "stat": "불 속성 공격", "v": 100, "dur": { "turns": 10 }, "if": [ { "zone": "Raging Fire Stance", "awakened": true } ] }
+        { "do": "buff", "to": "party", "stat": "불 속성 공격력", "v": 100, "dur": { "turns": 10 }, "if": [ { "zone": "Raging Fire Stance", "awakened": true } ] }
       ] },
     { "name": "Valiant Roar", "kind": "active", "mp": 62, "tier": "normal",
       "steps": [
         { "do": "state", "name": "Prayer", "to": "self", "dur": { "turns": 5 } },
         { "do": "buff", "to": "self", "stat": "약점 배율", "v": 1, "dur": { "turns": 5 } },
         { "do": "buff", "to": "right", "stat": "약점 배율", "v": 1, "dur": { "turns": 5 } },
-        { "do": "buff", "to": "party", "stat": "불 속성 공격", "v": 100, "dur": { "until": "turn_end" } }
+        { "do": "buff", "to": "party", "stat": "불 속성 공격력", "v": 100, "dur": { "until": "turn_end" } }
       ] },
     { "name": "Valiant Roar - Prayer", "kind": "trigger", "on": "turn_start", "need": [ { "state": "Prayer" } ],
-      "steps": [ { "do": "buff", "to": "party", "stat": "불 속성 공격", "v": 100, "dur": { "until": "turn_end" } } ] },
+      "steps": [ { "do": "buff", "to": "party", "stat": "불 속성 공격력", "v": 100, "dur": { "until": "turn_end" } } ] },
     { "name": "Valiant Roar - EOT", "kind": "trigger", "on": "turn_end", "need": [ { "state": "Prayer" } ],
       "steps": [ { "do": "other", "text": "Restore all party members MP +25%" } ] },
     { "name": "Heroic Blow", "kind": "active", "mp": 57, "tier": "pre",

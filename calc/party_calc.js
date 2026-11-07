@@ -99,7 +99,7 @@
     const n = u.name || "", raw = u.raw || "";
     if (n === "심안" || (n.startsWith("루나틱") && (/심안/.test(n) || /mind'?s eye/i.test(raw)))) return { id: "mindseye" };
     if (n === "결사" || (n.startsWith("루나틱") && (/결사/.test(n) || /risk ?taker/i.test(raw)))) return { id: "risktaker" };
-    if (n === "오버 크리티컬") return { id: "overcrit" };
+    if (n === "물리 오버 크리티컬") return { id: "overcrit" };
     if (n === "마법 오버 크리티컬") return { id: "movercrit" };
     if (n === "호시탐탐" || n === "Eagle Eyes") return { id: "eagle" };
     if (n === "다단 강화" || /^multi-?upgrade$/i.test(n)) return { id: "multihit" };
@@ -121,12 +121,12 @@
         if (st === "힘") g.pwr.buffs.push(v);
         else if (st === "지능") g.int.buffs.push(v);
         else if (st === "속도") g.spd.buffs.push(v);
-        else if (st === "크리티컬율") g.crit.push(v);
+        else if (st === "물리 크리티컬율") g.crit.push(v);
         else if (st === "마법 크리티컬율") g.mcrit.push(v);
-        else if (st === "크리티컬 대미지") g.critDmg.push(v);
-        else if (st === "마법 크리티컬 대미지") g.mcritDmg.push(v);
-        else if (/속성 공격$/.test(st)) {
-          const e = ELEMS.find(x => st.startsWith(x)) || (/^모든|^속성 공격$/.test(st) ? "*" : null);
+        else if (st === "물리 크리티컬 위력") g.critDmg.push(v);
+        else if (st === "마법 크리티컬 위력") g.mcritDmg.push(v);
+        else if (/속성 공격력$/.test(st)) {
+          const e = ELEMS.find(x => st.startsWith(x)) || (/^모든/.test(st) ? "*" : null);
           if (e) (g.type[e] = g.type[e] || []).push(v); else hit = false;
         } else hit = false;
         if (hit) g.src.push(`${s.c.nameKo}: ${st} +${u.value}%`);
@@ -134,7 +134,7 @@
     } else if (u.k === "dmg" && u.dir === "UP" && u.what === "약점 시 대미지") {
       // 「약점 시 대미지 N% UP」(낭전-식 · 배지) = 약점 배율 +N/100 가산(딩님 파이프라인 「약점 대미지 UP 합」 · 시련 광석과 같은 자리 — 가정, 10-18 영상 대조로 공백 발견). 약점 타에만 들어간다
       g.weak.push(v); g.src.push(`${s.c.nameKo}: 약점 시 대미지 +${u.value}%`);
-    } else if (u.k === "dmg" && u.dir === "UP" && /크리티컬 대미지$/.test(u.what || "")) {   // 한국어 해석기는 크리 대미지를 dmg 로 낸다 — 일반 대미지가 아님(2026-10-15)
+    } else if (u.k === "dmg" && u.dir === "UP" && /크리티컬 위력$/.test(u.what || "")) {   // 한국어 해석기는 크리 위력을 dmg 로 낸다 — 일반 대미지가 아님(2026-10-15)
       (/마법 크리티컬/.test(u.what) ? g.mcritDmg : g.critDmg).push(v); g.src.push(`${s.c.nameKo}: ${u.what} +${u.value}%`);
     } else if (u.k === "dmg" && u.dir === "UP" && !/받는|피격/.test(u.what || "") && u.what !== "약점 시 대미지") {
       // 「검 장착자 대미지」 「Lance and Bow equipped characters」 — 그 무기를 든 멤버만(2026-10-15, 전에는 무기 무관하게 모두)
@@ -575,12 +575,12 @@
   //   ctx = 공격 맥락 { element, atk(베기 · 찌르기 · 타격 · 마법), magic, weapon } — 속성 · 공격 종류마다 값이 다르다
   const PRESET = [
     { id: "pwr", label: "힘 UP" }, { id: "int", label: "지능 UP" }, { id: "spd", label: "속도 UP" },
-    { id: "type", label: "속성 공격 UP(공격 속성)" }, { id: "dmg", label: "가하는 대미지 UP(무기 포함)" },
-    { id: "crit", label: "크리티컬율 UP", add: true }, { id: "critDmg", label: "크리티컬 대미지 UP", add: true },
+    { id: "type", label: "속성 공격력 UP(공격 속성)" }, { id: "dmg", label: "가하는 대미지 UP(무기 포함)" },
+    { id: "crit", label: "물리/마법 크리티컬율 UP", add: true }, { id: "critDmg", label: "물리/마법 크리티컬 위력 UP", add: true },
     { id: "resType", label: "적 속성 저항 DOWN", enemy: true }, { id: "resPhys", label: "적 물리(마법) · 공격 종류 저항 DOWN", enemy: true },
     { id: "def", label: "적 내구(정신) DOWN", enemy: true },
     { id: "focus", label: "심기일체 · 정신 통일", flag: true }, { id: "overthrow", label: "하극상", flag: true },
-    { id: "sureCrit", label: "크리티컬 확정", flag: true }, { id: "overcrit", label: "오버 크리티컬", flag: true },
+    { id: "sureCrit", label: "크리티컬 확정", flag: true }, { id: "overcrit", label: "물리/마법 오버 크리티컬", flag: true },
     { id: "mindseye", label: "심안(루나틱)", flag: true }, { id: "risktaker", label: "결사(루나틱)", flag: true },
     { id: "break", label: "적 브레이크", flag: true, enemy: true },
   ];
@@ -633,17 +633,17 @@
         case "pwr": pct("힘", v); break;
         case "int": pct("지능", v); break;
         case "spd": pct("속도", v); break;
-        case "type": pct(el ? el + " 속성 공격" : "모든 속성 공격", v); break;
+        case "type": pct(el ? el + " 속성 공격력" : "모든 속성 공격력", v); break;
         case "dmg": fx.push({ k: "dmg", dir: "UP", what: "가하는 대미지", value: +(v * 100).toFixed(2), tc: ally }); break;
-        case "crit": pct(mg ? "마법 크리티컬율" : "크리티컬율", v); break;
-        case "critDmg": pct(mg ? "마법 크리티컬 대미지" : "크리티컬 대미지", v); break;
+        case "crit": pct(mg ? "마법 크리티컬율" : "물리 크리티컬율", v); break;
+        case "critDmg": pct(mg ? "마법 크리티컬 위력" : "물리 크리티컬 위력", v); break;
         case "resType": if (el) pct(el + " 속성 저항", v, "DOWN", foe); break;
         case "resPhys": pct(mg ? "마법 저항" : "물리 저항", v, "DOWN", foe); break;
         case "def": pct(mg ? "정신" : "내구", v, "DOWN", foe); break;
         case "focus": fx.push({ k: "buff", name: mg ? "정신 통일" : "심기일체", tc: ally }); break;
         case "overthrow": fx.push({ k: "buff", name: "하극상", tc: ally }); break;
         case "sureCrit": fx.push({ k: "buff", name: "크리티컬 발생 확정", tc: ally }); break;
-        case "overcrit": fx.push({ k: "buff", name: mg ? "마법 오버 크리티컬" : "오버 크리티컬", tc: ally }); break;
+        case "overcrit": fx.push({ k: "buff", name: mg ? "마법 오버 크리티컬" : "물리 오버 크리티컬", tc: ally }); break;
         case "mindseye": fx.push({ k: "buff", name: "심안", tc: ally }); break;
         case "risktaker": fx.push({ k: "buff", name: "결사", tc: ally }); break;
         case "break": fx.push({ k: "ailment", name: "브레이크", tc: foe }); break;

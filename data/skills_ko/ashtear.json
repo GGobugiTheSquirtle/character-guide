@@ -617,8 +617,9 @@
        },
        {
         "k": "ailment",
-        "name": "적 하나의 속성 저항 간파",
+        "name": "속성 저항 간파",
         "guess": true,
+        "scope": "적 하나",
         "raw": "어나더 포스 미사용 시 적 하나의 속성 저항 간파",
         "target": "자신",
         "mode": "추가 효과",
@@ -626,12 +627,12 @@
         "preempt": true,
         "r": "state_unknown",
         "tm": "사용 시",
-        "tc": "자신"
+        "tc": "적 하나"
        },
        {
         "k": "stat_pct",
         "stats": [
-         "크리티컬율"
+         "물리 크리티컬율"
         ],
         "group": "crit",
         "dir": "UP",

@@ -139,7 +139,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "속성 공격"
+         "모든 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "UP",
@@ -393,7 +393,7 @@
        },
        {
         "k": "dmg",
-        "what": "마법 크리티컬 대미지",
+        "what": "마법 크리티컬 위력",
         "value": 100.0,
         "dir": "UP",
         "until_turn_end": true,

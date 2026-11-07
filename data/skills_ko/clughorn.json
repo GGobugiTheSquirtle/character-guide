@@ -343,7 +343,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "번개 속성 공격"
+         "번개 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "DOWN",
@@ -358,7 +358,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "그림자 속성 공격"
+         "그림자 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "DOWN",
@@ -373,7 +373,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "결정 속성 공격"
+         "결정 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "DOWN",

@@ -49,7 +49,7 @@
        },
        {
         "k": "dmg",
-        "what": "크리티컬 대미지",
+        "what": "물리 크리티컬 위력",
         "value": 50.0,
         "dir": "UP",
         "turns": 5,
@@ -74,7 +74,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "모든 속성 공격"
+         "모든 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "UP",
@@ -90,7 +90,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "크리티컬율"
+         "물리 크리티컬율"
         ],
         "group": "crit",
         "dir": "UP",

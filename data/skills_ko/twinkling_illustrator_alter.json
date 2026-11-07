@@ -113,7 +113,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "불 속성 공격"
+         "불 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "UP",
@@ -144,7 +144,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "불 속성 공격"
+         "불 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "DOWN",
@@ -211,7 +211,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "불 속성 공격"
+         "불 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "UP",
@@ -242,7 +242,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "불 속성 공격"
+         "불 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "DOWN",
@@ -311,7 +311,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "불 속성 공격"
+         "불 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "UP",
@@ -342,7 +342,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "불 속성 공격"
+         "불 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "DOWN",

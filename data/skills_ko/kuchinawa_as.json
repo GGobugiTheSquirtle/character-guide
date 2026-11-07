@@ -610,7 +610,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "모든 속성 공격"
+         "모든 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "DOWN",

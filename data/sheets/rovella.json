@@ -4,7 +4,7 @@
   "src": "wiki-en 2026-10-07 · 기준 시트(손 작성) · v1 2026-10-13",
   "stacks": {
     "Powered Mechanism": { "max": 3 },
-    "Tense": { "max": 30, "per": [ { "stat": "힘", "flat": 5 }, { "stat": "크리티컬율", "v": 10 } ] }
+    "Tense": { "max": 30, "per": [ { "stat": "힘", "flat": 5 }, { "stat": "물리 크리티컬율", "v": 10 } ] }
   },
   "states": {
     "Stealth mode": { "per": [ { "stat": "대미지 배율", "x": 1.2 } ], "ends": [ "attacked" ] },
@@ -36,7 +36,7 @@
                  { "do": "status", "name": "Stun", "to": "enemy", "dur": { "turns": 1 } } ] },
     { "name": "Infiltrate", "kind": "active", "mp": 64, "tier": "normal",
       "steps": [ { "do": "buff", "to": "self", "stat": "약점 배율", "v": 1, "dur": { "turns": 3 } },
-                 { "do": "buff", "to": "self", "stat": "크리티컬율", "v": 100, "dur": { "moves": 10 } },
+                 { "do": "buff", "to": "self", "stat": "물리 크리티컬율", "v": 100, "dur": { "moves": 10 } },
                  { "do": "consume", "name": "Powered Mechanism", "n": 1, "if": [ { "stack": "Powered Mechanism", "gte": 1 } ] },
                  { "do": "state", "name": "Overcritical", "to": "self", "dur": { "turns": 5 }, "if": [ { "consumed": "Powered Mechanism", "gte": 1 } ] },
                  { "do": "state", "name": "Stealth - Counter", "to": "self", "dur": { "until": "turn_end" }, "if": [ { "consumed": "Powered Mechanism", "gte": 1 } ] },

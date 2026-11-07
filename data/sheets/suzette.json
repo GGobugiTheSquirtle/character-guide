@@ -3,7 +3,7 @@
   "verified": false,
   "src": "wiki-en 2026-10-07 · 보조 생성 · v1 2026-10-13",
   "stacks": {
-    "Ancient Despair": { "max": 1, "per": [ { "stat": "크리티컬율", "v": 100 }, { "stat": "마법 크리티컬율", "v": 100 } ] }
+    "Ancient Despair": { "max": 1, "per": [ { "stat": "물리 크리티컬율", "v": 100 }, { "stat": "마법 크리티컬율", "v": 100 } ] }
   },
   "states": {
     "First Strike": { "tier": "pre" }
@@ -41,7 +41,7 @@
       "steps": [ { "do": "attack", "elem": "바람", "type": "찌르기", "dep": "pwr", "target": "all", "hits": 2, "mult": 160, "unless": [ { "any": [ { "target_status": "Pain" }, { "target_status": "Poison" } ] } ] },
                  { "do": "attack", "elem": "바람", "type": "찌르기", "dep": "pwr", "target": "all", "hits": 2, "mult": 480, "if": [ { "any": [ { "target_status": "Pain" }, { "target_status": "Poison" } ] } ], "unless": [ { "target_status": "Pain" }, { "target_status": "Poison" } ] },
                  { "do": "attack", "elem": "바람", "type": "찌르기", "dep": "pwr", "target": "all", "hits": 2, "mult": 1440, "if": [ { "target_status": "Pain" }, { "target_status": "Poison" } ] },
-                 { "do": "buff", "to": "self", "stat": "바람 속성 공격", "v": 50, "dur": { "turns": 5 }, "max_stack": 3 } ],
+                 { "do": "buff", "to": "self", "stat": "바람 속성 공격력", "v": 50, "dur": { "turns": 5 }, "max_stack": 3 } ],
       "notes": "Pain ×3 · Poison ×3 (160 → 480 → 1440). 하나만 걸림(×3=480) = if any[Pain, Poison] + unless [Pain, Poison](둘 다면 제외). Megapoison 이 「Poison」 조건을 만족하는지 원문 불명 — 엔진은 이름 일치만 봄" },
     { "name": "Demonic Thrust", "kind": "active", "mp": 49, "tier": "normal",
       "steps": [ { "do": "attack", "elem": "없음", "type": "찌르기", "dep": "pwr", "target": "all", "hits": 1, "mult": 220 },

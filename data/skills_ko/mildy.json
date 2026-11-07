@@ -344,7 +344,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "번개 속성 공격"
+         "번개 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "UP",
@@ -359,7 +359,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "그림자 속성 공격"
+         "그림자 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "UP",
@@ -374,7 +374,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "결정 속성 공격"
+         "결정 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "UP",
@@ -390,7 +390,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "불 속성 공격"
+         "불 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "DOWN",
@@ -405,7 +405,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "물 속성 공격"
+         "물 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "DOWN",
@@ -420,7 +420,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "바람 속성 공격"
+         "바람 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "DOWN",
@@ -435,7 +435,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "땅 속성 공격"
+         "땅 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "DOWN",
@@ -632,7 +632,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "크리티컬율"
+         "물리 크리티컬율"
         ],
         "group": "crit",
         "dir": "UP",
@@ -662,7 +662,7 @@
        },
        {
         "k": "dmg",
-        "what": "크리티컬 대미지",
+        "what": "물리 크리티컬 위력",
         "value": 30.0,
         "dir": "UP",
         "raw": "크리티컬 대미지 30% UP",
@@ -674,7 +674,7 @@
        },
        {
         "k": "dmg",
-        "what": "마법 크리티컬 대미지",
+        "what": "마법 크리티컬 위력",
         "value": 30.0,
         "dir": "UP",
         "until_turn_end": true,

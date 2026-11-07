@@ -163,7 +163,7 @@
     for (const n of Object.keys(a.states)) for (const p of (sim.stateDef[n] || {}).per || []) if (p.flat) st[KEY[p.stat] || p.stat] = (st[KEY[p.stat] || p.stat] || 0) + p.flat;
     const maxMp = sumBuff(a, "최대 MP", sim);                                      // 정신 통일 · 심기일체(MP 비례)에 닿는다
     if (maxMp) st.mp = (st.mp || 0) * (1 + maxMp / 100);
-    const typeStats = ["속성 공격", ...(elem ? [elem + " 속성 공격"] : [])];
+    const typeStats = ["모든 속성 공격력", ...(elem ? [elem + " 속성 공격력"] : [])];
     const groups = [net(a, typeStats, sim), net(a, ["대미지"], sim)];
     const focus = [...a.buffs.values()].filter(b => b.stat === (magic ? "정신 통일" : "심기일체") && live(sim, b));
     const special = [];
@@ -175,7 +175,7 @@
     for (const b of a.buffs.values()) if (b.stat === "대미지 배율" && live(sim, b)) skillFx.push(b.v / 100);
     let zone = P.zoneMult(sim.zone, atk);
     if (sim.zone && sim.zone.awakened && zone > 0) zone *= 2;                                // 각성 = 증가 효과 2배
-    const physStats = ["물리 저항", type + " 저항"], typeRes = ["속성 저항", ...(elem ? [elem + " 속성 저항"] : [])];
+    const physStats = ["물리 저항", type + " 저항"], typeRes = ["모든 속성 저항", ...(elem ? [elem + " 속성 저항"] : [])];
     let mult = step.mult || 0;
     if (step.scale) {
       const n = step.scale.count ? countOf(step.scale.count, sim, a, ctx)
@@ -193,9 +193,9 @@
       groups, punish: eq.punish, punishV: eq.punishV, equip: eq.equip, single: step.target === "one" || step.target === "random", rand: "avg",
     };
     // 크리 연동(형식 v1): crit_dmg = 이 스킬 크리 대미지 +%, crit_rate = 이 스킬 크리율 +%p, crit_x = 크리일 때 대미지 배수(「+400% when critical (x5)」)
-    const critDmg = (magic ? sumBuff(a, "마법 크리티컬 대미지", sim) : sumBuff(a, "크리티컬 대미지", sim)) / 100 + (magic ? eq.mcritDmg : eq.critDmg) + (step.crit_dmg || 0) / 100;
-    const critRate = (magic ? sumBuff(a, "마법 크리티컬율", sim) : sumBuff(a, "크리티컬율", sim)) / 100 + (magic ? eq.mcrit : eq.crit) + (step.crit_rate || 0) / 100
-      + Object.entries(a.stacks).reduce((s, [n, k]) => s + ((sim.stackDef[n] || {}).per || []).filter(p => p.stat === (magic ? "마법 크리티컬율" : "크리티컬율") && p.v).reduce((t, p) => t + p.v * k / 100, 0), 0);
+    const critDmg = (magic ? sumBuff(a, "마법 크리티컬 위력", sim) : sumBuff(a, "물리 크리티컬 위력", sim)) / 100 + (magic ? eq.mcritDmg : eq.critDmg) + (step.crit_dmg || 0) / 100;
+    const critRate = (magic ? sumBuff(a, "마법 크리티컬율", sim) : sumBuff(a, "물리 크리티컬율", sim)) / 100 + (magic ? eq.mcrit : eq.crit) + (step.crit_rate || 0) / 100
+      + Object.entries(a.stacks).reduce((s, [n, k]) => s + ((sim.stackDef[n] || {}).per || []).filter(p => p.stat === (magic ? "마법 크리티컬율" : "물리 크리티컬율") && p.v).reduce((t, p) => t + p.v * k / 100, 0), 0);
     const sure = step.sure_crit || [...a.buffs.values()].some(b => b.stat === "크리티컬 확정" && live(sim, b))
       || Object.keys(a.states).some(n => ((sim.stateDef[n] || {}).per || []).some(p => p.stat === "크리티컬 확정")) || onAttackStack(sim, a, step).some(d => d.sure_crit);
     const normal = C.damage({ ...o, crit: false }).total, crit = C.damage({ ...o, crit: true, critDmg }).total * (step.crit_x || 1);
@@ -212,7 +212,7 @@
     const magic = step.type === "마법";
     for (const [k, b] of a.buffs) {
       if (b.moves == null) continue;
-      if (b.stat === "크리티컬율" && magic) continue;
+      if (b.stat === "물리 크리티컬율" && magic) continue;
       if (b.stat === "마법 크리티컬율" && !magic) continue;
       if (--b.moves <= 0) a.buffs.delete(k);
     }
@@ -289,7 +289,7 @@
   // ── 행동 고르기 ──
   // 준비 스킬 = 공격 없이 대미지에 닿는 것을 거는 스킬 — 아군 공격 버프 · 적 저항/방어 디버프 · 존 · 각성 · 축적 · 모드 · 페인/독.
   //   방어 버프(물리 저항 + 아군 등)는 대미지와 무관해 자동 정책이 고르지 않는다(배치 4 보고)
-  const OFF = /^(힘|지능|속도|행운|크리티컬|마법 크리티컬|.*속성 공격|대미지|대미지 배율|약점 배율|정신 통일|심기일체|매의 눈|하극상|크리티컬 확정)/;
+  const OFF = /^(힘|지능|속도|행운|물리 크리티컬|마법 크리티컬|.*속성 공격|대미지|대미지 배율|약점 배율|정신 통일|심기일체|매의 눈|하극상|크리티컬 확정)/;
   const DEF_DOWN = /저항$|^(내구|정신)$/;
   const helpsDamage = s => (s.do === "buff" && ((["self", "party", "right", "left", "sides"].includes(s.to) && OFF.test(s.stat) && (s.v ?? s.flat) > 0)
     || (/^enem/.test(s.to) && DEF_DOWN.test(s.stat) && s.v < 0))) || ["zone", "awaken", "stack"].includes(s.do)

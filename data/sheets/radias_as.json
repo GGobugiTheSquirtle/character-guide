@@ -22,7 +22,7 @@
     { "name": "Spinning Edge", "kind": "active", "mp": 17, "tier": "normal",
       "steps": [ { "do": "attack", "elem": "없음", "type": "베기", "dep": "pwr", "target": "all", "hits": 2, "mult": 110 } ] },
     { "name": "Elemental Barrier", "kind": "active", "mp": 30, "tier": "normal",
-      "steps": [ { "do": "buff", "to": "party", "stat": "속성 저항", "v": 50, "dur": { "turns": 3 } },
+      "steps": [ { "do": "buff", "to": "party", "stat": "모든 속성 저항", "v": 50, "dur": { "turns": 3 } },
                  { "do": "status", "name": "Rage", "to": "enemies", "dur": { "turns": 3 } } ],
       "notes": "Inflict Rage (Ignore target resistance) — 대상 · 지속 원문 없음. 적 전체 · 3턴으로 가정" },
     { "name": "Absorb Blood", "kind": "active", "mp": 40, "tier": "pre",

@@ -401,11 +401,11 @@ const ROLE_KO = { atk_buff: "공격 버프", atk_state: "공격 강화 상태", 
   power: "조건부 위력", surv_debuff: "생존 디버프", surv_buff: "생존 버프", surv_state: "생존 상태",
   recover: "회복·정화", tempo: "속도·행동", dot: "지속 대미지", enemy_utility: "적 버프 무력화",
   mode: "상태·형태 변화", resource: "자원", attack: "공격", state_unknown: "기타 상태" };
-const ROLE_HINT = { atk_buff: "아군 힘·지능·크리티컬·속성 공격 UP, 가하는 대미지 UP",
-  atk_state: "아군에게 거는 대미지 증가 상태 — 심기일체·정신 통일·오버 크리티컬·하극상·방어 무시 등",
+const ROLE_HINT = { atk_buff: "아군 힘·지능·크리티컬율·크리티컬 위력·속성 공격력 UP, 가하는 대미지 UP",
+  atk_state: "아군에게 거는 대미지 증가 상태 — 심기일체·정신 통일·물리/마법 오버 크리티컬·하극상·방어 무시 등",
   atk_debuff: "적이 받는 피해 증가 — 저항·내구·정신 DOWN, 약점 간파, 브레이크 축적",
   power: "스킬 자체 배율 조건 — 「독 상태인 경우 위력 증가」 등",
-  surv_debuff: "적 공격 약화 — 힘·지능·속성 공격·속도 DOWN, 기절·수면·마비",
+  surv_debuff: "적 공격 약화 — 힘·지능·속성 공격력·속도 DOWN, 기절·수면·마비",
   surv_buff: "아군 방어 강화 — 저항·내구·정신·HP 최대치 UP, 받는 대미지 DOWN",
   surv_state: "배리어·실드·무효·버티기·도발·수호·감싸기",
   recover: "HP 회복·전투 불능 회복·디버프/상태 이상 해제", tempo: "아군 속도 UP·재공격·연속 실행·솔선" };
@@ -1237,11 +1237,11 @@ async function renderParty() {
   const statHits = (re, dir, roles) => all.filter(u => (u.k === "stat_pct" || u.k === "stat_flat") && u.dir === dir && roles.includes(u.r) && (u.stats || []).some(s => re.test(s)));
   const whoVal = us => [...new Set(us.map(u => `${u._who} ${u.value != null ? u.value + "%" : ""}`.trim()))].join(", ");
   const t2 = el("table", { class: "skill-table" });
-  t2.appendChild(el("thead", { children: [el("tr", { children: ["속성", "우리 공격 수", "속성 공격 UP (아군)", "속성 저항 DOWN (적)"].map(h => el("th", { text: h })) })] }));
+  t2.appendChild(el("thead", { children: [el("tr", { children: ["속성", "우리 공격 수", "속성 공격력 UP (아군)", "속성 저항 DOWN (적)"].map(h => el("th", { text: h })) })] }));
   const tb2 = el("tbody");
   for (const e of ELEMS) {
-    const up = statHits(new RegExp(`^(${e}|모든) 속성 공격$|^속성 공격$`), "UP", ["atk_buff"]);
-    const dn = statHits(new RegExp(`^(${e}|모든) 속성 저항$|^속성 저항$`), "DOWN", ["atk_debuff"]);
+    const up = statHits(new RegExp(`^(${e}|모든) 속성 공격력$`), "UP", ["atk_buff"]);
+    const dn = statHits(new RegExp(`^(${e}|모든) 속성 저항$`), "DOWN", ["atk_debuff"]);
     if (!elemCount[e] && !up.length && !dn.length) continue;
     const mis = elemCount[e] && !up.length && !dn.length;
     tb2.appendChild(el("tr", { children: [el("td", { text: e, class: mis ? "role-gap" : "" }), el("td", { text: String(elemCount[e]) }), el("td", { text: whoVal(up) || "—" }), el("td", { text: whoVal(dn) || "—" })] }));
@@ -1252,7 +1252,7 @@ async function renderParty() {
   }
   t2.appendChild(tb2);
   wrap.appendChild(el("div", { class: "section", children: [el("h3", { text: "2. 속성 · 공격 종류 정렬" }),
-    el("div", { class: "skko-src", text: "빨간 칸 = 우리가 그 속성/종류로 공격하는데 맞춘 버프·저항 디버프가 없음. 공격 수는 스킬 문장 기준(사용 빈도 아님). 속성 미지정 「속성 공격/저항」은 모든 속성에 셉니다." }),
+    el("div", { class: "skko-src", text: "빨간 칸 = 우리가 그 속성/종류로 공격하는데 맞춘 버프·저항 디버프가 없음. 공격 수는 스킬 문장 기준(사용 빈도 아님). 「모든 속성 공격력/저항」은 모든 속성에 셉니다." }),
     el("div", { class: "table-scroll", children: [t2] })] }));
 
   // 3. ZONE — 한국어 「풍왕진 전개」 · 영어 「Deploy Wind King Stance」

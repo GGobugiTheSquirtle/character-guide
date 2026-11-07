@@ -957,7 +957,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "그림자 속성 공격"
+         "그림자 속성 공격력"
         ],
         "group": "elem_atk",
         "dir": "UP",
@@ -1066,13 +1066,17 @@
         "tc": "아군 전체"
        },
        {
-        "k": "other",
+        "k": "heal",
+        "what": "MP",
+        "value": 50.0,
+        "flat": false,
+        "scope": "자신",
         "raw": "자신의 MP 회복 50%",
         "target": "아군 전체",
         "mode": "",
-        "r": "other",
+        "r": "resource",
         "tm": "사용 시",
-        "tc": "아군 전체"
+        "tc": "자신"
        }
       ],
       "en": "Doomsday Peace",

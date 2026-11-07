@@ -29,8 +29,8 @@
     { "name": "Fall, Gomorrah", "kind": "active", "mp": 24, "tier": "normal",
       "steps": [
                  { "do": "other", "text": "Fire type blunt attack on all enemies x2 (S)" },
-                 { "do": "buff", "to": "party", "stat": "불 속성 공격", "v": 30, "dur": {"turns": 3}, "unless": [{"zone": "any"}] },
-                 { "do": "buff", "to": "party", "stat": "불 속성 공격", "v": 60, "dur": {"turns": 6}, "if": [{"zone": "any"}] } ],
+                 { "do": "buff", "to": "party", "stat": "불 속성 공격력", "v": 30, "dur": {"turns": 3}, "unless": [{"zone": "any"}] },
+                 { "do": "buff", "to": "party", "stat": "불 속성 공격력", "v": 60, "dur": {"turns": 6}, "if": [{"zone": "any"}] } ],
       "notes": "위키 배율 0% · 원문 (S) 수치 없음 → 공격은 other(배율 추정 안 함)" },
     { "name": "Tedium Blast", "kind": "active", "mp": 37, "tier": "pre",
       "steps": [

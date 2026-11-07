@@ -6,7 +6,7 @@
     "Dancing Heart": { "max": 4 }
   },
   "states": {
-    "Warrior Princess mode": { "per": [ { "stat": "크리티컬율", "v": 100 } ] },
+    "Warrior Princess mode": { "per": [ { "stat": "물리 크리티컬율", "v": 100 } ] },
     "Lunatic - Risktaker": { "per": [ { "stat": "대미지 배율", "x": 1.7 }, { "stat": "크리티컬 확정", "v": 100 } ] }
   },
   "skills": [
@@ -33,7 +33,7 @@
                  { "do": "buff", "to": "self", "stat": "힘", "v": 100, "dur": { "turns": 3 }, "if": [ { "state": "Warrior Princess mode" } ] },
                  { "do": "buff", "to": "self", "stat": "지능", "v": 100, "dur": { "turns": 3 }, "if": [ { "state": "Warrior Princess mode" } ] },
                  { "do": "buff", "to": "self", "stat": "대미지", "v": 100, "dur": { "turns": 3 }, "if": [ { "state": "Warrior Princess mode" } ] },
-                 { "do": "buff", "to": "self", "stat": "땅 속성 공격", "v": 50, "dur": { "turns": 3 }, "if": [ { "state": "Warrior Princess mode" } ] },
+                 { "do": "buff", "to": "self", "stat": "땅 속성 공격력", "v": 50, "dur": { "turns": 3 }, "if": [ { "state": "Warrior Princess mode" } ] },
                  { "do": "zone", "name": "Torn Earth Stance" } ],
       "notes": "「Lance damage of the user +50%」 → 대미지 그룹(정적 파서 관례: weapon type damage = 대미지, 본인 창). Warrior Princess mode: Buff effects x2 + Earth type attack +50%" },
     { "name": "Dancing Lance - Earthfall", "kind": "active", "mp": 70, "tier": "pre",
@@ -43,7 +43,7 @@
                  { "do": "buff", "to": "self", "stat": "힘", "v": 100, "dur": { "turns": 3 }, "if": [ { "state": "Warrior Princess mode" } ] },
                  { "do": "buff", "to": "self", "stat": "지능", "v": 100, "dur": { "turns": 3 }, "if": [ { "state": "Warrior Princess mode" } ] },
                  { "do": "buff", "to": "self", "stat": "대미지", "v": 100, "dur": { "turns": 3 }, "if": [ { "state": "Warrior Princess mode" } ] },
-                 { "do": "buff", "to": "self", "stat": "땅 속성 공격", "v": 50, "dur": { "turns": 3 }, "if": [ { "state": "Warrior Princess mode" } ] },
+                 { "do": "buff", "to": "self", "stat": "땅 속성 공격력", "v": 50, "dur": { "turns": 3 }, "if": [ { "state": "Warrior Princess mode" } ] },
                  { "do": "zone", "name": "Torn Earth Stance" },
                  { "do": "attack", "elem": "땅", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 4, "mult": 200, "if": [ { "enemies": { "lte": 1 } } ], "unless": [ { "state": "Warrior Princess mode" } ] },
                  { "do": "attack", "elem": "땅", "type": "찌르기", "dep": "pwr", "target": "one", "hits": 4, "mult": 8000, "if": [ { "enemies": { "lte": 1 } }, { "state": "Warrior Princess mode" } ] },

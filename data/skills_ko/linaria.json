@@ -252,7 +252,7 @@
        },
        {
         "k": "buff",
-        "name": "오버 크리티컬",
+        "name": "물리 오버 크리티컬",
         "raw": "오버 크리티컬",
         "target": "아군 전체",
         "mode": "",
@@ -346,7 +346,7 @@
        {
         "k": "stat_pct",
         "stats": [
-         "크리티컬율"
+         "물리 크리티컬율"
         ],
         "group": "crit",
         "dir": "UP",
@@ -477,7 +477,7 @@
       "effects": [
        {
         "k": "dmg",
-        "what": "크리티컬 대미지",
+        "what": "물리 크리티컬 위력",
         "value": 100.0,
         "dir": "UP",
         "until_turn_end": true,

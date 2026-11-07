@@ -7,7 +7,7 @@
   },
   "states": {
     "Sacrifice": {},
-    "Super Thillelille mode": { "per": [ { "stat": "대미지 배율", "x": 1.1 }, { "stat": "크리티컬율", "v": 100 } ] }
+    "Super Thillelille mode": { "per": [ { "stat": "대미지 배율", "x": 1.1 }, { "stat": "물리 크리티컬율", "v": 100 } ] }
   },
   "skills": [
     { "name": "I'll Show You!", "kind": "active", "mp": 0, "tier": "normal", "replaces_basic": true, "need": [ { "not": { "state": "Super Thillelille mode" } } ],
@@ -30,8 +30,8 @@
       "steps": [ { "do": "attack", "elem": "불", "type": "베기", "dep": "pwr", "target": "all", "hits": 1, "mult": 120 },
                  { "do": "status", "name": "Stun", "to": "enemies", "dur": { "turns": 1 } } ] },
     { "name": "Soul of Honor", "kind": "active", "mp": 13, "tier": "normal",
-      "steps": [ { "do": "buff", "to": "self", "stat": "불 속성 공격", "v": 50, "dur": { "turns": 5 } },
-                 { "do": "buff", "to": "self", "stat": "그림자 속성 공격", "v": 50, "dur": { "turns": 5 } },
+      "steps": [ { "do": "buff", "to": "self", "stat": "불 속성 공격력", "v": 50, "dur": { "turns": 5 } },
+                 { "do": "buff", "to": "self", "stat": "그림자 속성 공격력", "v": 50, "dur": { "turns": 5 } },
                  { "do": "buff", "to": "party", "stat": "최대 MP", "v": 40, "dur": { "turns": 5 }, "if": [ { "state": "Super Thillelille mode" } ] },
                  { "do": "other", "text": "MP Regen 10% (5 turns)", "if": [ { "state": "Super Thillelille mode" } ] } ],
       "notes": "v1 반영: 최대 MP +40% = stat 최대 MP(심기일체 MP 비례에 닿음). MP Regen 은 형식에 없어 other" },
@@ -52,7 +52,7 @@
     { "name": "Sublimation", "kind": "active", "mp": 30, "tier": "normal",
       "steps": [ { "do": "attack", "elem": "불", "type": "베기", "dep": "pwr", "target": "all", "hits": 1, "mult": 420, "unless": [ { "state": "Super Thillelille mode" } ] },
                  { "do": "attack", "elem": "불", "type": "베기", "dep": "pwr", "target": "all", "hits": 1, "mult": 3360, "if": [ { "state": "Super Thillelille mode" } ] },
-                 { "do": "buff", "to": "party", "stat": "크리티컬율", "v": 100, "dur": { "moves": 1 } },
+                 { "do": "buff", "to": "party", "stat": "물리 크리티컬율", "v": 100, "dur": { "moves": 1 } },
                  { "do": "repeat", "n": 1, "if": [ { "stack": "Sacrificium", "gte": 1 } ] } ],
       "notes": "XL, 2x of 210% = 420% (원문 괄호) · 모드 x8 = 3360% · 재행동 포함 6720%(위키 위값과 일치)" },
     { "name": "Eclipse Blade", "kind": "active", "mp": 55, "tier": "normal",

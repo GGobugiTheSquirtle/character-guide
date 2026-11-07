@@ -459,7 +459,9 @@
     }
     // 후열 셔틀(opt.back = [{c, cc, grasta}], 10-18) — 공격 · 효과 없이 공유 그라스타만 나른다(후방 장착도 공유, docs/ae-game-structure.md §3.4)
     const holders = opt.back && opt.back.length ? [...members, ...opt.back] : members;
-    const eq = equipFor([m.weapon, m.armor, ...(m.grasta || []), ...(m.badges || []), ...sharedItems(m, holders, opt)], atk, { ...opt, _weak: aff === "weak", _who: m.c });
+    // 천 · 명 아군 수(공명의 힘 「5%×(전후방의 명 아군 수)」 등, 11-08) — 화면이 안 주면 전방 + 후열의 명암(index ls)으로 센다
+    const lsN = side => opt[side === "light" ? "lightAllies" : "shadowAllies"] ?? holders.filter(h => h.c && h.c.ls === side).length;
+    const eq = equipFor([m.weapon, m.armor, ...(m.grasta || []), ...(m.badges || []), ...sharedItems(m, holders, opt)], atk, { ...opt, lightAllies: lsN("light"), shadowAllies: lsN("shadow"), _weak: aff === "weak", _who: m.c });
     const ev = envFor(opt.env, atk, opt);
     const st = { ...m.stats };
     for (const [k, v] of Object.entries(eq.stats)) st[k] = (st[k] || 0) + v;

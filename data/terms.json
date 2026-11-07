@@ -535,46 +535,148 @@
    "n_en": 79
   },
   {
-   "id": "k_crit_rate",
-   "cat": "calc",
-   "en": "Critical Rate",
-   "ko": "물리 크리티컬율",
-   "src": "notice",
-   "n_ko": 3,
-   "n_en": 1,
-   "note": "공식 표기 크리티컬율",
-   "aliases_ko": [
-    "크리티컬율"
-   ],
-   "aliases_en": [
-    "Crit Rate"
-   ]
-  },
-  {
-   "id": "k_crit_dmg",
-   "cat": "calc",
-   "en": "Critical Damage",
-   "ko": "물리 크리티컬 위력",
+   "id": "bulls_eye",
+   "cat": "equip",
+   "en": "Bull's Eye",
+   "ko": "겨누어 쏘기",
    "src": "self",
    "n_ko": 0,
    "n_en": 0,
-   "note": "공식 표기 크리티컬 대미지",
-   "aliases_ko": [
-    "크리티컬 대미지"
+   "note": "계산 키 aim",
+   "aliases_en": [
+    "Bulleye",
+    "Bullseye"
    ]
   },
   {
-   "id": "k_type_atk",
-   "cat": "calc",
-   "en": "Type Attack",
-   "ko": "속성 공격력",
+   "id": "weak_point_dmg",
+   "cat": "equip",
+   "en": "Enhanced Weak Point Damage",
+   "ko": "약점 대미지 강화",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 0,
+   "note": "계산 키 weak",
+   "aliases_en": [
+    "Weak Point Damage",
+    "Weakpoint Damage"
+   ]
+  },
+  {
+   "id": "mp_attack",
+   "cat": "equip",
+   "en": "MP Consumption Attack",
+   "ko": "MP 소비 공격",
+   "src": "notice",
+   "n_ko": 2,
+   "n_en": 2,
+   "note": "계산 키 mpatk"
+  },
+  {
+   "id": "growth",
+   "cat": "equip",
+   "en": "Damage Increased According to Turns Passed",
+   "ko": "공격 대미지 성장",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 0,
+   "note": "계산 키 growth · 화면 짧은 이름 성장"
+  },
+  {
+   "id": "zone_awake_dmg",
+   "cat": "equip",
+   "en": "Awakened Zone Damage+",
+   "ko": "ZONE 각성 중 대미지",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 0,
+   "note": "계산 키 zonedmg · 화면 짧은 이름 ZONE 각성",
+   "aliases_en": [
+    "In Another Zone: Damage+"
+   ]
+  },
+  {
+   "id": "wins_dmg",
+   "cat": "equip",
+   "en": "Wins Increase Damage",
+   "ko": "누계 승리 횟수에 따라 대미지 UP",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 0,
+   "note": "계산 키 wins · 화면 짧은 이름 누계 승리"
+  },
+  {
+   "id": "enemy_count_dmg",
+   "cat": "equip",
+   "en": "Adversity",
+   "ko": "적의 수에 따른 공격",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 0,
+   "note": "계산 키 enemies · 화면 짧은 이름 적 수",
+   "aliases_ko": [
+    "적 수에 따른 공격"
+   ],
+   "aliases_en": [
+    "Last Stand"
+   ]
+  },
+  {
+   "id": "fallen_ally_dmg",
+   "cat": "equip",
+   "en": "Ally Defeated: Damage+",
+   "ko": "쓰러진 아군 수만큼 대미지 UP",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 1,
+   "note": "계산 키 fallen · 화면 짧은 이름 쓰러진 아군"
+  },
+  {
+   "id": "ls_ally_dmg",
+   "cat": "equip",
+   "en": "Damage+ per Light Ally",
+   "ko": "천 · 명 아군 수만큼 대미지 UP",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 0,
+   "note": "계산 키 lsally · 화면 짧은 이름 아군",
+   "aliases_en": [
+    "Damage+ per Shadow Ally"
+   ]
+  },
+  {
+   "id": "status_enhance",
+   "cat": "equip",
+   "en": "Bind Enhance",
+   "ko": "인핸스",
    "src": "notice",
    "n_ko": 1,
    "n_en": 0,
-   "note": "공식 표기 속성 공격",
-   "aliases_ko": [
-    "속성 공격"
+   "note": "계산 키 seal · selfstatus",
+   "aliases_en": [
+    "Strengthen when Pain",
+    "Strengthen when Poisoned"
    ]
+  },
+  {
+   "id": "target_status_dmg",
+   "cat": "equip",
+   "en": "Damage+ to Enemy with Status",
+   "ko": "대상 상태 시 대미지",
+   "src": "self",
+   "n_ko": 0,
+   "n_en": 0,
+   "note": "계산 키 tstat · 화면 짧은 이름 대상"
+  },
+  {
+   "id": "skill_mod",
+   "cat": "equip",
+   "en": "Skill MOD+",
+   "ko": "스킬 위력",
+   "src": "notice",
+   "n_ko": 13,
+   "n_en": 0,
+   "note": "계산 키 skillmod"
   },
   {
    "id": "k_weak",
@@ -583,53 +685,8 @@
    "ko": "약점 배율",
    "src": "self",
    "n_ko": 0,
-   "n_en": 0
-  },
-  {
-   "id": "k_skillmod",
-   "cat": "calc",
-   "en": "Skill MOD+",
-   "ko": "스킬 위력",
-   "src": "notice",
-   "n_ko": 13,
    "n_en": 0,
-   "note": "전용 무기 「<스킬> MOD+」"
-  },
-  {
-   "id": "k_bullseye",
-   "cat": "calc",
-   "en": "Bull's Eye",
-   "ko": "겨누어 쏘기",
-   "src": "self",
-   "n_ko": 0,
-   "n_en": 0
-  },
-  {
-   "id": "k_overthrow",
-   "cat": "calc",
-   "en": "Overthrow",
-   "ko": "하극상",
-   "src": "notice",
-   "n_ko": 8,
-   "n_en": 8
-  },
-  {
-   "id": "k_mental_focus",
-   "cat": "calc",
-   "en": "Mental Focus",
-   "ko": "정신 통일",
-   "src": "notice",
-   "n_ko": 12,
-   "n_en": 12
-  },
-  {
-   "id": "k_singular_focus",
-   "cat": "calc",
-   "en": "Singular Focus",
-   "ko": "심기일체",
-   "src": "notice",
-   "n_ko": 23,
-   "n_en": 23
+   "note": "대미지 식의 칸(배율 자체) — 버프 「약점 시 대미지」가 여기에 더해진다"
   },
   {
    "id": "s_power",
@@ -775,6 +832,18 @@
    ]
   },
   {
+   "id": "s_type_attack",
+   "cat": "stat",
+   "en": "Type Attack",
+   "ko": "속성 공격력",
+   "src": "pair",
+   "n_ko": 1,
+   "n_en": 0,
+   "aliases_ko": [
+    "속성 공격"
+   ]
+  },
+  {
    "id": "s_elemental_attack",
    "cat": "stat",
    "en": "Elemental Attack",
@@ -817,6 +886,21 @@
    ]
   },
   {
+   "id": "s_critical_rate",
+   "cat": "stat",
+   "en": "Critical Rate",
+   "ko": "물리 크리티컬율",
+   "src": "pair",
+   "n_ko": 3,
+   "n_en": 1,
+   "aliases_ko": [
+    "크리티컬율"
+   ],
+   "aliases_en": [
+    "Crit Rate"
+   ]
+  },
+  {
    "id": "s_magic_critical_rate",
    "cat": "stat",
    "en": "Magic Critical Rate",
@@ -824,6 +908,18 @@
    "src": "pair",
    "n_ko": 22,
    "n_en": 0
+  },
+  {
+   "id": "s_critical_damage",
+   "cat": "stat",
+   "en": "Critical Damage",
+   "ko": "물리 크리티컬 위력",
+   "src": "pair",
+   "n_ko": 0,
+   "n_en": 0,
+   "aliases_ko": [
+    "크리티컬 대미지"
+   ]
   },
   {
    "id": "s_magic_critical_damage",
@@ -868,6 +964,24 @@
    "n_en": 0
   },
   {
+   "id": "st_singular_focus",
+   "cat": "state_buff",
+   "en": "Singular Focus",
+   "ko": "심기일체",
+   "src": "pair",
+   "n_ko": 23,
+   "n_en": 23
+  },
+  {
+   "id": "st_mental_focus",
+   "cat": "state_buff",
+   "en": "Mental Focus",
+   "ko": "정신 통일",
+   "src": "pair",
+   "n_ko": 12,
+   "n_en": 12
+  },
+  {
    "id": "st_overcritical",
    "cat": "state_buff",
    "en": "Overcritical",
@@ -887,6 +1001,15 @@
    "src": "pair",
    "n_ko": 2,
    "n_en": 2
+  },
+  {
+   "id": "st_overthrow",
+   "cat": "state_buff",
+   "en": "Overthrow",
+   "ko": "하극상",
+   "src": "pair",
+   "n_ko": 8,
+   "n_en": 8
   },
   {
    "id": "st_link",

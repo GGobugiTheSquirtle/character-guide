@@ -6,6 +6,7 @@
   "use strict";
   const C = root.AECalc || require("./ae_calc.js");
   const T = root.AETerms || require("./concepts.js");   // 개념 레지스트리 — 효과 이름 → 개념 id(T.cid), id → 한국어(T.ko). 엔진은 화면 이름을 직접 비교하지 않는다
+  const KL = k => T.short(T.calc(k));                   // 장비 fx 계산 키(aim · weak · growth …) → 근거 줄 이름(레지스트리 sub equip 의 짧은 이름)
   const ELEMS = ["불", "물", "땅", "바람", "번개", "그림자", "결정"];
   const PHYS = ["베기", "찌르기", "타격"];
 
@@ -241,24 +242,24 @@
         // 약점 대미지 강화 — 무기 · 방어구 · 배지 · 글래스터(Weak Point Strike · Moonlit Guidance) · 광석이 모두 같은 효과 「적의 약점 상성에 가하는 대미지 +N%, 효과 중복 불가」
         //   → 장비 전체에서 최댓값 하나, 딩님 계산기 43행 「공격 대미지 UP」(메모 시트 순서 약점 대미지 강화 → MP 소비 → 적 수). 26행 약점 배율이 아님
         //   (2026-11-03 어나더에덴 빌더 대조 — 전에는 무기 · 광석 = 약점 배율 +N/100, 글래스터 = 45행으로 따로 쌓였다)
-        else if ((f.k === "weak" || (f.k === "skillfx" && f.when === "weak")) && opt._weak) uniq("weak", it, "약점 대미지 강화", f.v);
+        else if ((f.k === "weak" || (f.k === "skillfx" && f.when === "weak")) && opt._weak) uniq("weak", it, KL("weak"), f.v);
         else if (f.k === "crit_rate") out[f.magic ? "mcrit" : "crit"] += v;
         else if (f.k === "crit_dmg") out[f.magic ? "mcritDmg" : "critDmg"] += v;
-        else if (f.k === "growth") mult(it, "성장", Math.min(f.per * (opt.turns || 0), f.max), "growthAtk");
-        else if (f.k === "aim" && !opt.af) uniq("aim", it, T.ko("bulls_eye"), f.v, "aim");
+        else if (f.k === "growth") mult(it, KL("growth"), Math.min(f.per * (opt.turns || 0), f.max), "growthAtk");
+        else if (f.k === "aim" && !opt.af) uniq("aim", it, KL("aim"), f.v, "aim");
         // MP 소비 공격 — 모든 공격(일반 공격 · MP 0 포함). 위키 Recommendation Ore 「Rose with Thorn: Always works」 + 빌더 「일반 공격에도 적용」(11-04, 전에는 MP 쓰는 스킬만)
-        else if (f.k === "mpatk") uniq("mpatk", it, "MP 소비 공격", f.v);
-        else if (f.k === "overthrow" && opt.enemy && opt.enemy.lv) mult(it, T.ko("overthrow"), Math.floor(opt.enemy.lv * opt.enemy.lv / f.d * 100) / 100, "overthrowE", f.d);
-        else if (f.k === "zonedmg" && opt.zoneAwake) mult(it, "ZONE 각성", f.v, "zoneAwake");
-        else if (f.k === "wins" && opt.wins) uniq("wins", it, "누계 승리", f.v, "wins");   // 계산기 입력 55행이 한 칸 — 여러 개면 최댓값 하나(빌더와 같게, 11-03)
-        else if (f.k === "lsally") mult(it, f.side === "light" ? "천 아군" : "명 아군", f.per * ((f.side === "light" ? opt.lightAllies : opt.shadowAllies) || 0), "lsAlly");
-        else if (f.k === "seal" && opt.sealed) uniq("seal", it, `${T.ko("bind")} 인핸스`, f.v, "enhance");
+        else if (f.k === "mpatk") uniq("mpatk", it, KL("mpatk"), f.v);
+        else if (f.k === "overthrow" && opt.enemy && opt.enemy.lv) mult(it, KL("overthrow"), Math.floor(opt.enemy.lv * opt.enemy.lv / f.d * 100) / 100, "overthrowE", f.d);
+        else if (f.k === "zonedmg" && opt.zoneAwake) mult(it, KL("zonedmg"), f.v, "zoneAwake");
+        else if (f.k === "wins" && opt.wins) uniq("wins", it, KL("wins"), f.v, "wins");   // 계산기 입력 55행이 한 칸 — 여러 개면 최댓값 하나(빌더와 같게, 11-03)
+        else if (f.k === "lsally") mult(it, `${f.side === "light" ? "천" : "명"} ${KL("lsally")}`, f.per * ((f.side === "light" ? opt.lightAllies : opt.shadowAllies) || 0), "lsAlly");
+        else if (f.k === "seal" && opt.sealed) uniq("seal", it, `${T.ko("bind")} ${KL("seal")}`, f.v, "enhance");
         // 페인 · 독 · 도발 인핸스(자신이 그 상태 — opt.selfStatus ['pain'|'poison'|'rage'] = 개념 id) · 그 상태일 때 스탯+ (2026-10-15, 그동안 엔진이 안 읽던 키)
-        else if (f.k === "selfstatus" && (opt.selfStatus || []).includes(f.when)) uniq("self:" + f.when, it, `${T.ko(f.when)} 인핸스`, f.v, "enhance");
+        else if (f.k === "selfstatus" && (opt.selfStatus || []).includes(f.when)) uniq("self:" + f.when, it, `${T.ko(f.when)} ${KL("selfstatus")}`, f.v, "enhance");
         else if (f.k === "selfstat" && f.v && (opt.selfStatus || []).includes(f.when)) out.stats[f.stat] = (out.stats[f.stat] || 0) + f.v;
-        else if (f.k === "enemies") uniq("enemies", it, "적 수", f.per * Math.max(0, (opt.enemyCount || 1) - 1));
-        else if (f.k === "fallen") mult(it, "쓰러진 아군", f.per * (opt.fallen || 0), "fallen");
-        else if (f.k === "tstat" && opt.punish && opt.punish.includes(f.when)) mult(it, `대상 ${T.ko(f.when)}`, f.v, "statusE");
+        else if (f.k === "enemies") uniq("enemies", it, KL("enemies"), f.per * Math.max(0, (opt.enemyCount || 1) - 1));
+        else if (f.k === "fallen") mult(it, KL("fallen"), f.per * (opt.fallen || 0), "fallen");
+        else if (f.k === "tstat" && opt.punish && opt.punish.includes(f.when)) mult(it, `${KL("tstat")} ${T.ko(f.when)}`, f.v, "statusE");
         // 전용 무기 스킬 강화 「<스킬> MOD+ 50% · 250% total」 = 기본 배율 +50%p → 배율 × total/(total−v) (스킬 자체 배수 보존)
         else if (f.k === "skillmod" && f.total && atk.skill === f.skill) { out.skillMul *= f.total / (f.total - f.v); out.src.push(`${it.name}: ${f.skill} 배율 +${f.v}%p`); }
       }

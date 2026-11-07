@@ -1369,7 +1369,19 @@ async function loadCalcDb() {
     // 배지 — 계산에 닿는 것만(고정 스탯 · 대미지 · 크리). 무작위 배지 최대치가 위로
     STATE.calcDb.badges = STATE.calcDb.badges.filter(b => Object.keys(b.stats || {}).length || (b.calc || []).length)
       .sort((a, b) => (b.kind === "random") - (a.kind === "random"));
-    STATE.calcDb.buddyMeta = STATE.calcDb.buddies.meta; STATE.calcDb.buddies = STATE.calcDb.buddies.buddies;   // 버디 26(딩님 스킬 랭킹, 2026-10-17)
+    STATE.calcDb.buddyMeta = STATE.calcDb.buddies.meta; STATE.calcDb.buddies = STATE.calcDb.buddies.buddies;
+    // 장비 한국어 이름(2026-11-07) — 딩님 「장비 목록」 ↔ 위키 계산 DB 확실 대응표(match_ding_equipment.py). 계산 · 저장 키는 영어 이름 그대로, 화면 표시만 ko
+    const em = await fetch("data/calc/equip_map.json").then(r => (r.ok ? r.json() : null)).catch(() => null);
+    if (em) {
+      const put = (list, rows) => {           // 위키 글래스터 한 항목 = 딩님 무기 변형 여럿(<검> · <도> …) → 조건이 하나일 때만 붙인다
+        const by = new Map(), add = (k, r) => { const v = by.get(k) || { ko: r.ko + (r.reworked ? " (재가공)" : ""), conds: new Set() }; if (r.cond) v.conds.add(r.cond); by.set(k, v); };
+        for (const r of rows || []) { if (r.page) add("p:" + r.page, r); add("n:" + r.en, r); }
+        for (const it of list) { const v = by.get("p:" + it.page) || by.get("n:" + it.name); if (v) it.ko = v.ko + (v.conds.size === 1 ? " " + [...v.conds][0] : ""); }
+      };
+      const db = STATE.calcDb;
+      put(db.weapons, em.weapons); put(db.armor, em.armors); put(db.grasta, em.grasta); put(db.badges, em.badges); put(db.ores, em.ores);
+      db.equipMeta = em.meta;
+    }   // 버디 26(딩님 스킬 랭킹, 2026-10-17)
   }
   return STATE.calcDb;
 }
@@ -1563,10 +1575,11 @@ function enemyLine(enemy) {
 }
 
 // 장비 입력 — 목록이 길어(무기 150 · 그라스타 500) select 대신 datalist 입력칸
+const gname = g => (g && g.ko ? `${g.ko} (${g.name})` : g ? g.name : "");   // 장비 표시 이름 — 딩님 한국어(확실 대응만) + 영어 키
 function ensureDatalist(id, items, label) {
   if (!document.getElementById(id)) {
     const dl = el("datalist", { attrs: { id } });
-    for (const it of items) dl.appendChild(el("option", { attrs: { value: it.name, label: label ? label(it) : "" } }));
+    for (const it of items) dl.appendChild(el("option", { attrs: { value: it.name, label: (it.ko ? it.ko + " · " : "") + (label ? label(it) : "") } }));
     document.body.appendChild(dl);
   }
   return id;
@@ -1599,7 +1612,7 @@ function gearEditor(db, m, rerender) {
   const row = (k, inp) => box.appendChild(el("div", { class: "gear-row", children: [el("span", { class: "gear-k", text: k }), inp] }));
   const set = (k, v) => { conf[k] = v; saveCalc(); rerender(); };
   const setAt = (k, i, v) => { const a = [...(conf[k] || [])]; a[i] = v; set(k, a.filter(Boolean)); };
-  row("무기", gearInput(L.w[0], L.w[1], conf.weapon ? m.weapon && m.weapon.name : "", v => set("weapon", v), `기본: ${m.weapon ? m.weapon.name : "없음"}`));
+  row("무기", gearInput(L.w[0], L.w[1], conf.weapon ? m.weapon && m.weapon.name : "", v => set("weapon", v), `기본: ${m.weapon ? gname(m.weapon) : "없음"}`));
   row("방어구", gearInput(L.a[0], L.a[1], m.armor && m.armor.name, v => set("armor", v)));
   const gN = m.grasta.filter(g => !(m.special || []).includes(g)), okG = v => !!findGrasta(db, v, m.c.traits);
   for (let i = 0; i < (STATE.calc.gslots || 4); i++) row(`그라스타${i + 1}`, gearInput(L.g[0], L.g[1], (gN[i] || {}).name, v => setAt("grasta", i, v), "없음", okG));
@@ -1919,7 +1932,7 @@ function showPartyResult(out, db, r) {
       who.appendChild(el("div", { class: "pt", children: [el("b", { text: c ? c.nameKo : x.id }),
         document.createTextNode(` — ${x.attack ? x.attack.skill : "공격 없음"} · ${fmtN(x.expected)}`)] }));
       if (x.gear) who.appendChild(el("div", { class: "skko-src", style: "margin:0 0 4px 10px",
-        text: [x.gear.weapon, x.gear.armor, ...x.gear.grasta, ...(x.gear.badges || []), ...(x.gear.special || [])].filter(Boolean).map(g => g.name).join(" · ") }));
+        text: [x.gear.weapon, x.gear.armor, ...x.gear.grasta, ...(x.gear.badges || []), ...(x.gear.special || [])].filter(Boolean).map(gname).join(" · ") }));
     }
     const go = el("button", { class: "slot-btn", text: "파티 구성으로" });
     go.addEventListener('click', () => {

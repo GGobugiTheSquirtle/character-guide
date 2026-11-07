@@ -359,24 +359,22 @@ const STATE = {
   view: "chars",      // chars | dungeons | quests
 };
 
-const ELEM_KO = {fire:"불",water:"물",earth:"땅",wind:"바람",thunder:"번개",shade:"그림자",crystal:"결정","null":"무"};
-const WEAP_KO = {sword:"검",katana:"도",axe:"도끼",lance:"창",bow:"활",fist:"권갑",staff:"지팡이",hammer:"망치"};
+// 속성 · 무기 데이터 키(fire · fist · null) → 한국어 — 정본 = 개념 레지스트리 어휘(calc/concepts.js)
+const ELEM_KO = Object.fromEntries(AETerms.slots("element").map(s => [s.k, s.ko]));
+const WEAP_KO = Object.fromEntries(AETerms.slots("weapon").map(s => [s.k, s.ko]));
 
 // 스킬표 일본어 헤더 → 한국어
 const SKILL_HEADER_KO = {
   "ランク": "랭크", "スキル名": "스킬명", "属性": "속성", "MP": "MP",
   "威力(実質倍率)": "위력", "威力": "위력", "特記事項": "비고", "効果": "효과",
 };
-// 스킬표 속성 셀 일본어 → 한국어 (단일 한자 약식)
-const ELEM_CELL_KO = {
-  "火": "불", "水": "물", "地": "땅", "風": "바람", "雷": "번개",
-  "闇": "그림자", "陰": "그림자", "結晶": "결정", "晶": "결정", "無": "무",
-};
+// 스킬표 속성 셀 일본어 → 한국어 (단일 한자 약식 陰 · 晶 포함 — 레지스트리 jp · jp_alt)
+const ELEM_CELL_KO = Object.fromEntries(AETerms.slots("element").flatMap(s => s.jp.map(j => [j, s.ko])));
 
 const TOGGLE_DEFS = [["sa", "성도 각성 지원"], ["hasFull", "상세 정보 있음"], ["skillsKo", "한국어 스킬(딩님 DB · 공식)"]];
 const FILTER_DEFS = [
-  { label: "속성", key: "element", values: [["", "전체"], ["fire","불"], ["water","물"], ["earth","땅"], ["wind","바람"], ["thunder","번개"], ["shade","그림자"], ["crystal","결정"], ["null","무"]] },
-  { label: "무기", key: "weapon",  values: [["", "전체"], ["sword","검"], ["katana","도"], ["axe","도끼"], ["lance","창"], ["bow","활"], ["fist","권갑"], ["staff","지팡이"], ["hammer","망치"]] },
+  { label: "속성", key: "element", values: [["", "전체"], ...AETerms.slots("element").map(s => [s.k, s.ko])] },
+  { label: "무기", key: "weapon",  values: [["", "전체"], ...AETerms.slots("weapon").map(s => [s.k, s.ko])] },
   { label: "스타일", key: "style", values: [["", "전체"], ["NS","NS"], ["AS","AS"], ["ES","ES"], ["Alter","Alter"]] },
   { label: "영입", key: "recruit", values: [["", "전체"], ["free","무료"], ["gacha","가챠"], ["books","조건템 있음"]] },
 ];
@@ -1292,7 +1290,7 @@ function buildSkillsSection(c, lang) {
 //   공식 한국어 스킬(있으면) 또는 위키 영어 스킬. 성도 각성은 완료로 보고 포함. 명단 = 칸 순서(0~3 전방 · 4~5 후방, 빈 칸 null), localStorage
 // ─────────────────────────────────────
 const PARTY_MAX = 6, FRONT_N = 4;                 // 전방 4 · 후방 2 — 칸 순서 = 화면 왼쪽부터
-const ELEMS = ["불", "물", "땅", "바람", "번개", "그림자", "결정"];
+const ELEMS = AETerms.slots("element").filter(s => !s.absent).map(s => s.ko);
 STATE.party = (() => { try { return JSON.parse(localStorage.getItem('cg-party') || '[]').slice(0, PARTY_MAX); } catch { return []; } })();
 STATE.skfx = {};
 function saveParty() { try { localStorage.setItem('cg-party', JSON.stringify(STATE.party)); } catch {} }

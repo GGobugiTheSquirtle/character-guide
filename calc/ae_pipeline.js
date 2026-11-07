@@ -80,7 +80,7 @@
     const resTM = 1 - (inp.elemental ? clamp(decayTerms(f.resType, 4), -100, 100) / 100 : 0);
     const mpTot = st(s.mp, "mp");
     const six = [0, 1].map(i => Math.min(250, mpTot * rd((f.focus || [])[i] || 0, 2)))   // 정신 통일 · 심기일체 = 최대 MP × 비율(칸당 ≤250)
-      .concat([0, 1].map(i => rd((f.hawk || [])[i] || 0, 2)))                           // 호시탐탐
+      .concat([0, 1].map(i => rd((f.eagleEyes || [])[i] || 0, 2)))                      // 호시탐탐
       .concat([0, 1].map(i => { const d = (f.overthrowNE || [])[i]; return Math.min(100, rd(d ? e.lv * e.lv / d : 0, 2)); }));   // 하극상 Lv²/d
     const stateNE = 1 + clamp(decayTerms(six, 6), -100, 350) / 100;
     const otE = [0, 1].map(i => { const d = (f.overthrowE || [])[i]; return rd(d ? e.lv * e.lv / d : 0, 2); });
@@ -102,7 +102,7 @@
       v = seq(v, f.statusNE); v = seq(v, f.statusE); v = seq(v, f.enhance);        // 특공(NE) · 특공(E) · 인핸스
       v = addR(v, pcSum(f.fallen));                                                // 쓰러진 아군
       v = seq(v, f.condE);                                                         // (E) 공격 대미지 UP(MP 소비 · 적 수 …)
-      v = addR(v, pc(f.kesshi)); v = addR(v, pc(f.shingan));                       // 결사 · 심안
+      v = addR(v, pc(f.risktaker)); v = addR(v, pc(f.mindsEye));                   // 결사 · 심안
       v = seq(v, f.condNB);                                                        // (스킬 자체) 가하는 대미지
       if (crit) { v = addR(v, pcSum(f.critDmg)); v = addR(v, pc(f.overCrit)); }   // 크리 위력 · 오버 크리
       v = addR(v, pc(f.aim)); v = addR(v, pcSum(f.zoneAwake)); v = addR(v, pcSum(f.zoneCond)); v = addR(v, pcSum(f.lsAlly));

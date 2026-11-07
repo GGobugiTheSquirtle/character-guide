@@ -38,7 +38,7 @@
   //   s.fx 를 바꾸면 s._contrib 를 지울 것
   const newAG = () => ({ pwr: { buffs: [] }, int: { buffs: [] }, spd: { buffs: [] }, type: {}, dmg: { buffs: [] }, wdmg: {},
     crit: [], mcrit: [], critDmg: [], mcritDmg: [], weak: [], focusPhys: [], focusMag: [], sureCrit: false, overthrow: false,
-    mindseye: false, risktaker: false, overcrit: false, movercrit: false, multihit: false, vanguard: false, hawk: [], src: [] });
+    minds_eye: false, risktaker: false, overcritical: false, magic_overcritical: false, multi_upgrade: false, sacrifice: false, eagle_eyes: [], src: [] });   // 상태 칸 = 개념 id
   const newEG = () => ({ phys: [], magic: [], type: {}, atk: {}, def: [], mdef: [], breaks: [], src: [] });
   function mergeInto(g, h) {
     for (const [k, x] of Object.entries(h)) {
@@ -98,16 +98,15 @@
   //   (2026-11-07 전에는 「호시탐탐」 「Eagle Eyes」 같은 화면 이름을 여기 직접 비교해, 표기를 바꾸면 계산이 조용히 끊겼다)
   const MULTI_UP = [1, 1.25, 1.5, 2, 3];   // 다단 강화 n번째 타 배율(index = n − 1, 5타 이후 3)
   const ATK_EN = { slash: "베기", piercing: "찌르기", pierce: "찌르기", blunt: "타격", magic: "마법" };
-  const STATUS_OF = { minds_eye: "mindseye", risktaker: "risktaker", sacrifice: "vanguard", overcritical: "overcrit",
-    magic_overcritical: "movercrit", eagle_eyes: "eagle", multi_upgrade: "multihit", break: "break" };   // 개념 id → 엔진 상태 칸
+  const STATUS_IDS = new Set(["minds_eye", "risktaker", "sacrifice", "overcritical", "magic_overcritical", "eagle_eyes", "multi_upgrade", "break"]);   // 엔진 상태 칸 = 개념 id(번역표 없음)
   function statusOf(u) {
     const n = u.name || "";
     let id = T.cid(n);
     if (id === "lunatic" || /^루나틱/.test(n)) id = T.lunatic(`${n} ${u.raw || ""}`);   // 딩님 원천은 k other, 위키 원천은 k buff(11-04)
-    if (id && STATUS_OF[id]) return { id: STATUS_OF[id] };
+    if (id && STATUS_IDS.has(id)) return { id };
     const m = n.match(/^(.+?)\((.+)\)$/);                    // 엘리멘탈 브레이크(불) · 웨폰 브레이크(베기 찌르기)
-    if (m && T.cid(m[1]) === "elemental_break") return { id: "ebreak", which: m[2] };
-    if (m && T.cid(m[1]) === "weapon_break") return { id: "wbreak", which: m[2].split(/\s+/).map(x => ATK_EN[x.toLowerCase()] || x) };
+    if (m && T.cid(m[1]) === "elemental_break") return { id: "elemental_break", which: m[2] };
+    if (m && T.cid(m[1]) === "weapon_break") return { id: "weapon_break", which: m[2].split(/\s+/).map(x => ATK_EN[x.toLowerCase()] || x) };
     return null;
   }
   const WEAPON_WORDS = [["검", /(?<![가-힣])검|sword/i], ["도끼", /도끼|\bax(?:e)?\b/i], ["도", /(?<![가-힣])도(?![끼가-힣])|katana/i], ["창", /(?<![가-힣])창|lance|spear/i],
@@ -151,8 +150,8 @@
       else if (id === "overthrow") { g.overthrow = true; g.src.push(`${s.c.nameKo}: ${T.ko(id)}`); }
       else {
         const st = statusOf(u);
-        if (!st || ["break", "ebreak", "wbreak"].includes(st.id)) return;
-        if (st.id === "eagle") { if (u.value) g.hawk.push(u.value / 100); }
+        if (!st || ["break", "elemental_break", "weapon_break"].includes(st.id)) return;
+        if (st.id === "eagle_eyes") { if (u.value) g.eagle_eyes.push(u.value / 100); }
         else g[st.id] = true;
         g.src.push(`${s.c.nameKo}: ${u.name}${u.value ? " " + u.value + "%" : ""}`);
       }
@@ -162,10 +161,10 @@
   // 적에게 거는 디버프 — 저항 그룹(물리 · 속성 · 마법 · 공격 종류별), 내구 · 정신
   function addEnemy(e, u, s) {
     const st = (u.k === "ailment" || u.k === "stack") && !/아군|자신/.test(u.tc || "") ? statusOf(u) : null;
-    if (st && ["break", "ebreak", "wbreak"].includes(st.id)) {
-      const which = st.id === "ebreak" ? [st.which] : st.id === "wbreak" ? st.which : ["*"];
+    if (st && ["break", "elemental_break", "weapon_break"].includes(st.id)) {
+      const which = st.id === "elemental_break" ? [st.which] : st.id === "weapon_break" ? st.which : ["*"];
       const n = st.id === "break" ? 1 : Math.max(1, Math.floor(u.value || 1));     // 엘리멘탈 · 웨폰 브레이크 「N 축적」 = N 타
-      for (let i = 0; i < n; i++) e.breaks.push(...which.map(w => (st.id === "ebreak" ? "e:" : st.id === "wbreak" ? "a:" : "") + w));
+      for (let i = 0; i < n; i++) e.breaks.push(...which.map(w => (st.id === "elemental_break" ? "e:" : st.id === "weapon_break" ? "a:" : "") + w));
       e.src.push(`${s.c.nameKo}: 적 ${u.name}`);
       return;
     }
@@ -277,8 +276,8 @@
     if (!env || !env.dmg) return out;
     const magic = atk.dep === "magic" || atk.dep === "magicpwr";
     for (const d of env.dmg) {
-      if (d.k === "hawk") { out.focus.push(d.v / 100); out.src.push(`${env.name}: 호시탐탐 +${d.v}%`); continue; }
-      if (d.k === "weak") { out.weak += d.v / 100; out.src.push(`${env.name}: 약점 배율 +${d.v / 100}`); continue; }
+      if (d.k === "eagle_eyes") { out.focus.push(d.v / 100); out.src.push(`${env.name}: ${T.ko("eagle_eyes")} +${d.v}%`); continue; }
+      if (d.k === "weak_dmg") { out.weak += d.v / 100; out.src.push(`${env.name}: 약점 배율 +${d.v / 100}`); continue; }   // 환경 dmg 의 k = 개념 id(weak_dmg · eagle_eyes)
       if (d.who === "enemy") continue;
       const w = d.when;
       const ok = w === "*" || (w === "type" && !!atk.element) || (w === "nontype" && !atk.element) || w === atk.element
@@ -478,18 +477,18 @@
       ...(ag.overthrow && opt.enemy && opt.enemy.lv ? [Math.min(1, opt.enemy.lv * opt.enemy.lv / 200 / 100)] : [])];
     // 상태(2026-10-13): 루나틱 · 호시탐탐은 발동 조건(opt.lunatic · opt.enemyFirst, 기본 = 조건부 효과 포함), 브레이크는 opt.breakOn(기본 같음)
     const lun = opt.lunatic ?? !!opt.cond, brk = opt.breakOn ?? !!opt.cond;
-    if ((opt.enemyFirst ?? !!opt.cond) && ag.hawk.length) fv.push(...ag.hawk);
+    if ((opt.enemyFirst ?? !!opt.cond) && ag.eagle_eyes.length) fv.push(...ag.eagle_eyes);
     const focusV = fv.length ? C.focusGroup(fv) : 0;
     if (fv.length) groups.push(focusV);
     // 브레이크 = 그 뒤 첫 1타만 ×2(10-16 블루스택 세스타 2타 7,967,814 / 3,974,134). 엘리멘탈 · 웨폰은 축적 수만큼, 겹치면 큰 쪽 하나 —
     //   normal · crit · expected 는 첫 타(브레이크 포함), perUse = 첫 타들 + 나머지 타(브레이크 없음). 전에는 모든 타에 ×2 라 다단 히트를 과대평가했다
     const bMatch = b => b === "e:" + atk.element || b === "a:" + atk.atk;
     const nBrk = brk ? Math.max(eg.breaks.includes("*") ? 1 : 0, eg.breaks.filter(bMatch).length) : 0;
-    const sx = { shingan: lun && ag.mindseye ? 0.5 : 0, kesshi: lun && ag.risktaker ? 0.7 : 0, brk: nBrk ? 1 : 0 };
+    const sx = { mindsEye: lun && ag.minds_eye ? 0.5 : 0, risktaker: lun && ag.risktaker ? 0.7 : 0, brk: nBrk ? 1 : 0 };
     // 루나틱 솔선(2026-11-04 빌더 대조) — 초기 내구만큼 힘 · 초기 정신만큼 지능 = 상태 효과 고정값(딩님 14 · 15행). 초기 = 캐릭터 + 장비(빌더 「솔선의 초기 내구 · 정신」)
-    const fl0 = m.flatFx || {}, van = lun && ag.vanguard;
+    const fl0 = m.flatFx || {}, van = lun && ag.sacrifice;
     const flatFx = van ? { ...fl0, pwr: (fl0.pwr || 0) + (st.end || 0), int: (fl0.int || 0) + (st.spr || 0) } : (m.flatFx || undefined);
-    for (const x of [sx.shingan, sx.kesshi]) if (x) groups.push(x);
+    for (const x of [sx.mindsEye, sx.risktaker]) if (x) groups.push(x);
     // 방어 무시(공격 단위 ignoreDef — 발경참 · 흉랑체, 10-18 영상 대조로 공백 발견) = 그 공격만 적 내구 · 정신 0
     const en = atk._ignoreDef ? { ...(opt.enemy || {}), end: 0, spr: 0 } : (opt.enemy || { end: 0, spr: 0 });
     // skillMult — 범위 배율(150~18000%)의 위값(multMax)은 조건부라 opt.cond 일 때만(모든 조건 최대).
@@ -510,20 +509,20 @@
         type: net(eg, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(eg.type["*"] || []), ...(eg.type[typeKey] || [])] : [] })),
         magic: net(eg, "magic", () => C.groupNet({ buffs: eg.magic })) },
       stacks: flatFx,                                       // 상태 효과 고정값(scenario flatFx) — 공격력 · 약점 기준에만, /32 배율엔 안 들어감(ae_calc stacks = 딩님 14~16행)
-      groups, punish: eq.punish, punishV: eq.punishV, equip: eq.equip, weakBuff: ev.weak + (sx.shingan ? 1 : 0) + ag.weak.reduce((a, b) => a + b, 0), single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
+      groups, punish: eq.punish, punishV: eq.punishV, equip: eq.equip, weakBuff: ev.weak + (sx.mindsEye ? 1 : 0) + ag.weak.reduce((a, b) => a + b, 0), single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
     };
     const critDmg = magic ? C.additive([...ag.mcritDmg, eq.mcritDmg]) : C.additive([...ag.critDmg, eq.critDmg]);
     // 오버 크리: 크리 대미지 ×2 확률 = (크리율 − 100%) / 1000% (위키 Status Effects)
     const rate = magic ? C.additive([...ag.mcrit, eq.mcrit]) : (st.lck || 0) / 1600 + C.additive([...ag.crit, eq.crit]);
-    const oc = (magic ? ag.movercrit : ag.overcrit) ? Math.max(0, Math.min(1, (rate - 1) / 10)) : 0;
+    const oc = (magic ? ag.magic_overcritical : ag.overcritical) ? Math.max(0, Math.min(1, (rate - 1) / 10)) : 0;
     // 25억 경감(opt.cap === false 면 끔) — 1타마다. 최적화 목표가 캡을 모르면 1타가 큰 조합을 과대평가한다(2026-10-15, 추천 상위가 1타 수십억)
     const capF = opt.cap === false ? v => v : C.softCap;
     const hitOf = ob => [capF(C.damage({ ...ob, crit: false }).total), capF(C.damage({ ...ob, crit: true, critDmg }).total * (1 + oc) * critX)];
-    const p = (ag.sureCrit || sx.kesshi) ? 1 : Math.max(0, Math.min(1, rate));
+    const p = (ag.sureCrit || sx.risktaker) ? 1 : Math.max(0, Math.min(1, rate));
     // 다단 강화(Multi-upgrade, 2026-11-04 빌더 대조 — statuses.json 에 있었으나 미반영): 한 행동의 n번째 타 위력 ×1 · 1.25 · 1.5 · 2 · 3(이후 3, 위키 Damage Formula/Multipliers).
     //   딩님 v4.016 = 위력 % UP 칸(합산). opt.hitOffset = 이 공격 앞에 같은 행동에서 이미 친 타수(시나리오가 넘긴다). 25억 경감은 타마다
     const hits = Math.max(1, atk.hits || 1), h0 = opt.hitOffset || 0;
-    const mhOf = j => (ag.multihit ? MULTI_UP[Math.min(h0 + j, MULTI_UP.length - 1)] : 1);
+    const mhOf = j => (ag.multi_upgrade ? MULTI_UP[Math.min(h0 + j, MULTI_UP.length - 1)] : 1);
     const memoH = new Map(), expOf = (f, b) => {
       const key = f + (b ? "b" : "");
       if (!memoH.has(key)) { const ob = f === 1 ? o : { ...o, skillMult: o.skillMult * f }, [n, c] = hitOf(b ? { ...ob, groups: [...groups, 1] } : ob); memoH.set(key, [n, c, p * c + (1 - p) * n]); }
@@ -549,9 +548,9 @@
         enemy: { lv: (opt.enemy && opt.enemy.lv) || 0, def: en.end || 0, mdef: en.spr || 0 },
         fx: { power: f0 > 1 ? [(f0 - 1) * 100] : [], flat: flatFx ? Object.fromEntries(Object.entries(flatFx).map(([k, v]) => [k, [v]])) : {}, pct: { pwr: pct(o.buff.pwr), int: pct(o.buff.int), spd: pct(o.buff.spd), def: negPct(defNet), mdef: negPct(mdefNet) },
           resPhysMag: negPct(magic ? o.resDown.magic : o.resDown.phys), resType: negPct(o.resDown.type),
-          typeNE: pct(typeNet), wielder: pct(dmgNet), hawk: focusV ? [focusV * 100, 0] : [],
+          typeNE: pct(typeNet), wielder: pct(dmgNet), eagleEyes: focusV ? [focusV * 100, 0] : [],
           weak: o.weakBuff ? [o.weakBuff * 100] : [], typeE: eq.equip.map(x => x * 100), statusE: [...eq.punishV, ...(sl.statusE || [])],
-          enhance: sl.enhance, fallen: sl.fallen, condE: sl.condE, kesshi: sx.kesshi * 100 || undefined, shingan: sx.shingan * 100 || undefined,
+          enhance: sl.enhance, fallen: sl.fallen, condE: sl.condE, risktaker: sx.risktaker * 100 || undefined, mindsEye: sx.mindsEye * 100 || undefined,
           condNB: o.skillFx.map(x => x * 100), critDmg: pct(critDmg), overCrit: oc * 100 || undefined, aim: sum(sl.aim) || undefined,
           zoneAwake: sl.zoneAwake, zoneCond: sl.zoneCond, lsAlly: sl.lsAlly, overthrowE: sl.overthrowE, growthAtk: sl.growthAtk, wins: (sl.wins || [])[0],
           zone: pct(o.zone), cheer: ev.groups.map(x => x * 100), aura: bud ? bud.aura.map(x => x * 100) : [], break: sx.brk * 100 || undefined } };
@@ -599,7 +598,8 @@
       case "resPhys": return gn(mg ? e.magic : [...e.phys, ...(e.atk[ctx.atk] || [])]);
       case "def": return gn(mg ? e.mdef : e.def);
       case "focus": return (mg ? a.focusMag : a.focusPhys).length ? 1 : 0;
-      case "overcrit": return (mg ? a.movercrit : a.overcrit) ? 1 : 0;
+      case "overcrit": return (mg ? a.magic_overcritical : a.overcritical) ? 1 : 0;
+      case "mindseye": return a.minds_eye ? 1 : 0;                  // 프리셋 줄 id(브라우저 저장값 cg-ov)는 옛 이름 그대로 — 엔진 칸은 개념 id
       case "break": return e.breaks.some(b => b === "*" || b === "e:" + el || b === "a:" + ctx.atk) ? 1 : 0;
       default: return a[id] ? 1 : 0;
     }
@@ -643,13 +643,13 @@
         case "resType": if (el) pct(el + " 속성 저항", v, "DOWN", foe); break;
         case "resPhys": pct(mg ? "마법 저항" : "물리 저항", v, "DOWN", foe); break;
         case "def": pct(mg ? "정신" : "내구", v, "DOWN", foe); break;
-        case "focus": fx.push({ k: "buff", name: mg ? "정신 통일" : "심기일체", tc: ally }); break;
-        case "overthrow": fx.push({ k: "buff", name: "하극상", tc: ally }); break;
-        case "sureCrit": fx.push({ k: "buff", name: "크리티컬 발생 확정", tc: ally }); break;
-        case "overcrit": fx.push({ k: "buff", name: mg ? "마법 오버 크리티컬" : "물리 오버 크리티컬", tc: ally }); break;
-        case "mindseye": fx.push({ k: "buff", name: "심안", tc: ally }); break;
-        case "risktaker": fx.push({ k: "buff", name: "결사", tc: ally }); break;
-        case "break": fx.push({ k: "ailment", name: "브레이크", tc: foe }); break;
+        case "focus": fx.push({ k: "buff", name: T.ko(mg ? "mental_focus" : "singular_focus"), tc: ally }); break;
+        case "overthrow": fx.push({ k: "buff", name: T.ko("overthrow"), tc: ally }); break;
+        case "sureCrit": fx.push({ k: "buff", name: T.ko("sure_crit"), tc: ally }); break;
+        case "overcrit": fx.push({ k: "buff", name: T.ko(mg ? "magic_overcritical" : "overcritical"), tc: ally }); break;
+        case "mindseye": fx.push({ k: "buff", name: T.ko("minds_eye"), tc: ally }); break;
+        case "risktaker": fx.push({ k: "buff", name: T.ko("risktaker"), tc: ally }); break;
+        case "break": fx.push({ k: "ailment", name: T.ko("break"), tc: foe }); break;
       }
     }
     return { c: { id: "_preset", nameKo: level === "max" ? "외부 버프(최대)" : "외부 버프(표준)", traits: [] }, fx, grasta: [], badges: [], preset: true };

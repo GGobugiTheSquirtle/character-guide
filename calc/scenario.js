@@ -187,7 +187,7 @@
       if (!e.left || sideOf(e.u) !== "e") continue;
       const st = P.statusOf(e.u);
       if (!st) continue;
-      const fit = st.id === "ebreak" ? st.which === atk.element : st.id === "wbreak" ? (st.which || []).includes(atk.atk) : st.id === "break";
+      const fit = st.id === "elemental_break" ? st.which === atk.element : st.id === "weapon_break" ? (st.which || []).includes(atk.atk) : st.id === "break";
       if (!fit) continue;
       const n = Math.min(e.left, hits);
       hits -= n; e.left -= n;

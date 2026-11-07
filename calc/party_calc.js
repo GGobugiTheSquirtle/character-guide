@@ -509,7 +509,7 @@
         type: net(eg, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(eg.type["*"] || []), ...(eg.type[typeKey] || [])] : [] })),
         magic: net(eg, "magic", () => C.groupNet({ buffs: eg.magic })) },
       stacks: flatFx,                                       // 상태 효과 고정값(scenario flatFx) — 공격력 · 약점 기준에만, /32 배율엔 안 들어감(ae_calc stacks = 딩님 14~16행)
-      groups, punish: eq.punish, punishV: eq.punishV, equip: eq.equip, weakBuff: ev.weak + (sx.mindsEye ? 1 : 0) + ag.weak.reduce((a, b) => a + b, 0), single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
+      groups, punish: eq.punish, punishV: eq.punishV, equip: eq.equip, weakBuff: ev.weak + (sx.mindsEye ? 1 : 0) + Math.max(0, ...ag.weak),   /* 약점 시 대미지 UP(+1) 은 여러 명이 걸어도 하나 — 겹친다는 근거 없음 · 딩님 계산기 26행 한 칸(11-07 가정) */ single: /적 하나|랜덤/.test(atk.scope || ""), rand: "avg",
     };
     const critDmg = magic ? C.additive([...ag.mcritDmg, eq.mcritDmg]) : C.additive([...ag.critDmg, eq.critDmg]);
     // 오버 크리: 크리 대미지 ×2 확률 = (크리율 − 100%) / 1000% (위키 Status Effects)

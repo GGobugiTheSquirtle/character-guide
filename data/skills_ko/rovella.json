@@ -409,13 +409,13 @@
       "effects": [
        {
         "k": "dmg",
-        "what": "대미지",
+        "what": "약점 시 대미지",
         "dir": "UP",
+        "value": 100.0,
         "turns": 3,
         "raw": "약점 시 대미지 UP(3턴)",
         "target": "자신",
         "mode": "",
-        "cond": "약점 시",
         "r": "atk_buff",
         "tm": "사용 시",
         "tc": "자신"
@@ -432,7 +432,6 @@
         "raw": "크리티컬율 200% UP(10회 행동)",
         "target": "자신",
         "mode": "",
-        "cond": "약점 시",
         "r": "atk_buff",
         "tm": "사용 시",
         "tc": "자신"

@@ -6,6 +6,7 @@
   "use strict";
   const C = root.AECalc || require("./ae_calc.js");
   const P = root.AEParty || require("./party_calc.js");
+  const T = root.AETerms || require("./concepts.js");   // 개념 레지스트리 — 시트의 능력치 · 상태 이름은 개념으로 비교(T.same · T.is), 표기가 달라도 같은 개념이면 같다
   const ELEMS = ["불", "물", "땅", "바람", "번개", "그림자", "결정"];
   const PHYS = ["베기", "찌르기", "타격"];
   const TIER = { pre: 0, normal: 1, delayed: 2 };
@@ -33,21 +34,21 @@
   function net(unit, stats, sim) {
     const g = { buffs: [], debuffs: [], named: [], equip: [] };
     for (const b of unit.buffs.values()) {
-      if (!stats.includes(b.stat) || b.flat || !live(sim, b)) continue;
+      if (!stats.some(x => T.same(x, b.stat)) || b.flat || !live(sim, b)) continue;
       const v = slotV(b);
       if (b.src === "equip") g.equip.push(v / 100);
       else if (v >= 0) g.buffs.push(v / 100); else g.debuffs.push(-v / 100);
     }
     for (const [name, n] of Object.entries(unit.stacks || {})) {
       const def = sim.stackDef[name];
-      for (const p of (def && def.per) || []) if (stats.includes(p.stat) && p.v) (p.v > 0 ? g.named : (g.namedDown = g.namedDown || [])).push(Math.abs(p.v) * n / 100);
+      for (const p of (def && def.per) || []) if (stats.some(x => T.same(x, p.stat)) && p.v) (p.v > 0 ? g.named : (g.namedDown = g.namedDown || [])).push(Math.abs(p.v) * n / 100);
     }
     for (const name of Object.keys(unit.states || {}))                        // 모드 · 상태의 상시 효과
-      for (const p of (sim.stateDef[name] || {}).per || []) if (stats.includes(p.stat) && p.v) g.named.push(p.v / 100);
+      for (const p of (sim.stateDef[name] || {}).per || []) if (stats.some(x => T.same(x, p.stat)) && p.v) g.named.push(p.v / 100);
     return C.groupNet(g);
   }
-  const sumBuff = (unit, stat, sim) => [...unit.buffs.values()].filter(b => b.stat === stat && live(sim, b)).reduce((s, b) => s + (b.flat ? 0 : b.v), 0)
-    + (sim ? Object.keys(unit.states || {}).reduce((s, n) => s + ((sim.stateDef[n] || {}).per || []).filter(p => p.stat === stat && p.v).reduce((t, p) => t + p.v, 0), 0) : 0);
+  const sumBuff = (unit, stat, sim) => [...unit.buffs.values()].filter(b => T.same(b.stat, stat) && live(sim, b)).reduce((s, b) => s + (b.flat ? 0 : b.v), 0)
+    + (sim ? Object.keys(unit.states || {}).reduce((s, n) => s + ((sim.stateDef[n] || {}).per || []).filter(p => T.same(p.stat, stat) && p.v).reduce((t, p) => t + p.v, 0), 0) : 0);
 
   // ── 셈 변수(count) — 조건 · scale · stack n 이 같이 쓴다(형식 v1) ──
   //   moves: 이번 턴 행동 수({elem?, type?, magic?, who?: party|self|others}) · distinct_debuffs: 적에 걸린 서로 다른 디버프 수(상태 이상 포함) · statuses: 적 상태 이상 수
@@ -165,10 +166,10 @@
     if (maxMp) st.mp = (st.mp || 0) * (1 + maxMp / 100);
     const typeStats = ["모든 속성 공격력", ...(elem ? [elem + " 속성 공격력"] : [])];
     const groups = [net(a, typeStats, sim), net(a, ["대미지"], sim)];
-    const focus = [...a.buffs.values()].filter(b => b.stat === (magic ? "정신 통일" : "심기일체") && live(sim, b));
+    const focus = [...a.buffs.values()].filter(b => T.is(b.stat, magic ? "mental_focus" : "singular_focus") && live(sim, b));
     const special = [];
     if (focus.length) special.push(C.mentalFocus(st.mp || 0, [Math.max(...focus.map(b => b.v / 100))]));
-    if ([...a.buffs.values()].some(b => b.stat === "하극상") && en.data.lv) special.push(Math.min(1, en.data.lv * en.data.lv / 200 / 100));
+    if ([...a.buffs.values()].some(b => T.is(b.stat, "overthrow")) && en.data.lv) special.push(Math.min(1, en.data.lv * en.data.lv / 200 / 100));
     if (special.length) groups.push(C.focusGroup(special));
     const skillFx = [...eq.skillFx];
     for (const [name, s] of Object.entries(a.states)) for (const p of (sim.stateDef[name] || {}).per || []) if (p.stat === "대미지 배율" && p.x) skillFx.push(p.x - 1);
@@ -195,9 +196,9 @@
     // 크리 연동(형식 v1): crit_dmg = 이 스킬 크리 대미지 +%, crit_rate = 이 스킬 크리율 +%p, crit_x = 크리일 때 대미지 배수(「+400% when critical (x5)」)
     const critDmg = (magic ? sumBuff(a, "마법 크리티컬 위력", sim) : sumBuff(a, "물리 크리티컬 위력", sim)) / 100 + (magic ? eq.mcritDmg : eq.critDmg) + (step.crit_dmg || 0) / 100;
     const critRate = (magic ? sumBuff(a, "마법 크리티컬율", sim) : sumBuff(a, "물리 크리티컬율", sim)) / 100 + (magic ? eq.mcrit : eq.crit) + (step.crit_rate || 0) / 100
-      + Object.entries(a.stacks).reduce((s, [n, k]) => s + ((sim.stackDef[n] || {}).per || []).filter(p => p.stat === (magic ? "마법 크리티컬율" : "물리 크리티컬율") && p.v).reduce((t, p) => t + p.v * k / 100, 0), 0);
-    const sure = step.sure_crit || [...a.buffs.values()].some(b => b.stat === "크리티컬 확정" && live(sim, b))
-      || Object.keys(a.states).some(n => ((sim.stateDef[n] || {}).per || []).some(p => p.stat === "크리티컬 확정")) || onAttackStack(sim, a, step).some(d => d.sure_crit);
+      + Object.entries(a.stacks).reduce((s, [n, k]) => s + ((sim.stackDef[n] || {}).per || []).filter(p => T.is(p.stat, magic ? "magic_crit_rate" : "crit_rate") && p.v).reduce((t, p) => t + p.v * k / 100, 0), 0);
+    const sure = step.sure_crit || [...a.buffs.values()].some(b => T.is(b.stat, "sure_crit") && live(sim, b))
+      || Object.keys(a.states).some(n => ((sim.stateDef[n] || {}).per || []).some(p => T.is(p.stat, "sure_crit"))) || onAttackStack(sim, a, step).some(d => d.sure_crit);
     const normal = C.damage({ ...o, crit: false }).total, crit = C.damage({ ...o, crit: true, critDmg }).total * (step.crit_x || 1);
     const p = sure ? 1 : magic ? Math.min(1, Math.max(0, critRate)) : C.critChance({ lck: st.lck, critRate });
     return { expected: p * crit + (1 - p) * normal, p, aff, zone, o };
@@ -212,8 +213,8 @@
     const magic = step.type === "마법";
     for (const [k, b] of a.buffs) {
       if (b.moves == null) continue;
-      if (b.stat === "물리 크리티컬율" && magic) continue;
-      if (b.stat === "마법 크리티컬율" && !magic) continue;
+      if (T.is(b.stat, "crit_rate") && magic) continue;
+      if (T.is(b.stat, "magic_crit_rate") && !magic) continue;
       if (--b.moves <= 0) a.buffs.delete(k);
     }
   }

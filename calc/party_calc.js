@@ -5,6 +5,7 @@
 (function (root) {
   "use strict";
   const C = root.AECalc || require("./ae_calc.js");
+  const T = root.AETerms || require("./concepts.js");   // 개념 레지스트리 — 효과 이름 → 개념 id(T.cid), id → 한국어(T.ko). 엔진은 화면 이름을 직접 비교하지 않는다
   const ELEMS = ["불", "물", "땅", "바람", "번개", "그림자", "결정"];
   const PHYS = ["베기", "찌르기", "타격"];
 
@@ -92,22 +93,20 @@
     if (!m.has(key)) m.set(key, f());
     return m.get(key);
   }
-  // 상태 효과(2026-10-13, data/calc/statuses.json) — 루나틱 심안 · 결사 · 오버 크리 · 호시탐탐 · 브레이크(대상). 이름(+루나틱은 원문)으로 판정
+  // 상태 효과(data/calc/statuses.json) — 효과 이름을 개념 id 로 풀어(T.cid) 판정. 루나틱은 이름 + 원문으로 어떤 루나틱인지(T.lunatic)
+  //   (2026-11-07 전에는 「호시탐탐」 「Eagle Eyes」 같은 화면 이름을 여기 직접 비교해, 표기를 바꾸면 계산이 조용히 끊겼다)
   const MULTI_UP = [1, 1.25, 1.5, 2, 3];   // 다단 강화 n번째 타 배율(index = n − 1, 5타 이후 3)
   const ATK_EN = { slash: "베기", piercing: "찌르기", pierce: "찌르기", blunt: "타격", magic: "마법" };
+  const STATUS_OF = { minds_eye: "mindseye", risktaker: "risktaker", sacrifice: "vanguard", overcritical: "overcrit",
+    magic_overcritical: "movercrit", eagle_eyes: "eagle", multi_upgrade: "multihit", break: "break" };   // 개념 id → 엔진 상태 칸
   function statusOf(u) {
-    const n = u.name || "", raw = u.raw || "";
-    if (n === "심안" || (n.startsWith("루나틱") && (/심안/.test(n) || /mind'?s eye/i.test(raw)))) return { id: "mindseye" };
-    if (n === "결사" || (n.startsWith("루나틱") && (/결사/.test(n) || /risk ?taker/i.test(raw)))) return { id: "risktaker" };
-    if (n === "물리 오버 크리티컬") return { id: "overcrit" };
-    if (n === "마법 오버 크리티컬") return { id: "movercrit" };
-    if (n === "호시탐탐" || n === "Eagle Eyes") return { id: "eagle" };
-    if (n === "다단 강화" || /^multi-?upgrade$/i.test(n)) return { id: "multihit" };
-    if (n === "솔선" || (n.startsWith("루나틱") && (/솔선/.test(n) || /sacrifice|vanguard/i.test(raw)))) return { id: "vanguard" };   // 딩님 원천은 k other, 위키 원천은 k buff(11-04)
-    if (n === "브레이크") return { id: "break" };
-    let m = n.match(/^엘리멘탈 브레이크\((.+)\)$/);
-    if (m) return { id: "ebreak", which: m[1] };
-    if ((m = n.match(/^웨폰 브레이크\((.+)\)$/))) return { id: "wbreak", which: m[1].split(/\s+/).map(x => ATK_EN[x.toLowerCase()] || x) };
+    const n = u.name || "";
+    let id = T.cid(n);
+    if (id === "lunatic" || /^루나틱/.test(n)) id = T.lunatic(`${n} ${u.raw || ""}`);   // 딩님 원천은 k other, 위키 원천은 k buff(11-04)
+    if (id && STATUS_OF[id]) return { id: STATUS_OF[id] };
+    const m = n.match(/^(.+?)\((.+)\)$/);                    // 엘리멘탈 브레이크(불) · 웨폰 브레이크(베기 찌르기)
+    if (m && T.cid(m[1]) === "elemental_break") return { id: "ebreak", which: m[2] };
+    if (m && T.cid(m[1]) === "weapon_break") return { id: "wbreak", which: m[2].split(/\s+/).map(x => ATK_EN[x.toLowerCase()] || x) };
     return null;
   }
   const WEAPON_WORDS = [["검", /(?<![가-힣])검|sword/i], ["도끼", /도끼|\bax(?:e)?\b/i], ["도", /(?<![가-힣])도(?![끼가-힣])|katana/i], ["창", /(?<![가-힣])창|lance|spear/i],
@@ -118,35 +117,37 @@
     if ((u.k === "stat_pct") && u.dir === "UP") {
       for (const st of u.stats || []) {
         let hit = true;
-        if (st === "힘") g.pwr.buffs.push(v);
-        else if (st === "지능") g.int.buffs.push(v);
-        else if (st === "속도") g.spd.buffs.push(v);
-        else if (st === "물리 크리티컬율") g.crit.push(v);
-        else if (st === "마법 크리티컬율") g.mcrit.push(v);
-        else if (st === "물리 크리티컬 위력") g.critDmg.push(v);
-        else if (st === "마법 크리티컬 위력") g.mcritDmg.push(v);
-        else if (/속성 공격력$/.test(st)) {
+        const id = T.cid(st);
+        if (id === "pwr") g.pwr.buffs.push(v);
+        else if (id === "int") g.int.buffs.push(v);
+        else if (id === "spd") g.spd.buffs.push(v);
+        else if (id === "crit_rate") g.crit.push(v);
+        else if (id === "magic_crit_rate") g.mcrit.push(v);
+        else if (id === "crit_dmg") g.critDmg.push(v);
+        else if (id === "magic_crit_dmg") g.mcritDmg.push(v);
+        else if (id === "elem_atk") {
           const e = ELEMS.find(x => st.startsWith(x)) || (/^모든/.test(st) ? "*" : null);
           if (e) (g.type[e] = g.type[e] || []).push(v); else hit = false;
         } else hit = false;
         if (hit) g.src.push(`${s.c.nameKo}: ${st} +${u.value}%`);
       }
-    } else if (u.k === "dmg" && u.dir === "UP" && u.what === "약점 시 대미지") {
+    } else if (u.k === "dmg" && u.dir === "UP" && T.cid(u.what) === "weak_dmg") {
       // 「약점 시 대미지 N% UP」(낭전-식 · 배지) = 약점 배율 +N/100 가산(딩님 파이프라인 「약점 대미지 UP 합」 · 시련 광석과 같은 자리 — 가정, 10-18 영상 대조로 공백 발견). 약점 타에만 들어간다
-      g.weak.push(v); g.src.push(`${s.c.nameKo}: 약점 시 대미지 +${u.value}%`);
-    } else if (u.k === "dmg" && u.dir === "UP" && /크리티컬 위력$/.test(u.what || "")) {   // 한국어 해석기는 크리 위력을 dmg 로 낸다 — 일반 대미지가 아님(2026-10-15)
-      (/마법 크리티컬/.test(u.what) ? g.mcritDmg : g.critDmg).push(v); g.src.push(`${s.c.nameKo}: ${u.what} +${u.value}%`);
-    } else if (u.k === "dmg" && u.dir === "UP" && !/받는|피격/.test(u.what || "") && u.what !== "약점 시 대미지") {
+      g.weak.push(v); g.src.push(`${s.c.nameKo}: ${T.ko("weak_dmg")} +${u.value}%`);
+    } else if (u.k === "dmg" && u.dir === "UP" && ["crit_dmg", "magic_crit_dmg"].includes(T.cid(u.what))) {   // 한국어 해석기는 크리 위력을 dmg 로 낸다 — 일반 대미지가 아님(2026-10-15)
+      (T.cid(u.what) === "magic_crit_dmg" ? g.mcritDmg : g.critDmg).push(v); g.src.push(`${s.c.nameKo}: ${u.what} +${u.value}%`);
+    } else if (u.k === "dmg" && u.dir === "UP" && !/받는|피격/.test(u.what || "")) {
       // 「검 장착자 대미지」 「Lance and Bow equipped characters」 — 그 무기를 든 멤버만(2026-10-15, 전에는 무기 무관하게 모두)
       const ws = weaponsOf(`${u.what || ""} ${u.scope || ""} ${u.tc || ""}`);
       if (ws.length) for (const w of ws) (g.wdmg[w] = g.wdmg[w] || []).push(v);
       else g.dmg.buffs.push(v);
       g.src.push(`${s.c.nameKo}: ${u.what} +${u.value}%`);
-    } else if (u.k === "buff" || (u.k === "other" && u.name === "다단 강화")) {
-      if (u.name === "정신 통일") { g.focusMag.push(0.0023); g.src.push(`${s.c.nameKo}: 정신 통일`); }
-      else if (u.name === "심기일체") { g.focusPhys.push(0.0023); g.src.push(`${s.c.nameKo}: 심기일체`); }
-      else if (u.name === "크리티컬 발생 확정") { g.sureCrit = true; g.src.push(`${s.c.nameKo}: 크리티컬 확정`); }
-      else if (u.name === "하극상") { g.overthrow = true; g.src.push(`${s.c.nameKo}: 하극상`); }
+    } else if (u.k === "buff" || (u.k === "other" && T.cid(u.name) === "multi_upgrade")) {
+      const id = T.cid(u.name);
+      if (id === "mental_focus") { g.focusMag.push(0.0023); g.src.push(`${s.c.nameKo}: ${T.ko(id)}`); }
+      else if (id === "singular_focus") { g.focusPhys.push(0.0023); g.src.push(`${s.c.nameKo}: ${T.ko(id)}`); }
+      else if (id === "sure_crit") { g.sureCrit = true; g.src.push(`${s.c.nameKo}: ${T.ko(id)}`); }
+      else if (id === "overthrow") { g.overthrow = true; g.src.push(`${s.c.nameKo}: ${T.ko(id)}`); }
       else {
         const st = statusOf(u);
         if (!st || ["break", "ebreak", "wbreak"].includes(st.id)) return;
@@ -171,12 +172,13 @@
     const v = (u.value || 0) / 100;
     for (const st of u.stats || []) {
       let hit = true;
-      if (st === "물리 저항") e.phys.push(v);
-      else if (st === "마법 저항") e.magic.push(v);
-      else if (st === "내구") e.def.push(v);
-      else if (st === "정신") e.mdef.push(v);
+      const id = T.cid(st);
+      if (id === "phys_res") e.phys.push(v);
+      else if (id === "mag_res") e.magic.push(v);
+      else if (id === "end") e.def.push(v);
+      else if (id === "spr") e.mdef.push(v);
       else if (PHYS.some(a => st === a + " 저항")) (e.atk[st.split(" ")[0]] = e.atk[st.split(" ")[0]] || []).push(v);
-      else if (/속성 저항$/.test(st)) {
+      else if (id === "elem_res") {
         const k = ELEMS.find(x => st.startsWith(x)) || "*";
         (e.type[k] = e.type[k] || []).push(v);
       } else hit = false;
@@ -243,20 +245,20 @@
         else if (f.k === "crit_rate") out[f.magic ? "mcrit" : "crit"] += v;
         else if (f.k === "crit_dmg") out[f.magic ? "mcritDmg" : "critDmg"] += v;
         else if (f.k === "growth") mult(it, "성장", Math.min(f.per * (opt.turns || 0), f.max), "growthAtk");
-        else if (f.k === "aim" && !opt.af) uniq("aim", it, "겨누어 쏘기", f.v, "aim");
+        else if (f.k === "aim" && !opt.af) uniq("aim", it, T.ko("bulls_eye"), f.v, "aim");
         // MP 소비 공격 — 모든 공격(일반 공격 · MP 0 포함). 위키 Recommendation Ore 「Rose with Thorn: Always works」 + 빌더 「일반 공격에도 적용」(11-04, 전에는 MP 쓰는 스킬만)
         else if (f.k === "mpatk") uniq("mpatk", it, "MP 소비 공격", f.v);
-        else if (f.k === "overthrow" && opt.enemy && opt.enemy.lv) mult(it, "하극상", Math.floor(opt.enemy.lv * opt.enemy.lv / f.d * 100) / 100, "overthrowE", f.d);
+        else if (f.k === "overthrow" && opt.enemy && opt.enemy.lv) mult(it, T.ko("overthrow"), Math.floor(opt.enemy.lv * opt.enemy.lv / f.d * 100) / 100, "overthrowE", f.d);
         else if (f.k === "zonedmg" && opt.zoneAwake) mult(it, "ZONE 각성", f.v, "zoneAwake");
         else if (f.k === "wins" && opt.wins) uniq("wins", it, "누계 승리", f.v, "wins");   // 계산기 입력 55행이 한 칸 — 여러 개면 최댓값 하나(빌더와 같게, 11-03)
         else if (f.k === "lsally") mult(it, f.side === "light" ? "천 아군" : "명 아군", f.per * ((f.side === "light" ? opt.lightAllies : opt.shadowAllies) || 0), "lsAlly");
-        else if (f.k === "seal" && opt.sealed) uniq("seal", it, "봉인 인핸스", f.v, "enhance");
-        // 페인 · 독 · 분노 인핸스(자신이 그 상태 — opt.selfStatus ['pain'|'poison'|'rage']) · 그 상태일 때 스탯+ (2026-10-15, 그동안 엔진이 안 읽던 키)
-        else if (f.k === "selfstatus" && (opt.selfStatus || []).includes(f.when)) uniq("self:" + f.when, it, `${{ pain: "페인", poison: "독", rage: "도발" }[f.when] || f.when} 인핸스`, f.v, "enhance");
+        else if (f.k === "seal" && opt.sealed) uniq("seal", it, `${T.ko("bind")} 인핸스`, f.v, "enhance");
+        // 페인 · 독 · 도발 인핸스(자신이 그 상태 — opt.selfStatus ['pain'|'poison'|'rage'] = 개념 id) · 그 상태일 때 스탯+ (2026-10-15, 그동안 엔진이 안 읽던 키)
+        else if (f.k === "selfstatus" && (opt.selfStatus || []).includes(f.when)) uniq("self:" + f.when, it, `${T.ko(f.when)} 인핸스`, f.v, "enhance");
         else if (f.k === "selfstat" && f.v && (opt.selfStatus || []).includes(f.when)) out.stats[f.stat] = (out.stats[f.stat] || 0) + f.v;
         else if (f.k === "enemies") uniq("enemies", it, "적 수", f.per * Math.max(0, (opt.enemyCount || 1) - 1));
         else if (f.k === "fallen") mult(it, "쓰러진 아군", f.per * (opt.fallen || 0), "fallen");
-        else if (f.k === "tstat" && opt.punish && opt.punish.includes(f.when)) mult(it, `대상 ${f.when === "pain" ? "페인" : "독"}`, f.v, "statusE");
+        else if (f.k === "tstat" && opt.punish && opt.punish.includes(f.when)) mult(it, `대상 ${T.ko(f.when)}`, f.v, "statusE");
         // 전용 무기 스킬 강화 「<스킬> MOD+ 50% · 250% total」 = 기본 배율 +50%p → 배율 × total/(total−v) (스킬 자체 배수 보존)
         else if (f.k === "skillmod" && f.total && atk.skill === f.skill) { out.skillMul *= f.total / (f.total - f.v); out.src.push(`${it.name}: ${f.skill} 배율 +${f.v}%p`); }
       }

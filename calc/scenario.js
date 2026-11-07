@@ -11,6 +11,7 @@
 (function (root) {
   "use strict";
   const P = root.AEParty || require("./party_calc.js");
+  const T = root.AETerms || require("./concepts.js");   // 개념 레지스트리(효과 이름 → 개념 id)
   const C = root.AECalc || require("./ae_calc.js");
   const ENGINE = new Set(["stat_pct", "dmg", "buff", "ailment", "stack"]);
 
@@ -163,7 +164,7 @@
       return;
     }
     if (u.k === "other" && u.name === "구슬 축적") { sim.res[ci] = Math.min(resMaxOf(sim.party[ci]), sim.res[ci] + (u.value ?? 1)); return; }
-    if (u.k === "other" && u.name === "모드 체인지") {
+    if (u.k === "other" && T.is(u.name, "mode_change")) {
       // 모드(영랑 · 전심 …)의 상시 효과를 지속 턴만큼 건다 — 어느 모드인지는 시전 스킬 설명의 「모드 체인지(X)」, 없으면 하나뿐인 모드
       const modes = (sim.party[ci].actions.skills || []).filter(s => s.sub === "모드 체인지");
       const named = /모드 체인지\(([^)]+)\)/.exec((sk && sk.desc) || "");
@@ -171,7 +172,7 @@
       if (mode) for (const f of mode.fx || []) apply(sim, ci, { ...f, timing: undefined, turns: u.turns ?? null, cond: undefined }, "모드: " + mode.name);
       return;
     }
-    if (!ENGINE.has(u.k) && !(u.k === "other" && u.name === "다단 강화")) return;   // 다단 강화 = 딩님 원천은 k other(상태 효과) — party_calc 가 상태로 읽는다(11-04)
+    if (!ENGINE.has(u.k) && !(u.k === "other" && T.is(u.name, "multi_upgrade"))) return;   // 다단 강화 = 딩님 원천은 k other(상태 효과) — party_calc 가 상태로 읽는다(11-04)
     const key = slotKey(ci, u), old = sim.live.get(key);
     // 겹은 같은 스킬을 다시 걸 때만 오른다 — 다른 스킬이 같은 칸을 덮어쓰면 1부터(전에는 앞 스킬 겹을 이어받아 첫 시전이 2겹이 됐다)
     const stacks = u.maxStack > 1 ? Math.min(u.maxStack, (old && old.skill === skName ? old.stacks : 0) + 1) : 1;

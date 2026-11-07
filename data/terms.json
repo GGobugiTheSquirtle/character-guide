@@ -1374,6 +1374,15 @@
    "n_en": 1
   },
   {
+   "id": "st_guaranteed_critical",
+   "cat": "state_buff",
+   "en": "Guaranteed Critical",
+   "ko": "크리티컬 발생 확정",
+   "src": "pair",
+   "n_ko": 10,
+   "n_en": 0
+  },
+  {
    "id": "st_kaleido",
    "cat": "state_buff",
    "en": "Kaleido",

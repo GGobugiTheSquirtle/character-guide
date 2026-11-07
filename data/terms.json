@@ -994,10 +994,7 @@
    "ko": "MP 치유",
    "src": "pair",
    "n_ko": 11,
-   "n_en": 13,
-   "aliases_ko": [
-    "치유"
-   ]
+   "n_en": 13
   },
   {
    "id": "st_mind_s_eye",
@@ -1218,13 +1215,10 @@
    "id": "st_darkness",
    "cat": "state_ailment",
    "en": "Darkness",
-   "ko": "",
+   "ko": "실명",
    "src": "pair",
-   "n_ko": 567,
-   "n_en": 7,
-   "aliases_en": [
-    "Curse"
-   ]
+   "n_ko": 0,
+   "n_en": 7
   },
   {
    "id": "st_frozen",

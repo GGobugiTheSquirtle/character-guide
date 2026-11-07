@@ -3331,13 +3331,13 @@
         "모드 체인지",
         "물리 크리티컬율 UP",
         "배리어 관통",
-        "약점 간파",
+        "약점 시 대미지 UP (수치)",
         "찌르기 저항 DOWN"
       ],
       "roles": {
         "atk_buff": 2,
         "attack": 8,
-        "atk_debuff": 3,
+        "atk_debuff": 2,
         "zone": 1,
         "power": 4,
         "mode": 3,
@@ -4329,7 +4329,7 @@
         "불 속성 공격력 UP",
         "속도 UP",
         "실드",
-        "약점 간파",
+        "약점 시 대미지 UP (수치)",
         "연계",
         "지능 UP",
         "힘 UP"
@@ -4341,7 +4341,6 @@
         "atk_buff": 6,
         "tempo": 2,
         "recover": 1,
-        "atk_debuff": 1,
         "resource": 6,
         "surv_state": 2,
         "zone": 5,
@@ -7628,7 +7627,7 @@
         "속도 UP",
         "실드",
         "심기일체",
-        "약점 간파",
+        "약점 시 대미지 UP (수치)",
         "정신 통일",
         "지능 UP",
         "타깃 확률 감소",
@@ -7645,7 +7644,7 @@
         "state_unknown": 6,
         "surv_state": 11,
         "tempo": 6,
-        "atk_debuff": 2,
+        "atk_debuff": 1,
         "dot": 1,
         "surv_buff": 1,
         "power": 1,
@@ -8284,12 +8283,13 @@
         "상태 이상 회복",
         "속도 DOWN",
         "약점 간파",
+        "약점 시 대미지 UP (수치)",
         "연계"
       ],
       "roles": {
         "zone": 5,
         "attack": 5,
-        "atk_debuff": 5,
+        "atk_debuff": 4,
         "recover": 6,
         "atk_buff": 4,
         "surv_debuff": 1,
@@ -9217,7 +9217,7 @@
         "불 속성 저항 DOWN",
         "상태 이상 무효",
         "속도 UP",
-        "약점 간파",
+        "약점 시 대미지 UP (수치)",
         "지능 UP",
         "힘 UP"
       ],
@@ -9227,7 +9227,7 @@
         "resource": 9,
         "mode": 1,
         "state_unknown": 3,
-        "atk_debuff": 2,
+        "atk_debuff": 1,
         "recover": 1,
         "tempo": 1,
         "surv_state": 1,
@@ -9289,7 +9289,7 @@
         "상태 이상 회복",
         "실드",
         "심안",
-        "약점 간파",
+        "약점 시 대미지 UP (수치)",
         "크리티컬 발생 확정",
         "타깃 확률 감소"
       ],
@@ -9303,8 +9303,7 @@
         "recover": 8,
         "power": 6,
         "atk_buff": 7,
-        "surv_buff": 3,
-        "atk_debuff": 2
+        "surv_buff": 3
       },
       "traits": [
         "고양이 애호가",
@@ -11147,7 +11146,7 @@
         "바꿔치기",
         "불 속성 저항 DOWN",
         "브레이크",
-        "약점 간파"
+        "약점 시 대미지 UP (수치)"
       ],
       "roles": {
         "mode": 1,
@@ -11156,7 +11155,7 @@
         "power": 9,
         "zone": 9,
         "resource": 1,
-        "atk_debuff": 2
+        "atk_debuff": 1
       },
       "traits": [
         "지팡이",
@@ -14918,7 +14917,7 @@
         "브레이크",
         "속도 DOWN",
         "속도 UP (수치)",
-        "약점 간파",
+        "약점 시 대미지 UP (수치)",
         "지능 DOWN",
         "크리티컬 발생 확정",
         "페인",
@@ -14930,7 +14929,7 @@
         "mode": 2,
         "attack": 11,
         "state_unknown": 3,
-        "atk_debuff": 7,
+        "atk_debuff": 6,
         "dot": 1,
         "surv_buff": 3,
         "atk_buff": 4,
@@ -19384,7 +19383,7 @@
         "베기 저항 DOWN",
         "속도 DOWN",
         "속도 UP",
-        "약점 간파",
+        "약점 시 대미지 UP (수치)",
         "지능 DOWN",
         "페인",
         "힘 DOWN",
@@ -19393,7 +19392,7 @@
       "roles": {
         "attack": 5,
         "surv_debuff": 4,
-        "atk_debuff": 6,
+        "atk_debuff": 5,
         "atk_buff": 3,
         "tempo": 1,
         "power": 1,
@@ -20341,13 +20340,13 @@
         "물리 크리티컬 위력 UP",
         "베기 저항 DOWN",
         "심기일체",
-        "약점 간파",
+        "약점 시 대미지 UP (수치)",
         "페인",
         "힘 UP"
       ],
       "roles": {
         "attack": 9,
-        "atk_debuff": 5,
+        "atk_debuff": 4,
         "surv_debuff": 1,
         "dot": 1,
         "atk_buff": 3,
@@ -21083,7 +21082,7 @@
         "베기 저항 DOWN",
         "속도 DOWN",
         "속도 UP",
-        "약점 간파",
+        "약점 시 대미지 UP (수치)",
         "타깃 확률 감소",
         "페인",
         "힘 UP"
@@ -21091,7 +21090,7 @@
       "roles": {
         "attack": 8,
         "surv_debuff": 3,
-        "atk_debuff": 8,
+        "atk_debuff": 7,
         "atk_buff": 1,
         "tempo": 1,
         "power": 4,

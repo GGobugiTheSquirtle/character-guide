@@ -698,7 +698,7 @@
    "n_en": 56,
    "aliases_en": [
     "Pwr",
-    "Strength"
+    "PWR (Power)"
    ]
   },
   {
@@ -710,7 +710,8 @@
    "n_ko": 84,
    "n_en": 8,
    "aliases_en": [
-    "Int"
+    "Int",
+    "INT (Intelligence)"
    ]
   },
   {
@@ -722,7 +723,8 @@
    "n_ko": 82,
    "n_en": 9,
    "aliases_en": [
-    "Spd"
+    "Spd",
+    "SPD (Speed)"
    ]
   },
   {
@@ -734,7 +736,8 @@
    "n_ko": 8,
    "n_en": 0,
    "aliases_en": [
-    "End"
+    "End",
+    "END (Endurance)"
    ]
   },
   {
@@ -746,7 +749,8 @@
    "n_ko": 19,
    "n_en": 24,
    "aliases_en": [
-    "Spr"
+    "Spr",
+    "SPR (Spirit)"
    ]
   },
   {
@@ -758,7 +762,8 @@
    "n_ko": 5,
    "n_en": 3,
    "aliases_en": [
-    "Lck"
+    "Lck",
+    "LCK (Luck)"
    ]
   },
   {
@@ -770,7 +775,6 @@
    "n_ko": 24,
    "n_en": 22,
    "aliases_en": [
-    "Maxhp",
     "HP"
    ]
   },
@@ -787,118 +791,13 @@
    ]
   },
   {
-   "id": "s_physical_resistance",
-   "cat": "stat",
-   "en": "Physical Resistance",
-   "ko": "물리 저항",
-   "src": "pair",
-   "n_ko": 39,
-   "n_en": 0,
-   "aliases_en": [
-    "Physical Resist"
-   ]
-  },
-  {
-   "id": "s_magic_resistance",
-   "cat": "stat",
-   "en": "Magic Resistance",
-   "ko": "마법 저항",
-   "src": "pair",
-   "n_ko": 26,
-   "n_en": 0,
-   "aliases_en": [
-    "Magical Resistance"
-   ]
-  },
-  {
-   "id": "s_type_resistance",
-   "cat": "stat",
-   "en": "Type Resistance",
-   "ko": "속성 저항",
-   "src": "pair",
-   "n_ko": 44,
-   "n_en": 1
-  },
-  {
-   "id": "s_elemental_resistance",
-   "cat": "stat",
-   "en": "Elemental Resistance",
-   "ko": "모든 속성 저항",
-   "src": "pair",
-   "n_ko": 27,
-   "n_en": 0,
-   "aliases_ko": [
-    "속성 저항"
-   ]
-  },
-  {
-   "id": "s_type_attack",
-   "cat": "stat",
-   "en": "Type Attack",
-   "ko": "속성 공격력",
-   "src": "pair",
-   "n_ko": 1,
-   "n_en": 0,
-   "aliases_ko": [
-    "속성 공격"
-   ]
-  },
-  {
-   "id": "s_elemental_attack",
-   "cat": "stat",
-   "en": "Elemental Attack",
-   "ko": "모든 속성 공격력",
-   "src": "pair",
-   "n_ko": 0,
-   "n_en": 0,
-   "aliases_ko": [
-    "속성 공격"
-   ]
-  },
-  {
-   "id": "s_slash_resistance",
-   "cat": "stat",
-   "en": "Slash Resistance",
-   "ko": "베기 저항",
-   "src": "pair",
-   "n_ko": 10,
-   "n_en": 0
-  },
-  {
-   "id": "s_blunt_resistance",
-   "cat": "stat",
-   "en": "Blunt Resistance",
-   "ko": "타격 저항",
-   "src": "pair",
-   "n_ko": 5,
-   "n_en": 0
-  },
-  {
-   "id": "s_piercing_resistance",
-   "cat": "stat",
-   "en": "Piercing Resistance",
-   "ko": "찌르기 저항",
-   "src": "pair",
-   "n_ko": 10,
-   "n_en": 0,
-   "aliases_en": [
-    "Pierce Resistance"
-   ]
-  },
-  {
    "id": "s_critical_rate",
    "cat": "stat",
    "en": "Critical Rate",
    "ko": "물리 크리티컬율",
    "src": "pair",
    "n_ko": 3,
-   "n_en": 1,
-   "aliases_ko": [
-    "크리티컬율"
-   ],
-   "aliases_en": [
-    "Crit Rate"
-   ]
+   "n_en": 1
   },
   {
    "id": "s_magic_critical_rate",
@@ -916,10 +815,7 @@
    "ko": "물리 크리티컬 위력",
    "src": "pair",
    "n_ko": 0,
-   "n_en": 0,
-   "aliases_ko": [
-    "크리티컬 대미지"
-   ]
+   "n_en": 0
   },
   {
    "id": "s_magic_critical_damage",
@@ -928,31 +824,103 @@
    "ko": "마법 크리티컬 위력",
    "src": "pair",
    "n_ko": 0,
-   "n_en": 0,
-   "aliases_ko": [
-    "마법 크리티컬 대미지"
-   ]
-  },
-  {
-   "id": "s_accuracy",
-   "cat": "stat",
-   "en": "Accuracy",
-   "ko": "명중률",
-   "src": "pair",
-   "n_ko": 0,
    "n_en": 0
   },
   {
-   "id": "s_evasion",
+   "id": "s_physical_resistance",
    "cat": "stat",
-   "en": "Evasion",
+   "en": "Physical Resistance",
+   "ko": "물리 저항",
+   "src": "pair",
+   "n_ko": 39,
+   "n_en": 0
+  },
+  {
+   "id": "s_magic_resistance",
+   "cat": "stat",
+   "en": "Magic Resistance",
+   "ko": "마법 저항",
+   "src": "pair",
+   "n_ko": 26,
+   "n_en": 0
+  },
+  {
+   "id": "s_type_resistance",
+   "cat": "stat",
+   "en": "Type Resistance",
+   "ko": "속성 저항",
+   "src": "pair",
+   "n_ko": 44,
+   "n_en": 1,
+   "aliases_ko": [
+    "모든 속성 저항"
+   ]
+  },
+  {
+   "id": "s_type_attack",
+   "cat": "stat",
+   "en": "Type Attack",
+   "ko": "속성 공격력",
+   "src": "pair",
+   "n_ko": 1,
+   "n_en": 0,
+   "aliases_ko": [
+    "모든 속성 공격력"
+   ]
+  },
+  {
+   "id": "s_damage_taken",
+   "cat": "stat",
+   "en": "Damage Taken",
+   "ko": "받는 대미지",
+   "src": "pair",
+   "n_ko": 11,
+   "n_en": 0
+  },
+  {
+   "id": "s_weakness_multiplier",
+   "cat": "stat",
+   "en": "Weakness Multiplier",
+   "ko": "약점 시 대미지",
+   "src": "pair",
+   "n_ko": 14,
+   "n_en": 0
+  },
+  {
+   "id": "s_slash_resistance",
+   "cat": "stat",
+   "en": "Slash Resistance",
+   "ko": "베기 저항",
+   "src": "pair",
+   "n_ko": 10,
+   "n_en": 0
+  },
+  {
+   "id": "s_piercing_resistance",
+   "cat": "stat",
+   "en": "Piercing Resistance",
+   "ko": "찌르기 저항",
+   "src": "pair",
+   "n_ko": 10,
+   "n_en": 0
+  },
+  {
+   "id": "s_blunt_resistance",
+   "cat": "stat",
+   "en": "Blunt Resistance",
+   "ko": "타격 저항",
+   "src": "pair",
+   "n_ko": 5,
+   "n_en": 0
+  },
+  {
+   "id": "s_evasion_rate",
+   "cat": "stat",
+   "en": "Evasion Rate",
    "ko": "회피율",
    "src": "pair",
    "n_ko": 2,
-   "n_en": 0,
-   "aliases_en": [
-    "Evasion Rate"
-   ]
+   "n_en": 0
   },
   {
    "id": "s_another_force_combo_rate",

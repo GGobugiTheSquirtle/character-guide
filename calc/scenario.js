@@ -18,7 +18,7 @@
   // 행동 단위 공격 → party_calc 공격(1타 위력 · 타수 · dep)
   function toAttack(a, sk) {
     const magic = a.atk === "마법";
-    const dep = a.dep === "pwr" && magic ? "magicpwr" : magic ? "magic" : a.dep === "int" ? "int" : a.dep === "spd" ? "spd" : "pwr";
+    const dep = (a.dep === "pwr" || a.dep === "magicpwr") && magic ? "magicpwr" : magic ? "magic" : a.dep === "int" ? "int" : a.dep === "spd" ? "spd" : "pwr";
     const mult = a.power ?? a.mult, multMax = a.powerMax ?? a.multMax;
     return { skill: sk.name, mult, multMax, hits: a.hits || 1, element: a.element || "", atk: a.atk || "", scope: a.scope || "", dep,
       conds: a.conds, mp: sk.mp || 0, sec: "skills", _sure: !!a.sureCrit, _fixed: !!a.fixed, _ignoreDef: !!a.ignoreDef, _burstMax: burstMax(sk) };

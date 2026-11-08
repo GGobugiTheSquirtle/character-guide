@@ -21,13 +21,13 @@
   "counts": {
    "weapons": {
     "ko": 685,
-    "certain": 514,
-    "held": 171
+    "certain": 515,
+    "held": 170
    },
    "armors": {
     "ko": 286,
-    "certain": 222,
-    "held": 64
+    "certain": 228,
+    "held": 58
    },
    "grasta": {
     "ko": 659,
@@ -1081,6 +1081,19 @@
     "stat",
     "lv",
     "fx"
+   ]
+  },
+  {
+   "ko": "용골의 검",
+   "reworked": true,
+   "en": "Dragon Bone Sword (Reforged)",
+   "page": "Dragon Bone Sword (Reforged)",
+   "type": "검",
+   "why": [
+    "stat",
+    "lv",
+    "fx~",
+    "name"
    ]
   },
   {
@@ -6096,15 +6109,6 @@
    ]
   },
   {
-   "ko": "용골의 검",
-   "reworked": true,
-   "type": "검",
-   "en": "용골의 검 (재가공)",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
    "ko": "나이트 윙",
    "reworked": true,
    "type": "검",
@@ -7471,6 +7475,28 @@
    ]
   },
   {
+   "ko": "천공 의장병의 팔찌",
+   "en": "Sky Guard Bracelet",
+   "page": "Sky Guard Bracelet",
+   "type": "팔찌",
+   "why": [
+    "stat",
+    "lv",
+    "fx"
+   ]
+  },
+  {
+   "ko": "연대기의 팔찌",
+   "en": "Epochtech Bangle",
+   "page": "Epochtech Bangle",
+   "type": "팔찌",
+   "why": [
+    "stat",
+    "lv",
+    "fx"
+   ]
+  },
+  {
    "ko": "기계식 팔찌",
    "en": "Mechani Armlet",
    "page": "Mechani Armlet",
@@ -8242,6 +8268,28 @@
    "ko": "에테르 네클리스",
    "en": "Aether Necklace",
    "page": "Aether Necklace",
+   "type": "목걸이",
+   "why": [
+    "stat",
+    "lv",
+    "fx"
+   ]
+  },
+  {
+   "ko": "천공 의장병의 목걸이",
+   "en": "Sky Guard Necklace",
+   "page": "Sky Guard Necklace",
+   "type": "목걸이",
+   "why": [
+    "stat",
+    "lv",
+    "fx"
+   ]
+  },
+  {
+   "ko": "연대기의 목걸이",
+   "en": "Epochtech Necklace",
+   "page": "Epochtech Necklace",
    "type": "목걸이",
    "why": [
     "stat",
@@ -9096,6 +9144,28 @@
    ]
   },
   {
+   "ko": "천공 의장병의 반지",
+   "en": "Sky Guard Ring",
+   "page": "Sky Guard Ring",
+   "type": "반지",
+   "why": [
+    "stat",
+    "lv",
+    "fx"
+   ]
+  },
+  {
+   "ko": "연대기의 반지",
+   "en": "Epochtech Ring",
+   "page": "Epochtech Ring",
+   "type": "반지",
+   "why": [
+    "stat",
+    "lv",
+    "fx"
+   ]
+  },
+  {
    "ko": "기계식 반지",
    "en": "Mechani Ring",
    "page": "Mechani Ring",
@@ -9733,22 +9803,6 @@
    ]
   },
   {
-   "ko": "천공 의장병의 팔찌",
-   "type": "팔찌",
-   "en": "천공 의장병의 팔찌",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
-   "ko": "연대기의 팔찌",
-   "type": "팔찌",
-   "en": "연대기의 팔찌",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
    "ko": "땅 정령의 팔찌",
    "type": "팔찌",
    "en": "땅 정령의 팔찌",
@@ -9909,22 +9963,6 @@
    ]
   },
   {
-   "ko": "천공 의장병의 목걸이",
-   "type": "목걸이",
-   "en": "천공 의장병의 목걸이",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
-   "ko": "연대기의 목걸이",
-   "type": "목걸이",
-   "en": "연대기의 목걸이",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
    "ko": "환영을 두른 창광의 목걸이",
    "type": "목걸이",
    "en": "환영을 두른 창광의 목걸이",
@@ -10048,22 +10086,6 @@
    "ko": "에테르 링",
    "type": "반지",
    "en": "에테르 링",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
-   "ko": "천공 의장병의 반지",
-   "type": "반지",
-   "en": "천공 의장병의 반지",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
-   "ko": "연대기의 반지",
-   "type": "반지",
-   "en": "연대기의 반지",
    "why": [
     "ding-only"
    ]

@@ -21,8 +21,8 @@
   "counts": {
    "weapons": {
     "ko": 685,
-    "certain": 520,
-    "held": 165
+    "certain": 525,
+    "held": 160
    },
    "armors": {
     "ko": 286,
@@ -2657,6 +2657,18 @@
    ]
   },
   {
+   "ko": "환절",
+   "reworked": true,
+   "en": "Illusion Slash (Reforged)",
+   "page": "Illusion Slash (Reforged)",
+   "type": "도끼",
+   "why": [
+    "stat",
+    "lv",
+    "fx"
+   ]
+  },
+  {
    "ko": "아주로 스쿠레",
    "reworked": true,
    "en": "Azul Scure (Reforged)",
@@ -2943,6 +2955,17 @@
    "ko": "아주로 스쿠레",
    "en": "Azul Scure",
    "page": "Azul Scure",
+   "type": "도끼",
+   "why": [
+    "stat",
+    "lv",
+    "fx"
+   ]
+  },
+  {
+   "ko": "환절",
+   "en": "Illusion Slash",
+   "page": "Illusion Slash",
    "type": "도끼",
    "why": [
     "stat",
@@ -5516,6 +5539,18 @@
    ]
   },
   {
+   "ko": "환훼",
+   "reworked": true,
+   "en": "Illusion Destruction (Reforged)",
+   "page": "Illusion Destruction (Reforged)",
+   "type": "망치",
+   "why": [
+    "stat",
+    "lv",
+    "fx"
+   ]
+  },
+  {
    "ko": "아주로 마르텔로",
    "reworked": true,
    "en": "Azul Meltero (Reforged)",
@@ -5719,6 +5754,17 @@
    ]
   },
   {
+   "ko": "인연의 망치",
+   "en": "Hammer of Bond",
+   "page": "Hammer of Bond",
+   "type": "망치",
+   "why": [
+    "stat",
+    "lv",
+    "fx"
+   ]
+  },
+  {
    "ko": "심연에 퍼지는 망치 소리",
    "en": "Hammer of Echoing Abyss",
    "page": "Hammer of Echoing Abyss",
@@ -5744,6 +5790,17 @@
    "ko": "아주로 마르텔로",
    "en": "Azul Meltero",
    "page": "Azul Meltero",
+   "type": "망치",
+   "why": [
+    "stat",
+    "lv",
+    "fx"
+   ]
+  },
+  {
+   "ko": "환훼",
+   "en": "Illusion Destruction",
+   "page": "Illusion Destruction",
    "type": "망치",
    "why": [
     "stat",
@@ -6531,15 +6588,6 @@
    ]
   },
   {
-   "ko": "환절",
-   "reworked": true,
-   "type": "도끼",
-   "en": "환절 (재가공)",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
    "ko": "유구의 도끼",
    "type": "도끼",
    "en": "유구의 도끼",
@@ -6583,14 +6631,6 @@
    "ko": "역사를 전해 온 도끼",
    "type": "도끼",
    "en": "역사를 전해 온 도끼",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
-   "ko": "환절",
-   "type": "도끼",
-   "en": "환절",
    "why": [
     "ding-only"
    ]
@@ -7122,15 +7162,6 @@
    ]
   },
   {
-   "ko": "환훼",
-   "reworked": true,
-   "type": "망치",
-   "en": "환훼 (재가공)",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
    "ko": "유구의 망치",
    "type": "망치",
    "en": "유구의 망치",
@@ -7158,22 +7189,6 @@
    "ko": "전가의 망치",
    "type": "망치",
    "en": "전가의 망치",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
-   "ko": "인연의 망치",
-   "type": "망치",
-   "en": "인연의 망치",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
-   "ko": "환훼",
-   "type": "망치",
-   "en": "환훼",
    "why": [
     "ding-only"
    ]

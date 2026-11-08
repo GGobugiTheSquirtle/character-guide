@@ -25,7 +25,8 @@
   }
   // 위값이 1회성 · 마무리에서 나오는 스킬(설명문, 11-05) — 「스텔라 버스트 시 위력 N배」 · 「스텔라 버스트로 발동한 횟수」 · 「대상 HP 비율이 낮을수록」.
   //   고점 반복(peak "repeat")에서 조건 칸이 빈 공격(딩님 원천)은 이때 위값 대신 기본값(셴화 테서렉트 ×60 = 대상 HP 낮을수록 — 반복 고점에 들어가 106억이 됐다)
-  const BURST_MAX = /스텔라 버스트 시[^※\n]*?위력[^※\n]*?배|스텔라 버스트로 발동한 횟수|대상의 HP 비율이 낮을수록|target'?s? (?:current )?HP (?:percentage )?(?:is )?(?:lower|decreases)/i;
+  //   「스텔라 버스트 시」와 「공격 위력 N배」가 줄로 나뉜 꼴도(11-08 — 네코코 ES 유성군 ×40 · 조르나 · 셴화 AS 등 35스킬이 반복 고점에 SB 배율로 들어갔다)
+  const BURST_MAX = /스텔라 버스트 시[^※\n]*\n?[^※\n]*?위력[^※\n]*?배|스텔라 버스트로 발동한 횟수|대상의 HP 비율이 낮을수록|target'?s? (?:current )?HP (?:percentage )?(?:is )?(?:lower|decreases)/i;
   const bmCache = new WeakMap();
   const burstMax = sk => { if (!bmCache.has(sk)) bmCache.set(sk, BURST_MAX.test(sk.desc || "")); return bmCache.get(sk); };
   const sideOf = u => (/적/.test(u.tc || "") ? "e" : "a");
@@ -229,15 +230,43 @@
     if (/자신/.test(m[1]) && !out.includes(ci)) out.push(ci);
     return out.length ? out : [ci];
   }
+  // 임기응변(Flexible, 11-08) — 걸린 아군의 공격 종류(베기 · 찌르기 · 타격 · 마법)를 바꾼다(용어집 flexible). 변화무쌍과 같은 꼴:
+  //   딩님 「임기응변(X)」(tc) · 위키 「grants Flexible (Piercing) to all party members」. 종류 넷 이상 펼침 · 「based on zone type」 = 지금 공격 종류 존의 종류.
+  //   무기 · 대상 따라 바뀌는 것(「based on weapon type」 · 「target's weapon type」) · 적에게 거는 것은 뺀다
+  const ATS = T.slots("attack_type"), FLEX = T.ko("flexible");
+  const atOf = x => { x = String(x || "").trim().toLowerCase(); const v = ATS.find(e => x === e.ko || x === e.en.toLowerCase() || x === e.en.toLowerCase() + "ing" || (x === "piercing" && e.k === "pierce")); return v ? v.ko : null; };
+  const flexName = n => T.is(String(n || "").replace(/\(.*\)\s*$/, "").trim(), "flexible");
+  const FLEX_IMMUNE = new RegExp(`${FLEX}[^\\n]*적용 불가|will not change[^.\\n]*weapon type by flexible`, "i");
+  function flexOf(u, sk) {
+    const raw = u.raw || u.what || "";
+    if (!(flexName(u.name) || /grants? flexible/i.test(raw))) return null;
+    const tc = u.tc || "";
+    if (/^적/.test(tc) || /weapon type|target's/i.test(raw)) return null;
+    const ts = new Set(((sk && sk.fx) || []).filter(f => flexName(f.name)).map(f => atOf((/\(([^)]+)\)\s*$/.exec(f.name) || [])[1])).filter(Boolean));
+    let at = ts.size > 2 || /based on zone type/i.test(raw) ? "zone" : atOf((/\(([^)]+)\)\s*$/.exec(u.name || "") || [])[1]);
+    if (!at) { const m = /flexible \((\w+)\)/i.exec(raw); at = m ? atOf(m[1]) : null; }
+    if (!at) return null;
+    let who = "self", el = null;
+    if (/아군 전체/.test(tc) || /all party members/i.test(raw)) who = "all";
+    const em = /all (\w+) party members/i.exec(raw); if (em && elOf(em[1])) { who = "all"; el = elOf(em[1]); }
+    return { at, who, el };
+  }
+  const ZBUF = /ZONE에 따라 '(?:속성 공격력 UP|버프와 디버프)' 종류 변화|type of buff changes according to active elemental zone/i;
+  const zoneAt = sim => { const z = sim.zone && (sim.zone.base || sim.zone); return z && z.up ? (z.up.types || []).map(atOf).find(Boolean) || null : null; };
   const zoneEl = sim => { const z = sim.zone && (sim.zone.base || sim.zone); return z && z.up ? (z.up.types || []).map(elOf).find(Boolean) || null : null; };
   function apply(sim, ci, u, skName, sk) {
     u = normZone(u, sk);
     u = normCrit(sim, ci, u);
     // 위키 「Another Zone」 스킬 — 본문(「Awakens any … Zones」)이 cond 칸 · 설명 첫 줄에 있고 효과 단위는 안내 줄뿐 → 각성 단위로
     if (u.k === "zone" && !u.name && (/^awakens any/i.test(u.cond || "") || /^awakens any/i.test((sk && sk.desc) || ""))) u = { ...u, k: "zoneAwake", cond: undefined };
+    // 「속성 ZONE에 따라 '속성 공격력 UP'(· '버프와 디버프') 종류 변화」(11-08) — 빌더는 7속성 단위로 펼친다(기본 속성 외엔 엉뚱한 조건이 붙기도) →
+    //   지금 존의 속성 단위만 남기고 조건을 뗀다, 속성 존이 없으면 조건 없는 기본 단위만
+    if (u.k === "stat_pct" && ZBUF.test((sk && sk.desc) || "")) { const ue = (u.stats || []).map(x => elOf((/^(\S+) 속성/.exec(x) || [])[1])).find(Boolean);
+      if (ue) { const ze = zoneEl(sim); if (ze) { if (ue !== ze) return; u = { ...u, cond: undefined }; } else if (u.cond) return; } }
     if (u.cond && (!sim.opt.cond || compOk(sim, u.cond) === false || (u.k !== "zone" && u.k !== "zoneAwake" && zoneCond(sim, u.cond) === false))) return;
     if (sk && !gateOk(sim, sk)) return;
     if (!needOk(sim, ci, u.need)) return;
+    { const f = flexOf(u, sk); if (f) { const until = u.turns == null ? Infinity : sim.turn + u.turns; for (const t of (f.who === "all" ? sim.party.map((x, i) => i) : [ci])) if (!f.el || ((sim.party[t].c || {}).elementKo === f.el)) sim.live.set(`flex|${t}`, { ci: t, u: { k: "flexible", at: f.at }, skill: skName, stacks: 1, until }); return; } }
     { const k = kaleidoOf(u, sk); if (k) { const until = u.turns == null ? Infinity : sim.turn + u.turns; for (const t of kalTargets(sim, ci, k, sk)) sim.live.set(`kal|${t}`, { ci: t, u: { k: "kaleido", el: k.el }, skill: skName, stacks: 1, until }); return; } }
     // 존 — 「극 X」 = ANOTHER ZONE(증가 효과 ×2, 2턴 뒤 존까지 사라짐) · 「절 X」 = Radical(×2, 5턴) · zoneAwake 단위 = 지금 존 각성(위키 Zones §Awakened, 구조 지도 §4.5). 그라스타 부여 존은 영어 이름
     if (u.k === "zone" || u.k === "zoneAwake") {
@@ -291,7 +320,7 @@
   function fxOf(sim, ci, extra) {
     const out = [];
     for (const e of sim.live.values()) {
-      if (e.ci !== ci || e.u.flat || e.u.k === "kaleido") continue;     // 고정 수치는 flatStats 가 스탯에 · 변화무쌍은 공격 속성(attackRaw)
+      if (e.ci !== ci || e.u.flat || e.u.k === "kaleido" || e.u.k === "flexible") continue;     // 고정 수치는 flatStats 가 스탯에 · 변화무쌍은 공격 속성(attackRaw)
       const v = e.left ? e.left : typeof e.u.value === "number" && e.stacks > 1 ? +C.halfStack(e.u.value, e.stacks).toFixed(2) : e.u.value;
       out.push({ ...e.u, value: v, base: undefined, _skill: e.skill });
     }
@@ -314,6 +343,7 @@
   function attackRaw(sim, ci, sk, part) {
     const atk = toAttack(part, sk);
     if (/ZONE에 따라 공격 속성 변화/.test(sk.desc || "")) { const el = zoneEl(sim); if (el) atk.element = el; }   // 네코코 ES 유성군 · 적의 플람 얼터 등 14스킬(11-08)
+    { const fl = sim.live.get(`flex|${ci}`); if (fl && !FLEX_IMMUNE.test(sk.desc || "")) { const at = fl.u.at === "zone" ? zoneAt(sim) : fl.u.at; if (at) atk.atk = at; } }   // 임기응변
     { const kl = sim.live.get(`kal|${ci}`); if (kl && !KAL_IMMUNE.test(sk.desc || "")) { const el = kl.u.el === "zone" ? zoneEl(sim) : kl.u.el; if (el) atk.element = el; } }   // 변화무쌍
     // 상태 효과 고정값(힘 · 지능 · 속도 +N) = 딩님 계산기 14~16행 — 공격력에는 더하고 (1 + 힘/32) 배율에는 안 넣는다 → party_calc flatFx(근사 stacks · 정밀 fx.flat).
     //   전에는 기본 스탯에 더해 배율까지 키웠다(영랑 모드 힘 +100 등, 11-04). 행운은 크리율에만 쓰여 스탯에 그대로

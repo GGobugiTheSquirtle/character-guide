@@ -201,7 +201,7 @@
   const zkey = n => String(n || "").toLowerCase().replace(/[^a-z]/g, "");   // 「Double Strike Stance - Magic Slash」(장비) = 「…: Magic Slash」(zones) — 구두점 무시(11-04)
   const envOk = (cond, env) => !!env && (cond === "severe" ? !!env.severe : env.type === cond);
   function equipFor(items, atk, opt) {
-    const out = { equip: [], punish: 0, punishV: [], skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, groups: [], slots: {}, skillMul: 1, src: [] };
+    const out = { equip: [], typeEquip: [], punish: 0, punishV: [], skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, groups: [], slots: {}, skillMul: 1, src: [] };
     // slot = 정밀 엔진(ae_pipeline) 칸 — 근사 엔진에는 모두 곱(groups)으로 들어간다
     const mult = (it, label, x, slot = "condE", raw = x) => {
       if (x > 0) { out.groups.push(x / 100); (out.slots[slot] = out.slots[slot] || []).push(raw); out.src.push(`${it.name}: ${label} +${+x.toFixed(2)}%`); }
@@ -236,6 +236,7 @@
             || (f.when === "normal" && opt.normalAtk);                         // 일반 공격 대미지 UP(37행 — 속성 · HP 와 같은 바탕에서 가산). 전에는 when normal 을 몰라 늘 꺼짐(11-03)
           // ZONE 조건 대미지 = 딩님 계산기 49행 「각성 ZONE 시」 · 50행 「ZONE 시 대미지 UP」(각자 칸, 속성 대미지 35행 합이 아님 — 빌더 대조 2026-11-03)
           if (ok && f.zone) mult(it, `${f.zone} 시`, f.v, f.awakened || f.zone === "Another Zone" ? "zoneAwake" : "zoneCond");
+          else if (ok && opt.elemEquipToType && (f.when === atk.element || f.when === "type")) { out.typeEquip.push(v); out.src.push(`${it.name}: ${f.when} +${f.v}% (속성 그룹)`); }   // 실험(11-08 hinaden): 장비 속성 공격을 스킬 속성 버프와 한 칸(감쇠)으로
           else if (ok) { out.equip.push(v); out.src.push(`${it.name}: ${f.when} +${f.v}%`); }
         } else if (f.k === "punish" && opt.punish && opt.punish.includes(f.when)) { out.punish++; out.punishV.push(f.v || 30); out.src.push(`${it.name}: ${f.when} ×${1 + (f.v || 30) / 100}`); }
         // 약점 대미지 강화 — 무기 · 방어구 · 배지 · 글래스터(Weak Point Strike · Moonlit Guidance) · 광석이 모두 같은 효과 「적의 약점 상성에 가하는 대미지 +N%, 효과 중복 불가」
@@ -467,7 +468,8 @@
     for (const [k, v] of Object.entries(eq.stats)) st[k] = (st[k] || 0) + v;
     const magic = atk.dep === "magic" || atk.dep === "magicpwr";
     const typeKey = atk.element || null;
-    const typeNet = net(ag, "t" + typeKey, () => C.groupNet({ buffs: typeKey ? [...(ag.type["*"] || []), ...(ag.type[typeKey] || [])] : (ag.type["*"] || []) }));
+    const tb = typeKey ? [...(ag.type["*"] || []), ...(ag.type[typeKey] || [])] : (ag.type["*"] || []);
+    const typeNet = eq.typeEquip.length ? C.groupNet({ buffs: tb, equip: eq.typeEquip }) : net(ag, "t" + typeKey, () => C.groupNet({ buffs: tb }));
     const wt = (m.weapon && m.weapon.type) || (m.cc && m.cc.weapon) || "";
     const dmgNet = net(ag, "dmg" + wt, () => C.groupNet({ buffs: [...ag.dmg.buffs, ...(ag.wdmg[wt] || [])] }));
     const groups = [typeNet, dmgNet, ...eq.groups, ...ev.groups];

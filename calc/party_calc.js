@@ -236,7 +236,7 @@
             || (f.when === "normal" && opt.normalAtk);                         // 일반 공격 대미지 UP(37행 — 속성 · HP 와 같은 바탕에서 가산). 전에는 when normal 을 몰라 늘 꺼짐(11-03)
           // ZONE 조건 대미지 = 딩님 계산기 49행 「각성 ZONE 시」 · 50행 「ZONE 시 대미지 UP」(각자 칸, 속성 대미지 35행 합이 아님 — 빌더 대조 2026-11-03)
           if (ok && f.zone) mult(it, `${f.zone} 시`, f.v, f.awakened || f.zone === "Another Zone" ? "zoneAwake" : "zoneCond");
-          else if (ok && opt.elemEquipToType && (f.when === atk.element || f.when === "type")) { out.typeEquip.push(v); out.src.push(`${it.name}: ${f.when} +${f.v}% (속성 그룹)`); }   // 실험(11-08 hinaden): 장비 속성 공격을 스킬 속성 버프와 한 칸(감쇠)으로
+          else if (ok && opt.elemEquipToType && (f.when === atk.element || f.when === "type") && (opt.elemEquipToType !== "grasta" || ((it.connection !== undefined || it._grasta) && !/^E\. |^극 격진/.test(it.name || "")))) { out.typeEquip.push(v); out.src.push(`${it.name}: ${f.when} +${f.v}% (속성 그룹)`); }   // 실험(11-08 hinaden): 장비 속성 공격을 스킬 속성 버프와 한 칸(감쇠)으로
           else if (ok) { out.equip.push(v); out.src.push(`${it.name}: ${f.when} +${f.v}%`); }
         } else if (f.k === "punish" && opt.punish && opt.punish.includes(f.when)) { out.punish++; out.punishV.push(f.v || 30); out.src.push(`${it.name}: ${f.when} ×${1 + (f.v || 30) / 100}`); }
         // 약점 대미지 강화 — 무기 · 방어구 · 배지 · 글래스터(Weak Point Strike · Moonlit Guidance) · 광석이 모두 같은 효과 「적의 약점 상성에 가하는 대미지 +N%, 효과 중복 불가」
@@ -377,7 +377,7 @@
         const ht = (h.c && h.c.traits) || [], req = g.req || [];
         const ok = g.share === "all" || (g.share === "weapon" && mw && mw === weaponOfMember(h) && (!req.length || req.includes(mw)))
           || (g.share === "personality" && ht.some(t => mt.includes(t) && (!req.length || req.includes(t))));
-        if (ok) out.push({ name: `${g.name}(공유: ${(h.c && h.c.nameKo) || ""})`, stats: {}, fx: [], calc: (g.calc_ore || g.calc || []).filter(f => f.k !== "stat") });
+        if (ok) out.push({ name: `${g.name}(공유: ${(h.c && h.c.nameKo) || ""})`, stats: {}, fx: [], calc: (g.calc_ore || g.calc || []).filter(f => f.k !== "stat"), _grasta: true });
       }
     }
     return out;

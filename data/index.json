@@ -3238,7 +3238,7 @@
         "힘 UP"
       ],
       "roles": {
-        "attack": 10,
+        "attack": 12,
         "resource": 11,
         "mode": 3,
         "zone": 14,
@@ -6334,7 +6334,7 @@
         "atk_state": 3,
         "mode": 3,
         "atk_buff": 18,
-        "attack": 4,
+        "attack": 5,
         "atk_debuff": 5,
         "tempo": 1,
         "recover": 2,
@@ -11153,7 +11153,7 @@
       "roles": {
         "mode": 1,
         "state_unknown": 2,
-        "attack": 5,
+        "attack": 7,
         "power": 9,
         "zone": 9,
         "resource": 1,

@@ -151,10 +151,22 @@
   // 스킬 전체 발동 조건(설명 첫 줄 「전투 시작 시, <결정> 아군 2명 이상 시 발동」) — 빌더가 단위 cond 에 안 옮긴다(알마 AS 「(2)」 휘정진)
   const skillGate = sk => { const x = /(?:^|,\s*)((?:\[추가 효과\]\s*)?(?:<[^>]+>(?:,\s*또는,\s*)?)+\s*아군 \d+명(?: 이상)? 시) 발동/.exec(((sk && sk.desc) || "").split(/\r?\n/)[0]); return x ? x[1] : null; };
   const gateOk = (sim, sk) => compOk(sim, skillGate(sk)) !== false;
+  // 존 조건(11-08) — 「When in Torn Earth Stance」 · 「(극 )각음진 시」 · 「ANOTHER ZONE 시」 · 「ZONE 시」 · 「When in Any Stance」. 지금 존(sim.zone)으로 판정, 존 말이 없으면 null.
+  //   전엔 고점이 효과를 존보다 먼저 걸어 존 조건이 늘 켜졌다(각음진 조건 효과가 지열진 파티에서도 붙음)
+  function zoneCond(sim, cond) {
+    if (!cond || !Array.isArray(sim.party)) return null;
+    const z = sim.zone, b = z && (z.base || z), zs = sim.opt.zones || [];
+    const named = zs.find(x => (x.name && cond.includes(x.name)) || (x.ko && new RegExp(`(^|[^가-힣])${x.ko}`).test(cond)));
+    if (named) return !!b && (b.name === named.name) && (!/극 |Awakened/i.test(cond) || !!z.awake);
+    if (/ANOTHER ZONE 시|When in Another Zone|When in an Awakened|Radical/i.test(cond)) return !!(z && z.awake);
+    if (/(^|\] )ZONE 시|When in Any Stance|Elemental\/Attack Type Zone|applicable Zone/i.test(cond)) return !!z;
+    return null;
+  }
   function condOk(sim, m, cond, via) {
     if (!cond || /^awakens any/i.test(cond)) return true;                 // 위키 「Another Zone」 본문(조건 아님, 11-05)
     if (sim.opt.peak === "repeat" && ONE_SHOT.test(cond)) return false;   // 반복 고점 — 1회성 스텝(전투 1회 · 첫 턴)은 끈다
     { const c = compOk(sim, cond); if (c !== null) return c; }
+    if (zoneCond(sim, cond) === false) return false;
     if (/^스텔라 버스트 시$/.test(cond)) return !!sim.sb.on;                 // SB 안에서 실행 중일 때
     let x;
     if ((x = /^「(.+?)」로 발동 시$/.exec(cond))) return via === x[1];
@@ -223,7 +235,7 @@
     u = normCrit(sim, ci, u);
     // 위키 「Another Zone」 스킬 — 본문(「Awakens any … Zones」)이 cond 칸 · 설명 첫 줄에 있고 효과 단위는 안내 줄뿐 → 각성 단위로
     if (u.k === "zone" && !u.name && (/^awakens any/i.test(u.cond || "") || /^awakens any/i.test((sk && sk.desc) || ""))) u = { ...u, k: "zoneAwake", cond: undefined };
-    if (u.cond && (!sim.opt.cond || compOk(sim, u.cond) === false)) return;
+    if (u.cond && (!sim.opt.cond || compOk(sim, u.cond) === false || (u.k !== "zone" && u.k !== "zoneAwake" && zoneCond(sim, u.cond) === false))) return;
     if (sk && !gateOk(sim, sk)) return;
     if (!needOk(sim, ci, u.need)) return;
     { const k = kaleidoOf(u, sk); if (k) { const until = u.turns == null ? Infinity : sim.turn + u.turns; for (const t of kalTargets(sim, ci, k, sk)) sim.live.set(`kal|${t}`, { ci: t, u: { k: "kaleido", el: k.el }, skill: skName, stacks: 1, until }); return; } }
@@ -301,6 +313,7 @@
   }
   function attackRaw(sim, ci, sk, part) {
     const atk = toAttack(part, sk);
+    if (/ZONE에 따라 공격 속성 변화/.test(sk.desc || "")) { const el = zoneEl(sim); if (el) atk.element = el; }   // 네코코 ES 유성군 · 적의 플람 얼터 등 14스킬(11-08)
     { const kl = sim.live.get(`kal|${ci}`); if (kl && !KAL_IMMUNE.test(sk.desc || "")) { const el = kl.u.el === "zone" ? zoneEl(sim) : kl.u.el; if (el) atk.element = el; } }   // 변화무쌍
     // 상태 효과 고정값(힘 · 지능 · 속도 +N) = 딩님 계산기 14~16행 — 공격력에는 더하고 (1 + 힘/32) 배율에는 안 넣는다 → party_calc flatFx(근사 stacks · 정밀 fx.flat).
     //   전에는 기본 스탯에 더해 배율까지 키웠다(영랑 모드 힘 +100 등, 11-04). 행운은 크리율에만 쓰여 스탯에 그대로
@@ -477,6 +490,8 @@
     const build = z => {
       const sim = newSim(party, o, conf.memo || null);
       sim.gear = `P${mode}|${sig}`; sim.turn = 2; sim.res = party.map(() => Infinity);   // 자원은 찬 것으로(구슬 소비 · 변화한 일반 공격)
+      // 존을 먼저 편다(11-08) — 존 조건 효과(zoneCond) · 존 따라 종류가 바뀌는 효과가 지금 존을 보게
+      if (z) { apply(sim, 0, { ...z.u, turns: null }, z.sk.name, z.sk); if (awake && sim.zone && !sim.zone.awake) sim.zone = { ...sim.zone, up: { ...sim.zone.up, v: (sim.zone.up.v || 0) * 2 }, awake: true, base: sim.zone, until: Infinity }; }
       party.forEach((m, ci) => {
         for (const { u, sk } of units[ci]) {
           if (u.k === "zone" || u.k === "zoneAwake") continue;
@@ -486,7 +501,6 @@
         //   한 번 굴린 p 그대로면 0.5 미만 상태가 「없음」으로 빠져, 페인 장비 11개를 낀 hinaden 파티가 페인 없이 계산됐다)
         for (const u of equipOnHit(m, o)) apply(sim, ci, { ...u, turns: null, ...(u.p != null && u.p < 1 ? { p: +(1 - (1 - u.p) ** 3).toFixed(3) } : {}) }, "장비: " + u._equip);
       });
-      if (z) { apply(sim, 0, { ...z.u, turns: null }, z.sk.name, z.sk); if (awake && sim.zone && !sim.zone.awake) sim.zone = { ...sim.zone, up: { ...sim.zone.up, v: (sim.zone.up.v || 0) * 2 }, awake: true, base: sim.zone, until: Infinity }; }
       return sim;
     };
     // 장면 복사 — 효과 칸(live)만 얕게 베낀다(act 가 새 칸을 넣고 브레이크 남은 수를 깎는다)

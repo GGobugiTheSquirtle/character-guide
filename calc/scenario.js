@@ -543,6 +543,7 @@
     let top = null;
     for (const z of zones) {
       const base = build(z);
+      if (!zAllow(base.zone)) continue;                                   // 허용 밖 존은 멤버 계산 전에 건너뛴다(결과 같음, 속도)
       // 멤버 · 후보마다 장면을 복사해 act 를 돌린다 — 연속 실행 · 반복 · 브레이크 소모가 그대로, 장면끼리 섞이지 않게
       const per = party.map((m, ci) => {
         let best = { d: 0, name: null };

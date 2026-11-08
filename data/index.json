@@ -77,7 +77,7 @@
         "바람",
         "엘프",
         "Nicknamer",
-        "Arcadia"
+        "아르카디아"
       ]
     },
     {
@@ -146,7 +146,7 @@
       "traits": [
         "지팡이",
         "땅",
-        "Arcadia"
+        "아르카디아"
       ]
     },
     {
@@ -330,12 +330,12 @@
       "skills_en": true,
       "skills_ding": true,
       "traits": [
-        "Clergy",
+        "성직자",
         "검",
         "Titan",
-        "Glutton",
+        "대식가",
         "물",
-        "Demon Sword",
+        "마검",
         "바르오키"
       ]
     },
@@ -393,8 +393,8 @@
       },
       "traits": [
         "검",
-        "Scientist",
-        "고양이 애호가"
+        "과학자",
+        "애묘가"
       ]
     },
     {
@@ -478,8 +478,8 @@
       "traits": [
         "검",
         "결정",
-        "Clergy",
-        "Glutton"
+        "성직자",
+        "대식가"
       ]
     },
     {
@@ -553,11 +553,11 @@
       "skills_en": true,
       "skills_ding": true,
       "traits": [
-        "Sweet tooth",
+        "단것 애호가",
         "지팡이",
-        "Avenger",
+        "복수",
         "Napper",
-        "Future Revolutionary",
+        "미래 혁명가",
         "그림자"
       ]
     },
@@ -678,11 +678,11 @@
       "skills_ding": true,
       "traits": [
         "지팡이",
-        "고양이 애호가",
+        "애묘가",
         "Spirit-fused",
-        "Bookworm",
+        "독서가",
         "Dog lover",
-        "Estrangement",
+        "낮가림",
         "Star"
       ]
     },
@@ -851,7 +851,7 @@
         "바람",
         "용",
         "Cursed",
-        "Scars of the Wheel of Time"
+        "시간의 상흔의 윤무"
       ]
     },
     {
@@ -926,11 +926,11 @@
         "지팡이",
         "번개",
         "동방",
-        "고양이 애호가",
+        "애묘가",
         "Animal Talker",
         "Spirit Talker",
-        "Fairy",
-        "Land of Mi"
+        "요괴",
+        "뱀의 땅"
       ]
     },
     {
@@ -1000,8 +1000,8 @@
       },
       "skills_en": true,
       "traits": [
-        "고양이 애호가",
-        "Minstrel",
+        "애묘가",
+        "음유 시인",
         "활",
         "Spirit Talker",
         "바람",
@@ -1073,8 +1073,8 @@
       "traits": [
         "권갑",
         "불",
-        "Royalty",
-        "고양이 애호가"
+        "왕족",
+        "애묘가"
       ]
     },
     {
@@ -1129,8 +1129,8 @@
       "traits": [
         "활",
         "땅",
-        "Dragon Killer",
-        "Arcadia",
+        "드래곤 킬러",
+        "아르카디아",
         "Spicy Lover"
       ]
     },
@@ -1347,9 +1347,9 @@
       "skills_ding": true,
       "traits": [
         "지팡이",
-        "Royalty",
-        "Amnesia",
-        "FFIX"
+        "왕족",
+        "기억 상실",
+        "FF Ⅸ"
       ]
     },
     {
@@ -1415,8 +1415,8 @@
       "skills_ding": true,
       "traits": [
         "검",
-        "Weapons",
-        "FFIX"
+        "장비",
+        "FF Ⅸ"
       ]
     },
     {
@@ -1478,8 +1478,8 @@
         "물",
         "Gourmet",
         "Spicy Lover",
-        "Avenger",
-        "Outlaw"
+        "복수",
+        "무법자"
       ]
     },
     {
@@ -1541,8 +1541,8 @@
       "skills_ding": true,
       "traits": [
         "지팡이",
-        "Estrangement",
-        "FFIX",
+        "낮가림",
+        "FF Ⅸ",
         "불",
         "물",
         "번개"
@@ -1624,9 +1624,9 @@
       "traits": [
         "도",
         "바람",
-        "Outlaw",
+        "무법자",
         "Lovesick",
-        "FFIX"
+        "FF Ⅸ"
       ]
     },
     {
@@ -1764,8 +1764,8 @@
       "traits": [
         "창",
         "그림자",
-        "Future Revolutionary",
-        "Bookworm"
+        "미래 혁명가",
+        "독서가"
       ]
     },
     {
@@ -1855,8 +1855,8 @@
       "traits": [
         "지팡이",
         "결정",
-        "Future Revolutionary",
-        "Minstrel"
+        "미래 혁명가",
+        "음유 시인"
       ]
     },
     {
@@ -1994,8 +1994,8 @@
       "traits": [
         "지팡이",
         "결정",
-        "고양이 애호가",
-        "Estrangement",
+        "애묘가",
+        "낮가림",
         "Art",
         "Napper"
       ]
@@ -2071,8 +2071,8 @@
       "traits": [
         "도끼",
         "그림자",
-        "Beast",
-        "Glasses"
+        "마수",
+        "안경"
       ]
     },
     {
@@ -2141,7 +2141,7 @@
       "skills_en": true,
       "skills_ding": true,
       "traits": [
-        "Beast",
+        "마수",
         "도끼",
         "Lovesick",
         "물"
@@ -2261,10 +2261,10 @@
       },
       "skills_en": true,
       "traits": [
-        "Mask",
+        "가면",
         "지팡이",
         "Hood",
-        "Amnesia",
+        "기억 상실",
         "땅"
       ]
     },
@@ -2329,10 +2329,10 @@
         "검",
         "땅",
         "동방",
-        "Itto-Ryu",
+        "보현일도류",
         "Scallywag",
         "Spicy Lover",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -2555,7 +2555,7 @@
       "traits": [
         "활",
         "땅",
-        "Outlaw",
+        "무법자",
         "Gun"
       ]
     },
@@ -2716,9 +2716,9 @@
       "traits": [
         "망치",
         "번개",
-        "Miner",
+        "채굴",
         "Chronos Empire",
-        "Glasses"
+        "안경"
       ]
     },
     {
@@ -2839,18 +2839,18 @@
       "skills_ding": true,
       "traits": [
         "주인공",
-        "Guiding Light",
-        "Forager",
+        "천계의 인도",
+        "채집",
         "검",
         "New Radical Dreamers",
         "New Time Drift",
         "용",
         "바르오키",
-        "Concerto Artes",
+        "콘체르토 아트",
         "불",
-        "Arcadia",
-        "Itto-Ryu",
-        "Demon Sword"
+        "아르카디아",
+        "보현일도류",
+        "마검"
       ]
     },
     {
@@ -2927,7 +2927,7 @@
         "결정",
         "Nicknamer",
         "Dog lover",
-        "Forager",
+        "채집",
         "MMA"
       ]
     },
@@ -3052,14 +3052,14 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "동방",
         "Childhood Friend",
         "도",
         "Mounted",
-        "Itto-Ryu",
+        "보현일도류",
         "번개",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -3192,9 +3192,9 @@
         "동방",
         "Cursed",
         "Hood",
-        "Fairy",
-        "Itto-Ryu",
-        "Land of Mi"
+        "요괴",
+        "보현일도류",
+        "뱀의 땅"
       ]
     },
     {
@@ -3351,7 +3351,7 @@
         "동방",
         "창",
         "땅",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -3434,8 +3434,8 @@
         "활",
         "물",
         "동방",
-        "Fairy",
-        "Minstrel"
+        "요괴",
+        "음유 시인"
       ]
     },
     {
@@ -3506,11 +3506,11 @@
         "state_unknown": 1
       },
       "traits": [
-        "Glasses",
-        "Scientist",
-        "Forager",
+        "안경",
+        "과학자",
+        "채집",
         "지팡이",
-        "KMS",
+        "KMS사",
         "IDA 스쿨"
       ]
     },
@@ -3589,7 +3589,7 @@
         "망치",
         "그림자",
         "동방",
-        "Fairy",
+        "요괴",
         "Sharp Ears",
         "Funeral"
       ]
@@ -3656,8 +3656,8 @@
       "traits": [
         "검",
         "땅",
-        "Beast",
-        "Bookworm"
+        "마수",
+        "독서가"
       ]
     },
     {
@@ -3741,11 +3741,11 @@
       "traits": [
         "활",
         "동방",
-        "고양이 애호가",
+        "애묘가",
         "Animal Talker",
-        "Fairy",
+        "요괴",
         "바람",
-        "Land of Mi",
+        "뱀의 땅",
         "Spirit Talker"
       ]
     },
@@ -3817,8 +3817,8 @@
       "traits": [
         "검",
         "물",
-        "Bookworm",
-        "Weapons"
+        "독서가",
+        "장비"
       ]
     },
     {
@@ -3911,9 +3911,9 @@
       "skills_ding": true,
       "traits": [
         "지팡이",
-        "Glasses",
-        "Atelier",
-        "Bookworm"
+        "안경",
+        "아틀리에",
+        "독서가"
       ]
     },
     {
@@ -4123,8 +4123,8 @@
       "traits": [
         "활",
         "물",
-        "Atelier",
-        "Cooking"
+        "아틀리에",
+        "요리"
       ]
     },
     {
@@ -4216,9 +4216,9 @@
       "traits": [
         "지팡이",
         "불",
-        "Atelier",
-        "Forager",
-        "Miner"
+        "아틀리에",
+        "채집",
+        "채굴"
       ]
     },
     {
@@ -4284,9 +4284,9 @@
         "지팡이",
         "번개",
         "동방",
-        "Mask",
-        "Estrangement",
-        "Amnesia"
+        "가면",
+        "낮가림",
+        "기억 상실"
       ]
     },
     {
@@ -4349,7 +4349,7 @@
       },
       "traits": [
         "권갑",
-        "Bookworm",
+        "독서가",
         "불"
       ]
     },
@@ -4417,9 +4417,9 @@
         "바람",
         "동방",
         "Ninja",
-        "고양이 애호가",
-        "Glutton",
-        "Land of Mi"
+        "애묘가",
+        "대식가",
+        "뱀의 땅"
       ]
     },
     {
@@ -4490,7 +4490,7 @@
       "traits": [
         "도",
         "바람",
-        "Avenger"
+        "복수"
       ]
     },
     {
@@ -4566,11 +4566,11 @@
         "불",
         "그림자",
         "동방",
-        "Avenger",
+        "복수",
         "Cursed",
         "Hood",
-        "Fairy",
-        "Land of Mi"
+        "요괴",
+        "뱀의 땅"
       ]
     },
     {
@@ -4648,15 +4648,15 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "동방",
         "Childhood Friend",
         "도",
         "Mounted",
         "Spicy Lover",
-        "Itto-Ryu",
+        "보현일도류",
         "바람",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -4712,7 +4712,7 @@
       },
       "traits": [
         "동방",
-        "Cooking",
+        "요리",
         "권갑",
         "불",
         "Land of Shin",
@@ -4789,7 +4789,7 @@
         "권갑",
         "물",
         "KOF",
-        "Sweet tooth",
+        "단것 애호가",
         "MMA"
       ]
     },
@@ -5008,7 +5008,7 @@
         "바람",
         "그림자",
         "Cursed",
-        "고양이 애호가",
+        "애묘가",
         "Lovesick",
         "Hood"
       ]
@@ -5145,11 +5145,11 @@
         "dot": 1
       },
       "traits": [
-        "Forager",
+        "채집",
         "도끼",
         "Art",
         "땅",
-        "Outlaw"
+        "무법자"
       ]
     },
     {
@@ -5225,9 +5225,9 @@
         "도끼",
         "번개",
         "용",
-        "Dragon Killer",
+        "드래곤 킬러",
         "연옥계",
-        "Arcadia"
+        "아르카디아"
       ]
     },
     {
@@ -5300,8 +5300,8 @@
         "권갑",
         "불",
         "Spicy Lover",
-        "Outlaw",
-        "Bookworm",
+        "무법자",
+        "독서가",
         "Gun"
       ]
     },
@@ -5381,10 +5381,10 @@
       "traits": [
         "검",
         "Military",
-        "Glutton",
+        "대식가",
         "Chronos Empire",
         "불",
-        "Outlaw"
+        "무법자"
       ]
     },
     {
@@ -5511,12 +5511,12 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
-        "Cooking",
+        "애묘가",
+        "요리",
         "지팡이",
         "바르오키",
         "Geo",
-        "Demon Sword"
+        "마검"
       ]
     },
     {
@@ -5590,9 +5590,9 @@
         "검",
         "물",
         "결정",
-        "고양이 애호가",
+        "애묘가",
         "Hood",
-        "Amnesia"
+        "기억 상실"
       ]
     },
     {
@@ -5747,8 +5747,8 @@
       },
       "skills_ding": true,
       "traits": [
-        "Sweet tooth",
-        "Beast",
+        "단것 애호가",
+        "마수",
         "도끼",
         "Napper",
         "Hood",
@@ -5831,10 +5831,10 @@
       "skills_ding": true,
       "traits": [
         "지팡이",
-        "KMS",
-        "Estrangement",
+        "KMS사",
+        "낮가림",
         "그림자",
-        "Glasses"
+        "안경"
       ]
     },
     {
@@ -5951,8 +5951,8 @@
         "망치",
         "번개",
         "땅",
-        "Mask",
-        "Sweet tooth",
+        "가면",
+        "단것 애호가",
         "Hood"
       ]
     },
@@ -6035,8 +6035,8 @@
         "surv_debuff": 3
       },
       "traits": [
-        "Miglance Palace",
-        "Sweet tooth",
+        "미글랜스 왕궁",
+        "단것 애호가",
         "창",
         "Mounted",
         "Shield",
@@ -6115,10 +6115,10 @@
       "skills_ding": true,
       "traits": [
         "지팡이",
-        "KMS",
-        "Scientist",
+        "KMS사",
+        "과학자",
         "동방",
-        "Synth Human"
+        "합성인간"
       ]
     },
     {
@@ -6196,7 +6196,7 @@
       "traits": [
         "지팡이",
         "땅",
-        "Arcadia"
+        "아르카디아"
       ]
     },
     {
@@ -6430,12 +6430,12 @@
       "traits": [
         "도끼",
         "불",
-        "Arcadia",
+        "아르카디아",
         "동방",
         "Shield",
-        "Dragon Killer",
-        "Glutton",
-        "Forager"
+        "드래곤 킬러",
+        "대식가",
+        "채집"
       ]
     },
     {
@@ -6509,7 +6509,7 @@
         "바람",
         "엘프",
         "Nicknamer",
-        "Arcadia"
+        "아르카디아"
       ]
     },
     {
@@ -6716,8 +6716,8 @@
         "도",
         "땅",
         "동방",
-        "Itto-Ryu",
-        "Land of Mi"
+        "보현일도류",
+        "뱀의 땅"
       ]
     },
     {
@@ -6797,8 +6797,8 @@
       },
       "skills_ding": true,
       "traits": [
-        "Sweet tooth",
-        "Clergy",
+        "단것 애호가",
+        "성직자",
         "서방",
         "검",
         "결정"
@@ -6923,11 +6923,11 @@
       "skills_ding": true,
       "traits": [
         "활",
-        "고양이 애호가",
+        "애묘가",
         "Gun",
         "Alchemist",
         "결정",
-        "Glasses"
+        "안경"
       ]
     },
     {
@@ -7006,7 +7006,7 @@
         "그림자",
         "Cursed",
         "바르오키",
-        "Avenger"
+        "복수"
       ]
     },
     {
@@ -7069,8 +7069,8 @@
         "불",
         "물",
         "번개",
-        "Bookworm",
-        "Traveler"
+        "독서가",
+        "인도의 트래블러"
       ]
     },
     {
@@ -7135,10 +7135,10 @@
         "도",
         "번개",
         "동방",
-        "Itto-Ryu",
-        "Mask",
-        "KMS",
-        "고양이 애호가",
+        "보현일도류",
+        "가면",
+        "KMS사",
+        "애묘가",
         "Lovesick"
       ]
     },
@@ -7205,7 +7205,7 @@
       "traits": [
         "활",
         "불",
-        "Traveler"
+        "인도의 트래블러"
       ]
     },
     {
@@ -7289,7 +7289,7 @@
       "traits": [
         "권갑",
         "번개",
-        "Traveler"
+        "인도의 트래블러"
       ]
     },
     {
@@ -7352,8 +7352,8 @@
       "traits": [
         "활",
         "땅",
-        "Dragon Killer",
-        "Arcadia",
+        "드래곤 킬러",
+        "아르카디아",
         "Spicy Lover"
       ]
     },
@@ -7431,8 +7431,8 @@
         "창",
         "물",
         "Cursed",
-        "Dragon Killer",
-        "Arcadia",
+        "드래곤 킬러",
+        "아르카디아",
         "용"
       ]
     },
@@ -7496,8 +7496,8 @@
       },
       "skills_ding": true,
       "traits": [
-        "Scientist",
-        "Forager",
+        "과학자",
+        "채집",
         "지팡이",
         "Gun",
         "불"
@@ -7576,7 +7576,7 @@
       "skills_ding": true,
       "traits": [
         "도끼",
-        "Estrangement",
+        "낮가림",
         "불",
         "번개"
       ]
@@ -7735,7 +7735,7 @@
         "Chronos Empire",
         "Prince of Time",
         "Paradoxical Dreamers' Leader",
-        "Future Revolutionary"
+        "미래 혁명가"
       ]
     },
     {
@@ -7812,7 +7812,7 @@
       "traits": [
         "망치",
         "번개",
-        "Miner",
+        "채굴",
         "Chronos Empire"
       ]
     },
@@ -7953,7 +7953,7 @@
         "resource": 3
       },
       "traits": [
-        "Minstrel",
+        "음유 시인",
         "활",
         "Cursed",
         "불"
@@ -8025,8 +8025,8 @@
       "traits": [
         "지팡이",
         "물",
-        "Beast",
-        "Minstrel",
+        "마수",
+        "음유 시인",
         "Spicy Lover",
         "연옥계"
       ]
@@ -8102,7 +8102,7 @@
       "traits": [
         "IDA 스쿨",
         "지팡이",
-        "Estrangement",
+        "낮가림",
         "바람"
       ]
     },
@@ -8169,7 +8169,7 @@
       "skills_ding": true,
       "traits": [
         "망치",
-        "Scientist",
+        "과학자",
         "바람"
       ]
     },
@@ -8235,9 +8235,9 @@
         "surv_buff": 1
       },
       "traits": [
-        "Miglance Palace",
+        "미글랜스 왕궁",
         "도끼",
-        "Outlaw",
+        "무법자",
         "Ninja",
         "물",
         "Hood"
@@ -8303,8 +8303,8 @@
       "traits": [
         "검",
         "물",
-        "Bookworm",
-        "Weapons"
+        "독서가",
+        "장비"
       ]
     },
     {
@@ -8366,7 +8366,7 @@
         "mode": 1
       },
       "traits": [
-        "Cooking",
+        "요리",
         "활",
         "Machinery",
         "로스트 랩",
@@ -8434,7 +8434,7 @@
       },
       "skills_ding": true,
       "traits": [
-        "Mask",
+        "가면",
         "도끼",
         "연옥계",
         "물"
@@ -8550,7 +8550,7 @@
       },
       "skills_ding": true,
       "traits": [
-        "Minstrel",
+        "음유 시인",
         "Northern",
         "활",
         "불"
@@ -8655,8 +8655,8 @@
       "skills_ding": true,
       "traits": [
         "활",
-        "Royalty",
-        "Amnesia",
+        "왕족",
+        "기억 상실",
         "Hood",
         "물",
         "그림자"
@@ -8726,7 +8726,7 @@
       "traits": [
         "도",
         "바람",
-        "Avenger"
+        "복수"
       ]
     },
     {
@@ -8865,7 +8865,7 @@
         "power": 1
       },
       "traits": [
-        "Cooking",
+        "요리",
         "권갑",
         "Dwarf",
         "Nicknamer",
@@ -8929,9 +8929,9 @@
       },
       "skills_ding": true,
       "traits": [
-        "Glasses",
+        "안경",
         "IDA 스쿨",
-        "Outlaw",
+        "무법자",
         "권갑",
         "땅"
       ]
@@ -8991,9 +8991,9 @@
       },
       "traits": [
         "검",
-        "KMS",
+        "KMS사",
         "Dog lover",
-        "Amnesia",
+        "기억 상실",
         "땅"
       ]
     },
@@ -9058,8 +9058,8 @@
       "skills_ding": true,
       "traits": [
         "지팡이",
-        "KMS",
-        "Estrangement",
+        "KMS사",
+        "낮가림",
         "그림자"
       ]
     },
@@ -9172,8 +9172,8 @@
       },
       "traits": [
         "권갑",
-        "Glasses",
-        "Bookworm",
+        "안경",
+        "독서가",
         "Lovesick",
         "Gun",
         "로스트 랩",
@@ -9236,10 +9236,10 @@
       },
       "traits": [
         "동방",
-        "Cooking",
+        "요리",
         "창",
         "Spicy Lover",
-        "Fairy",
+        "요괴",
         "불",
         "Land of Shin"
       ]
@@ -9307,8 +9307,8 @@
         "surv_buff": 3
       },
       "traits": [
-        "고양이 애호가",
-        "Clergy",
+        "애묘가",
+        "성직자",
         "권갑",
         "결정"
       ]
@@ -9518,8 +9518,8 @@
       "skills_ding": true,
       "traits": [
         "권갑",
-        "Glasses",
-        "Scientist",
+        "안경",
+        "과학자",
         "바르오키",
         "Gun",
         "불"
@@ -9629,10 +9629,10 @@
       "traits": [
         "검",
         "Military",
-        "Glutton",
+        "대식가",
         "Chronos Empire",
         "불",
-        "Outlaw"
+        "무법자"
       ]
     },
     {
@@ -9853,12 +9853,12 @@
       },
       "skills_ding": true,
       "traits": [
-        "Clergy",
+        "성직자",
         "지팡이",
         "Titan",
-        "Glutton",
+        "대식가",
         "물",
-        "Demon Sword",
+        "마검",
         "바르오키"
       ]
     },
@@ -9969,9 +9969,9 @@
       "traits": [
         "창",
         "동방",
-        "Royalty",
-        "Bookworm",
-        "Fairy",
+        "왕족",
+        "독서가",
+        "요괴",
         "불",
         "Land of Ro"
       ]
@@ -10058,11 +10058,11 @@
       "traits": [
         "도끼",
         "동방",
-        "고양이 애호가",
+        "애묘가",
         "Animal Talker",
-        "Fairy",
+        "요괴",
         "땅",
-        "Land of Mi",
+        "뱀의 땅",
         "Spirit Talker"
       ]
     },
@@ -10123,10 +10123,10 @@
       "skills_ding": true,
       "traits": [
         "검",
-        "Mask",
-        "Amnesia",
+        "가면",
+        "기억 상실",
         "Tales of",
-        "Concerto Artes",
+        "콘체르토 아트",
         "불"
       ]
     },
@@ -10192,7 +10192,7 @@
         "지팡이",
         "Dog lover",
         "Tales of",
-        "Concerto Artes"
+        "콘체르토 아트"
       ]
     },
     {
@@ -10320,7 +10320,7 @@
       "traits": [
         "도",
         "Tales of",
-        "Concerto Artes",
+        "콘체르토 아트",
         "불"
       ]
     },
@@ -10386,10 +10386,10 @@
       "traits": [
         "활",
         "Cursed",
-        "Glutton",
+        "대식가",
         "Gun",
         "Tales of",
-        "Concerto Artes",
+        "콘체르토 아트",
         "불"
       ]
     },
@@ -10452,8 +10452,8 @@
         "resource": 1
       },
       "traits": [
-        "Outlaw",
-        "Mask",
+        "무법자",
+        "가면",
         "망치",
         "Military",
         "Gun",
@@ -10512,8 +10512,8 @@
         "검",
         "Art",
         "Gourmet",
-        "Royalty",
-        "Bookworm",
+        "왕족",
+        "독서가",
         "Bind",
         "바람"
       ]
@@ -10583,8 +10583,8 @@
       "traits": [
         "IDA 스쿨",
         "검",
-        "Royalty",
-        "Bookworm",
+        "왕족",
+        "독서가",
         "용",
         "땅"
       ]
@@ -10662,7 +10662,7 @@
       "skills_ding": true,
       "traits": [
         "지팡이",
-        "Minstrel",
+        "음유 시인",
         "Cursed",
         "불",
         "물"
@@ -10721,7 +10721,7 @@
         "resource": 1
       },
       "traits": [
-        "Miglance Palace",
+        "미글랜스 왕궁",
         "창",
         "Napper",
         "바람"
@@ -10856,7 +10856,7 @@
       "traits": [
         "동방",
         "활",
-        "Fairy",
+        "요괴",
         "물"
       ]
     },
@@ -10917,7 +10917,7 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "지팡이",
         "Animal Talker",
         "물"
@@ -10984,11 +10984,11 @@
       "skills_ding": true,
       "traits": [
         "활",
-        "고양이 애호가",
+        "애묘가",
         "Gun",
         "Alchemist",
         "결정",
-        "Glasses"
+        "안경"
       ]
     },
     {
@@ -11048,7 +11048,7 @@
       },
       "traits": [
         "망치",
-        "Clergy",
+        "성직자",
         "Lovesick",
         "Nicknamer",
         "Spicy Lover",
@@ -11109,11 +11109,11 @@
       "skills_ding": true,
       "traits": [
         "동방",
-        "Sweet tooth",
+        "단것 애호가",
         "도",
         "Lovesick",
         "바람",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -11163,12 +11163,12 @@
       "traits": [
         "지팡이",
         "동방",
-        "고양이 애호가",
-        "Bookworm",
+        "애묘가",
+        "독서가",
         "Gun",
-        "Itto-Ryu",
+        "보현일도류",
         "불",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -11233,7 +11233,7 @@
       },
       "skills_ding": true,
       "traits": [
-        "Miglance Palace",
+        "미글랜스 왕궁",
         "검",
         "Shield",
         "불"
@@ -11294,9 +11294,9 @@
         "tempo": 1
       },
       "traits": [
-        "Miglance Palace",
+        "미글랜스 왕궁",
         "창",
-        "Royalty",
+        "왕족",
         "땅",
         "번개"
       ]
@@ -11362,7 +11362,7 @@
       "skills_ding": true,
       "traits": [
         "망치",
-        "Scientist",
+        "과학자",
         "바람"
       ]
     },
@@ -11426,8 +11426,8 @@
       "skills_ding": true,
       "traits": [
         "활",
-        "Royalty",
-        "Amnesia",
+        "왕족",
+        "기억 상실",
         "Hood",
         "물",
         "그림자"
@@ -11499,7 +11499,7 @@
       "skills_ding": true,
       "traits": [
         "도끼",
-        "Estrangement",
+        "낮가림",
         "불",
         "번개"
       ]
@@ -11567,7 +11567,7 @@
       },
       "skills_ding": true,
       "traits": [
-        "Minstrel",
+        "음유 시인",
         "창",
         "서방",
         "Fishman",
@@ -11679,12 +11679,12 @@
         "atk_buff": 1
       },
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "동방",
         "도",
         "Zoology",
         "땅",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -11801,7 +11801,7 @@
         "surv_buff": 1
       },
       "traits": [
-        "Sweet tooth",
+        "단것 애호가",
         "망치",
         "Gourmet",
         "로스트 랩",
@@ -11969,7 +11969,7 @@
       "skills_ding": true,
       "traits": [
         "지팡이",
-        "Scars of the Wheel of Time",
+        "시간의 상흔의 윤무",
         "결정"
       ]
     },
@@ -12037,7 +12037,7 @@
         "창",
         "로스트 랩",
         "땅",
-        "Amnesia"
+        "기억 상실"
       ]
     },
     {
@@ -12097,12 +12097,12 @@
       },
       "skills_ding": true,
       "traits": [
-        "Clergy",
+        "성직자",
         "지팡이",
         "Titan",
-        "Glutton",
+        "대식가",
         "물",
-        "Demon Sword",
+        "마검",
         "바르오키"
       ]
     },
@@ -12168,11 +12168,11 @@
         "atk_buff": 1
       },
       "traits": [
-        "Minstrel",
+        "음유 시인",
         "서방",
         "활",
         "Nicknamer",
-        "Bookworm",
+        "독서가",
         "바람",
         "결정"
       ]
@@ -12238,7 +12238,7 @@
       },
       "skills_ding": true,
       "traits": [
-        "Sweet tooth",
+        "단것 애호가",
         "도끼",
         "Gourmet",
         "로스트 랩",
@@ -12370,7 +12370,7 @@
         "atk_buff": 1
       },
       "traits": [
-        "Beast",
+        "마수",
         "도끼",
         "Hood",
         "연옥계",
@@ -12583,9 +12583,9 @@
       "skills_ding": true,
       "traits": [
         "도",
-        "Sweet tooth",
+        "단것 애호가",
         "IDA 스쿨",
-        "Bookworm",
+        "독서가",
         "로스트 랩",
         "Power to Rule",
         "바람",
@@ -12658,7 +12658,7 @@
       "traits": [
         "IDA 스쿨",
         "검",
-        "Bookworm",
+        "독서가",
         "COA",
         "로스트 랩",
         "Power to Rule",
@@ -12786,7 +12786,7 @@
       "traits": [
         "Dragon Palace",
         "지팡이",
-        "Amnesia",
+        "기억 상실",
         "Fishman",
         "Bind",
         "물"
@@ -12857,8 +12857,8 @@
       "traits": [
         "Dragon Palace",
         "지팡이",
-        "Royalty",
-        "Glutton",
+        "왕족",
+        "대식가",
         "물",
         "결정"
       ]
@@ -12958,7 +12958,7 @@
       "traits": [
         "지팡이",
         "New Time Drift",
-        "Scars of the Wheel of Time",
+        "시간의 상흔의 윤무",
         "불",
         "그림자"
       ]
@@ -13058,7 +13058,7 @@
       "traits": [
         "도",
         "New Radical Dreamers",
-        "Scars of the Wheel of Time",
+        "시간의 상흔의 윤무",
         "불"
       ]
     },
@@ -13121,10 +13121,10 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "동방",
         "도끼",
-        "Avenger",
+        "복수",
         "Mounted",
         "바람"
       ]
@@ -13221,7 +13221,7 @@
         "검",
         "New Radical Dreamers",
         "New Time Drift",
-        "Scars of the Wheel of Time"
+        "시간의 상흔의 윤무"
       ]
     },
     {
@@ -13286,7 +13286,7 @@
       },
       "skills_ding": true,
       "traits": [
-        "Minstrel",
+        "음유 시인",
         "Northern",
         "활",
         "불"
@@ -13349,7 +13349,7 @@
       "traits": [
         "Dragon Palace",
         "창",
-        "Royalty",
+        "왕족",
         "Fishman",
         "물"
       ]
@@ -13412,12 +13412,12 @@
       "skills_ding": true,
       "traits": [
         "권갑",
-        "Weapons",
+        "장비",
         "Zoology",
-        "Outlaw",
+        "무법자",
         "Dog lover",
         "Gun",
-        "Sweet tooth",
+        "단것 애호가",
         "불"
       ]
     },
@@ -13730,11 +13730,11 @@
       "traits": [
         "도끼",
         "동방",
-        "고양이 애호가",
+        "애묘가",
         "Animal Talker",
-        "Fairy",
+        "요괴",
         "땅",
-        "Land of Mi",
+        "뱀의 땅",
         "Spirit Talker"
       ]
     },
@@ -13792,12 +13792,12 @@
       "skills_ding": true,
       "traits": [
         "동방",
-        "Mask",
+        "가면",
         "활",
-        "Avenger",
+        "복수",
         "Cursed",
-        "Royalty",
-        "Fairy",
+        "왕족",
+        "요괴",
         "바람",
         "Land of Ro"
       ]
@@ -13857,9 +13857,9 @@
         "동방",
         "권갑",
         "Ninja",
-        "Glutton",
+        "대식가",
         "땅",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -13920,7 +13920,7 @@
       "traits": [
         "IDA 스쿨",
         "지팡이",
-        "Estrangement",
+        "낮가림",
         "바람"
       ]
     },
@@ -13988,7 +13988,7 @@
       "traits": [
         "서방",
         "지팡이",
-        "Amnesia",
+        "기억 상실",
         "Geo",
         "땅",
         "결정"
@@ -14053,8 +14053,8 @@
       },
       "skills_ding": true,
       "traits": [
-        "Sweet tooth",
-        "Clergy",
+        "단것 애호가",
+        "성직자",
         "서방",
         "검",
         "불",
@@ -14111,7 +14111,7 @@
         "power": 2
       },
       "traits": [
-        "Sweet tooth",
+        "단것 애호가",
         "창",
         "용",
         "땅"
@@ -14170,15 +14170,15 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "동방",
         "Childhood Friend",
         "도",
         "Mounted",
         "Spicy Lover",
-        "Itto-Ryu",
+        "보현일도류",
         "물",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -14237,13 +14237,13 @@
         "atk_debuff": 4
       },
       "traits": [
-        "Sweet tooth",
-        "Clergy",
-        "Minstrel",
-        "Miner",
+        "단것 애호가",
+        "성직자",
+        "음유 시인",
+        "채굴",
         "권갑",
         "서방",
-        "Royalty",
+        "왕족",
         "물",
         "번개"
       ]
@@ -14309,7 +14309,7 @@
       },
       "skills_ding": true,
       "traits": [
-        "Beast",
+        "마수",
         "지팡이",
         "Funeral",
         "Animal Talker",
@@ -14440,9 +14440,9 @@
         "atk_buff": 3
       },
       "traits": [
-        "Miglance Palace",
+        "미글랜스 왕궁",
         "검",
-        "Royalty",
+        "왕족",
         "불"
       ]
     },
@@ -14623,7 +14623,7 @@
       },
       "skills_ding": true,
       "traits": [
-        "Minstrel",
+        "음유 시인",
         "창",
         "서방",
         "Fishman",
@@ -14690,11 +14690,11 @@
       },
       "skills_ding": true,
       "traits": [
-        "Glasses",
-        "Sweet tooth",
-        "Miner",
+        "안경",
+        "단것 애호가",
+        "채굴",
         "망치",
-        "Weapons",
+        "장비",
         "Cursed",
         "불"
       ]
@@ -14744,7 +14744,7 @@
         "resource": 2
       },
       "traits": [
-        "Mask",
+        "가면",
         "도끼",
         "Hood",
         "연옥계",
@@ -14804,10 +14804,10 @@
       },
       "traits": [
         "동방",
-        "Cooking",
+        "요리",
         "활",
         "Spicy Lover",
-        "Fairy",
+        "요괴",
         "불",
         "Land of Shin"
       ]
@@ -14866,8 +14866,8 @@
         "tempo": 1
       },
       "traits": [
-        "고양이 애호가",
-        "Clergy",
+        "애묘가",
+        "성직자",
         "서방",
         "지팡이",
         "Sharp Ears",
@@ -14942,11 +14942,11 @@
         "tempo": 1
       },
       "traits": [
-        "Synth Human",
+        "합성인간",
         "도",
         "바람",
         "결정",
-        "KMS"
+        "KMS사"
       ]
     },
     {
@@ -15057,7 +15057,7 @@
       "traits": [
         "동방",
         "활",
-        "Fairy",
+        "요괴",
         "물"
       ]
     },
@@ -15117,12 +15117,12 @@
       "skills_ding": true,
       "traits": [
         "동방",
-        "Mask",
+        "가면",
         "도",
-        "Avenger",
+        "복수",
         "Cursed",
-        "Royalty",
-        "Fairy",
+        "왕족",
+        "요괴",
         "불",
         "Land of Ro"
       ]
@@ -15183,7 +15183,7 @@
         "power": 1
       },
       "traits": [
-        "Miglance Palace",
+        "미글랜스 왕궁",
         "창",
         "Shield",
         "땅"
@@ -15246,7 +15246,7 @@
       "traits": [
         "검",
         "Tales of",
-        "Concerto Artes",
+        "콘체르토 아트",
         "불"
       ]
     },
@@ -15310,7 +15310,7 @@
       "traits": [
         "검",
         "Tales of",
-        "Concerto Artes",
+        "콘체르토 아트",
         "물"
       ]
     },
@@ -15378,7 +15378,7 @@
       "traits": [
         "검",
         "Tales of",
-        "Concerto Artes",
+        "콘체르토 아트",
         "땅"
       ]
     },
@@ -15441,7 +15441,7 @@
       "traits": [
         "도",
         "Tales of",
-        "Concerto Artes",
+        "콘체르토 아트",
         "바람"
       ]
     },
@@ -15503,7 +15503,7 @@
       "traits": [
         "서방",
         "지팡이",
-        "Amnesia",
+        "기억 상실",
         "Geo",
         "땅",
         "결정"
@@ -15577,11 +15577,11 @@
       },
       "skills_en": true,
       "traits": [
-        "Minstrel",
+        "음유 시인",
         "서방",
         "활",
         "Nicknamer",
-        "Bookworm",
+        "독서가",
         "바람",
         "결정"
       ]
@@ -15645,9 +15645,9 @@
       },
       "skills_ding": true,
       "traits": [
-        "Mask",
+        "가면",
         "망치",
-        "Phantom Thieves of Hearts",
+        "마음의 괴도단",
         "Gun",
         "번개"
       ]
@@ -15779,10 +15779,10 @@
       },
       "skills_ding": true,
       "traits": [
-        "Mask",
+        "가면",
         "검",
-        "Phantom Thieves of Hearts",
-        "Glutton",
+        "마음의 괴도단",
+        "대식가",
         "Gun",
         "땅"
       ]
@@ -15912,8 +15912,8 @@
       "skills_en": true,
       "skills_ding": true,
       "traits": [
-        "Sweet tooth",
-        "Clergy",
+        "단것 애호가",
+        "성직자",
         "서방",
         "검",
         "불",
@@ -15964,7 +15964,7 @@
         "resource": 1
       },
       "traits": [
-        "Minstrel",
+        "음유 시인",
         "활",
         "땅"
       ]
@@ -16022,7 +16022,7 @@
       },
       "traits": [
         "망치",
-        "Clergy",
+        "성직자",
         "Lovesick",
         "Nicknamer",
         "Spicy Lover",
@@ -16074,10 +16074,10 @@
         "resource": 1
       },
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "검",
         "Art",
-        "KMS",
+        "KMS사",
         "바람"
       ]
     },
@@ -16134,12 +16134,12 @@
       "skills_ding": true,
       "traits": [
         "권갑",
-        "Weapons",
+        "장비",
         "Zoology",
-        "Outlaw",
+        "무법자",
         "Dog lover",
         "Gun",
-        "Sweet tooth",
+        "단것 애호가",
         "불"
       ]
     },
@@ -16198,7 +16198,7 @@
       "skills_ding": true,
       "traits": [
         "도끼",
-        "Weapons",
+        "장비",
         "Art",
         "Zoology",
         "Gourmet",
@@ -16255,8 +16255,8 @@
         "검",
         "Art",
         "Gourmet",
-        "Royalty",
-        "Bookworm",
+        "왕족",
+        "독서가",
         "Bind",
         "바람"
       ]
@@ -16314,10 +16314,10 @@
       },
       "traits": [
         "엘프",
-        "Forager",
+        "채집",
         "지팡이",
         "Zoology",
-        "Bookworm",
+        "독서가",
         "바람"
       ]
     },
@@ -16367,7 +16367,7 @@
         "recover": 1
       },
       "traits": [
-        "Beast",
+        "마수",
         "도끼",
         "Hood",
         "연옥계",
@@ -16429,8 +16429,8 @@
         "tempo": 1
       },
       "traits": [
-        "Miglance Palace",
-        "Sweet tooth",
+        "미글랜스 왕궁",
+        "단것 애호가",
         "검",
         "Mounted",
         "Shield",
@@ -16491,7 +16491,7 @@
       },
       "skills_ding": true,
       "traits": [
-        "Miglance Palace",
+        "미글랜스 왕궁",
         "검",
         "Shield",
         "불"
@@ -16551,7 +16551,7 @@
       },
       "skills_ding": true,
       "traits": [
-        "Beast",
+        "마수",
         "지팡이",
         "땅"
       ]
@@ -16615,8 +16615,8 @@
       },
       "skills_ding": true,
       "traits": [
-        "Glasses",
-        "Sweet tooth",
+        "안경",
+        "단것 애호가",
         "도끼",
         "COA",
         "불"
@@ -16673,7 +16673,7 @@
         "mode": 2
       },
       "traits": [
-        "Sweet tooth",
+        "단것 애호가",
         "창",
         "용",
         "땅"
@@ -16735,10 +16735,10 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "도",
         "Hood",
-        "Amnesia",
+        "기억 상실",
         "땅"
       ]
     },
@@ -16799,9 +16799,9 @@
         "recover": 1
       },
       "traits": [
-        "Miglance Palace",
+        "미글랜스 왕궁",
         "권갑",
-        "Outlaw",
+        "무법자",
         "Hood",
         "Ninja",
         "바람"
@@ -16913,7 +16913,7 @@
         "surv_buff": 1
       },
       "traits": [
-        "Glasses",
+        "안경",
         "창",
         "Mounted",
         "COA",
@@ -16980,11 +16980,11 @@
       },
       "skills_ding": true,
       "traits": [
-        "Beast",
+        "마수",
         "활",
         "Spirit Talker",
-        "Royalty",
-        "Demon Sword"
+        "왕족",
+        "마검"
       ]
     },
     {
@@ -17042,10 +17042,10 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "동방",
         "도끼",
-        "Avenger",
+        "복수",
         "Mounted",
         "바람"
       ]
@@ -17098,7 +17098,7 @@
       "traits": [
         "동방",
         "도",
-        "Outlaw",
+        "무법자",
         "물"
       ]
     },
@@ -17294,8 +17294,8 @@
       "traits": [
         "IDA 스쿨",
         "활",
-        "Royalty",
-        "Bookworm",
+        "왕족",
+        "독서가",
         "용",
         "바람"
       ]
@@ -17348,7 +17348,7 @@
         "resource": 2
       },
       "traits": [
-        "Cooking",
+        "요리",
         "활",
         "Machinery",
         "로스트 랩",
@@ -17469,9 +17469,9 @@
       },
       "traits": [
         "동방",
-        "Clergy",
+        "성직자",
         "지팡이",
-        "Estrangement",
+        "낮가림",
         "물"
       ]
     },
@@ -17573,11 +17573,11 @@
         "recover": 1
       },
       "traits": [
-        "Glasses",
+        "안경",
         "엘프",
         "IDA 스쿨",
         "검",
-        "Bookworm",
+        "독서가",
         "바람"
       ]
     },
@@ -17764,8 +17764,8 @@
         "resource": 4
       },
       "traits": [
-        "고양이 애호가",
-        "Clergy",
+        "애묘가",
+        "성직자",
         "지팡이"
       ]
     },
@@ -17823,7 +17823,7 @@
       },
       "skills_ding": true,
       "traits": [
-        "Beast",
+        "마수",
         "지팡이",
         "Funeral",
         "Animal Talker",
@@ -17880,9 +17880,9 @@
         "surv_state": 1
       },
       "traits": [
-        "Beast",
+        "마수",
         "권갑",
-        "Avenger",
+        "복수",
         "땅"
       ]
     },
@@ -17934,7 +17934,7 @@
         "power": 1
       },
       "traits": [
-        "Cooking",
+        "요리",
         "권갑",
         "Dwarf",
         "Nicknamer",
@@ -18056,8 +18056,8 @@
       "traits": [
         "Dragon Palace",
         "도끼",
-        "Royalty",
-        "Glutton",
+        "왕족",
+        "대식가",
         "땅"
       ]
     },
@@ -18115,8 +18115,8 @@
         "동방",
         "도",
         "불",
-        "Land of Mi",
-        "Itto-Ryu"
+        "뱀의 땅",
+        "보현일도류"
       ]
     },
     {
@@ -18170,10 +18170,10 @@
       },
       "skills_ding": true,
       "traits": [
-        "Mask",
-        "Glasses",
+        "가면",
+        "안경",
         "검",
-        "Phantom Thieves of Hearts",
+        "마음의 괴도단",
         "Gun",
         "불"
       ]
@@ -18231,9 +18231,9 @@
       "skills_ding": true,
       "traits": [
         "검",
-        "Phantom Thieves of Hearts",
+        "마음의 괴도단",
         "Lovesick",
-        "Amnesia",
+        "기억 상실",
         "바람"
       ]
     },
@@ -18281,8 +18281,8 @@
       },
       "skills_en": true,
       "traits": [
-        "고양이 애호가",
-        "Clergy",
+        "애묘가",
+        "성직자",
         "서방",
         "지팡이",
         "Sharp Ears",
@@ -18342,15 +18342,15 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "동방",
         "Childhood Friend",
         "도",
         "Mounted",
         "Spicy Lover",
-        "Itto-Ryu",
+        "보현일도류",
         "물",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -18399,9 +18399,9 @@
         "동방",
         "권갑",
         "Ninja",
-        "Glutton",
+        "대식가",
         "땅",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -18465,13 +18465,13 @@
         "power": 1
       },
       "traits": [
-        "Sweet tooth",
-        "Clergy",
-        "Minstrel",
-        "Miner",
+        "단것 애호가",
+        "성직자",
+        "음유 시인",
+        "채굴",
         "서방",
         "망치",
-        "Royalty",
+        "왕족",
         "물"
       ]
     },
@@ -18518,8 +18518,8 @@
         "tempo": 1
       },
       "traits": [
-        "Outlaw",
-        "Mask",
+        "무법자",
+        "가면",
         "망치",
         "Military",
         "Gun",
@@ -18586,10 +18586,10 @@
       },
       "skills_ding": true,
       "traits": [
-        "Synth Human",
+        "합성인간",
         "창",
         "Mounted",
-        "Outlaw",
+        "무법자",
         "Gun",
         "땅"
       ]
@@ -18639,10 +18639,10 @@
       "skills_en": true,
       "traits": [
         "동방",
-        "Cooking",
+        "요리",
         "활",
         "Spicy Lover",
-        "Fairy",
+        "요괴",
         "불",
         "Land of Shin"
       ]
@@ -18702,8 +18702,8 @@
       "skills_ding": true,
       "traits": [
         "활",
-        "Avenger",
-        "Dragon Killer",
+        "복수",
+        "드래곤 킬러",
         "Dog lover",
         "물"
       ]
@@ -18779,7 +18779,7 @@
       },
       "skills_en": true,
       "traits": [
-        "Mask",
+        "가면",
         "도끼",
         "Hood",
         "연옥계",
@@ -18896,10 +18896,10 @@
       },
       "traits": [
         "Blacksmith",
-        "Miner",
+        "채굴",
         "망치",
         "Hood",
-        "Estrangement",
+        "낮가림",
         "바람"
       ]
     },
@@ -18974,8 +18974,8 @@
       "skills_en": true,
       "traits": [
         "권갑",
-        "Glasses",
-        "Bookworm",
+        "안경",
+        "독서가",
         "Lovesick",
         "Gun",
         "로스트 랩",
@@ -19044,14 +19044,14 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "동방",
         "Childhood Friend",
         "도",
         "Mounted",
-        "Itto-Ryu",
+        "보현일도류",
         "불",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -19102,10 +19102,10 @@
       },
       "traits": [
         "엘프",
-        "Forager",
+        "채집",
         "지팡이",
         "Zoology",
-        "Bookworm",
+        "독서가",
         "바람"
       ]
     },
@@ -19160,10 +19160,10 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "도",
         "Hood",
-        "Amnesia",
+        "기억 상실",
         "땅"
       ]
     },
@@ -19295,8 +19295,8 @@
       "skills_en": true,
       "skills_ding": true,
       "traits": [
-        "Glasses",
-        "Sweet tooth",
+        "안경",
+        "단것 애호가",
         "도끼",
         "COA",
         "불"
@@ -19343,10 +19343,10 @@
         "atk_debuff": 3
       },
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "검",
         "Art",
-        "KMS",
+        "KMS사",
         "바람"
       ]
     },
@@ -19404,7 +19404,7 @@
       "traits": [
         "IDA 스쿨",
         "도",
-        "Bookworm",
+        "독서가",
         "COA",
         "로스트 랩",
         "Power to Rule",
@@ -19512,8 +19512,8 @@
       "traits": [
         "IDA 스쿨",
         "활",
-        "Royalty",
-        "Bookworm",
+        "왕족",
+        "독서가",
         "용",
         "바람"
       ]
@@ -19689,12 +19689,12 @@
       "skills_ding": true,
       "traits": [
         "동방",
-        "Mask",
+        "가면",
         "도",
-        "Avenger",
+        "복수",
         "Cursed",
-        "Royalty",
-        "Fairy",
+        "왕족",
+        "요괴",
         "불",
         "Land of Ro"
       ]
@@ -19760,7 +19760,7 @@
         "recover": 1
       },
       "traits": [
-        "Miglance Palace",
+        "미글랜스 왕궁",
         "창",
         "Shield",
         "땅"
@@ -19839,9 +19839,9 @@
       },
       "skills_en": true,
       "traits": [
-        "Miglance Palace",
+        "미글랜스 왕궁",
         "권갑",
-        "Outlaw",
+        "무법자",
         "Hood",
         "Ninja",
         "바람"
@@ -19915,10 +19915,10 @@
       },
       "skills_ding": true,
       "traits": [
-        "Beast",
+        "마수",
         "Luring Shadow",
         "검",
-        "Royalty",
+        "왕족",
         "불"
       ]
     },
@@ -19970,7 +19970,7 @@
         "atk_buff": 1
       },
       "traits": [
-        "Sweet tooth",
+        "단것 애호가",
         "창",
         "Gourmet",
         "로스트 랩",
@@ -20053,7 +20053,7 @@
       "skills_en": true,
       "skills_ding": true,
       "traits": [
-        "Beast",
+        "마수",
         "지팡이",
         "땅"
       ]
@@ -20098,7 +20098,7 @@
         "atk_buff": 1
       },
       "traits": [
-        "Sweet tooth",
+        "단것 애호가",
         "권갑",
         "Cat Hater",
         "바람"
@@ -20170,13 +20170,13 @@
         "tempo": 1
       },
       "traits": [
-        "Sweet tooth",
-        "Clergy",
-        "Minstrel",
-        "Miner",
+        "단것 애호가",
+        "성직자",
+        "음유 시인",
+        "채굴",
         "서방",
         "망치",
-        "Royalty",
+        "왕족",
         "물"
       ]
     },
@@ -20251,10 +20251,10 @@
       },
       "skills_ding": true,
       "traits": [
-        "Scientist",
-        "Forager",
+        "과학자",
+        "채집",
         "지팡이",
-        "KMS",
+        "KMS사",
         "IDA 스쿨"
       ]
     },
@@ -20296,11 +20296,11 @@
         "surv_buff": 1
       },
       "traits": [
-        "Forager",
+        "채집",
         "도끼",
         "Art",
         "땅",
-        "Outlaw"
+        "무법자"
       ]
     },
     {
@@ -20416,9 +20416,9 @@
       },
       "skills_ding": true,
       "traits": [
-        "Glasses",
+        "안경",
         "IDA 스쿨",
-        "Outlaw",
+        "무법자",
         "권갑",
         "땅"
       ]
@@ -20461,7 +20461,7 @@
       },
       "skills_en": true,
       "traits": [
-        "Glasses",
+        "안경",
         "창",
         "Mounted",
         "COA",
@@ -20509,9 +20509,9 @@
         "surv_debuff": 1
       },
       "traits": [
-        "Glasses",
+        "안경",
         "도끼",
-        "Outlaw",
+        "무법자",
         "Scallywag",
         "바람"
       ]
@@ -20580,11 +20580,11 @@
       },
       "skills_ding": true,
       "traits": [
-        "Glasses",
-        "Sweet tooth",
-        "Miner",
+        "안경",
+        "단것 애호가",
+        "채굴",
         "망치",
-        "Weapons",
+        "장비",
         "Cursed",
         "불"
       ]
@@ -20639,7 +20639,7 @@
       "traits": [
         "지팡이",
         "Spirit-fused",
-        "Sweet tooth",
+        "단것 애호가",
         "연옥계"
       ]
     },
@@ -20691,7 +20691,7 @@
       "traits": [
         "Dragon Palace",
         "지팡이",
-        "Amnesia",
+        "기억 상실",
         "Fishman",
         "Bind",
         "물"
@@ -20750,8 +20750,8 @@
       "traits": [
         "Dragon Palace",
         "도끼",
-        "Royalty",
-        "Glutton",
+        "왕족",
+        "대식가",
         "땅"
       ]
     },
@@ -20846,7 +20846,7 @@
       "traits": [
         "Dragon Palace",
         "창",
-        "Royalty",
+        "왕족",
         "Fishman",
         "물"
       ]
@@ -20994,9 +20994,9 @@
       },
       "traits": [
         "동방",
-        "Clergy",
+        "성직자",
         "지팡이",
-        "Estrangement"
+        "낮가림"
       ]
     },
     {
@@ -21041,7 +21041,7 @@
         "atk_debuff": 1
       },
       "traits": [
-        "Minstrel",
+        "음유 시인",
         "활",
         "Spirit Talker",
         "바람"
@@ -21107,7 +21107,7 @@
       "traits": [
         "IDA 스쿨",
         "도",
-        "Bookworm",
+        "독서가",
         "COA",
         "로스트 랩",
         "Power to Rule",
@@ -21204,11 +21204,11 @@
         "tempo": 1
       },
       "traits": [
-        "Glasses",
+        "안경",
         "엘프",
         "IDA 스쿨",
         "검",
-        "Bookworm",
+        "독서가",
         "바람"
       ]
     },
@@ -21260,11 +21260,11 @@
       "skills_ding": true,
       "traits": [
         "동방",
-        "Sweet tooth",
+        "단것 애호가",
         "도",
         "Lovesick",
         "바람",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -21321,8 +21321,8 @@
       "skills_ding": true,
       "traits": [
         "활",
-        "Avenger",
-        "Dragon Killer",
+        "복수",
+        "드래곤 킬러",
         "Dog lover",
         "물"
       ]
@@ -21363,8 +21363,8 @@
         "atk_debuff": 2
       },
       "traits": [
-        "Cooking",
-        "Miner",
+        "요리",
+        "채굴",
         "망치",
         "Gourmet",
         "Dwarf",
@@ -21408,8 +21408,8 @@
       },
       "skills_en": true,
       "traits": [
-        "Miglance Palace",
-        "Sweet tooth",
+        "미글랜스 왕궁",
+        "단것 애호가",
         "검",
         "Mounted",
         "Shield",
@@ -21465,12 +21465,12 @@
       },
       "skills_ding": true,
       "traits": [
-        "Miglance Palace",
+        "미글랜스 왕궁",
         "검",
-        "Outlaw",
-        "Amnesia",
+        "무법자",
+        "기억 상실",
         "땅",
-        "Demon Sword"
+        "마검"
       ]
     },
     {
@@ -21583,8 +21583,8 @@
         "동방",
         "도",
         "불",
-        "Land of Mi",
-        "Itto-Ryu"
+        "뱀의 땅",
+        "보현일도류"
       ]
     },
     {
@@ -21652,18 +21652,18 @@
       "skills_ding": true,
       "traits": [
         "주인공",
-        "Guiding Light",
-        "Forager",
+        "천계의 인도",
+        "채집",
         "검",
         "New Radical Dreamers",
         "New Time Drift",
         "용",
         "바르오키",
-        "Concerto Artes",
+        "콘체르토 아트",
         "불",
-        "Arcadia",
-        "Itto-Ryu",
-        "Demon Sword"
+        "아르카디아",
+        "보현일도류",
+        "마검"
       ]
     },
     {
@@ -21726,10 +21726,10 @@
       "skills_ding": true,
       "traits": [
         "Blacksmith",
-        "Cooking",
+        "요리",
         "권갑",
         "Spirit-fused",
-        "Avenger",
+        "복수",
         "바람"
       ]
     },
@@ -21783,9 +21783,9 @@
       },
       "skills_ding": true,
       "traits": [
-        "Forager",
+        "채집",
         "도끼",
-        "Outlaw",
+        "무법자",
         "Woodcutter",
         "바람"
       ]
@@ -21831,7 +21831,7 @@
         "atk_buff": 1
       },
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "지팡이",
         "Spirit Talker",
         "Animal Talker",
@@ -21927,7 +21927,7 @@
         "atk_debuff": 1
       },
       "traits": [
-        "Minstrel",
+        "음유 시인",
         "활",
         "땅"
       ]
@@ -22004,7 +22004,7 @@
       "skills_ding": true,
       "traits": [
         "동방",
-        "Guiding Light",
+        "천계의 인도",
         "도",
         "Cursed",
         "물"
@@ -22073,12 +22073,12 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
-        "Cooking",
+        "애묘가",
+        "요리",
         "지팡이",
         "바르오키",
         "Geo",
-        "Demon Sword"
+        "마검"
       ]
     },
     {
@@ -22149,8 +22149,8 @@
       },
       "skills_ding": true,
       "traits": [
-        "Mask",
-        "Synth Human",
+        "가면",
+        "합성인간",
         "지팡이",
         "땅"
       ]
@@ -22194,9 +22194,9 @@
       },
       "skills_en": true,
       "traits": [
-        "Beast",
+        "마수",
         "권갑",
-        "Avenger",
+        "복수",
         "땅"
       ]
     },
@@ -22246,8 +22246,8 @@
       },
       "skills_en": true,
       "traits": [
-        "고양이 애호가",
-        "Clergy",
+        "애묘가",
+        "성직자",
         "지팡이"
       ]
     },
@@ -22293,8 +22293,8 @@
       },
       "traits": [
         "Blacksmith",
-        "Glasses",
-        "Miner",
+        "안경",
+        "채굴",
         "망치",
         "Lovesick",
         "바르오키",
@@ -22411,9 +22411,9 @@
         "surv_debuff": 1
       },
       "traits": [
-        "Miglance Palace",
+        "미글랜스 왕궁",
         "검",
-        "Royalty",
+        "왕족",
         "불"
       ]
     },
@@ -22465,8 +22465,8 @@
         "state_unknown": 1
       },
       "traits": [
-        "Clergy",
-        "Miner",
+        "성직자",
+        "채굴",
         "서방",
         "망치",
         "불"
@@ -22538,10 +22538,10 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
-        "Miner",
+        "애묘가",
+        "채굴",
         "망치",
-        "KMS",
+        "KMS사",
         "Machinery",
         "땅"
       ]
@@ -22597,7 +22597,7 @@
         "recover": 3
       },
       "traits": [
-        "Glasses",
+        "안경",
         "IDA 스쿨",
         "지팡이",
         "Spirit Talker",
@@ -22672,14 +22672,14 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "동방",
         "Childhood Friend",
         "도",
         "Mounted",
-        "Itto-Ryu",
+        "보현일도류",
         "불",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -22744,7 +22744,7 @@
         "mode": 1
       },
       "traits": [
-        "Sweet tooth",
+        "단것 애호가",
         "창",
         "Gourmet",
         "로스트 랩",
@@ -22855,7 +22855,7 @@
         "recover": 1
       },
       "traits": [
-        "Miglance Palace",
+        "미글랜스 왕궁",
         "엘프",
         "검",
         "땅"
@@ -22901,10 +22901,10 @@
         "surv_debuff": 1
       },
       "traits": [
-        "Mask",
+        "가면",
         "도끼",
         "Spicy Lover",
-        "Outlaw",
+        "무법자",
         "바람"
       ]
     },
@@ -22950,7 +22950,7 @@
         "tempo": 1
       },
       "traits": [
-        "Forager",
+        "채집",
         "활",
         "바르오키",
         "바람"
@@ -23083,7 +23083,7 @@
         "동방",
         "창",
         "땅",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -23133,11 +23133,11 @@
         "atk_buff": 1
       },
       "traits": [
-        "Glasses",
-        "Scientist",
-        "Forager",
+        "안경",
+        "과학자",
+        "채집",
         "지팡이",
-        "KMS"
+        "KMS사"
       ]
     },
     {
@@ -23184,7 +23184,7 @@
       },
       "skills_ding": true,
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "지팡이",
         "Animal Talker",
         "물"
@@ -23228,7 +23228,7 @@
       },
       "traits": [
         "동방",
-        "Cooking",
+        "요리",
         "권갑",
         "불",
         "Land of Shin",
@@ -23314,7 +23314,7 @@
         "atk_debuff": 2
       },
       "traits": [
-        "Clergy",
+        "성직자",
         "검",
         "땅"
       ]
@@ -23361,7 +23361,7 @@
       "traits": [
         "동방",
         "도",
-        "Outlaw",
+        "무법자",
         "물"
       ]
     },
@@ -23404,9 +23404,9 @@
         "surv_buff": 2
       },
       "traits": [
-        "Miner",
+        "채굴",
         "창",
-        "Weapons",
+        "장비",
         "바르오키",
         "물"
       ]
@@ -23451,12 +23451,12 @@
         "atk_debuff": 1
       },
       "traits": [
-        "고양이 애호가",
+        "애묘가",
         "동방",
         "도",
         "Zoology",
         "땅",
-        "Land of Mi"
+        "뱀의 땅"
       ]
     },
     {
@@ -23498,7 +23498,7 @@
         "atk_buff": 2
       },
       "traits": [
-        "Minstrel",
+        "음유 시인",
         "활",
         "Cursed",
         "불"
@@ -23551,8 +23551,8 @@
       },
       "skills_ding": true,
       "traits": [
-        "Scientist",
-        "Forager",
+        "과학자",
+        "채집",
         "지팡이",
         "Gun"
       ]
@@ -23597,10 +23597,10 @@
         "surv_debuff": 2
       },
       "traits": [
-        "Mask",
+        "가면",
         "지팡이",
         "Hood",
-        "Amnesia",
+        "기억 상실",
         "땅"
       ]
     },
@@ -23674,11 +23674,11 @@
         "활",
         "권갑",
         "Machinery",
-        "Outlaw",
+        "무법자",
         "Military",
         "로스트 랩",
         "물",
-        "Amnesia"
+        "기억 상실"
       ]
     },
     {
@@ -23726,7 +23726,7 @@
       },
       "traits": [
         "권갑",
-        "Bookworm",
+        "독서가",
         "불"
       ]
     },
@@ -23769,7 +23769,7 @@
         "surv_state": 1
       },
       "traits": [
-        "Miglance Palace",
+        "미글랜스 왕궁",
         "창",
         "Napper",
         "바람"
@@ -23815,7 +23815,7 @@
       },
       "traits": [
         "도끼",
-        "Dragon Killer",
+        "드래곤 킬러",
         "땅"
       ]
     },
@@ -23856,9 +23856,9 @@
         "surv_debuff": 1
       },
       "traits": [
-        "Mask",
+        "가면",
         "활",
-        "Estrangement"
+        "낮가림"
       ]
     },
     {
@@ -24066,7 +24066,7 @@
         "atk_buff": 1
       },
       "traits": [
-        "Mask",
+        "가면",
         "지팡이",
         "Sharp Ears"
       ]
@@ -24153,7 +24153,7 @@
         "recover": 1
       },
       "traits": [
-        "Mask",
+        "가면",
         "도"
       ]
     },
@@ -24236,7 +24236,7 @@
         "surv_debuff": 1
       },
       "traits": [
-        "Mask",
+        "가면",
         "검"
       ]
     },
@@ -24403,8 +24403,8 @@
         "atk_debuff": 1
       },
       "traits": [
-        "고양이 애호가",
-        "Mask",
+        "애묘가",
+        "가면",
         "망치",
         "Animal Talker"
       ]
@@ -24448,8 +24448,8 @@
         "atk_debuff": 1
       },
       "traits": [
-        "Mask",
-        "Sweet tooth",
+        "가면",
+        "단것 애호가",
         "도끼"
       ]
     },
@@ -24531,7 +24531,7 @@
         "surv_debuff": 1
       },
       "traits": [
-        "Mask",
+        "가면",
         "창",
         "Nicknamer"
       ]
@@ -24618,7 +24618,7 @@
       "traits": [
         "Fleareth",
         "도",
-        "Avenger"
+        "복수"
       ]
     },
     {
@@ -24699,8 +24699,8 @@
         "tempo": 1
       },
       "traits": [
-        "Mask",
-        "Cooking",
+        "가면",
+        "요리",
         "권갑"
       ]
     },
@@ -24864,14 +24864,14 @@
       "skills_en": true,
       "skills_ding": true,
       "traits": [
-        "Scientist",
+        "과학자",
         "권갑",
         "결정",
         "Machinery",
         "Military",
         "Gun",
         "로스트 랩",
-        "Amnesia",
+        "기억 상실",
         "IDA 스쿨"
       ]
     },
@@ -24953,7 +24953,7 @@
         "권갑",
         "땅",
         "MMA",
-        "Sweet tooth"
+        "단것 애호가"
       ]
     },
     {
@@ -25035,7 +25035,7 @@
         "지팡이",
         "Spirit-fused",
         "그림자",
-        "Sweet tooth",
+        "단것 애호가",
         "연옥계"
       ]
     },
@@ -25233,10 +25233,10 @@
       "skills_ding": true,
       "traits": [
         "지팡이",
-        "KMS",
-        "Scientist",
+        "KMS사",
+        "과학자",
         "동방",
-        "Synth Human"
+        "합성인간"
       ]
     },
     {
@@ -25310,7 +25310,7 @@
         "불",
         "물",
         "번개",
-        "Bookworm",
+        "독서가",
         "Nicknamer"
       ]
     },
@@ -25379,14 +25379,14 @@
       "skills_en": true,
       "skills_ding": true,
       "traits": [
-        "Sweet tooth",
+        "단것 애호가",
         "도끼",
-        "Outlaw",
-        "Bookworm",
+        "무법자",
+        "독서가",
         "Hood",
-        "Amnesia",
+        "기억 상실",
         "연옥계",
-        "Estrangement",
+        "낮가림",
         "그림자"
       ]
     },
@@ -25465,9 +25465,9 @@
         "검",
         "물",
         "결정",
-        "고양이 애호가",
+        "애묘가",
         "Hood",
-        "Amnesia",
+        "기억 상실",
         "Cursed"
       ]
     },
@@ -25665,7 +25665,7 @@
       },
       "skills_en": true,
       "traits": [
-        "Forager",
+        "채집",
         "활",
         "바르오키",
         "바람"

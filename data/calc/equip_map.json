@@ -31,9 +31,9 @@
    },
    "grasta": {
     "ko": 659,
-    "certain": 357,
-    "held": 302,
-    "families": 109
+    "certain": 358,
+    "held": 301,
+    "families": 110
    },
    "badges": {
     "ko": 171,
@@ -11074,7 +11074,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11085,7 +11086,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11096,7 +11098,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11107,7 +11110,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11118,7 +11122,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11129,7 +11134,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11140,7 +11146,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11163,7 +11170,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11186,7 +11194,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11197,7 +11206,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11208,18 +11218,20 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
    "ko": "전능의 힘",
    "grade": "상급",
    "cond": "<미글랜스 왕궁>",
-   "en": "Almighty Power (PWR/INT) #2",
+   "en": "Almighty Power (PWR/INT) #1",
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11230,7 +11242,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11241,7 +11254,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11252,7 +11266,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11286,7 +11301,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11297,7 +11313,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11308,7 +11325,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11319,7 +11337,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11354,7 +11373,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11365,7 +11385,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11376,7 +11397,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11399,7 +11421,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11432,7 +11455,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11467,7 +11491,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11598,7 +11623,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11885,7 +11911,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -11896,7 +11923,20 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
+   ]
+  },
+  {
+   "ko": "마법 치명격의 힘",
+   "grade": "상급",
+   "cond": "<미래 혁명가>",
+   "en": "Magic Power",
+   "why": [
+    "family",
+    "stats",
+    "fx",
+    "req"
    ]
   },
   {
@@ -13850,7 +13890,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -13861,7 +13902,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -13918,7 +13960,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -13929,7 +13972,8 @@
    "why": [
     "family",
     "stats",
-    "fx"
+    "fx",
+    "req"
    ]
   },
   {
@@ -15030,15 +15074,6 @@
    "cond": "<짚단>",
    "grade": "상급",
    "en": "회심의 힘 <짚단>",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
-   "ko": "마법 치명격의 힘",
-   "cond": "<미래 혁명가>",
-   "grade": "상급",
-   "en": "마법 치명격의 힘 <미래 혁명가>",
    "why": [
     "ding-only"
    ]

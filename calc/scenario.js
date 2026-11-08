@@ -180,6 +180,44 @@
     if (/Guaranteed physical and magical critical/i.test(u.raw || "")) return { ...u, k: "buff", name: T.ko("risktaker"), tc: "자신", raw: undefined };
     return u;
   }
+  // 변화무쌍(Kaleido, 11-08) — 걸린 아군의 모든 공격(일반 공격 포함) 속성을 지정 속성으로(용어집 kaleido). 전엔 엔진이 전혀 안 읽어,
+  //   네코코 ES 「무녀의 악무」(속성 ZONE 따라 종류 변화)로 이스카 AS 샴발라를 땅으로 치는 hinaden 빌드가 그림자로 계산됐다.
+  //   원천 꼴: 딩님 k other 「변화무쌍(X)」(tc) · 위키 k buff 「변화무쌍」 + raw 「Change element of … to Earth」 · zone 「Grants Kaleido … based on current deployed … zone」.
+  //   한 스킬에 속성이 셋 이상(7속성 펼침) · 「ZONE에 따라 … 종류 변화」 · 「based on … zone」 = 지금 존의 속성("zone", 공격 때 푼다). 적에게 거는 것 · 대상 불명(한 명 지정)은 뺀다
+  const ELS = T.slots("element").filter(v => !v.absent), KAL = T.ko("kaleido");
+  const elOf = x => { x = String(x || "").trim(); const v = ELS.find(e => x === e.ko || x.toLowerCase() === e.en.toLowerCase()); return v ? v.ko : null; };
+  const kalName = n => T.is(String(n || "").replace(/\(.*\)\s*$/, "").trim(), "kaleido");
+  const KAL_IMMUNE = new RegExp(`${KAL}[^\\n]*적용 불가|will not change element by kaleido|not affected by kaleido`, "i");
+  function kaleidoOf(u, sk) {
+    const raw = u.raw || u.what || "";
+    if (!(kalName(u.name) || /grants? kaleido/i.test(raw))) return null;
+    const tc = u.tc || "", desc = (sk && sk.desc) || "";
+    if (/^적/.test(tc) || /kaleido to all enemies/i.test(raw)) return null;
+    const els = new Set(((sk && sk.fx) || []).filter(f => kalName(f.name)).map(f => elOf((/\(([^)]+)\)\s*$/.exec(f.name) || [])[1])).filter(Boolean));
+    let el = els.size > 2 || new RegExp(`ZONE에 따라[^\\n]*${KAL}`).test(desc) || /based on current deployed/i.test(raw) ? "zone" : elOf((/\(([^)]+)\)\s*$/.exec(u.name || "") || [])[1]);
+    if (!el) { const m = /change (?:the )?(?:element of [^;]*?|all party members |user (?:attacks )?)?to (\w+)/i.exec(raw); el = m ? (elOf(m[1]) || (/target/i.test(m[1]) ? "zone" : null)) : null; }
+    if (!el) return null;
+    let who = "self";
+    if (/아군 전체|적과 아군/.test(tc) || /all party members/i.test(raw)) who = "all";
+    else if (/^특정/.test(tc)) {
+      if (/single party member|stacked ally/i.test(raw)) return null;
+      who = /user/i.test(raw) ? "self" : "tag";
+    }
+    return { el, who };
+  }
+  function kalTargets(sim, ci, k, sk) {
+    const n = sim.party.length;
+    if (k.who === "self") return [ci];
+    if (k.who === "all") return [...Array(n).keys()];
+    // 「<명> 아군에게 / 변화무쌍(결정)」 · 「자신과 우측 <지팡이> 아군에게」 — 그 줄의 <태그>에 맞는 아군(+ 「자신」)
+    const m = new RegExp(`([^\\n]*?)에게\\s*\\n[^\\n]*${KAL}`).exec((sk && sk.desc) || "");
+    if (!m) return [ci];
+    const tags = [...m[1].matchAll(/<([^>]+)>/g)].map(x => x[1]);
+    const out = sim.party.map((x, i) => i).filter(i => tags.some(t => tagOk(sim.party[i].c || {}, t)));
+    if (/자신/.test(m[1]) && !out.includes(ci)) out.push(ci);
+    return out.length ? out : [ci];
+  }
+  const zoneEl = sim => { const z = sim.zone && (sim.zone.base || sim.zone); return z && z.up ? (z.up.types || []).map(elOf).find(Boolean) || null : null; };
   function apply(sim, ci, u, skName, sk) {
     u = normZone(u, sk);
     u = normCrit(sim, ci, u);
@@ -188,6 +226,7 @@
     if (u.cond && (!sim.opt.cond || compOk(sim, u.cond) === false)) return;
     if (sk && !gateOk(sim, sk)) return;
     if (!needOk(sim, ci, u.need)) return;
+    { const k = kaleidoOf(u, sk); if (k) { const until = u.turns == null ? Infinity : sim.turn + u.turns; for (const t of kalTargets(sim, ci, k, sk)) sim.live.set(`kal|${t}`, { ci: t, u: { k: "kaleido", el: k.el }, skill: skName, stacks: 1, until }); return; } }
     // 존 — 「극 X」 = ANOTHER ZONE(증가 효과 ×2, 2턴 뒤 존까지 사라짐) · 「절 X」 = Radical(×2, 5턴) · zoneAwake 단위 = 지금 존 각성(위키 Zones §Awakened, 구조 지도 §4.5). 그라스타 부여 존은 영어 이름
     if (u.k === "zone" || u.k === "zoneAwake") {
       // 위키 원천은 이름 없이 문구만 — 「Deploy X Stance」 = 존 전개, 「awaken Another Zone」 · Another Zone 스킬(조건 「Awakens any … Zones」) = 각성. 그 밖 안내 줄은 버린다(11-05: 전엔 이름만 봐서 위키 존 98개가 한 번도 안 펴졌다)
@@ -240,7 +279,7 @@
   function fxOf(sim, ci, extra) {
     const out = [];
     for (const e of sim.live.values()) {
-      if (e.ci !== ci || e.u.flat) continue;                             // 고정 수치는 flatStats 가 스탯에
+      if (e.ci !== ci || e.u.flat || e.u.k === "kaleido") continue;     // 고정 수치는 flatStats 가 스탯에 · 변화무쌍은 공격 속성(attackRaw)
       const v = e.left ? e.left : typeof e.u.value === "number" && e.stacks > 1 ? +C.halfStack(e.u.value, e.stacks).toFixed(2) : e.u.value;
       out.push({ ...e.u, value: v, base: undefined, _skill: e.skill });
     }
@@ -262,6 +301,7 @@
   }
   function attackRaw(sim, ci, sk, part) {
     const atk = toAttack(part, sk);
+    { const kl = sim.live.get(`kal|${ci}`); if (kl && !KAL_IMMUNE.test(sk.desc || "")) { const el = kl.u.el === "zone" ? zoneEl(sim) : kl.u.el; if (el) atk.element = el; } }   // 변화무쌍
     // 상태 효과 고정값(힘 · 지능 · 속도 +N) = 딩님 계산기 14~16행 — 공격력에는 더하고 (1 + 힘/32) 배율에는 안 넣는다 → party_calc flatFx(근사 stacks · 정밀 fx.flat).
     //   전에는 기본 스탯에 더해 배율까지 키웠다(영랑 모드 힘 +100 등, 11-04). 행운은 크리율에만 쓰여 스탯에 그대로
     const flatOf = i => { const { lck, ...fl } = flatStats(sim, i); return { m: lck ? withFlat(sim.party[i], { lck }) : sim.party[i], fl }; };

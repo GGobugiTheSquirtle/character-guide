@@ -51,8 +51,8 @@
     }
     return out;
   }
-  // 적에게 건 페인 · 독(대상 상태) — 편이 비어 있으면 적(공격 스킬의 부가 효과). 맹독(Megapoison)은 「독 대상」 조건에 드는지 몰라 뺀다
-  const TSTATE = { "독": "poison", "페인": "pain" };
+  // 적에게 건 페인 · 독(대상 상태) — 편이 비어 있으면 적(공격 스킬의 부가 효과). 맹독(Megapoison)도 독으로 센다 — 다르니스 AS 는 Venom Shot(맹독)으로 Triple Shot 「대상 독 시 ×5」를 켜는 키트(11-08)
+  const TSTATE = { "독": "poison", "맹독": "poison", "페인": "pain" };   // 맹독 = 독의 강화판(대상 독 조건에 걸림, 11-08: 다르니스 AS 「Venom Shot」 맹독이 안 세져 독 조건 장비가 꺼져 있었다)
   const tstateOf = u => (u.k === "ailment" && TSTATE[u.name] && !/^(아군|자신|특정 아군)/.test(u.tc || "") ? TSTATE[u.name] : null);
 
   // 자원(구슬 — 낭지 · 무아 …, D3 뼈대 10-18): 캐릭터당 수치 하나. 상한 = 「구슬」 항목(sub 구슬)의 max, 양 = 「구슬 축적/소비」 단위 value(없으면 1).
@@ -165,8 +165,24 @@
   // 「속성 ZONE에 따라 ANOTHER ZONE 전개 종류 변화」(네코코 ES) — 빌더는 7속성 「극 X」 전개로 펼치지만 실제는 지금 존을 각성(없으면 기본 「극 풍왕진」).
   //   전엔 번개 파티에서 고점이 「극 휘정진」을 골라 실전(초뢰진)과 어긋났다(11-08) → [추가 효과] 극 X 단위는 각성으로
   const normZone = (u, sk) => (u.k === "zone" && /^극 /.test(u.name || "") && /^\[추가 효과\]/.test(u.cond || "") && /ZONE에 따라 ANOTHER ZONE 전개 종류 변화/.test((sk && sk.desc) || "")) ? { ...u, k: "zoneAwake", name: "" } : u;
+  // 크리티컬 원천 해석(11-08, hinaden 대조 — 요르나 · 흑의 검사 AS 가 크리 0 으로 계산돼 모든 칸에서 크리 장비를 +90% 로 추천):
+  //   「구슬 축적 물리/마법 크리티컬율 UP」(딩님 원천 k other: 구슬 1개당 value%, 상한 max) = 지금 구슬 수 × value(고점 = 구슬 가득) ·
+  //   「구슬 축적 결사」 = 구슬이 가득일 때 결사 · 위키 원천 「Guaranteed physical and magical critical」(루나틱 결사) = 결사 상태
+  function normCrit(sim, ci, u) {
+    if (u.k !== "other") return u;
+    let x;
+    if ((x = /^구슬 축적 (물리|마법) 크리티컬율 UP$/.exec(u.name || ""))) {
+      const orbs = Math.min(sim.res[ci], resMaxOf(sim.party[ci]));
+      const v = Math.min(u.max ?? Infinity, (+u.value || 0) * (Number.isFinite(orbs) ? orbs : 99));
+      return { ...u, k: "stat_pct", dir: "UP", stats: [`${x[1]} 크리티컬율`], tc: "자신", value: v, name: undefined };
+    }
+    if (u.name === "구슬 축적 결사") return sim.res[ci] >= resMaxOf(sim.party[ci]) ? { ...u, k: "buff", name: T.ko("risktaker"), tc: "자신" } : u;
+    if (/Guaranteed physical and magical critical/i.test(u.raw || "")) return { ...u, k: "buff", name: T.ko("risktaker"), tc: "자신", raw: undefined };
+    return u;
+  }
   function apply(sim, ci, u, skName, sk) {
     u = normZone(u, sk);
+    u = normCrit(sim, ci, u);
     // 위키 「Another Zone」 스킬 — 본문(「Awakens any … Zones」)이 cond 칸 · 설명 첫 줄에 있고 효과 단위는 안내 줄뿐 → 각성 단위로
     if (u.k === "zone" && !u.name && (/^awakens any/i.test(u.cond || "") || /^awakens any/i.test((sk && sk.desc) || ""))) u = { ...u, k: "zoneAwake", cond: undefined };
     if (u.cond && (!sim.opt.cond || compOk(sim, u.cond) === false)) return;
@@ -426,7 +442,9 @@
           if (u.k === "zone" || u.k === "zoneAwake") continue;
           for (let k = 0; k < Math.max(1, u.maxStack || 1); k++) apply(sim, ci, { ...u, turns: null, times: null }, sk.name, sk);
         }
-        for (const u of equipOnHit(m, o)) apply(sim, ci, { ...u, turns: null }, "장비: " + u._equip);
+        // 고점 = 정상 상태 — 장비 「공격 시 X% 부여(3턴)」는 매 턴 굴리므로 걸려 있을 확률 1 − (1 − p)^3(11-08: 스카 스매시 50% → 0.875.
+        //   한 번 굴린 p 그대로면 0.5 미만 상태가 「없음」으로 빠져, 페인 장비 11개를 낀 hinaden 파티가 페인 없이 계산됐다)
+        for (const u of equipOnHit(m, o)) apply(sim, ci, { ...u, turns: null, ...(u.p != null && u.p < 1 ? { p: +(1 - (1 - u.p) ** 3).toFixed(3) } : {}) }, "장비: " + u._equip);
       });
       if (z) { apply(sim, 0, { ...z.u, turns: null }, z.sk.name, z.sk); if (awake && sim.zone && !sim.zone.awake) sim.zone = { ...sim.zone, up: { ...sim.zone.up, v: (sim.zone.up.v || 0) * 2 }, awake: true, base: sim.zone, until: Infinity }; }
       return sim;

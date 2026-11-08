@@ -132,9 +132,29 @@
     return cnt >= (need.n || 1);
   }
   // 스텝 조건(E3) — 「X 로 발동 시」 = 연속 실행 경로(via), 「X 로 발동하지 않았을 시」, 「X 습득 시」 = 그 스킬이 있으면 참(최대 빌드), 그 밖은 「조건부 효과 포함」(opt.cond)
+  // 전방 구성 조건(11-08, hinaden 대조) — 「<결정> 아군 4명 시」 · 「When there are 2 or more Shadow party members on the front line」 처럼 전방 인원으로 판정할 수 있는 조건.
+  //   전엔 opt.cond 하나로 전부 참이라, 번개 파티에서 알마 AS 의 「<결정> 아군 4명 시 극 휘정진」이 펴져 고점 존이 휘정진으로 바뀌었다(실전은 초뢰진).
+  //   판정할 수 없는 꼴 · 모르는 꼬리표는 null(기존대로 opt.cond)
+  const COMP_EN = { fire: "불", water: "물", earth: "땅", wind: "바람", thunder: "번개", shade: "그림자", crystal: "결정", sword: "검", fists: "권갑", fist: "권갑", staff: "지팡이", bow: "활", lance: "창", spear: "창", axe: "도끼", hammer: "망치", katana: "도" };
+  const tagOk = (c, t) => (t === "천" ? c.ls === "light" : t === "명" ? c.ls === "shadow" : t === "light" ? c.ls === "light" : t === "shadow" ? c.ls === "shadow" : (c.traits || []).includes(t) || c.elementKo === t);
+  function compOk(sim, cond) {
+    if (!cond) return null;
+    let x, tags, n;
+    if ((x = /^(?:\[추가 효과\]\s*)?((?:<[^>]+>(?:,\s*또는,\s*)?)+)\s*아군 (\d+)명(?: 이상)? 시$/.exec(cond))) { tags = [...x[1].matchAll(/<([^>]+)>/g)].map(y => y[1]); n = +x[2]; }
+    else if ((x = /^When (?:there are )?(\d+)(?:\+| or more) ([A-Za-z]+)(?: or ([A-Za-z]+))? party members (?:are )?on the front ?line$/i.exec(cond))) {
+      n = +x[1]; tags = [x[2], x[3]].filter(Boolean).map(t => { const k = t.toLowerCase(); return COMP_EN[k] || (k === "light" || k === "shadow" ? k : null); });
+      if (tags.some(t => !t)) return null;
+    } else return null;
+    const front = (sim.party || sim).filter(m => m.pos !== "back").slice(0, 4);
+    return front.filter(m => tags.some(t => tagOk(m.c || {}, t))).length >= n;
+  }
+  // 스킬 전체 발동 조건(설명 첫 줄 「전투 시작 시, <결정> 아군 2명 이상 시 발동」) — 빌더가 단위 cond 에 안 옮긴다(알마 AS 「(2)」 휘정진)
+  const skillGate = sk => { const x = /(?:^|,\s*)((?:\[추가 효과\]\s*)?(?:<[^>]+>(?:,\s*또는,\s*)?)+\s*아군 \d+명(?: 이상)? 시) 발동/.exec(((sk && sk.desc) || "").split(/\r?\n/)[0]); return x ? x[1] : null; };
+  const gateOk = (sim, sk) => compOk(sim, skillGate(sk)) !== false;
   function condOk(sim, m, cond, via) {
     if (!cond || /^awakens any/i.test(cond)) return true;                 // 위키 「Another Zone」 본문(조건 아님, 11-05)
     if (sim.opt.peak === "repeat" && ONE_SHOT.test(cond)) return false;   // 반복 고점 — 1회성 스텝(전투 1회 · 첫 턴)은 끈다
+    { const c = compOk(sim, cond); if (c !== null) return c; }
     if (/^스텔라 버스트 시$/.test(cond)) return !!sim.sb.on;                 // SB 안에서 실행 중일 때
     let x;
     if ((x = /^「(.+?)」로 발동 시$/.exec(cond))) return via === x[1];
@@ -142,10 +162,15 @@
     if ((x = /^「(.+?)」 습득 시$/.exec(cond))) return (m.actions.skills || []).some(s => s.name === x[1]);
     return !!sim.opt.cond;
   }
+  // 「속성 ZONE에 따라 ANOTHER ZONE 전개 종류 변화」(네코코 ES) — 빌더는 7속성 「극 X」 전개로 펼치지만 실제는 지금 존을 각성(없으면 기본 「극 풍왕진」).
+  //   전엔 번개 파티에서 고점이 「극 휘정진」을 골라 실전(초뢰진)과 어긋났다(11-08) → [추가 효과] 극 X 단위는 각성으로
+  const normZone = (u, sk) => (u.k === "zone" && /^극 /.test(u.name || "") && /^\[추가 효과\]/.test(u.cond || "") && /ZONE에 따라 ANOTHER ZONE 전개 종류 변화/.test((sk && sk.desc) || "")) ? { ...u, k: "zoneAwake", name: "" } : u;
   function apply(sim, ci, u, skName, sk) {
+    u = normZone(u, sk);
     // 위키 「Another Zone」 스킬 — 본문(「Awakens any … Zones」)이 cond 칸 · 설명 첫 줄에 있고 효과 단위는 안내 줄뿐 → 각성 단위로
     if (u.k === "zone" && !u.name && (/^awakens any/i.test(u.cond || "") || /^awakens any/i.test((sk && sk.desc) || ""))) u = { ...u, k: "zoneAwake", cond: undefined };
-    if (u.cond && !sim.opt.cond) return;
+    if (u.cond && (!sim.opt.cond || compOk(sim, u.cond) === false)) return;
+    if (sk && !gateOk(sim, sk)) return;
     if (!needOk(sim, ci, u.need)) return;
     // 존 — 「극 X」 = ANOTHER ZONE(증가 효과 ×2, 2턴 뒤 존까지 사라짐) · 「절 X」 = Radical(×2, 5턴) · zoneAwake 단위 = 지금 존 각성(위키 Zones §Awakened, 구조 지도 §4.5). 그라스타 부여 존은 영어 이름
     if (u.k === "zone" || u.k === "zoneAwake") {
@@ -330,7 +355,7 @@
   function battleStart(sim) {
     sim.party.forEach((m, ci) => {
       for (const sk of m.actions.skills || [])
-        if (sk.kind === "ability") for (const u of sk.fx || []) if (u.timing === "always" || u.timing === "battleStart" || !u.timing) apply(sim, ci, { ...u, turns: u.timing === "battleStart" ? u.turns : null }, sk.name);
+        if (sk.kind === "ability") for (const u of sk.fx || []) if (u.timing === "always" || u.timing === "battleStart" || !u.timing) apply(sim, ci, { ...u, turns: u.timing === "battleStart" ? u.turns : null }, sk.name, sk);
     });
   }
   // 속도순(선제 · 후공 상태는 다음 판) — 같은 속도는 좌→우
@@ -385,13 +410,13 @@
     const units = party.map(m => {
       const out = [];
       for (const sk of m.actions.skills || []) if ((m.slots || []).includes(sk.name) || sk.kind === "ability")
-        for (const u of sk.fx || []) if (!skip(u)) out.push({ u, sk });
+        for (const u0 of sk.fx || []) { const u = normZone(u0, sk); if (!skip(u)) out.push({ u, sk }); }
       return out.sort((a, b) => (+a.u.value || 0) - (+b.u.value || 0));
     });
     const zseen = new Set(), zones = [null];
     for (const x of units.flatMap(l => l.filter(y => y.u.k === "zone"))) { const k = x.u.name || x.u.what || ""; if (!zseen.has(k)) { zseen.add(k); zones.push(x); } }
     const AWK = /^awakens? (another zone|any)/i;                         // 위키 원천 각성 — 「awaken Another Zone」 · Another Zone 스킬 본문(cond · 설명)
-    const awake = units.some(l => l.some(({ u, sk }) => u.k === "zoneAwake" || /^(극|절) /.test(u.name || "") || (u.k === "zone" && !u.name && (AWK.test(u.what || "") || AWK.test(u.cond || "") || AWK.test(sk.desc || "")))));
+    const awake = units.some(l => l.some(({ u, sk }) => compOk(party, u.cond) !== false && gateOk(party, sk) && (u.k === "zoneAwake" || /^(극|절) /.test(u.name || "") || (u.k === "zone" && !u.name && (AWK.test(u.what || "") || AWK.test(u.cond || "") || AWK.test(sk.desc || ""))))));
     const sig = party.map(m => [m.weapon && m.weapon.name, m.armor && m.armor.name, ...(m.grasta || []).map(g => g.name), "/", ...(m.badges || []).map(x => x.name), "/", ...(m.slots || [])].join(",")).join("|");
     const build = z => {
       const sim = newSim(party, o, conf.memo || null);

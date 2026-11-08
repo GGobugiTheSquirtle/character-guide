@@ -55,7 +55,9 @@
   function withGrants(m, conf) {
     const gs = conf.grantsOf ? conf.grantsOf(m) : (m.grasta || []).filter(g => g && g.grant);
     const have = new Set((m.actions.skills || []).map(s => s.name)), extra = [];
-    for (const g of gs || []) { const sk = !g.ore && grantSkill(g); if (sk && !have.has(sk.name)) { have.add(sk.name); extra.push(sk); } }
+    // 특수 광석을 넣은 그라스타도 본래 부여 스킬은 그대로(11-08 — hinaden 「진의 주문 <지열진> + 지열진 광석」의 지열진 전개가 빠져 다른 존으로 계산됐다).
+    //   후보 풀의 광석 판 중복은 호출 쪽 grantsOf 가 거른다(compare_rec · 화면 = !g.ore)
+    for (const g of gs || []) { const sk = grantSkill(g); if (sk && !have.has(sk.name)) { have.add(sk.name); extra.push(sk); } }
     return extra.length ? { ...m, actions: { ...m.actions, skills: [...m.actions.skills, ...extra] } } : m;
   }
   // 칸에 든 부여 스킬의 그라스타를 앞 칸에 — 일반 칸이 차면 뒤 칸부터 밀어낸다. lockGrasta = 장비 단계 고정

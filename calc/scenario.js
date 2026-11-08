@@ -452,6 +452,10 @@
     // 장면 복사 — 효과 칸(live)만 얕게 베낀다(act 가 새 칸을 넣고 브레이크 남은 수를 깎는다)
     const fork = base => { const sim = { ...base, live: new Map([...base.live].map(([k, e]) => [k, { ...e }])), res: base.res.slice(), first: base.first.slice(), used: new Map(),
       dmg: [], byMember: [], log: [], onHit: [], sb: { ...base.sb } }; return sim; };
+    // o.zoneOnly(11-08) = 허용 존 이름 목록(「Torn Earth (Stance)」) — 실전 장비(격진 · 진의 주문 · 존 광석)가 가리키는 존만 고른다(다른 존은 후보에서 뺀다, 존 없음은 남김).
+    //   허용 존을 펼 스킬이 스킬칸에 없으면 존 없음이 되어, 스킬칸 탐색(optimizePeak)이 그 존 전개 스킬(진의 주문 부여 등)을 넣는 쪽으로 간다
+    const zKey = s => (s || "").replace(/ Stance$/, "");
+    const zOnly = (o.zoneOnly || []).map(zKey), zAllow = s => !zOnly.length || !s || zOnly.includes(zKey((s.base && s.base.name) || s.name));
     let top = null;
     for (const z of zones) {
       const base = build(z);
@@ -465,8 +469,8 @@
         }
         return best;
       });
-      const score = per.reduce((s, x) => s + x.d, 0);
-      if (!top || score > top.score) top = { score, perMember: per.map(x => x.d), attackOf: per.map(x => x.name), zone: base.zone, live: base.live };
+      const score = per.reduce((s, x) => s + x.d, 0), cand = { score, perMember: per.map(x => x.d), attackOf: per.map(x => x.name), zone: base.zone, live: base.live };
+      if (zAllow(base.zone) && (!top || score > top.score)) top = cand;
     }
     return top;
   }

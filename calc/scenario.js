@@ -137,17 +137,24 @@
   //   전엔 opt.cond 하나로 전부 참이라, 번개 파티에서 알마 AS 의 「<결정> 아군 4명 시 극 휘정진」이 펴져 고점 존이 휘정진으로 바뀌었다(실전은 초뢰진).
   //   판정할 수 없는 꼴 · 모르는 꼬리표는 null(기존대로 opt.cond)
   const COMP_EN = { fire: "불", water: "물", earth: "땅", wind: "바람", thunder: "번개", shade: "그림자", crystal: "결정", sword: "검", fists: "권갑", fist: "권갑", staff: "지팡이", bow: "활", lance: "창", spear: "창", axe: "도끼", hammer: "망치", katana: "도" };
+  const TRAIT_EN = new Map(T.slots("trait").map(v => [v.en.toLowerCase(), v.ko]));
+  const ELK = new Set(T.slots("element").map(v => v.ko)), WPK = new Set(T.slots("weapon").map(v => v.ko));   // 속성 · 무기는 index 의 elementKo · 무기로 늘 안다
   const tagOk = (c, t) => (t === "천" ? c.ls === "light" : t === "명" ? c.ls === "shadow" : t === "light" ? c.ls === "light" : t === "shadow" ? c.ls === "shadow" : (c.traits || []).includes(t) || c.elementKo === t);
   function compOk(sim, cond) {
     if (!cond) return null;
     let x, tags, n;
     if ((x = /^(?:\[추가 효과\]\s*)?((?:<[^>]+>(?:,\s*또는,\s*)?)+)\s*아군 (\d+)명(?: 이상)? 시$/.exec(cond))) { tags = [...x[1].matchAll(/<([^>]+)>/g)].map(y => y[1]); n = +x[2]; }
-    else if ((x = /^When (?:there are )?(\d+)(?:\+| or more) ([A-Za-z]+)(?: or ([A-Za-z]+))? party members (?:are )?on the front ?line$/i.exec(cond))) {
-      n = +x[1]; tags = [x[2], x[3]].filter(Boolean).map(t => { const k = t.toLowerCase(); return COMP_EN[k] || (k === "light" || k === "shadow" ? k : null); });
+    // 영어 꼴(11-08 넓힘): 「When 4 Arcadia characters are on the frontline」 · 「When 3 or more Ax characters …」 · 「Bow, Lance, or Arcadia party members」 —
+    //   전엔 「party members」 · 무기 · 속성만 읽어 쿠치나와 AS 연계(아르카디아 4명 시 아군 전체 변화무쌍(땅))가 판정 없이 켜졌다. 성격은 레지스트리 어휘 trait(영어 → 한국어 traits)
+    else if ((x = /^When (?:there are )?(\d+)(?:\+| or more)? (.+?) (?:characters|party members|allies)(?: are| is)? on the front ?line$/i.exec(cond))) {
+      n = +x[1]; tags = x[2].split(/\s*,\s*(?:or\s+)?|\s+or\s+/).filter(Boolean).map(t => { const k = t.toLowerCase(); return COMP_EN[k] || (k === "light" || k === "shadow" ? k : (TRAIT_EN.get(k) || null)); });
       if (tags.some(t => !t)) return null;
     } else return null;
     const front = (sim.party || sim).filter(m => m.pos !== "back").slice(0, 4);
-    return front.filter(m => tags.some(t => tagOk(m.c || {}, t))).length >= n;
+    // 성격 칸이 빈 캐릭터(index traits 없음)는 모름 — 확실히 맞는 수가 n 이상이면 참, 모름을 다 맞다 쳐도 n 미만이면 거짓, 그 사이는 판정 보류(null)
+    const hit = front.filter(m => tags.some(t => tagOk(m.c || {}, t))).length;
+    const unk = front.filter(m => !tags.some(t => tagOk(m.c || {}, t)) && !((m.c || {}).traits || []).length && tags.some(t => !ELK.has(t) && !WPK.has(t))).length;
+    return hit >= n ? true : hit + unk < n ? false : null;
   }
   // 스킬 전체 발동 조건(설명 첫 줄 「전투 시작 시, <결정> 아군 2명 이상 시 발동」) — 빌더가 단위 cond 에 안 옮긴다(알마 AS 「(2)」 휘정진)
   const skillGate = sk => { const x = /(?:^|,\s*)((?:\[추가 효과\]\s*)?(?:<[^>]+>(?:,\s*또는,\s*)?)+\s*아군 \d+명(?: 이상)? 시) 발동/.exec(((sk && sk.desc) || "").split(/\r?\n/)[0]); return x ? x[1] : null; };

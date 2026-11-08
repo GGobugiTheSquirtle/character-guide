@@ -21,8 +21,8 @@
   "counts": {
    "weapons": {
     "ko": 685,
-    "certain": 515,
-    "held": 170
+    "certain": 520,
+    "held": 165
    },
    "armors": {
     "ko": 286,
@@ -308,6 +308,19 @@
     "stat",
     "lv",
     "fx"
+   ]
+  },
+  {
+   "ko": "용골의 지팡이",
+   "reworked": true,
+   "en": "Dragon Bone Staff (Reforged)",
+   "page": "Dragon Bone Staff (Reforged)",
+   "type": "지팡이",
+   "why": [
+    "stat",
+    "lv",
+    "fx~",
+    "name"
    ]
   },
   {
@@ -658,6 +671,18 @@
     "stat",
     "lv",
     "fx"
+   ]
+  },
+  {
+   "ko": "용골의 지팡이",
+   "en": "Dragon Bone Staff",
+   "page": "Dragon Bone Staff",
+   "type": "지팡이",
+   "why": [
+    "stat",
+    "lv",
+    "fx~",
+    "name"
    ]
   },
   {
@@ -1092,8 +1117,7 @@
    "why": [
     "stat",
     "lv",
-    "fx~",
-    "name"
+    "fx"
    ]
   },
   {
@@ -1441,8 +1465,7 @@
    "why": [
     "stat",
     "lv",
-    "fx~",
-    "name"
+    "fx"
    ]
   },
   {
@@ -2128,6 +2151,17 @@
    ]
   },
   {
+   "ko": "비취 결정의 도",
+   "en": "Miaki's Katana",
+   "page": "Miaki's Katana",
+   "type": "도",
+   "why": [
+    "stat",
+    "lv",
+    "fx"
+   ]
+  },
+  {
    "ko": "명귀의 대태토",
    "en": "Dark Spirit Katana",
    "page": "Dark Spirit Katana",
@@ -2245,8 +2279,7 @@
    "why": [
     "stat",
     "lv",
-    "fx~",
-    "name"
+    "fx"
    ]
   },
   {
@@ -2656,8 +2689,7 @@
    "why": [
     "stat",
     "lv",
-    "fx~",
-    "name"
+    "fx"
    ]
   },
   {
@@ -4062,6 +4094,18 @@
    ]
   },
   {
+   "ko": "앵운",
+   "reworked": true,
+   "en": "Cherry Blossom Cloud (Reforged)",
+   "page": "Cherry Blossom Cloud (Reforged)",
+   "type": "활",
+   "why": [
+    "stat",
+    "lv",
+    "fx"
+   ]
+  },
+  {
    "ko": "롤리팝 슛",
    "reworked": true,
    "en": "Lolipopper (Reforged)",
@@ -4343,6 +4387,17 @@
    "ko": "용골의 활",
    "en": "Dragon Bone Bow",
    "page": "Dragon Bone Bow",
+   "type": "활",
+   "why": [
+    "stat",
+    "lv",
+    "fx"
+   ]
+  },
+  {
+   "ko": "앵운",
+   "en": "Cherry Blossom Cloud",
+   "page": "Cherry Blossom Cloud",
    "type": "활",
    "why": [
     "stat",
@@ -5939,15 +5994,6 @@
    ]
   },
   {
-   "ko": "용골의 지팡이",
-   "reworked": true,
-   "type": "지팡이",
-   "en": "용골의 지팡이 (재가공)",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
    "ko": "마도사의 지팡이",
    "type": "지팡이",
    "en": "마도사의 지팡이",
@@ -5991,14 +6037,6 @@
    "ko": "전가의 지팡이",
    "type": "지팡이",
    "en": "전가의 지팡이",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
-   "ko": "용골의 지팡이",
-   "type": "지팡이",
-   "en": "용골의 지팡이",
    "why": [
     "ding-only"
    ]
@@ -6357,14 +6395,6 @@
    "ko": "연대기의 도",
    "type": "도",
    "en": "연대기의 도",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
-   "ko": "비취 결정의 도",
-   "type": "도",
-   "en": "비취 결정의 도",
    "why": [
     "ding-only"
    ]
@@ -6776,15 +6806,6 @@
    ]
   },
   {
-   "ko": "앵운",
-   "reworked": true,
-   "type": "활",
-   "en": "앵운 (재가공)",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
    "ko": "유구의 활",
    "type": "활",
    "en": "유구의 활",
@@ -6828,14 +6849,6 @@
    "ko": "전가의 영궁",
    "type": "활",
    "en": "전가의 영궁",
-   "why": [
-    "ding-only"
-   ]
-  },
-  {
-   "ko": "앵운",
-   "type": "활",
-   "en": "앵운",
    "why": [
     "ding-only"
    ]

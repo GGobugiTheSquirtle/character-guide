@@ -126,10 +126,14 @@
   }
   // 효과 걸기 — 같은 칸은 덮어쓰기(누적형은 겹 +1), 지속 갱신
   // 파티 구성 조건(위키 need: 전방에 특성 n명 이상) — 실제 전방 멤버로 판정(others:false 면 본인 포함)
+  // 인원 조건(빌더 need = 「<땅> 아군 4명 시」 · 「When 4 earth allies are on the frontline」) — 꼬리표 판정은 compOk 와 같은 tagOk(성격 · 속성 두 개 · 무기 · 천명).
+  //   11-09: 전엔 index 성격 칸만 봐서 성격 칸이 빈(45명) · 속성이 안 적힌 캐릭터를 못 셌고 앞줄 제한(front)도 안 봤다 →
+  //   땅 4명 파티(hinaden 쿠치나와 AS)에서 투바 AS 「Battle Start Torn Earth Stance」 지열진이 안 펴져 존 · Another Zone ×5 가 통째로 빠졌다
   function needOk(sim, ci, need) {
     if (!need) return true;
-    const ts = need.traits || [];
-    const cnt = sim.party.filter((m, i) => (need.others ? i !== ci : true) && ((m.c && m.c.traits) || []).some(t => ts.includes(t))).length;
+    const ts = need.traits || [], party = sim.party || [];
+    const pool = need.front ? party.filter(m => m.pos !== "back").slice(0, 4) : party;
+    const cnt = pool.filter(m => (need.others ? m !== party[ci] : true) && ts.some(t => tagOk(m.c || {}, t))).length;
     return cnt >= (need.n || 1);
   }
   // 스텝 조건(E3) — 「X 로 발동 시」 = 연속 실행 경로(via), 「X 로 발동하지 않았을 시」, 「X 습득 시」 = 그 스킬이 있으면 참(최대 빌드), 그 밖은 「조건부 효과 포함」(opt.cond)
@@ -139,7 +143,7 @@
   const COMP_EN = { fire: "불", water: "물", earth: "땅", wind: "바람", thunder: "번개", shade: "그림자", crystal: "결정", sword: "검", fists: "권갑", fist: "권갑", staff: "지팡이", bow: "활", lance: "창", spear: "창", axe: "도끼", hammer: "망치", katana: "도" };
   const TRAIT_EN = new Map(T.slots("trait").map(v => [v.en.toLowerCase(), v.ko]));
   const ELK = new Set(T.slots("element").map(v => v.ko)), WPK = new Set(T.slots("weapon").map(v => v.ko));   // 속성 · 무기는 index 의 elementKo · 무기로 늘 안다
-  const tagOk = (c, t) => (t === "천" ? c.ls === "light" : t === "명" ? c.ls === "shadow" : t === "light" ? c.ls === "light" : t === "shadow" ? c.ls === "shadow" : (c.traits || []).includes(t) || c.elementKo === t);
+  const tagOk = (c, t) => (t === "천" ? c.ls === "light" : t === "명" ? c.ls === "shadow" : t === "light" ? c.ls === "light" : t === "shadow" ? c.ls === "shadow" : (c.traits || []).includes(t) || c.elementKo === t || c.element2Ko === t || c.weaponKo === t);
   function compOk(sim, cond) {
     if (!cond) return null;
     let x, tags, n;
@@ -509,13 +513,32 @@
   //   존 = 파티가 펼 수 있는 존 중 점수가 가장 높은 것(+ 각성 단위가 있으면 각성). 그 상태에서 멤버마다 스킬칸 · 일반 공격 중 가장 센 것 1회 → 합.
   //   conf.mode "repeat"(기본, 반복 고점) = 1회성(첫 턴 · 첫 사용 · 전투 1회 · 스텔라 버스트 시점 효과)을 끔 / "burst" = 순간 최고점. 스텔라 버스트 기술 자체는 아직 안 넣는다(따로 다룰 것)
   const ONE_SHOT = /first turn|first time|once per battle|first \d+ turns|최초|첫 턴|전투 중 1회|1회 한정/i;
+  // 턴 종료 공격(EOT, 11-09 hinaden) — 「X - EOT」 · 「X EOT」 스킬은 고르는 스킬이 아니라, 발동원(모드 · 노래 · 구슬 스킬 · 어빌리티)이 켜져 있으면 턴 끝마다 1회 더 친다.
+  //   발동원 = 이름이 EOT 앞부분과 같거나 설명에 그 EOT 이름이 든 스킬 + 설명에 「Activate <발동원>」이 든 스킬(아라네아 레가토 → Dark Shadow mode).
+  //   켜짐 = 발동원이 스킬칸에 있거나 어빌리티(자원 · 스택은 찬 것으로 — 고점 규칙). 스텔라 스킬로만 켜지는 EOT(멜리나 · 에웰라)는 반복 고점에서 뺀다.
+  //   전에는 EOT 공격을 안 셌고, 어빌리티 꼴 EOT(검은 옷의 칼잡이 AS 그림자 저항 −50% · 질바 AS 방어 무시)의 효과는 발동원 없이 늘 켜져 있었다
+  const isEOT = s => /\bEOT\b/.test((s && s.name) || "");
+  function eotOn(m, mode) {
+    const sk = m.actions.skills || [], slots = m.slots || [], lc = s => (s.desc || "").toLowerCase();
+    const live = s => (s.kind === "ability" || slots.includes(s.name)) && !(mode === "repeat" && s.sub === "stellar_skills");
+    const out = [];
+    for (const e of sk) {
+      if (!isEOT(e) || !(e.attacks || []).length || (mode === "repeat" && e.sub === "stellar_skills")) continue;
+      const pre = e.name.replace(/\s*-?\s*EOT\b.*$/, "").trim(), en = e.name.toLowerCase();
+      const src = sk.filter(s => !isEOT(s) && (s.name === pre || lc(s).includes(en)));
+      const src2 = sk.filter(s => !isEOT(s) && src.some(x => lc(s).includes("activate " + x.name.toLowerCase())));
+      if ([...src, ...src2].some(live)) out.push(e.name);
+    }
+    return out;
+  }
   function peak(party, opt, conf = {}) {
     const mode = conf.mode || "repeat";
     const o = { ...opt, cond: true, peak: mode, lunatic: true, breakOn: true, maxHp: true };
     const skip = u => mode === "repeat" && (u.timing === "sb" || ONE_SHOT.test(u.cond || ""));
-    const units = party.map(m => {
+    const eots = party.map(m => eotOn(m, mode));
+    const units = party.map((m, ci) => {
       const out = [];
-      for (const sk of m.actions.skills || []) if ((m.slots || []).includes(sk.name) || sk.kind === "ability")
+      for (const sk of m.actions.skills || []) if (((m.slots || []).includes(sk.name) || sk.kind === "ability") && (!isEOT(sk) || eots[ci].includes(sk.name)))
         for (const u0 of sk.fx || []) { const u = normZone(u0, sk); if (!skip(u)) out.push({ u, sk }); }
       return out.sort((a, b) => (+a.u.value || 0) - (+b.u.value || 0));
     });
@@ -555,13 +578,14 @@
       const per = party.map((m, ci) => {
         let best = { d: 0, name: null };
         for (const n of [...(m.slots || []), (normalOf(m) || {}).name].filter(Boolean)) {
-          if (!(m.actions.skills || []).some(s => s.name === n)) continue;
+          if (/\bEOT\b/.test(n) || !(m.actions.skills || []).some(s => s.name === n)) continue;
           const d = act(fork(base), ci, n, true);
           if (d > best.d) best = { d, name: n };
         }
-        return best;
+        const eot = eots[ci].reduce((s, n) => s + act(fork(base), ci, n, true), 0);   // 켜진 턴 종료 공격 1회씩
+        return { d: best.d + eot, name: best.name, eot };
       });
-      const score = per.reduce((s, x) => s + x.d, 0), cand = { score, perMember: per.map(x => x.d), attackOf: per.map(x => x.name), zone: base.zone, live: base.live };
+      const score = per.reduce((s, x) => s + x.d, 0), cand = { score, perMember: per.map(x => x.d), attackOf: per.map(x => x.name), eotOf: per.map(x => x.eot), zone: base.zone, live: base.live };
       if (zAllow(base.zone) && (!top || score > top.score)) top = cand;
     }
     return top;

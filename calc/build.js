@@ -22,7 +22,7 @@
   // 구슬을 모으는 캐릭터(전투 시작 어빌리티 · 스킬 「구슬 축적」)는 구슬 소비 스킬도 후보 — 시나리오가 수치를 세고 모자라면 못 쓴다(D3 뼈대 10-18)
   const gathers = m => (m.actions.skills || []).some(s => (s.fx || []).some(u => u.k === "other" && u.name === "구슬 축적" && !u.cond));
   function candidates(m, conf = {}) {
-    return (m.actions.skills || []).filter(s => s.slot && useful(s) && (!s.needEquip || conf.equipSkills) && (!s.needs || conf.cond || (s.needs.every(n => n === "구슬") && gathers(m)))
+    return (m.actions.skills || []).filter(s => s.slot && !/\bEOT\b/.test(s.name) && useful(s) && (!s.needEquip || conf.equipSkills) && (!s.needs || conf.cond || (s.needs.every(n => n === "구슬") && gathers(m)))
       && (!s.viaG || conf.via || (m.grasta || []).includes(s.viaG))).map(s => s.name);
   }
   // 시작 스킬칸 — 준비 스킬(엔진 효과 수 많은 순) 2 + 공격(1회 위력 × 타수 큰 순) 2, 모자라면 나머지로

@@ -22,7 +22,8 @@
     oreLimit: o.limit ?? Infinity });
   // 특수 칸(위키 Grasta · Valor Chant Grastas, 2026-10-14) — 일반 칸(아래 3 + 위 1, 명암 200)과 별개인 1칸. VC · Special 형만 들어간다.
   //   VC 는 그 캐릭터(다른 스타일 포함)의 것만 · Extreme = True VC + Fated Star Proof → HP 900 · MP 75 · 나머지 스탯 ⌊LS/25 + 15⌋(LS 255 = 25)
-  const baseChar = n => (n || "").replace(/\s*\((Another|Extra) Style\)$/, "").replace(/\s+(AS|ES)$/, "");
+  //   얼터도 같은 캐릭터 — 「Isuka (Alter) (Another Style)」 = Isuka(hinaden 실전: 얼터 6명이 본 캐릭터 증표, 11-08 — 전에는 얼터 전원이 자기 증표를 후보에서 잃었다)
+  const baseChar = n => (n || "").replace(/\s*\((Another|Extra) Style\)$/, "").replace(/\s+(AS|ES)$/, "").replace(/\s*\(Alter\)/, "");
   const LS = 255, EX = Math.floor(LS / 25 + 15);
   function specialPool(db, cc, traits) {
     const who = baseChar(cc.page);
@@ -148,7 +149,9 @@
   //   carry 면 그 멤버 대미지가 목표(다른 멤버는 1e-3 — 남는 장비로 무난하게), 그 멤버를 먼저 채운다
   function partyGear(members, opt, poolsOf, conf = {}) {
     const team = members.map(m => ({ ...m, gear: { grasta: normalOf(m), special: m.special || [] } }));
-    const wt = x => (conf.objective === "carry" ? (x.c.id === conf.carry ? 1 : 1e-3) : 1);
+    // conf.scale = {id: 배율}(11-08) — 정적 식 값을 고점 장면 몫에 맞추는 멤버별 배율(build.optimizePeak). 정적 식은 자원 · 단계로 커지는 공격을 모른다
+    //   (세스타 AS 변화한 일반 공격: 정적 217만 vs 고점 86억) → 그 멤버 비중이 0 이 되어 공유 그라스타가 남에게만 쏠렸다
+    const wt = x => (conf.objective === "carry" ? (x.c.id === conf.carry ? 1 : 1e-3) : 1) * ((conf.scale || {})[x.c.id] ?? 1);
     const order = conf.objective === "carry" ? [...team].sort((a, b) => wt(b) - wt(a)) : team;
     const usage = except => {
       const t = {}, add = k => (t[k] = (t[k] || 0) + 1);

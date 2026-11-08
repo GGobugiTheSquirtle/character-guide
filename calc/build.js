@@ -14,6 +14,7 @@
   "use strict";
   const S = root.AEScenario || require("./scenario.js");
   const PL = root.AEPlanner || require("./planner.js");
+  const AP = root.AEParty || require("./party_calc.js");
   const ENGINE = new Set(["stat_pct", "dmg", "buff", "ailment", "stack", "zone"]);
   const useful = sk => (sk.attacks || []).length > 0 || (sk.fx || []).some(u => ENGINE.has(u.k) && (!u.timing || u.timing === "use"));
   // 스킬칸 후보 — 쓸모 있는 스킬칸 스킬. 장비 습득 스킬은 conf.equipSkills, 자원 소비(구슬 · 카운트 · 게이지, s.needs)는 conf.cond 일 때만
@@ -262,11 +263,17 @@
         const sk = (m.actions.skills || []).find(x => x.name === pk.attackOf[ci]), part = sk && (sk.attacks || [])[0];
         return { ...m, fx: S.liveFx(pk.live, ci), attack: part ? S.toAttack(part, sk) : undefined, _contrib: null };
       });
-      const gconf = carry ? { ...(conf.gear.conf || {}), objective: "carry", carry } : conf.gear.conf || {};
-      const g = O.partyGear(members, { ...opt, cond: true, peak: "repeat", lunatic: true, breakOn: true, maxHp: true, zone: pk.zone || opt.zone, punish: [...new Set([...(opt.punish || []), ...S.liveStates(pk.live)])] }, conf.gear.poolsOf, gconf);
+      const gopt = { ...opt, cond: true, peak: "repeat", lunatic: true, breakOn: true, maxHp: true, zone: pk.zone || opt.zone, punish: [...new Set([...(opt.punish || []), ...S.liveStates(pk.live)])] };
+      // 멤버 비중 = 고점 몫 ÷ 정적 값(11-08, optimizer.partyGear conf.scale) — 고점 몫이 0 인 멤버(버프만)는 자기 대미지 비중 0
+      const pre = AP.prepare(members, gopt), scale = {};
+      members.forEach((m, i) => { const st = (AP.memberDamage(m, members, gopt, pre) || {}).perUse || 0; scale[m.c.id] = st > 0 ? pk.perMember[i] / st : 1; });
+      const gconf = { ...(conf.gear.conf || {}), ...(carry ? { objective: "carry", carry } : {}), scale };
+      const g = O.partyGear(members, gopt, conf.gear.poolsOf, gconf);
       evals += g.evals;
+      const prev = { team, cur };
       team = team.map((m, i) => { const x = g.team[i]; return { ...m, weapon: x.weapon, armor: x.armor, badges: x.badges, grasta: x.grasta, special: (x.gear && x.gear.special) || [] }; });
       cur = peakOf(team).score;
+      if (!carry && cur < prev.cur * (1 - 1e-9)) ({ team, cur } = prev);   // 정적 식은 근사 — 고점이 내려가면 받지 않는다(주력 가중 갈래는 다음 갈래로 이어지니 그대로)
     };
     slotPass(conf);
     if (conf.gear) {

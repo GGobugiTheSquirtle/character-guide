@@ -512,15 +512,46 @@
   //   멤버마다 패시브(ability) + 스킬칸 4개의 효과 단위를 전부 최대 누적으로 걸고(같은 칸은 큰 값이 남게 작은 값부터), 장비 「공격 시」 부여도 걸린 것으로 둔다.
   //   존 = 파티가 펼 수 있는 존 중 점수가 가장 높은 것(+ 각성 단위가 있으면 각성). 그 상태에서 멤버마다 스킬칸 · 일반 공격 중 가장 센 것 1회 → 합.
   //   conf.mode "repeat"(기본, 반복 고점) = 1회성(첫 턴 · 첫 사용 · 전투 1회 · 스텔라 버스트 시점 효과)을 끔 / "burst" = 순간 최고점. 스텔라 버스트 기술 자체는 아직 안 넣는다(따로 다룰 것)
-  const ONE_SHOT = /first turn|first time|once per battle|first \d+ turns|최초|첫 턴|전투 중 1회|1회 한정/i;
+  const ONE_SHOT = /first turn|first time|once per battle|first \d+ turns|최초|첫 턴|전투 중 1회|1회 한정|현재 턴 수 1일/i;
+  // 스킬 자체가 전투 1회(11-09 hinaden) — 위키 「Can only be used once per battle」 · 「can be activated once per battle」 · 공지 「전투 중 한 번만 발동 가능」.
+  //   반복 고점의 공격 후보에서 뺀다(테오도로스 「역전의 징조」 4800% 가 매 턴 공격으로 들어가 고점 88.5억이 됐다 — 실전은 HP 10% 이하 때 일반 공격이 한 번 바뀌는 기술)
+  const ONCE_SK = /can only be used once per battle|can be activated once per battle|전투 중 (?:한 번|1회)만 (?:발동|사용) 가능/i;
+  const onceSkill = s => ONCE_SK.test((s && s.desc) || "") || ((s && s.fx) || []).some(u => ONCE_SK.test(u.raw || ""));
   // 턴 종료 공격(EOT, 11-09 hinaden) — 「X - EOT」 · 「X EOT」 스킬은 고르는 스킬이 아니라, 발동원(모드 · 노래 · 구슬 스킬 · 어빌리티)이 켜져 있으면 턴 끝마다 1회 더 친다.
   //   발동원 = 이름이 EOT 앞부분과 같거나 설명에 그 EOT 이름이 든 스킬 + 설명에 「Activate <발동원>」이 든 스킬(아라네아 레가토 → Dark Shadow mode).
   //   켜짐 = 발동원이 스킬칸에 있거나 어빌리티(자원 · 스택은 찬 것으로 — 고점 규칙). 스텔라 스킬로만 켜지는 EOT(멜리나 · 에웰라)는 반복 고점에서 뺀다.
   //   전에는 EOT 공격을 안 셌고, 어빌리티 꼴 EOT(검은 옷의 칼잡이 AS 그림자 저항 −50% · 질바 AS 방어 무시)의 효과는 발동원 없이 늘 켜져 있었다
   const isEOT = s => /\bEOT\b/.test((s && s.name) || "");
-  function eotOn(m, mode) {
+  // 칸 밖 기술(11-09 hinaden) — 빌더 role(위키 캐릭터 문서 목록의 문서 항목): mode(모드 · 상태 · 노래 · 기도 · 루나틱) · counter(반격) · zone(Another Zone 문서) ·
+  //   basic(일반 공격 대체) + 바뀐 스킬(kind variant, from = 원래 스킬). 전엔 위키 문서가 스킬칸 후보라 고점이 문서를 칸에 끼워 효과를 받았다(pref9 고점 칸의 9%),
+  //   딩님 「변화한 스킬」 176개는 아예 안 봤다. 켜짐: basic = 늘(칸 없이 일반 공격 자리) · variant = 원래 스킬이 켜짐(조건 fromCond 는 장면에서) ·
+  //   mode · counter = 켜진 스킬이 그 이름 · 「activate <앞부분>」을 말하거나(Varýs Láktisma → Glory Days mode), 문서가 켜진 스킬 이름을 말할 때(「Mode activated when Aranea Legato is used」) ·
+  //   zone = 켜진 스킬에 각성 문구가 있을 때. 켜진 기술이 또 켜는 것까지 몇 바퀴
+  const pagePre = n => (/^lunatic\b/i.test(n) ? "lunatic" : n.replace(/\s*-\s*(?:counter|song|prayer)$/i, "").replace(/\s+(?:mode|state)$/i, "")).trim().toLowerCase();
+  const AWAKE_TXT = /awakens? (?:another|radical) zone/i;
+  function liveOf(m, mode) {
     const sk = m.actions.skills || [], slots = m.slots || [], lc = s => (s.desc || "").toLowerCase();
-    const live = s => (s.kind === "ability" || slots.includes(s.name)) && !(mode === "repeat" && s.sub === "stellar_skills");
+    const off = s => mode === "repeat" && s.sub === "stellar_skills";
+    //   루나틱 문서(「Lunatic - X」 = 루나틱 기회가 있으면 일반 공격 자리를 대체)는 칸 없이 켠다 — 딩님 원천 「루나틱」(일반 공격의 변화한 스킬)과 같은 취급
+    const on = new Set(sk.filter(s => (s.kind === "ability" || slots.includes(s.name) || s.role === "basic" || (s.role === "mode" && /^lunatic\b/i.test(s.name))
+      || (s.kind === "normal" && s.sub === "일반 공격")) && !off(s) && !isEOT(s)).map(s => s.name));
+    for (let pass = 0; pass < 4; pass++) {
+      const live = sk.filter(s => on.has(s.name)), before = on.size;
+      for (const p of sk) {
+        if (on.has(p.name) || off(p) || isEOT(p)) continue;
+        if (p.kind === "variant") { if (on.has(p.from)) on.add(p.name); continue; }
+        if (p.role === "zone") { if (live.some(s => AWAKE_TXT.test(s.desc || "") || (s.fx || []).some(u => AWAKE_TXT.test(u.what || "")))) on.add(p.name); continue; }
+        if (p.role !== "mode" && p.role !== "counter") continue;
+        const en = p.name.toLowerCase(), pre = pagePre(p.name);
+        if (live.some(s => s.name.toLowerCase() === pre || lc(s).includes(en) || (pre && lc(s).includes("activate " + pre)) || (s.name.length >= 4 && lc(p).includes(s.name.toLowerCase())))) on.add(p.name);
+      }
+      if (on.size === before) break;
+    }
+    return on;
+  }
+  function eotOn(m, mode, on) {
+    const sk = m.actions.skills || [], lc = s => (s.desc || "").toLowerCase();
+    const live = s => on.has(s.name);
     const out = [];
     for (const e of sk) {
       if (!isEOT(e) || !(e.attacks || []).length || (mode === "repeat" && e.sub === "stellar_skills")) continue;
@@ -535,17 +566,24 @@
     const mode = conf.mode || "repeat";
     const o = { ...opt, cond: true, peak: mode, lunatic: true, breakOn: true, maxHp: true };
     const skip = u => mode === "repeat" && (u.timing === "sb" || ONE_SHOT.test(u.cond || ""));
-    const eots = party.map(m => eotOn(m, mode));
+    const lives = party.map(m => liveOf(m, mode));
+    const eots = party.map((m, ci) => eotOn(m, mode, lives[ci]));
     const units = party.map((m, ci) => {
       const out = [];
-      for (const sk of m.actions.skills || []) if (((m.slots || []).includes(sk.name) || sk.kind === "ability") && (!isEOT(sk) || eots[ci].includes(sk.name)))
+      for (const sk of m.actions.skills || []) if ((lives[ci].has(sk.name) && sk.kind !== "normal") || eots[ci].includes(sk.name))   // 일반 공격은 바뀐 스킬 연결용(효과는 전처럼 안 건다)
         for (const u0 of sk.fx || []) { const u = normZone(u0, sk); if (!skip(u)) out.push({ u, sk }); }
       return out.sort((a, b) => (+a.u.value || 0) - (+b.u.value || 0));
     });
+    // 각성할 수 있는 파티는 각성 상태로 본다(11-09) — 각성 스킬은 대개 「전투 1회: awaken Another Zone」이라 반복 고점이 꺼 왔고, 실제로는 위키 「Another Zone」 문서를
+    //   스킬칸에 끼워야 각성이 켜졌다(문서가 칸 밖으로 빠지며 드러남). 존 각성 광석을 낀 실전 장비와 맞춘다. 스텔라 버스트 때만 펴는 극 · 절 존은 뺀다
+    const awakeOnce = party.some((m, ci) => (m.actions.skills || []).some(sk => lives[ci].has(sk.name) && (sk.fx || []).some(u0 => {
+      const u = normZone(u0, sk);
+      return u.timing !== "sb" && !/스텔라 버스트|stellar burst/i.test(u.cond || "") && compOk(party, u.cond) !== false && gateOk(party, sk) && (u.k === "zoneAwake" || /^(극|절) /.test(u.name || "") || (u.k === "zone" && !u.name && AWAKE_TXT.test(u.what || "")));
+    })));
     const zseen = new Set(), zones = [null];
     for (const x of units.flatMap(l => l.filter(y => y.u.k === "zone"))) { const k = x.u.name || x.u.what || ""; if (!zseen.has(k)) { zseen.add(k); zones.push(x); } }
     const AWK = /^awakens? (another zone|any)/i;                         // 위키 원천 각성 — 「awaken Another Zone」 · Another Zone 스킬 본문(cond · 설명)
-    const awake = units.some(l => l.some(({ u, sk }) => compOk(party, u.cond) !== false && gateOk(party, sk) && (u.k === "zoneAwake" || /^(극|절) /.test(u.name || "") || (u.k === "zone" && !u.name && (AWK.test(u.what || "") || AWK.test(u.cond || "") || AWK.test(sk.desc || ""))))));
+    const awake = units.some(l => l.some(({ u, sk }) => compOk(party, u.cond) !== false && gateOk(party, sk) && (u.k === "zoneAwake" || /^(극|절) /.test(u.name || "") || (u.k === "zone" && !u.name && (AWK.test(u.what || "") || AWK.test(u.cond || "") || AWK.test(sk.desc || "")))))) || awakeOnce;
     const sig = party.map(m => [m.weapon && m.weapon.name, m.armor && m.armor.name, ...(m.grasta || []).map(g => g.name), "/", ...(m.badges || []).map(x => x.name), "/", ...(m.slots || [])].join(",")).join("|");
     const build = z => {
       const sim = newSim(party, o, conf.memo || null);
@@ -555,6 +593,7 @@
       party.forEach((m, ci) => {
         for (const { u, sk } of units[ci]) {
           if (u.k === "zone" || u.k === "zoneAwake") continue;
+          if (sk.kind === "variant" && sk.fromCond && condOk(sim, m, sk.fromCond) === false) continue;   // 바뀐 스킬 — 조건(「열화진 시」)이 이 장면에서 맞을 때만
           for (let k = 0; k < Math.max(1, u.maxStack || 1); k++) apply(sim, ci, { ...u, turns: null, times: null }, sk.name, sk);
         }
         // 고점 = 정상 상태 — 장비 「공격 시 X% 부여(3턴)」는 매 턴 굴리므로 걸려 있을 확률 1 − (1 − p)^3(11-08: 스카 스매시 50% → 0.875.
@@ -577,8 +616,13 @@
       // 멤버 · 후보마다 장면을 복사해 act 를 돌린다 — 연속 실행 · 반복 · 브레이크 소모가 그대로, 장면끼리 섞이지 않게
       const per = party.map((m, ci) => {
         let best = { d: 0, name: null };
-        for (const n of [...(m.slots || []), (normalOf(m) || {}).name].filter(Boolean)) {
-          if (/\bEOT\b/.test(n) || !(m.actions.skills || []).some(s => s.name === n)) continue;
+        // 후보 = 켜진 스킬칸 스킬 · 일반 공격 대체(basic) · 조건 맞는 바뀐 스킬 + 일반 공격. 문서(mode · counter · zone) · EOT · 반복 고점의 전투 1회 기술은 뺀다
+        const nor = normalOf(m);
+        const pool = (m.actions.skills || []).filter(s => s === nor || (lives[ci].has(s.name) && (s.slot || s.role === "basic" || s.kind === "variant")
+          && (s.kind !== "variant" || !s.fromCond || condOk(base, m, s.fromCond) !== false)));
+        for (const sk of pool) {
+          const n = sk.name;
+          if (isEOT(sk) || (mode === "repeat" && onceSkill(sk))) continue;
           const d = act(fork(base), ci, n, true);
           if (d > best.d) best = { d, name: n };
         }

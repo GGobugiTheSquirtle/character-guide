@@ -527,14 +527,16 @@
   //   딩님 「변화한 스킬」 176개는 아예 안 봤다. 켜짐: basic = 늘(칸 없이 일반 공격 자리) · variant = 원래 스킬이 켜짐(조건 fromCond 는 장면에서) ·
   //   mode · counter = 켜진 스킬이 그 이름 · 「activate <앞부분>」을 말하거나(Varýs Láktisma → Glory Days mode), 문서가 켜진 스킬 이름을 말할 때(「Mode activated when Aranea Legato is used」) ·
   //   zone = 켜진 스킬에 각성 문구가 있을 때. 켜진 기술이 또 켜는 것까지 몇 바퀴
+  // 바뀐 스킬의 효과를 고점 상시 효과로 거는 조건 — 존(「열화진 시」, zoneCond) · 모드 · 상태(「전성기 상태 시」 · 「When in Glory Days mode」)만.
+  //   자원 누적 조건(「When 40+ Outfits are stacked」 · 「루나틱 기회 … 축적 시」 · 「어그로 스탠스 1 이상 축적 시」)은 공격 후보로만 —
+  //   니나 Patched Ideals(Outfit 전부 소비 · 1턴 심기일체 · 정신 통일 · 하극상)가 상시로 걸려 틸릴 ES 파티 고점이 70 → 186억(시험 14파티 일치 −4.5%p, 11-09)
+  const VAR_FX = /상태 시$|상태일 때$|\bmode$|\bstate$/i;
   const pagePre = n => (/^lunatic\b/i.test(n) ? "lunatic" : n.replace(/\s*-\s*(?:counter|song|prayer)$/i, "").replace(/\s+(?:mode|state)$/i, "")).trim().toLowerCase();
   const AWAKE_TXT = /awakens? (?:another|radical) zone/i;
   function liveOf(m, mode) {
     const sk = m.actions.skills || [], slots = m.slots || [], lc = s => (s.desc || "").toLowerCase();
     const off = s => mode === "repeat" && s.sub === "stellar_skills";
-    //   루나틱 문서(「Lunatic - X」 = 루나틱 기회가 있으면 일반 공격 자리를 대체)는 칸 없이 켠다 — 딩님 원천 「루나틱」(일반 공격의 변화한 스킬)과 같은 취급
-    const on = new Set(sk.filter(s => (s.kind === "ability" || slots.includes(s.name) || s.role === "basic" || (s.role === "mode" && /^lunatic\b/i.test(s.name))
-      || (s.kind === "normal" && s.sub === "일반 공격")) && !off(s) && !isEOT(s)).map(s => s.name));
+    const on = new Set(sk.filter(s => (s.kind === "ability" || slots.includes(s.name) || s.role === "basic" || (s.kind === "normal" && s.sub === "일반 공격")) && !off(s) && !isEOT(s)).map(s => s.name));
     for (let pass = 0; pass < 4; pass++) {
       const live = sk.filter(s => on.has(s.name)), before = on.size;
       for (const p of sk) {
@@ -567,7 +569,9 @@
     const o = { ...opt, cond: true, peak: mode, lunatic: true, breakOn: true, maxHp: true };
     const skip = u => mode === "repeat" && (u.timing === "sb" || ONE_SHOT.test(u.cond || ""));
     const lives = party.map(m => liveOf(m, mode));
-    const eots = party.map((m, ci) => eotOn(m, mode, lives[ci]));
+    // 반격(role counter, 「X - Counter」)도 EOT 처럼 — 발동원이 켜져 있으면 턴마다 1회 더 친다(보스는 매 턴 공격한다고 본다).
+    //   공격 후보로 두면 반격이 스킬 대신 「가장 센 공격」으로 잡혔고(질퍼니 AS Crescentia - Counter), 빼기만 하면 반격 빌드 몫이 사라졌다(11-09 시험)
+    const eots = party.map((m, ci) => [...eotOn(m, mode, lives[ci]), ...(m.actions.skills || []).filter(s => s.role === "counter" && lives[ci].has(s.name) && (s.attacks || []).length).map(s => s.name)]);
     const units = party.map((m, ci) => {
       const out = [];
       for (const sk of m.actions.skills || []) if ((lives[ci].has(sk.name) && sk.kind !== "normal") || eots[ci].includes(sk.name))   // 일반 공격은 바뀐 스킬 연결용(효과는 전처럼 안 건다)
@@ -593,7 +597,7 @@
       party.forEach((m, ci) => {
         for (const { u, sk } of units[ci]) {
           if (u.k === "zone" || u.k === "zoneAwake") continue;
-          if (sk.kind === "variant" && sk.fromCond && condOk(sim, m, sk.fromCond) === false) continue;   // 바뀐 스킬 — 조건(「열화진 시」)이 이 장면에서 맞을 때만
+          if (sk.kind === "variant" && (!VAR_FX.test(sk.fromCond || "") && zoneCond(sim, sk.fromCond) === null || condOk(sim, m, sk.fromCond) === false)) continue;   // 바뀐 스킬 효과 — 아래 VAR_FX
           for (let k = 0; k < Math.max(1, u.maxStack || 1); k++) apply(sim, ci, { ...u, turns: null, times: null }, sk.name, sk);
         }
         // 고점 = 정상 상태 — 장비 「공격 시 X% 부여(3턴)」는 매 턴 굴리므로 걸려 있을 확률 1 − (1 − p)^3(11-08: 스카 스매시 50% → 0.875.

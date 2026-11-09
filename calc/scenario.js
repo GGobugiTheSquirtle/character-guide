@@ -373,7 +373,8 @@
       if (p >= 1) { sure.add(s); maybe.delete(s); } else maybe.set(s, Math.max(maybe.get(s) || 0, p));
     }
     // breakOn: 시나리오가 건 브레이크 축적은 확정 사실(남은 개수 left 로 소모) — 정적 식의 「조건부일 때만」 기본값을 켠다
-    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, zoneAwake: !!(sim.zone && sim.zone.awake), turns: sim.turn, af: sim.af, punish, breakOn: sim.opt.breakOn ?? true, lunatic: sim.opt.lunatic ?? true, normalAtk: sk.kind === "normal", hitOffset: part._h0 || 0, firstUse: !!sim.first[ci] }); return r ? r.perUse : 0; };
+    // 일반 공격 대미지 UP = 일반 공격만 — 다른 스킬을 「연속 실행」하는 변화 평타(세스타 이도신랑)는 받지 않는다(딩님 236165, 11-09)
+    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, zoneAwake: !!(sim.zone && sim.zone.awake), turns: sim.turn, af: sim.af, punish, breakOn: sim.opt.breakOn ?? true, lunatic: sim.opt.lunatic ?? true, normalAtk: sk.kind === "normal" && !/연속 실행/.test(sk.desc || ""), hitOffset: part._h0 || 0, firstUse: !!sim.first[ci] }); return r ? r.perUse : 0; };
     const mb = [...maybe];
     let v = 0;
     for (let mask = 0; mask < 1 << mb.length; mask++) {

@@ -1528,7 +1528,6 @@ async function renderParty() {
   // 6. 배치 — 자리 조건 · 옆자리 대상
   const s6 = el("div", { class: "section", children: [el("h3", { text: "6. 배치 (전방 · 후방 · 옆자리)" }),
     el("div", { class: "skko-src", text: "전방 칸은 화면 왼쪽부터 1~4. 좌측 = 한 칸 왼쪽, 우측 = 한 칸 오른쪽(전방 안에서만)." })] });
-  const bySlot = Object.fromEntries(members.map(m => [m.slot, m]));
   let n6 = 0;
   for (const m of members) {
     const pos = [], side = [];
@@ -1547,7 +1546,9 @@ async function renderParty() {
       const t = fxText(u) + fxDur(u);
       if (seenS.has(t)) continue;
       seenS.add(t);
-      const got = m.pos !== "front" ? [] : sd.map(d => bySlot[m.slot + (d === "L" ? -1 : 1)]).filter(x => x && x.pos === "front");
+      // 옆자리 = 전방에서 빈칸을 건너뛴 다음 아군, 좌우 끝은 이어진다(루프) — 아카 132734497(커뮤니티 근거 · 인게임 확인 전, 11-09 전엔 slot ± 1)
+      const fr = members.filter(x => x.pos === "front").sort((a, b) => a.slot - b.slot), k = fr.indexOf(m);
+      const got = m.pos !== "front" || fr.length < 2 ? [] : [...new Set(sd.map(d => fr[(k + (d === "L" ? -1 : 1) + fr.length) % fr.length]))];
       s6.appendChild(el("div", { class: "pt", children: [el("span", { class: got.length ? "role-ok" : "role-gap", text: got.length ? "→ " : "✗ " }),
         document.createTextNode(`${label(m)} · ${u._skill}: ${t} ⇒ ${got.length ? got.map(x => x.c.nameKo).join(", ") : "받을 옆자리 아군 없음"}`)] }));
       n6++;

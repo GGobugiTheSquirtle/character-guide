@@ -111,6 +111,18 @@
   }
   const WEAPON_WORDS = [["검", /(?<![가-힣])검|sword/i], ["도끼", /도끼|\bax(?:e)?\b/i], ["도", /(?<![가-힣])도(?![끼가-힣])|katana/i], ["창", /(?<![가-힣])창|lance|spear/i],
     ["활", /(?<![가-힣])활|\bbow/i], ["권갑", /권갑|fist/i], ["망치", /망치|hammer/i], ["지팡이", /지팡이|staff/i]];
+  // 속성 공격 UP 그룹(딩님 145296 — 무속성 · 모든 속성 · 각 속성 · 무속성 물리, 특수 연산) 중 이 공격에 닿는 칸.
+  //   「모든 속성」 일반 효과는 무속성 공격에도 닿는다(같은 글). 공격 종류 칸(모든 속성 베기 공격력 — 251526 섬영)은 그 종류에만
+  function typeBuffs(tmap, el, kind, magic) {
+    const out = [];
+    for (const [k, arr] of Object.entries(tmap)) {
+      const [e, sub] = k.split("|");
+      if (!(e === "*" || (el ? e === el : e === "무"))) continue;
+      if (sub && !(sub === kind || (sub === "물리" && !magic) || (sub === "마법" && magic))) continue;
+      out.push(...arr);
+    }
+    return out;
+  }
   const weaponsOf = t => (/장착자|equipped/i.test(t) && !/모든 무기|any weapon|all weapon/i.test(t) ? WEAPON_WORDS.filter(([, r]) => r.test(t)).map(([w]) => w) : []);
   function addAlly(g, u, s) {
     const v = (u.value || 0) / 100;
@@ -126,8 +138,11 @@
         else if (id === "crit_dmg") g.critDmg.push(v);
         else if (id === "magic_crit_dmg") g.mcritDmg.push(v);
         else if (id === "elem_atk") {
-          const e = ELEMS.find(x => st.startsWith(x)) || (/^모든/.test(st) ? "*" : null);
-          if (e) (g.type[e] = g.type[e] || []).push(v); else hit = false;
+          // 칸 키 = 속성(불 · … · * 모든 · 무 무속성) [+ "|" 공격 종류(베기 · 찌르기 · 타격 · 물리 · 마법)] — typeBuffs 가 공격마다 맞는 칸을 모은다
+          const e = ELEMS.find(x => st.startsWith(x)) || (/^모든/.test(st) ? "*" : /^무속성/.test(st) ? "무" : null);
+          const sub = (st.match(/(베기|찌르기|타격|물리|마법) 공격력$/) || [])[1];
+          const key = e && (sub ? `${e}|${sub}` : e);
+          if (key) (g.type[key] = g.type[key] || []).push(v); else hit = false;
         } else hit = false;
         if (hit) g.src.push(`${s.c.nameKo}: ${st} +${u.value}%`);
       }
@@ -144,8 +159,9 @@
       g.src.push(`${s.c.nameKo}: ${u.what} +${u.value}%`);
     } else if (u.k === "buff" || (u.k === "other" && T.cid(u.name) === "multi_upgrade")) {
       const id = T.cid(u.name);
+      // 최대 MP 당 비율 — 정신 통일 보통 0.23% · 심기일체 보통 0.16%(딩님 184648 「상태 효과」. 11-09 전엔 심기일체도 0.23 이라 1.44배 과대)
       if (id === "mental_focus") { g.focusMag.push(0.0023); g.src.push(`${s.c.nameKo}: ${T.ko(id)}`); }
-      else if (id === "singular_focus") { g.focusPhys.push(0.0023); g.src.push(`${s.c.nameKo}: ${T.ko(id)}`); }
+      else if (id === "singular_focus") { g.focusPhys.push(0.0016); g.src.push(`${s.c.nameKo}: ${T.ko(id)}`); }
       else if (id === "sure_crit") { g.sureCrit = true; g.src.push(`${s.c.nameKo}: ${T.ko(id)}`); }
       else if (id === "overthrow") { g.overthrow = true; g.src.push(`${s.c.nameKo}: ${T.ko(id)}`); }
       else {
@@ -470,8 +486,8 @@
     for (const [k, v] of Object.entries(eq.stats)) st[k] = (st[k] || 0) + v;
     const magic = atk.dep === "magic" || atk.dep === "magicpwr";
     const typeKey = atk.element || null;
-    const tb = typeKey ? [...(ag.type["*"] || []), ...(ag.type[typeKey] || [])] : (ag.type["*"] || []);
-    const typeNet = eq.typeEquip.length ? C.groupNet({ buffs: tb, equip: eq.typeEquip }) : net(ag, "t" + typeKey, () => C.groupNet({ buffs: tb }));
+    const tb = typeBuffs(ag.type, typeKey, atk.atk, magic);
+    const typeNet = eq.typeEquip.length ? C.groupNet({ buffs: tb, equip: eq.typeEquip }) : net(ag, `t${typeKey}|${atk.atk}|${magic ? 1 : 0}`, () => C.groupNet({ buffs: tb }));
     const wt = (m.weapon && m.weapon.type) || (m.cc && m.cc.weapon) || "";
     const dmgNet = net(ag, "dmg" + wt, () => C.groupNet({ buffs: [...ag.dmg.buffs, ...(ag.wdmg[wt] || [])] }));
     const groups = [typeNet, dmgNet, ...eq.groups, ...ev.groups];
@@ -596,7 +612,7 @@
     const a = c.all, e = c.enemy, el = ctx.element, mg = !!ctx.magic, gn = b => (b.length ? C.groupNet({ buffs: b }) : 0);
     switch (id) {
       case "pwr": case "int": case "spd": return gn(a[id].buffs);
-      case "type": return gn(el ? [...(a.type["*"] || []), ...(a.type[el] || [])] : (a.type["*"] || []));
+      case "type": return gn(typeBuffs(a.type, el, ctx.atk, mg));
       case "dmg": return gn([...a.dmg.buffs, ...(a.wdmg[ctx.weapon] || [])]);
       case "crit": return C.additive(mg ? a.mcrit : a.crit);
       case "critDmg": return C.additive(mg ? a.mcritDmg : a.critDmg);

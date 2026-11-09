@@ -100,7 +100,7 @@
     if (aff === "resist") res = 0.25;
     else if (aff === "null") res = 0;
     else if (aff === "weak") res = (magic ? 2 : physWeak(weakB)) + (o.weakBuff || 0);
-    else if (aff === "absorb") res = (o.af && (dep === "pwr" || dep === "magic")) ? 0 : -0.5;
+    else if (aff === "absorb") res = o.af ? 0 : -0.5;   // AF 중 흡수 = 모든 공격 종류 0(Ver 3.8.10 공지 546 · 딩님 145289 — 전엔 힘 물리 · 지능 마법만 0)
 
     const rd = o.resDown || {};
     const resSum = clamp((o.elemental ? (rd.type || 0) : 0) + (magic ? (rd.magic || 0) : (rd.phys || 0)), -2, 2);

@@ -8309,13 +8309,13 @@
         "힘 UP (수치)"
       ],
       "roles": {
+        "attack": 9,
         "zone": 6,
         "mode": 6,
         "atk_buff": 4,
         "tempo": 7,
         "state_unknown": 1,
         "surv_state": 3,
-        "attack": 8,
         "atk_debuff": 4,
         "power": 1,
         "resource": 6,

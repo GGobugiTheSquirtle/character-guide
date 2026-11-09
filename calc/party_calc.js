@@ -224,6 +224,7 @@
     };
     // 효과 중복 불가(위키 「Not stackable」 — 겨누어 쏘기 · MP 소비 공격 · 봉인 인핸스 · 적 수 · 약점 강화 · 약점 공격 글래스터): 장비 전체에서 종류별 최댓값 하나만 (2026-10-13)
     const once = {};
+    const fallen = [];   // 쓰러진 아군 한 명당 대미지 UP(장비) = 합연산 · 끼리 상한 +300%(딩님 145296 · 185296, Ver 3.12.60 확인 — 11-09 전엔 장비마다 따로 곱 · 상한 없음)
     const uniq = (key, it, label, x, slot, raw) => { if (x > 0 && !(once[key] && once[key].x >= x)) once[key] = { it, label, x, slot, raw }; };
     for (const it of items) {
       if (!it) continue;
@@ -274,7 +275,7 @@
         else if (f.k === "selfstatus" && (opt.selfStatus || []).includes(f.when)) uniq("self:" + f.when, it, `${T.ko(f.when)} ${KL("selfstatus")}`, f.v, "enhance");
         else if (f.k === "selfstat" && f.v && (opt.selfStatus || []).includes(f.when)) out.stats[f.stat] = (out.stats[f.stat] || 0) + f.v;
         else if (f.k === "enemies") uniq("enemies", it, KL("enemies"), f.per * Math.max(0, (opt.enemyCount || 1) - 1));
-        else if (f.k === "fallen") mult(it, KL("fallen"), f.per * (opt.fallen || 0), "fallen");
+        else if (f.k === "fallen" && opt.fallen) fallen.push([it, f.per * opt.fallen]);   // 아래에서 합쳐 상한
         else if (f.k === "tstat" && opt.punish && opt.punish.includes(f.when)) mult(it, `${KL("tstat")} ${T.ko(f.when)}`, f.v, "statusE");
         // 전용 무기 스킬 강화 「<스킬> MOD+ 50% · 250% total」 = 기본 배율 +50%p → 배율 × total/(total−v) (스킬 자체 배수 보존)
         else if (f.k === "skillmod" && f.total && atk.skill === f.skill) { out.skillMul *= f.total / (f.total - f.v); out.src.push(`${it.name}: ${f.skill} 배율 +${f.v}%p`); }
@@ -283,6 +284,7 @@
     const CONDE = ["weak", "mpatk", "enemies"];   // 43행 안 곱하는 순서(메모 시트)
     const keys = Object.keys(once).sort((a, b) => (CONDE.indexOf(a) + 1 || 99) - (CONDE.indexOf(b) + 1 || 99));
     for (const key of keys) { const u = once[key]; mult(u.it, u.label, u.x, u.slot, u.raw); }
+    if (fallen.length) mult({ name: fallen.map(([it]) => it.name).join(" + ") }, KL("fallen"), Math.min(300, fallen.reduce((a, [, x]) => a + x, 0)), "fallen");
     return out;
   }
 

@@ -248,6 +248,7 @@
   const ATS = T.slots("attack_type"), FLEX = T.ko("flexible");
   const atOf = x => { x = String(x || "").trim().toLowerCase(); const v = ATS.find(e => x === e.ko || x === e.en.toLowerCase() || x === e.en.toLowerCase() + "ing" || (x === "piercing" && e.k === "pierce")); return v ? v.ko : null; };
   const flexName = n => T.is(String(n || "").replace(/\(.*\)\s*$/, "").trim(), "flexible");
+  const OWN_DEP = /(?:힘|지능|속도)에 따른 위력|based on (?:the )?(?:user'?s? )?(?:pwr|int|spd|power|intelligence|speed)/i;   // 스킬 자체 위력 기반 문구(임기응변이 못 바꾼다)
   const FLEX_IMMUNE = new RegExp(`${FLEX}[^\\n]*적용 불가|will not change[^.\\n]*weapon type by flexible`, "i");
   function flexOf(u, sk) {
     const raw = u.raw || u.what || "";
@@ -356,7 +357,9 @@
   function attackRaw(sim, ci, sk, part) {
     const atk = toAttack(part, sk);
     if (/ZONE에 따라 공격 속성 변화/.test(sk.desc || "")) { const el = zoneEl(sim); if (el) atk.element = el; }   // 네코코 ES 유성군 · 적의 플람 얼터 등 14스킬(11-08)
-    { const fl = sim.live.get(`flex|${ci}`); if (fl && !FLEX_IMMUNE.test(sk.desc || "")) { const at = fl.u.at === "zone" ? zoneAt(sim) : fl.u.at; if (at) atk.atk = at; } }   // 임기응변
+    { const fl = sim.live.get(`flex|${ci}`); if (fl && !FLEX_IMMUNE.test(sk.desc || "")) { const at = fl.u.at === "zone" ? zoneAt(sim) : fl.u.at;   // 임기응변
+      // 위력 기반도 바뀐다 — 베기 · 찌르기 · 타격 = 힘, 마 = 지능. 스킬 자체 「힘/지능/속도에 따른 위력」이 있으면 그것(딩님 184648, 11-09 전엔 종류만 바꿔 힘 물리 식 그대로)
+      if (at && at !== atk.atk) { atk.dep = OWN_DEP.test(sk.desc || "") ? toAttack({ ...part, atk: at }, sk).dep : at === "마법" ? "magic" : "pwr"; atk.atk = at; } } }
     { const kl = sim.live.get(`kal|${ci}`); if (kl && !KAL_IMMUNE.test(sk.desc || "")) { const el = kl.u.el === "zone" ? zoneEl(sim) : kl.u.el; if (el) atk.element = el; } }   // 변화무쌍
     // 상태 효과 고정값(힘 · 지능 · 속도 +N) = 딩님 계산기 14~16행 — 공격력에는 더하고 (1 + 힘/32) 배율에는 안 넣는다 → party_calc flatFx(근사 stacks · 정밀 fx.flat).
     //   전에는 기본 스탯에 더해 배율까지 키웠다(영랑 모드 힘 +100 등, 11-04). 행운은 크리율에만 쓰여 스탯에 그대로

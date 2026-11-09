@@ -356,7 +356,8 @@
       byMember[a.id] += d; total += d;
       return d;
     };
-    const speed = u => (u.stats ? u.stats.spd : u.data.spd || 0) * (1 + (u.stats ? net(u, ["속도"], sim) : 0)) * (0.9 + 0.2 * rand());
+    // 속도 ±10% 난수 = 종 모양(딩님 208449 「정규분포를 따른다」). 폭은 ±10% 그대로, 퍼짐(σ)은 원천에 없어 균등 3개 평균(Irwin–Hall, σ ≈ 3.3%)으로 근사 — 11-09 전엔 균등
+    const speed = u => (u.stats ? u.stats.spd : u.data.spd || 0) * (1 + (u.stats ? net(u, ["속도"], sim) : 0)) * (0.9 + 0.2 * (rand() + rand() + rand()) / 3);
 
     for (const a of sim.party) for (const sk of a.sheet.skills) if (sk.kind === "passive" && check(sk.need, sim, a, { skill: sk.name })) runSteps(sim, a, sk, {});   // 상시
     for (const a of sim.party) fire(a, "battle_start");                         // 1. 전투 시작 — 왼쪽부터

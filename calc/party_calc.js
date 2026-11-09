@@ -364,6 +364,8 @@
 
   // P글래스터 공유(2026-10-15) — 다른 파티원이 낀 그라스타 중 잠재 연성 「Also affects all party members (of the matching weapon · Personality)」.
   //   all = 전원 · weapon = 장착자와 같은 무기 · personality = 장착자 · 받는 쪽이 함께 가진 성격(그 그라스타 장착 조건 안).
+  //   변형이 하나로 정해진 그라스타(req 1개 — HP 최대 시 강화 <지팡이> · <서방>)는 그 표식으로만 받는 쪽을 고른다(11-09 — 장착자 무기 · 성격 판독이 틀려도 공유,
+  //   사용자 「P글래는 예외 없이 파티 효과 활성화」). 받는 쪽 성격 데이터가 비어 있으면(색인 45명) 성격 공유를 받는다고 본다
   //   특수 광석 연성본(it.ore)은 잠재 연성이 아니라 공유 없음, opt.ore === false 도 없음. 스탯은 공유하지 않는다(효과만)
   //   자기 것 + 공유분은 모두 중첩된다(10-15 사용자 확인) — 효과 칸 규칙(장비 대미지 UP 합연산 · 대상 상태 곱연산 …)을 그대로 따른다
   const weaponOfMember = x => (x.weapon && x.weapon.type) || (x.cc && x.cc.weapon) || "";
@@ -374,9 +376,9 @@
       if (h === m || (h.c && m.c && h.c.id === m.c.id)) continue;
       for (const g of h.grasta || []) {
         if (!g || !g.share || g.ore) continue;
-        const ht = (h.c && h.c.traits) || [], req = g.req || [];
-        const ok = g.share === "all" || (g.share === "weapon" && mw && mw === weaponOfMember(h) && (!req.length || req.includes(mw)))
-          || (g.share === "personality" && ht.some(t => mt.includes(t) && (!req.length || req.includes(t))));
+        const ht = (h.c && h.c.traits) || [], req = g.req || [], tag = req.length === 1 ? req[0] : null;
+        const ok = g.share === "all" || (g.share === "weapon" && mw && (tag ? mw === tag : mw === weaponOfMember(h) && (!req.length || req.includes(mw))))
+          || (g.share === "personality" && (tag ? !mt.length || mt.includes(tag) : ht.some(t => mt.includes(t) && (!req.length || req.includes(t)))));
         if (ok) out.push({ name: `${g.name}(공유: ${(h.c && h.c.nameKo) || ""})`, stats: {}, fx: [], calc: (g.calc_ore || g.calc || []).filter(f => f.k !== "stat"), _grasta: true });
       }
     }

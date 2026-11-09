@@ -31,7 +31,8 @@
   const burstMax = sk => { if (!bmCache.has(sk)) bmCache.set(sk, BURST_MAX.test(sk.desc || "")); return bmCache.get(sk); };
   const sideOf = u => (/적/.test(u.tc || "") ? "e" : "a");
   // 장비 효과는 스킬 효과와 따로 한 칸(출처가 다르면 덮어쓰지 않는다 — 위키 Buffs 「같은 시전자 × 출처」)
-  const slotKey = (caster, u) => [caster, u.k, (u.stats || []).join(",") || u.name || u.what || "", u.dir || "", sideOf(u), u._equip ? "eq" : ""].join("|");
+  //   고정 수치(flat)는 % 와 다른 칸(11-09) — 전엔 「힘 +100%」와 「힘 +N」이 한 칸이라 큰 값 하나만 남았다(테오도로스 투혼 힘 +5×99 가 Persevero 힘 +100% 에 밀려 사라짐 · 딩님 고정 수치 152단위도 같은 꼴)
+  const slotKey = (caster, u) => [caster, u.k, (u.stats || []).join(",") || u.name || u.what || "", u.dir || "", sideOf(u), u._equip ? "eq" : "", u.flat ? "flat" : ""].join("|");
 
   // 장비 「공격 시」 부여 → 효과 단위(build_calc_db equip_fx k inflict). 지속 = 원문 N턴(없으면 3)
   const RES_KO = { slash: "베기 저항", pierce: "찌르기 저항", blunt: "타격 저항", physical: "물리 저항", magic: "마법 저항", type: "모든 속성 저항",
@@ -72,7 +73,7 @@
     const add = {};
     for (const e of sim.live.values()) {
       if (!e.u.flat || e.u.k !== "stat_pct" || e.u.dir !== "UP" || sideOf(e.u) !== "a" || (/^자신/.test(e.u.tc || "") && e.ci !== ci)) continue;
-      for (const st of e.u.stats || []) if (FLAT[st]) add[FLAT[st]] = (add[FLAT[st]] || 0) + (e.u.value || 0);
+      for (const st of e.u.stats || []) if (FLAT[st]) add[FLAT[st]] = (add[FLAT[st]] || 0) + (e.u.value || 0) * (e.u.perStack ? e.stacks || 1 : 1);   // 자원 스택(「Power +5 per stack」 × 99)은 비례
     }
     return add;
   }
@@ -332,7 +333,8 @@
     const out = [];
     for (const e of sim.live.values()) {
       if (e.ci !== ci || e.u.flat || e.u.k === "kaleido" || e.u.k === "flexible") continue;     // 고정 수치는 flatStats 가 스탯에 · 변화무쌍은 공격 속성(attackRaw)
-      const v = e.left ? e.left : typeof e.u.value === "number" && e.stacks > 1 ? +C.halfStack(e.u.value, e.stacks).toFixed(2) : e.u.value;
+      //   자원 스택(「Critical rate +3% per stack (max 5: +15%)」, perStack)은 원문대로 비례 — 반감 규칙은 같은 스킬 재사용 누적에만(11-09)
+      const v = e.left ? e.left : typeof e.u.value === "number" && e.stacks > 1 ? (e.u.perStack ? e.u.value * e.stacks : +C.halfStack(e.u.value, e.stacks).toFixed(2)) : e.u.value;
       out.push({ ...e.u, value: v, base: undefined, _skill: e.skill });
     }
     return extra ? out.concat(extra) : out;

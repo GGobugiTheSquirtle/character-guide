@@ -215,7 +215,16 @@
         "surv_debuff": 4,
         "atk_debuff": 2
       },
-      "skills_en": true
+      "skills_en": true,
+      "traits": [
+        "창",
+        "동방",
+        "왕족",
+        "독서가",
+        "요괴",
+        "불",
+        "Land of Ro"
+      ]
     },
     {
       "id": "hameow",
@@ -752,7 +761,13 @@
         "dot": 1,
         "atk_debuff": 1
       },
-      "skills_en": true
+      "skills_en": true,
+      "traits": [
+        "창",
+        "로스트 랩",
+        "땅",
+        "기억 상실"
+      ]
     },
     {
       "id": "glenn",
@@ -1282,7 +1297,16 @@
         "tempo": 1,
         "atk_state": 3
       },
-      "skills_en": true
+      "skills_en": true,
+      "traits": [
+        "지팡이",
+        "땅",
+        "동방",
+        "Bind",
+        "Lovesick",
+        "Cat Hater",
+        "Land of Shin"
+      ]
     },
     {
       "id": "garnet",
@@ -1688,7 +1712,16 @@
         "surv_debuff": 2,
         "surv_state": 3
       },
-      "skills_en": true
+      "skills_en": true,
+      "traits": [
+        "활",
+        "Machinery",
+        "로스트 랩",
+        "물",
+        "번개",
+        "Lovesick",
+        "Hood"
+      ]
     },
     {
       "id": "clughorn",
@@ -1926,7 +1959,15 @@
         "atk_state": 1,
         "state_unknown": 1
       },
-      "skills_en": true
+      "skills_en": true,
+      "traits": [
+        "지팡이",
+        "물",
+        "마수",
+        "음유 시인",
+        "Spicy Lover",
+        "연옥계"
+      ]
     },
     {
       "id": "nina",
@@ -2201,7 +2242,14 @@
         "resource": 1,
         "atk_debuff": 1
       },
-      "skills_en": true
+      "skills_en": true,
+      "traits": [
+        "도",
+        "로스트 랩",
+        "Power to Rule",
+        "땅",
+        "그림자"
+      ]
     },
     {
       "id": "raven_as",
@@ -2411,7 +2459,14 @@
         "mode": 5
       },
       "skills_en": true,
-      "skills_ding": true
+      "skills_ding": true,
+      "traits": [
+        "단것 애호가",
+        "도끼",
+        "Gourmet",
+        "로스트 랩",
+        "바람"
+      ]
     },
     {
       "id": "linaria",
@@ -2632,7 +2687,16 @@
         "recover": 4
       },
       "skills_en": true,
-      "skills_ding": true
+      "skills_ding": true,
+      "traits": [
+        "권갑",
+        "Gun",
+        "로스트 랩",
+        "불",
+        "결정",
+        "IDA 스쿨",
+        "Hood"
+      ]
     },
     {
       "id": "velette_as",
@@ -3248,7 +3312,17 @@
         "atk_buff": 2,
         "tempo": 1,
         "atk_state": 1
-      }
+      },
+      "traits": [
+        "지팡이",
+        "동방",
+        "애묘가",
+        "독서가",
+        "Gun",
+        "보현일도류",
+        "불",
+        "뱀의 땅"
+      ]
     },
     {
       "id": "kuramaru",
@@ -25147,7 +25221,12 @@
         "surv_buff": 2,
         "surv_debuff": 2
       },
-      "skills_en": true
+      "skills_en": true,
+      "traits": [
+        "검",
+        "IDA 스쿨",
+        "물"
+      ]
     },
     {
       "id": "choco",

@@ -2237,7 +2237,11 @@ function showPartyResult(out, db, r) {
 //   전방 멤버 고정 → 스킬칸 4개 · AF(캐릭터당 6회) 시전 · 2~4턴 행동 · 장비를 시나리오 점수로(calc/build.js, 워커 calc/build_worker.js)
 //   점수 A = AF 뒤 비AF 3턴 합(주) · B = AF 없이 1턴 · C = AF 없이 3턴. 기회비용 = 칸마다 빼면 A 가 얼마 주나(자기 몫 / 파티 몫)
 const actCache = {};
-const loadActions = id => actCache[id] || (actCache[id] = fetch(`data/calc/actions/${id}.json`).then(r => (r.ok ? r.json() : null)).catch(() => null));
+const actKo = {};   // id → {영어 스킬 이름: 한국어} — 위키 원천 캐릭터의 ae-db 이름표(apply_aedb_names.py: 자기 원천 · 카드 판독 · 다른 스타일 · 같은 이름 스킬 순, 번역 없음)
+const loadActions = id => actCache[id] || (actCache[id] = fetch(`data/calc/actions/${id}.json`).then(r => (r.ok ? r.json() : null))
+  .then(d => { if (d) actKo[id] = Object.fromEntries(d.skills.filter(s => s.ko).map(s => [s.name, s.ko])); return d; }).catch(() => null));
+const skName = (id, n) => { const k = (actKo[id] || {})[n]; return k ? `${k} (${n})` : n; };   // 표시만 — 계산 · 저장 키는 영어 이름
+const skKo = (id, n) => (actKo[id] || {})[n] || n;                                             // 좁은 칸(턴 계획)은 한국어만 — 영어 짝은 스킬칸 열에 있다
 // 워커를 못 띄우면(file:// 등) 이 스레드에서 — 수십 초 멈춘다
 //   job = {} 을 넘기면 job.cancel() 로 워커를 끊는다(2026-11-05 UX 검토 §1 #4 — 22~90초 동안 취소가 없었다)
 const buildInWorker = (msg, tick, job = {}) => new Promise((res, rej) => {
@@ -2369,7 +2373,7 @@ const gearNames = g => [g.weapon, g.armor, ...(g.grasta || []), ...(g.badges || 
 const gameName = x => gko(x) || x.name;                      // 복사 글자 = 게임(한국어판)에 옮겨 적는 이름 — 한국어 대응이 있으면 그것만
 const gearCopy = g => [g.weapon && "무기 " + gameName(g.weapon), g.armor && "방어구 " + gameName(g.armor), (g.grasta || []).length && "그라스타 " + g.grasta.map(gameName).join(", "),
   (g.badges || []).length && "배지 " + g.badges.map(gameName).join(", ")].filter(Boolean).join(" · ") || "—";
-const slotNames = (r, ci) => (r.slots[ci] || []).map((n, k) => (r.via && r.via[ci] && r.via[ci][k] ? `${n} (그라스타 ${r.via[ci][k]})` : n));
+const slotNames = (r, ci) => (r.slots[ci] || []).map((n, k) => (r.via && r.via[ci] && r.via[ci][k] ? `${n} (그라스타 ${r.via[ci][k]})` : skName(r.ids[ci], n)));
 // 멤버별 결과 — 넓은 화면은 표, 휴대폰은 멤버마다 카드(같은 데이터, 2026-11-05 UX 검토 §1 #5). fields = [[제목, 이름 배열]] · 마지막 칸 = 장비(작은 글씨)
 function memberResult(out, members) {
   const heads = members.length ? members[0].fields.map(f => f[0]) : [];
@@ -2437,7 +2441,7 @@ function showBuildResult(out, r, again) {
     document.createTextNode(head.slice(`A ${fmtN(r.scores.A)}`.length) + (r.gearHist.length ? ` · 장비 회차별 A ${r.gearHist.map(fmtN).join(" → ")}` : ""))] }));
   const share = ci => pct(r.contrib.base ? r.contrib.perMember[ci] / r.contrib.base : 0);
   memberResult(out, r.ids.map((id, ci) => ({ name: nm(id), share: share(ci), fields: [["스킬칸 4", slotNames(r, ci)],
-    ["AF 6회", [((r.plan.af || [])[ci] || []).map(x => x || "—").join(" → ")]], ["2 → 3 → 4턴", [r.plan.turns.map(t => t[ci] || "—").join(" → ")]],
+    ["AF 6회", [((r.plan.af || [])[ci] || []).map(x => (x ? skKo(id, x) : "—")).join(" → ")]], ["2 → 3 → 4턴", [r.plan.turns.map(t => (t[ci] ? skKo(id, t[ci]) : "—")).join(" → ")]],
     ["장비", gearNames(r.gear[ci] || {})]] })));
   // 기회비용 — 멤버마다 큰 칸 6개
   out.appendChild(el("div", { class: "skko-src", style: "margin-top:12px", text: "칸별 기회비용 — 그 칸을 빼고(계획은 그대로) 다시 셌을 때 A 가 줄어드는 비율. 자기 몫 = 그 멤버 자신의 대미지 감소, 파티 몫 = 다른 멤버 대미지 감소." }));
@@ -2461,7 +2465,7 @@ function showPeakResult(out, r, nm, stale) {
   out.appendChild(el("div", { class: "pt", style: "margin-bottom:8px", children: [el("b", { text: `반복 고점 ${fmtN(r.scores.repeat)}` }),
     document.createTextNode(` · 순간 최고점 ${fmtN(r.scores.burst)} (1회성 포함) · 존 ${z}`)] }));
   const share = ci => (r.scores.repeat ? `${((r.perMember[ci] / r.scores.repeat) * 100).toFixed(1)}%` : "");
-  const an = (ci, sk) => { const a = sk && ((STATE.calcDb.chars[r.ids[ci]] || {}).attacks || []).find(x => x.skill === sk); return a ? aname(a) : sk; };   // 공격 이름 문자열 → 한국어(확정분)
+  const an = (ci, sk) => { const a = sk && ((STATE.calcDb.chars[r.ids[ci]] || {}).attacks || []).find(x => x.skill === sk); return a && a.ko ? aname(a) : sk && skName(r.ids[ci], sk); };   // 공격 이름 문자열 → 한국어(확정분, 없으면 ae-db 이름표)
   const atk = ci => `${an(ci, r.attackOf[ci]) || "—"} ${fmtN(r.perMember[ci])}` + (r.attackOfBurst[ci] && (r.perMemberBurst[ci] > r.perMember[ci] * 1.001) ? ` / ${an(ci, r.attackOfBurst[ci])} ${fmtN(r.perMemberBurst[ci])}` : "");
   memberResult(out, r.ids.map((id, ci) => ({ name: nm(id), share: share(ci), fields: [["스킬칸 4", slotNames(r, ci)],
     ["고점 공격 (반복 / 순간)", [atk(ci)]], ["장비", gearNames(r.gear[ci] || {})]] })));

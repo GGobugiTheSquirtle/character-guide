@@ -264,6 +264,37 @@
     const em = /all (\w+) party members/i.exec(raw); if (em && elOf(em[1])) { who = "all"; el = elOf(em[1]); }
     return { at, who, el };
   }
+  // 연격 수 UP(Skill Hits+, 11-11) — 걸린 아군이 쓰는 스킬의 타수 +1, 늘어난 타 = 그 스킬 첫 타와 같은 위력(위키 Skill hit count +1 · 용어집 skill_hits).
+  //   전엔 개념이 없어 엔진이 버렸다(딩님 stat_pct 「연격 수」 5 · 위키 buff 「Skill Hit Count +1」 2 · 위키 other 문장 1).
+  //   대상은 설명 원문에서 — 딩님 = 그 줄 위의 「…에게」 줄(자신 · <꼬리표> · 「X 장착자」 · 아군 전체) /
+  //   위키 = 그 줄과 조상 줄(별표 깊이): 「Frontline X party members only」 · 「ally to the left slot of the user」 · 「to user」.
+  //   조상 줄에 Stellar Burst 가 있으면 스텔라 버스트 때만(빌더 스텝은 조상 줄 조건을 잃는다). 대상을 못 읽으면 넣지 않는다
+  const HITS = T.ko("skill_hits"), HITS_EN = /skill hit count \+1/i;
+  const hitsUnit = u => (u.k === "stat_pct" ? (u.stats || []).some(x => T.is(x, "skill_hits")) : T.is(u.name, "skill_hits") || HITS_EN.test(u.raw || ""));
+  function hitsTargets(sim, ci, u, sk) {
+    const lines = String((sk && sk.desc) || "").split("\n"), all = sim.party.map((x, i) => i), isFront = j => sim.party[j].pos !== "back";
+    let i = lines.findIndex(l => l.includes(HITS));
+    if (i >= 0) {
+      let h = i; while (h >= 0 && !/에게\s*$/.test(lines[h])) h--;
+      if (h < 0) return null;
+      const head = lines[h], tags = [...head.matchAll(/<([^>]+)>/g)].map(x => x[1]), wp = (/(\S+) 장착자/.exec(head) || [])[1], self = /자신/.test(head);
+      if (/아군 전체/.test(head)) return { who: all };
+      if (wp && WPK.has(wp)) tags.push(wp);
+      if (!tags.length && !self) return null;
+      const who = all.filter(j => tags.some(t => tagOk(sim.party[j].c || {}, t)));
+      if (self && !who.includes(ci)) who.push(ci);
+      return { who };
+    }
+    if ((i = lines.findIndex(l => HITS_EN.test(l))) < 0) return null;
+    const depth = l => (/^\s*(\*+)/.exec(l) || ["", ""])[1].length, own = lines[i], chain = [own];
+    for (let j = i - 1, d = depth(own); j >= 0 && d > 0; j--) if (depth(lines[j]) < d) { chain.push(lines[j]); d = depth(lines[j]); }
+    const txt = chain.join("\n"), turns = +(/\((\d+) turns?\)/i.exec(own.slice(own.search(HITS_EN))) || [])[1] || null;
+    let who = null, x;
+    if (/to ally to the left slot of the user/i.test(own)) who = ci > 0 && isFront(ci - 1) ? [ci - 1] : [];
+    else if ((x = /frontline (\w+) party members only/i.exec(txt)) && elOf(x[1])) who = all.filter(isFront).slice(0, 4).filter(j => tagOk(sim.party[j].c || {}, elOf(x[1])));
+    else if (/skill hit count \+1 to (?:the )?user/i.test(own)) who = [ci];
+    return who ? { who, turns, sb: /stellar burst/i.test(txt) } : null;
+  }
   const ZBUF = /ZONE에 따라 '(?:속성 공격력 UP|버프와 디버프)' 종류 변화|type of buff changes according to active elemental zone/i;
   const zoneAt = sim => { const z = sim.zone && (sim.zone.base || sim.zone); return z && z.up ? (z.up.types || []).map(atOf).find(Boolean) || null : null; };
   const zoneEl = sim => { const z = sim.zone && (sim.zone.base || sim.zone); return z && z.up ? (z.up.types || []).map(elOf).find(Boolean) || null : null; };
@@ -281,6 +312,14 @@
     if (!needOk(sim, ci, u.need)) return;
     { const f = flexOf(u, sk); if (f) { const until = u.turns == null ? Infinity : sim.turn + u.turns; for (const t of (f.who === "all" ? sim.party.map((x, i) => i) : [ci])) if (!f.el || ((sim.party[t].c || {}).elementKo === f.el)) sim.live.set(`flex|${t}`, { ci: t, u: { k: "flexible", at: f.at }, skill: skName, stacks: 1, until }); return; } }
     { const k = kaleidoOf(u, sk); if (k) { const until = u.turns == null ? Infinity : sim.turn + u.turns; for (const t of kalTargets(sim, ci, k, sk)) sim.live.set(`kal|${t}`, { ci: t, u: { k: "kaleido", el: k.el }, skill: skName, stacks: 1, until }); return; } }
+    if (hitsUnit(u)) {                                                        // 연격 수 UP — 대상 아군의 상태 칸(hits|대상). 스텔라 버스트 한정은 그때 · 순간 고점에서만
+      const h = hitsTargets(sim, ci, u, sk);
+      if (h && !(h.sb && !sim.sb.on && !(sim.opt.peak && sim.opt.peak !== "repeat"))) {
+        const turns = u.turns !== undefined ? u.turns : h.turns, until = turns == null ? Infinity : sim.turn + turns;
+        for (const t of h.who) { const old = sim.live.get(`hits|${t}`); sim.live.set(`hits|${t}`, { ci: t, u: { k: "skill_hits" }, skill: skName, stacks: 1, until: old ? Math.max(old.until, until) : until }); }
+      }
+      return;
+    }
     // 존 — 「극 X」 = ANOTHER ZONE(증가 효과 ×2, 2턴 뒤 존까지 사라짐) · 「절 X」 = Radical(×2, 5턴) · zoneAwake 단위 = 지금 존 각성(위키 Zones §Awakened, 구조 지도 §4.5). 그라스타 부여 존은 영어 이름
     if (u.k === "zone" || u.k === "zoneAwake") {
       // 위키 원천은 이름 없이 문구만 — 「Deploy X Stance」 = 존 전개, 「awaken Another Zone」 · Another Zone 스킬(조건 「Awakens any … Zones」) = 각성. 그 밖 안내 줄은 버린다(11-05: 전엔 이름만 봐서 위키 존 98개가 한 번도 안 펴졌다)
@@ -333,7 +372,7 @@
   function fxOf(sim, ci, extra) {
     const out = [];
     for (const e of sim.live.values()) {
-      if (e.ci !== ci || e.u.flat || e.u.k === "kaleido" || e.u.k === "flexible") continue;     // 고정 수치는 flatStats 가 스탯에 · 변화무쌍은 공격 속성(attackRaw)
+      if (e.ci !== ci || e.u.flat || e.u.k === "kaleido" || e.u.k === "flexible" || e.u.k === "skill_hits") continue;     // 고정 수치는 flatStats 가 스탯에 · 변화무쌍은 공격 속성(attackRaw) · 연격 수는 타수(act)
       //   자원 스택(「Critical rate +3% per stack (max 5: +15%)」, perStack)은 원문대로 비례 — 반감 규칙은 같은 스킬 재사용 누적에만(11-09)
       const v = e.left ? e.left : typeof e.u.value === "number" && e.stacks > 1 ? (e.u.perStack ? e.u.value * e.stacks : +C.halfStack(e.u.value, e.stacks).toFixed(2)) : e.u.value;
       out.push({ ...e.u, value: v, base: undefined, _skill: e.skill });
@@ -414,6 +453,9 @@
     if (!depth) { const k = `${ci}|${sk.name}`; sim.first[ci] = !sim.used.get(k); sim.used.set(k, (sim.used.get(k) || 0) + 1); }   // 「전투 1회 · 첫 사용」 조건(11-04)
     let d = 0, lastAtk = null, hadAtk = false;
     const onHit = () => { for (const u of sim.onHit[ci] || (sim.onHit[ci] = equipOnHit(m, sim.opt))) apply(sim, ci, u, "장비: " + u._equip); };   // 장비 「공격 시」
+    // 연격 수 UP — 고른 스킬 1회(행동)에 1타 더: 그 행동에서 처음 치는 공격 부분에, 그 시점에 걸려 있으면(같은 스킬이 공격 앞에서 건 것 포함 — 스텝 순서 규칙 그대로).
+    //   일반 공격(대체 기술 포함) · 턴 종료 · 반격 공격은 고른 스킬이 아니라 제외. 연속 실행(exec)은 한 행동이라 하위 스킬과 합쳐 1타
+    if (!depth) sim.xh = sk.kind !== "normal" && sk.role !== "basic" && sk.role !== "eot" && sk.role !== "counter" && !isEOT(sk);
     let hitN = 0;                                                             // 다단 강화 — 이 행동(move)에서 이미 친 타수. 행동 경계에서 0(위키 Multipliers: 1 move 안 모든 부분 · 반복은 이어짐)
     const endAction = () => { if (hadAtk) { consume(sim, ci, lastAtk); onHit(); } hadAtk = false; hitN = 0; };
     const steps = sk.steps ? sk.steps.slice() : [...(sk.attacks || []).map((a, i) => ({ t: "atk", i, cond: a.cond })), ...(sk.fx || []).map((u, i) => ({ t: "fx", i, cond: u.cond }))];   // 복사 — 분할 처리가 done 표식을 찍는다
@@ -429,7 +471,9 @@
         if (s2.t === "fx") { const u = fxUnits[s2.i]; if (u && (!u.timing || u.timing === "use")) apply(sim, ci, { ...u, cond: undefined }, sk.name, sk); }
         else if (s2.t === "atk") {
           const a = sk.attacks[s2.i]; if (!a) continue;
-          const hits = a.hits || 1;
+          let xh = 0;
+          if (sim.xh && sk.kind !== "normal") { xh = sim.live.has(`hits|${ci}`) ? 1 : 0; sim.xh = false; }
+          const hits = (a.hits || 1) + xh;
           hadAtk = true; lastAtk = a;
           // 타마다 다시 계산 — 첫 타 뒤 이 공격 줄의 상태 부여(바로 뒤 fx 스텝 중 적 대상 상태 · 축적)를 걸어 둘째 타부터 「대상 페인」 등을 받게.
           //   타 사이에 바뀌는 것(뒤따르는 상태 부여 · 소모되는 브레이크)이 없으면 한 번에(속도 — 타마다 부르면 4인 60초 → 300초)
@@ -442,13 +486,14 @@
               consumeBreak(sim, a, 1);
               if (h === 0) for (const j of follow) { if (condOk(sim, m, steps[j].cond, via)) apply(sim, ci, { ...fxUnits[steps[j].i], cond: undefined }, sk.name, sk); steps[j] = { t: "done" }; }
             }
-          } else { d += attack(sim, ci, sk, { ...a, _h0: hitN }); hitN += hits; consumeBreak(sim, a, hits); }
+          } else { d += attack(sim, ci, sk, { ...a, hits, _h0: hitN }); hitN += hits; consumeBreak(sim, a, hits); }
         }
         else if (s2.t === "exec" && s2.skill) { endAction(); for (let n = 0; n < (s2.n || 1); n++) d += act(sim, ci, s2.skill, scored, sk.name, depth + 1); }
         else if (s2.t === "next") endAction();
       }
     }
     endAction();
+    if (!depth) sim.xh = false;
     if (!depth) sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: Math.round(d), ...(inSB ? { sb: true } : {}) });
     if (scored && !depth) sim.dmg[sim.turn] = (sim.dmg[sim.turn] || 0) + d;
     if (scored && !depth) (sim.byMember[sim.turn] = sim.byMember[sim.turn] || [])[ci] = ((sim.byMember[sim.turn] || [])[ci] || 0) + d;

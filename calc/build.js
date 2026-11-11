@@ -352,8 +352,8 @@
         if (cur < keep.cur) ({ team, cur } = keep);
       }
     } else slotPass({ ...conf, via: !!conf.grantsOf, passes: 2, pair: true });
-    const r = peakOf(team), rb = peakOf(team, "burst");
-    return { team, slots: team.map(m => m.slots), via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)),
+    const r = S.peak(team, opt, { pin: conf.pin, explain: true }), rb = peakOf(team, "burst");   // 마지막 한 번만 계산 근거를 모은다
+    return { team, slots: team.map(m => m.slots), explain: r.explain, via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)),
       scores: { repeat: r.score, burst: rb.score }, perMember: r.perMember, perMemberBurst: rb.perMember, attackOf: r.attackOf, attackOfBurst: rb.attackOf, zone: r.zone, evals };
   }
 

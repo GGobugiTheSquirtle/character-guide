@@ -522,15 +522,18 @@
     }
     // breakOn: 시나리오가 건 브레이크 축적은 확정 사실(남은 개수 left 로 소모) — 정적 식의 「조건부일 때만」 기본값을 켠다
     // 일반 공격 대미지 UP = 일반 공격만 — 다른 스킬을 「연속 실행」하는 변화 평타(세스타 이도신랑)는 받지 않는다(딩님 236165, 11-09)
-    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, zoneAwake: !!(sim.zone && sim.zone.awake), turns: sim.turn, af: sim.af, punish, breakOn: sim.opt.breakOn ?? true, lunatic: sim.opt.lunatic ?? true, normalAtk: sk.kind === "normal" && !/연속 실행/.test(sk.desc || ""), hitOffset: part._h0 || 0, firstUse: !!sim.first[ci] }); return r ? r.perUse : 0; };
+    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, zoneAwake: !!(sim.zone && sim.zone.awake), turns: sim.turn, af: sim.af, punish, breakOn: sim.opt.breakOn ?? true, lunatic: sim.opt.lunatic ?? true, normalAtk: sk.kind === "normal" && !/연속 실행/.test(sk.desc || ""), hitOffset: part._h0 || 0, firstUse: !!sim.first[ci], explain: !!sim.capture }); last = r; return r ? r.perUse : 0; };
     const mb = [...maybe];
-    let v = 0;
+    let v = 0, last = null, cap = null;
     for (let mask = 0; mask < 1 << mb.length; mask++) {
       let pr = 1;
       const on = [...sure];
       mb.forEach(([s, p], i) => { if (mask >> i & 1) { pr *= p; on.push(s); } else pr *= 1 - p; });
       v += pr * dmg(on);
+      if (sim.capture && last && (!cap || pr > cap.pr)) cap = { pr, r: last, on };
     }
+    // 계산 근거(sim.capture — peak 가 최고점을 고른 뒤 한 번만 켠다): 확률 상태 조합 중 가장 흔한 쪽의 식 입력 · 출처 줄
+    if (sim.capture && cap) sim.capture.push({ ci, skill: sk.name, d: v, perUse: cap.r.perUse, hits: cap.r.hits, p: cap.r.p, o: cap.r.o, why: cap.r.why, whyOff: cap.r.whyOff, states: cap.on, pr: cap.pr });
     return v;
   }
   // 행동 소모형(times) — 대미지 행동 1회마다. 크리율은 물리/마법 각각
@@ -772,7 +775,7 @@
     //   허용 존을 펼 스킬이 스킬칸에 없으면 존 없음이 되어, 스킬칸 탐색(optimizePeak)이 그 존 전개 스킬(진의 주문 부여 등)을 넣는 쪽으로 간다
     const zKey = s => (s || "").replace(/ Stance$/, "");
     const zOnly = (o.zoneOnly || []).map(zKey), zAllow = s => !zOnly.length || !s || zOnly.includes(zKey((s.base && s.base.name) || s.name));
-    let top = null;
+    let top = null, topBase = null;
     for (const z of zones) {
       const base = build(z);
       if (!zAllow(base.zone)) continue;                                   // 허용 밖 존은 멤버 계산 전에 건너뛴다(결과 같음, 속도)
@@ -794,8 +797,16 @@
         return { d: best.d + eot, name: best.name, eot, link: best.link || 0 };
       });
       const score = per.reduce((s, x) => s + x.d, 0), cand = { score, perMember: per.map(x => x.d), attackOf: per.map(x => x.name), eotOf: per.map(x => x.eot), linkOf: per.map(x => x.link), zone: base.zone, live: base.live };
-      if (zAllow(base.zone) && (!top || score > top.score)) top = cand;
+      if (zAllow(base.zone) && (!top || score > top.score)) { top = cand; topBase = base; }
     }
+    // 계산 근거(conf.explain, 11-12) — 멤버마다 고른 공격을 같은 장면에서 한 번 더 쳐서 식 입력(스탯 · 무기 · 버프 % · 배율 · 그룹)과 출처 줄(누구 「스킬」: 무엇)을 모은다
+    if (top && conf.explain) top.explain = party.map((m, ci) => {
+      if (!top.attackOf[ci]) return [];
+      const f = fork(topBase);
+      f.memo = null; f.capture = [];
+      act(f, ci, top.attackOf[ci], true);
+      return f.capture.filter(x => x.ci === ci).map(({ ci: _, ...x }) => x);
+    });
     return top;
   }
 

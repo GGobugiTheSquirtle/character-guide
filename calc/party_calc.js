@@ -38,8 +38,8 @@
   //   s.fx 를 바꾸면 s._contrib 를 지울 것
   const newAG = () => ({ pwr: { buffs: [] }, int: { buffs: [] }, spd: { buffs: [] }, type: {}, dmg: { buffs: [] }, wdmg: {},
     crit: [], mcrit: [], critDmg: [], mcritDmg: [], weak: [], focusPhys: [], focusMag: [], sureCrit: false, overthrow: false,
-    minds_eye: false, risktaker: false, overcritical: false, magic_overcritical: false, multi_upgrade: false, sacrifice: false, eagle_eyes: [], src: [] });   // 상태 칸 = 개념 id
-  const newEG = () => ({ phys: [], magic: [], type: {}, atk: {}, def: [], mdef: [], breaks: [], src: [] });
+    minds_eye: false, risktaker: false, overcritical: false, magic_overcritical: false, multi_upgrade: false, sacrifice: false, eagle_eyes: [], src: [], srcTag: [] });   // 상태 칸 = 개념 id
+  const newEG = () => ({ phys: [], magic: [], type: {}, atk: {}, def: [], mdef: [], breaks: [], src: [], srcTag: [] });
   function mergeInto(g, h) {
     for (const [k, x] of Object.entries(h)) {
       if (typeof x === "boolean") g[k] = g[k] || x;
@@ -124,12 +124,16 @@
     return out;
   }
   const weaponsOf = t => (/장착자|equipped/i.test(t) && !/모든 무기|any weapon|all weapon/i.test(t) ? WEAPON_WORDS.filter(([, r]) => r.test(t)).map(([w]) => w) : []);
+  // 출처 줄 = 시전자 + 그 효과를 건 스킬(u._skill — 시나리오 · flatEffects 가 붙인다, 11-12 사용자 「어디 스킬에서 뭐가 추가」)
+  const note = (g, tag, text) => { g.src.push(text); g.srcTag.push(tag); };   // 꼬리표 = 들어간 칸(memberDamage 의 why 가 공격마다 거른다)
+  const who = (s, u) => s.c.nameKo + (u._skill ? ` 「${u._skill}」` : "");
   function addAlly(g, u, s) {
     const v = (u.value || 0) / 100;
     if ((u.k === "stat_pct") && u.dir === "UP") {
       for (const st of u.stats || []) {
         let hit = true;
         const id = T.cid(st);
+        let tag = id;
         if (id === "pwr") g.pwr.buffs.push(v);
         else if (id === "int") g.int.buffs.push(v);
         else if (id === "spd") g.spd.buffs.push(v);
@@ -142,34 +146,34 @@
           const e = ELEMS.find(x => st.startsWith(x)) || (/^모든/.test(st) ? "*" : /^무속성/.test(st) ? "무" : null);
           const sub = (st.match(/(베기|찌르기|타격|물리|마법) 공격력$/) || [])[1];
           const key = e && (sub ? `${e}|${sub}` : e);
-          if (key) (g.type[key] = g.type[key] || []).push(v); else hit = false;
+          if (key) { (g.type[key] = g.type[key] || []).push(v); tag = "type:" + key; } else hit = false;
         } else hit = false;
-        if (hit) g.src.push(`${s.c.nameKo}: ${st} +${u.value}%`);
+        if (hit) note(g, tag, `${who(s, u)}: ${st} +${u.value}%`);
       }
     } else if (u.k === "dmg" && u.dir === "UP" && T.cid(u.what) === "weak_dmg") {
       // 「약점 시 대미지 N% UP」(낭전-식 · 배지) = 약점 배율 +N/100 가산(딩님 파이프라인 「약점 대미지 UP 합」 · 시련 광석과 같은 자리 — 가정, 10-18 영상 대조로 공백 발견). 약점 타에만 들어간다
-      g.weak.push(v); g.src.push(`${s.c.nameKo}: ${T.ko("weak_dmg")} +${u.value}%`);
+      g.weak.push(v); note(g, "weak", `${who(s, u)}: ${T.ko("weak_dmg")} +${u.value}%`);
     } else if (u.k === "dmg" && u.dir === "UP" && ["crit_dmg", "magic_crit_dmg"].includes(T.cid(u.what))) {   // 한국어 해석기는 크리 위력을 dmg 로 낸다 — 일반 대미지가 아님(2026-10-15)
-      (T.cid(u.what) === "magic_crit_dmg" ? g.mcritDmg : g.critDmg).push(v); g.src.push(`${s.c.nameKo}: ${u.what} +${u.value}%`);
+      (T.cid(u.what) === "magic_crit_dmg" ? g.mcritDmg : g.critDmg).push(v); note(g, T.cid(u.what), `${who(s, u)}: ${u.what} +${u.value}%`);
     } else if (u.k === "dmg" && u.dir === "UP" && !/받는|피격/.test(u.what || "")) {
       // 「검 장착자 대미지」 「Lance and Bow equipped characters」 — 그 무기를 든 멤버만(2026-10-15, 전에는 무기 무관하게 모두)
       const ws = weaponsOf(`${u.what || ""} ${u.scope || ""} ${u.tc || ""}`);
       if (ws.length) for (const w of ws) (g.wdmg[w] = g.wdmg[w] || []).push(v);
       else g.dmg.buffs.push(v);
-      g.src.push(`${s.c.nameKo}: ${u.what} +${u.value}%`);
+      note(g, ws.length ? "wdmg:" + ws.join("/") : "dmg", `${who(s, u)}: ${u.what} +${u.value}%`);
     } else if (u.k === "buff" || (u.k === "other" && T.cid(u.name) === "multi_upgrade")) {
       const id = T.cid(u.name);
       // 최대 MP 당 비율 — 정신 통일 보통 0.23% · 심기일체 보통 0.16%(딩님 184648 「상태 효과」. 11-09 전엔 심기일체도 0.23 이라 1.44배 과대)
-      if (id === "mental_focus") { g.focusMag.push(0.0023); g.src.push(`${s.c.nameKo}: ${T.ko(id)}`); }
-      else if (id === "singular_focus") { g.focusPhys.push(0.0016); g.src.push(`${s.c.nameKo}: ${T.ko(id)}`); }
-      else if (id === "sure_crit") { g.sureCrit = true; g.src.push(`${s.c.nameKo}: ${T.ko(id)}`); }
-      else if (id === "overthrow") { g.overthrow = true; g.src.push(`${s.c.nameKo}: ${T.ko(id)}`); }
+      if (id === "mental_focus") { g.focusMag.push(0.0023); note(g, "focusMag", `${who(s, u)}: ${T.ko(id)}`); }
+      else if (id === "singular_focus") { g.focusPhys.push(0.0016); note(g, "focusPhys", `${who(s, u)}: ${T.ko(id)}`); }
+      else if (id === "sure_crit") { g.sureCrit = true; note(g, "*", `${who(s, u)}: ${T.ko(id)}`); }
+      else if (id === "overthrow") { g.overthrow = true; note(g, "*", `${who(s, u)}: ${T.ko(id)}`); }
       else {
         const st = statusOf(u);
         if (!st || ["break", "elemental_break", "weapon_break"].includes(st.id)) return;
         if (st.id === "eagle_eyes") { if (u.value) g.eagle_eyes.push(u.value / 100); }
         else g[st.id] = true;
-        g.src.push(`${s.c.nameKo}: ${u.name}${u.value ? " " + u.value + "%" : ""}`);
+        note(g, "*", `${who(s, u)}: ${u.name}${u.value ? " " + u.value + "%" : ""}`);
       }
     }
   }
@@ -181,24 +185,24 @@
       const which = st.id === "elemental_break" ? [st.which] : st.id === "weapon_break" ? st.which : ["*"];
       const n = st.id === "break" ? 1 : Math.max(1, Math.floor(u.value || 1));     // 엘리멘탈 · 웨폰 브레이크 「N 축적」 = N 타
       for (let i = 0; i < n; i++) e.breaks.push(...which.map(w => (st.id === "elemental_break" ? "e:" : st.id === "weapon_break" ? "a:" : "") + w));
-      e.src.push(`${s.c.nameKo}: 적 ${u.name}`);
+      note(e, "*", `${who(s, u)}: 적 ${u.name}`);
       return;
     }
     if (u.k !== "stat_pct" || u.dir !== "DOWN" || !enemySide(u)) return;
     const v = (u.value || 0) / 100;
     for (const st of u.stats || []) {
-      let hit = true;
+      let hit = true, tag;
       const id = T.cid(st);
-      if (id === "phys_res") e.phys.push(v);
-      else if (id === "mag_res") e.magic.push(v);
-      else if (id === "end") e.def.push(v);
-      else if (id === "spr") e.mdef.push(v);
-      else if (PHYS.some(a => st === a + " 저항")) (e.atk[st.split(" ")[0]] = e.atk[st.split(" ")[0]] || []).push(v);
+      if (id === "phys_res") { e.phys.push(v); tag = "phys"; }
+      else if (id === "mag_res") { e.magic.push(v); tag = "magic"; }
+      else if (id === "end") { e.def.push(v); tag = "def"; }
+      else if (id === "spr") { e.mdef.push(v); tag = "mdef"; }
+      else if (PHYS.some(a => st === a + " 저항")) { (e.atk[st.split(" ")[0]] = e.atk[st.split(" ")[0]] || []).push(v); tag = "atk:" + st.split(" ")[0]; }
       else if (id === "elem_res") {
         const k = ELEMS.find(x => st.startsWith(x)) || "*";
-        (e.type[k] = e.type[k] || []).push(v);
+        (e.type[k] = e.type[k] || []).push(v); tag = "etype:" + k;
       } else hit = false;
-      if (hit) e.src.push(`${s.c.nameKo}: 적 ${st} −${u.value}%`);
+      if (hit) note(e, tag, `${who(s, u)}: 적 ${st} −${u.value}%`);
     }
   }
   function enemyGroups(members, opt) {
@@ -229,6 +233,8 @@
     for (const it of items) {
       if (!it) continue;
       for (const [k, v] of Object.entries(it.stats || {})) out.stats[k] = (out.stats[k] || 0) + v;
+      // 근거 줄(opt.explain — 계산 근거를 모을 때만, 탐색 중엔 문자열을 안 만든다, 11-12): 장비 스탯 · 고정 스탯 효과 · 크리 효과
+      if (opt.explain) { const sv = Object.entries(it.stats || {}).filter(([, v]) => v); if (sv.length) out.src.push(`${it.name}: ${sv.map(([k, v]) => `${T.ko(k)} ${v > 0 ? "+" : ""}${v}`).join(" · ")}`); }
       // 잠재 광석 연성(calc_ore — 같은 종류 효과 값 교체 · 없던 효과 추가)은 opt.ore !== false 일 때(최대 강화 기준, 2026-10-13)
       const own = it.calc_ore && opt.ore !== false ? it.calc_ore : it.calc;
       // 특수 광석 효과(f.ore) — 기본 = 항상 켬(위키 Grasta Enhancements 에 조건 연동 서술 없음).
@@ -246,7 +252,7 @@
         if (f.loc && f.loc !== opt.loc) continue;                       // 지역 한정(wyrmrest_isle · wyrmrest_isle/darkrealm) — opt.loc 이 같을 때만
         if (f.who && !whoOk(f.who, opt._who)) continue;                  // 「(Noahxis only)」 — 그 캐릭터(또는 성격)가 낄 때만, 누군지 모르면 뺀다(2026-10-14)
         const v = (f.v || 0) / 100;
-        if (f.k === "stat") out.stats[f.stat] = (out.stats[f.stat] || 0) + f.v;
+        if (f.k === "stat") { out.stats[f.stat] = (out.stats[f.stat] || 0) + f.v; if (opt.explain) out.src.push(`${it.name}${f.src ? ` 「${f.src}」` : ""}: ${T.ko(f.stat)} +${f.v}`); }
         else if (f.k === "dmg") {
           const ok = f.when === "type" || f.when === "all" || (f.when === "nontype" && !atk.element) || f.when === atk.element
             || (f.when === "maxhp" && opt.maxHp) || (f.when === "lowhp" && opt.lowHp)
@@ -260,8 +266,10 @@
         //   → 장비 전체에서 최댓값 하나, 딩님 계산기 43행 「공격 대미지 UP」(메모 시트 순서 약점 대미지 강화 → MP 소비 → 적 수). 26행 약점 배율이 아님
         //   (2026-11-03 어나더에덴 빌더 대조 — 전에는 무기 · 광석 = 약점 배율 +N/100, 글래스터 = 45행으로 따로 쌓였다)
         else if ((f.k === "weak" || (f.k === "skillfx" && f.when === "weak")) && opt._weak) uniq("weak", it, KL("weak"), f.v);
-        else if (f.k === "crit_rate") out[f.magic ? "mcrit" : "crit"] += v;
-        else if (f.k === "crit_dmg") out[f.magic ? "mcritDmg" : "critDmg"] += v;
+        else if (f.k === "crit_rate" || f.k === "crit_dmg") {
+          out[(f.magic ? "m" : "") + (f.k === "crit_rate" ? "crit" : "critDmg")] += v;
+          if (opt.explain && !!f.magic === (atk.dep === "magic" || atk.dep === "magicpwr")) out.src.push(`${it.name}${f.src ? ` 「${f.src}」` : ""}: ${T.ko((f.magic ? "magic_" : "") + f.k)} +${f.v}%`);
+        }
         else if (f.k === "growth") mult(it, KL("growth"), Math.min(f.per * (opt.turns || 0), f.max), "growthAtk");
         else if (f.k === "aim" && !opt.af) uniq("aim", it, KL("aim"), f.v, "aim");
         // MP 소비 공격 — 모든 공격(일반 공격 · MP 0 포함). 위키 Recommendation Ore 「Rose with Thorn: Always works」 + 빌더 「일반 공격에도 적용」(11-04, 전에는 MP 쓰는 스킬만)
@@ -451,7 +459,7 @@
           if (w.atk && !(atk.atk === w.atk || (w.atk === "마법" && (atk.dep === "magic" || atk.dep === "magicpwr")))) continue;
           if (w.elemental && !atk.element) continue;
           (w.crit ? critAura : aura).push(v / 100);
-          ag.src.push(`${who.c.nameKo}: ${sk.name} 가하는 대미지 +${v}%${w.crit ? "(크리)" : ""}`);
+          note(ag, "*", `${who.c.nameKo}: ${sk.name} 가하는 대미지 +${v}%${w.crit ? "(크리)" : ""}`);
           continue;
         }
         if (allyScope(u) === "all") addAlly(ag, u, who);
@@ -557,8 +565,26 @@
     let perUse = 0;
     // perUse = 1회 사용 기대 대미지(타수만큼) — 스킬 · 장비 · 파티 비교는 이걸로(1타끼리 비교하면 다단 히트가 저평가된다, 2026-10-15). 브레이크 = 앞 kb 타
     for (let j = 0; j < hits; j++) perUse += expOf(mhOf(j), j < kb)[2];
+    // 출처 줄 거르기(11-12) — 꼬리표 = 들어간 칸. 스탯 % 는 이 공격의 위력 기반 스탯만, 속성 · 무기 · 물리/마법 칸은 이 공격에 맞는 것만
+    const depStat = { pwr: "pwr", int: "int", spd: "spd", magic: "int", magicpwr: "pwr" }[atk.dep] || "pwr";
+    const usedTag = t => {
+      if (!t || t === "*" || t === "dmg") return true;
+      if (t === "pwr" || t === "int" || t === "spd") return t === depStat;
+      if (t === "crit_rate" || t === "crit_dmg" || t === "focusPhys") return !magic;
+      if (t === "magic_crit_rate" || t === "magic_crit_dmg" || t === "focusMag") return magic;
+      if (t === "weak") return aff === "weak";
+      if (t.startsWith("type:")) { const k = t.slice(5); return typeBuffs({ [k]: [1] }, typeKey, atk.atk, magic).length > 0; }
+      if (t.startsWith("wdmg:")) return t.slice(5).split("/").includes(wt);
+      if (t === "phys" || t === "def") return !magic;
+      if (t === "magic" || t === "mdef") return magic;
+      if (t.startsWith("atk:")) return t.slice(4) === atk.atk;
+      if (t.startsWith("etype:")) { const k = t.slice(6); return !!typeKey && (k === "*" || k === typeKey); }
+      return true;
+    };
+    const pick = (g, on) => g.src.filter((_, i) => usedTag(g.srcTag[i]) === on);
     const res = { normal, crit, p, expected: exp1, rest, hits, perUse, o, conds: cx.on,
-      get why() { return [...ag.src, ...eg.src, ...eq.src, ...ev.src, ...cx.on.map(c => `조건: ${c.label} ×${c.x}`), ...(kb ? [`브레이크: 첫 ${kb}타 ×2`] : [])]; } };
+      get why() { return [...pick(ag, true), ...pick(eg, true), ...eq.src, ...ev.src, ...(fv.length ? [`MP · 상태 비례 그룹(정신 통일 · 심기일체 · 호시탐탐 · 하극상): +${(focusV * 100).toFixed(1)}% (최대 MP ${st.mp || 0}${focus.length ? ` × ${focus.map(x => (x * 100).toFixed(2) + "%").join(" + ")}` : ""})`] : []), ...cx.on.map(c => `조건: ${c.label} ×${c.x}`), ...(kb ? [`브레이크: 첫 ${kb}타 ×2`] : [])]; },
+      get whyOff() { return [...pick(ag, false), ...pick(eg, false)]; } };
     // 정밀값(ae_pipeline — 딩님 계산기와 정수 일치 엔진): 난수 전 구간 평균. 근사보다 0~0.4% 낮다(단계마다 버림)
     // pipeInput = 정밀 엔진 입력 그대로(칸별 진단 _tools/character/diagnose_party.cjs 가 칸을 하나씩 빼 본다, 2026-11-07)
     Object.defineProperty(res, "pipeInput", { enumerable: false, get() {

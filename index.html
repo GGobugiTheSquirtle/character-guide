@@ -348,6 +348,7 @@
 <script src="calc/party_calc.js"></script>
 <script src="calc/optimizer.js"></script>
 <script src="calc/scenario.js"></script>
+<script src="calc/formula.js"></script>
 <script src="calc/planner.js"></script>
 <script src="calc/build.js"></script>
 <script src="calc/name_resolve.js"></script>
@@ -2256,7 +2257,7 @@ const buildInWorker = (msg, tick, job = {}) => new Promise((res, rej) => {
     job.noWorker = true; job.cancel = null;
     if (job.onStart) job.onStart();
     return setTimeout(() => {                                      // 멈추기 전에 「화면이 잠시 멈춥니다」를 한 번 그린다
-      const conf = { tick };
+      const conf = { ...(msg.conf || {}), tick };
       if (msg.gear) { const cache = new Map(); conf.gear = { poolsOf: m => cache.get(m.c.id) || cache.set(m.c.id, AEOpt.ownedPools(msg.db, m.cc, m.c.traits, msg.inv).pools).get(m.c.id), conf: msg.gearConf }; conf.grantsOf = m => conf.gear.poolsOf(m).grasta.filter(g => g.grant && !g.ore); }
       try { const { team, ...r } = (msg.mode === "peak" ? AEBuild.optimizePeak : AEBuild.optimize)(msg.team, msg.opt, conf); res({ ...r, gear: team.map(m => ({ weapon: m.weapon, armor: m.armor, grasta: m.grasta || [], badges: m.badges || [], special: m.special || [] })) }); }
       catch (e2) { rej(e2); }
@@ -2359,6 +2360,49 @@ function nameSpecBox(db, ids, rr) {
   box.appendChild(el("div", { class: "skko-src", style: "margin:4px 0 2px", text: "적힌 스킬은 그 칸에 고정하고(📌) 남은 칸은 「빌드 계산」이 채웁니다. 「읽기」를 누를 때마다 고정은 글에 적힌 대로 다시 정합니다. 여러 캐릭터가 가진 이름은 캐릭터 이름을 같이 적어야 넣습니다. 스킬 이름: 카페 딩님 스킬 DB(출처: 카페 딩님 스킬 검색기) · 공식 공지 · 위키(영어 · 일본어)." }));
   return box;
 }
+// ── 주력 지정 (2026-11-12, 사용자 「가장 센 공격은 애매 — 계산식별로 빌드 · 스킬 기본값은 계수 높은 것이되 선택 가능」) — 고점 방식만
+//   멤버마다 주력 공격을 고른다(기본 = 자동). 목록은 계산식 묶음별(calc/formula.js — 묶음이 같으면 25억 경감을 끈 장비 문제가 같다), 묶음 · 스킬은 계수 큰 순
+//   고른 스킬 = 스킬칸 고정(lock) + 그 멤버의 공격 고정(conf.pin). 한 명만 고르면 목표 = 그 멤버 몫(conf.focus), 둘 이상이면 파티 합. 저장 O.buildMain = { id: 스킬 이름 } · O.buildGoal
+function mainPickRow(db, ids, mains, focus, rr) {
+  const O = STATE.ov, nameOf = id => { const c = STATE.all.find(x => x.id === id); return c ? c.nameKo : id; };
+  const row = el("div", { class: "filter-group", style: "gap:6px;align-items:center;margin:8px 0;flex-wrap:wrap" });
+  row.appendChild(el("span", { class: "filter-label", text: "주력 공격", attrs: { title: "목록은 계산식(의존 스탯 · 공격 종류 · 속성 · 타수 …)이 같은 것끼리 묶었습니다. 같은 묶음의 스킬은 대개 같은 장비가 나옵니다 — 25억 경감 구간에서 크리티컬이 확정이 아닐 때만 달라질 수 있습니다." } }));
+  const setMain = (id, v) => { O.buildMain = { ...(O.buildMain || {}) }; if (v) O.buildMain[id] = v; else delete O.buildMain[id]; saveOv(); rr(); };
+  const sels = ids.map((id, ci) => {
+    const sel = el("select", { class: "fx-input", style: "max-width:260px", attrs: { "aria-label": `${nameOf(id)} 주력 공격` } });
+    sel.appendChild(el("option", { text: `${nameOf(id)}: 자동 (가장 센 공격)`, attrs: { value: "" } }));
+    if (mains[ci]) sel.appendChild(el("option", { text: `${nameOf(id)}: ${skName(id, mains[ci])}`, attrs: { value: mains[ci] } }));   // 목록이 오기 전에도 고른 값이 보이게
+    sel.value = mains[ci];
+    sel.addEventListener('change', () => setMain(id, sel.value));
+    row.appendChild(sel);
+    return sel;
+  });
+  const picked = mains.filter(Boolean).length;
+  if (picked === 1) {
+    const who = nameOf(ids[mains.findIndex(Boolean)]), gsel = el("select", { class: "fx-input", attrs: { "aria-label": "빌드 목표" } });
+    for (const [v, t] of [["", `목표: ${who} 몫 (나머지는 지원)`], ["party", "목표: 파티 합"]]) gsel.appendChild(el("option", { text: t, attrs: { value: v } }));
+    gsel.value = focus == null ? "party" : "";
+    gsel.addEventListener('change', () => { if (gsel.value) O.buildGoal = gsel.value; else delete O.buildGoal; saveOv(); rr(); });
+    row.appendChild(gsel);
+  } else if (picked > 1) row.appendChild(el("span", { class: "pt more", text: "목표: 파티 합 (주력을 둘 이상 지정)" }));
+  Promise.all(ids.map(loadActions)).then(acts => {
+    const F = AEFormula.make({ weapons: db.weapons, team: acts.map(a => ({ actions: a || { skills: [] } })) });
+    acts.forEach((act, ci) => {
+      if (!act) return;
+      const id = ids[ci], sel = sels[ci], m = { actions: act, grasta: [] }, seen = new Set();
+      const groups = F.groups(F.mains(m, AEBuild.candidates(m, { cond: true })).sort((a, b) => b.power - a.power).filter(x => !seen.has(x.sk.name) && seen.add(x.sk.name)));   // 같은 이름(강화 단계)은 계수 큰 것 하나
+      if (mains[ci] && !seen.has(mains[ci])) return setMain(id, "");                 // 저장된 스킬이 데이터에서 사라졌으면 자동으로
+      while (sel.options.length > 1) sel.remove(1);
+      for (const g of groups) {
+        const og = el("optgroup", { attrs: { label: g.sig } });
+        for (const x of g.list) og.appendChild(el("option", { text: `${skName(id, x.sk.name)} · 계수 ${Math.round(x.power).toLocaleString()}${x.slot ? "" : " · 기본기"}`, attrs: { value: x.sk.name } }));
+        sel.appendChild(og);
+      }
+      sel.value = mains[ci];
+    });
+  });
+  return row;
+}
 function renderBuildTab(box, db) {
   const O = STATE.ov, S = STATE.calc, rr = renderOpt;
   box.appendChild(buildCondBar(db, rr, { gear: true }));
@@ -2371,7 +2415,7 @@ function renderBuildTab(box, db) {
   for (const id of ids) {
     const c = STATE.all.find(x => x.id === id);
     const chip = el("span", { class: "chip active fx-sel", text: c ? c.nameKo : id });
-    chip.addEventListener('click', () => { O.buildIds = ids.filter(x => x !== id); if (O.buildSlots) delete O.buildSlots[id]; saveOv(); rr(); });
+    chip.addEventListener('click', () => { O.buildIds = ids.filter(x => x !== id); if (O.buildSlots) delete O.buildSlots[id]; if (O.buildMain) delete O.buildMain[id]; saveOv(); rr(); });
     row.appendChild(chip);
   }
   row.appendChild(charPicker(db, null, x => { O.buildIds = [...new Set([...ids, x.id])]; saveOv(); rr(); }, "추가",
@@ -2390,6 +2434,10 @@ function renderBuildTab(box, db) {
   row.appendChild(gsel);
   box.append(row, diff, nameSpecBox(db, ids, rr));
   const lock = ids.map(id => (O.buildSlots || {})[id] || []);   // 이름으로 고정한 스킬칸(멤버 순)
+  const peakMode = (O.buildMode || "peak") === "peak";            // 주력 지정은 고점 방식만(턴 시뮬은 공격 고정이 없다)
+  const mains = ids.map(id => (peakMode && (O.buildMain || {})[id]) || "");
+  const focus = mains.filter(Boolean).length === 1 && O.buildGoal !== "party" ? mains.findIndex(Boolean) : null;
+  if (peakMode) box.appendChild(mainPickRow(db, ids, mains, focus, rr));
   const run = el("button", { class: "view-btn active", text: "빌드 계산" });
   const cancel = el("button", { class: "slot-btn", text: "취소", style: "margin-left:8px" });
   const prog = el("span", { class: "pt more build-prog", style: "margin-left:10px", attrs: { "aria-live": "polite" } });
@@ -2397,7 +2445,7 @@ function renderBuildTab(box, db) {
   box.append(el("div", { children: [run, cancel, prog] }), bar);
   const out = el("div", { style: "margin-top:12px" });
   box.appendChild(out);
-  const key = JSON.stringify([ids, lock, O.buildMode || "peak", O.buildGear, S.gslots, S.ownedOnly, S.zone, S.enemy, S.cond, S.maxHp, S.pain, DETAIL_KEYS.map(k => S[k]), S.buddy, S.buddyUp, S.buddyStacks]);
+  const key = JSON.stringify([ids, lock, mains, focus, O.buildMode || "peak", O.buildGear, S.gslots, S.ownedOnly, S.zone, S.enemy, S.cond, S.maxHp, S.pain, DETAIL_KEYS.map(k => S[k]), S.buddy, S.buddyUp, S.buddyStacks]);
   // 진행 표시는 STATE.buildJob 에 — 계산 중에 조건을 바꿔 화면을 다시 그려도 막대 · 취소가 이어진다(가장 최근 화면의 paint 가 받는다)
   const paint = () => {
     const J = STATE.buildJob;
@@ -2428,16 +2476,23 @@ function renderBuildTab(box, db) {
     const say = t => { J.text = t; if (J.paint) J.paint(); };
     clear(out); paint();
     const fail = t => { STATE.buildJob = null; STATE.buildMsg = t; rr(); };            // 다시 그린 최신 화면에 문구를 남긴다
-    const team = [];
+    const team = [], pin = {};
     for (const id of ids) {
       const c = STATE.all.find(x => x.id === id), m = calcMember(db, c), act = await loadActions(id);
       if (!m || !act) return fail(`${c ? c.nameKo : id}: 행동 데이터 없음`);
-      team.push({ ...m, fx: [], actions: act, lock: lock[team.length] });                                 // 효과는 시나리오가 스킬 시전으로 건다
+      // 주력 지정 — 공격은 그 스킬로 고정(pin), 스킬칸에 넣는 스킬이면 앞칸에 고정(바뀐 스킬은 원래 스킬 이름으로)
+      const ci = team.length, msk = mains[ci] && act.skills.find(s => s.name === mains[ci] && (s.attacks || []).length);
+      const mslot = msk && (msk.kind === "variant" ? msk.from : msk.name);
+      const lk = msk && act.skills.some(s => s.slot && s.name === mslot) ? [mslot, ...lock[ci].filter(n => n !== mslot)].slice(0, 4) : lock[ci];
+      if (msk) pin[ci] = [msk.name];
+      team.push({ ...m, fx: [], actions: act, lock: lk });                                                // 효과는 시나리오가 스킬 시전으로 건다
     }
+    const foc = focus != null && pin[focus] ? focus : null;
     const inv = S.ownedOnly ? STATE.inv : null;
     const msg = { team, opt, mode: O.buildMode || "peak", gear: (O.buildGear || "opt") === "opt", inv,
       gearConf: { grastaSlots: S.gslots || 4, badgeSlots: 2, counts: inv ? { ...inv.w, ...inv.a, ...inv.g, ...inv.b } : null },
       db: { weapons: db.weapons, armor: db.armor, grasta: db.grasta, badges: db.badges, ores: db.ores } };
+    if (Object.keys(pin).length) msg.conf = { pin, ...(foc != null ? { focus: foc, carryStarts: false } : {}) };   // 한 명 몫이 목표면 장비가 늘 그 멤버 주력 가중이라 주력 다중 시작은 뺀다
     if (J.job.cancelled) { STATE.buildJob = null; STATE.buildMsg = "취소했습니다"; rr(); return; }
     let res;
     J.job.onStart = () => say(J.job.noWorker ? "계산 중 — 이 환경에선 백그라운드 계산이 안 돼 화면이 잠시 멈춥니다…" : "계산 중…");
@@ -2450,7 +2505,7 @@ function renderBuildTab(box, db) {
       return fail("계산 실패: " + e.message);
     }
     STATE.buildJob = null;
-    STATE.buildRes = { key, ids, lock, took: sec(), ...res };
+    STATE.buildRes = { key, ids, lock: team.map(m => m.lock), main: ids.map((_, ci) => (pin[ci] || [])[0] || ""), focus: foc, took: sec(), ...res };
     if (STATE.view === "opt" && STATE.ov.tab === "build") rr();                // 계산 중에 다시 그려졌을 수 있어 가장 최근 화면에 그린다
   });
   if ((O.buildMode || "peak") === "sim") box.appendChild(methodDetails(
@@ -2562,16 +2617,22 @@ function showPeakResult(out, r, nm, stale) {
   const z = r.zone ? `${r.zone.name}${r.zone.awake ? " (각성)" : ""}` : "없음";
   out.appendChild(el("div", { class: "pt", style: "margin-bottom:8px", children: [el("b", { text: `반복 고점 ${fmtN(r.scores.repeat)}` }),
     document.createTextNode(` · 순간 최고점 ${fmtN(r.scores.burst)} (1회성 포함) · 존 ${z}`)] }));
+  const mainOf = (r.main || []).map((n, ci) => n && { ci, n }).filter(Boolean);                       // 주력 지정(mainPickRow)
+  const mainLine = mainOf.length ? `주력 지정: ${mainOf.map(x => `${nm(r.ids[x.ci])} — ${skName(r.ids[x.ci], x.n)}`).join(" · ")} · 목표 = ${r.focus != null ? `${nm(r.ids[r.focus])} 몫 ${fmtN(r.perMember[r.focus])}` : "파티 합"}` : "";
+  if (mainLine) out.appendChild(el("div", { class: "pt more", style: "margin-bottom:8px", text: mainLine }));
+  const miss = mainOf.filter(x => r.attackOf[x.ci] !== x.n);
+  if (miss.length) out.appendChild(el("div", { class: "pt", style: "margin-bottom:8px;color:var(--red)",
+    text: `지정한 주력이 나가지 않았습니다: ${miss.map(x => `${nm(r.ids[x.ci])} — ${skName(r.ids[x.ci], x.n)}`).join(" · ")}. 발동 조건이 안 맞거나 전투 1회 기술이라 반복 고점에서 빠졌습니다 — 그 멤버의 반복 고점 공격은 0 으로 계산됐습니다.` }));
   const share = ci => (r.scores.repeat ? `${((r.perMember[ci] / r.scores.repeat) * 100).toFixed(1)}%` : "");
   const an = (ci, sk) => { const a = sk && ((STATE.calcDb.chars[r.ids[ci]] || {}).attacks || []).find(x => x.skill === sk); return a && a.ko ? aname(a) : sk && skName(r.ids[ci], sk); };   // 공격 이름 문자열 → 한국어(확정분, 없으면 ae-db 이름표)
   const atk = ci => `${an(ci, r.attackOf[ci]) || "—"} ${fmtN(r.perMember[ci])}` + (r.attackOfBurst[ci] && (r.perMemberBurst[ci] > r.perMember[ci] * 1.001) ? ` / ${an(ci, r.attackOfBurst[ci])} ${fmtN(r.perMemberBurst[ci])}` : "");
   memberResult(out, r.ids.map((id, ci) => ({ name: nm(id), share: share(ci), fields: [["스킬칸 4", slotNames(r, ci)],
     ["고점 공격 (반복 / 순간)", [atk(ci)]], ["장비", gearNames(r.gear[ci] || {})]] })));
-  out.appendChild(el("div", { class: "skko-src", style: "margin-top:8px", text: "고점 = 스킬칸 4개 효과를 모두 최대로 쌓은 상태에서 멤버마다 가장 센 공격 1회의 합. 반복 고점은 1회성 효과(첫 턴 · 첫 사용 등)를 뺀 값입니다." }));
+  out.appendChild(el("div", { class: "skko-src", style: "margin-top:8px", text: `고점 = 스킬칸 4개 효과를 모두 최대로 쌓은 상태에서 멤버마다 가장 센 공격${mainOf.length ? "(주력을 지정한 멤버는 그 스킬)" : ""} 1회의 합. 반복 고점은 1회성 효과(첫 턴 · 첫 사용 등)를 뺀 값입니다.` }));
   out.appendChild(methodDetails(
     "고점 = 스킬칸 4개 효과(버프 · 디버프 · 존 · 모드)를 전부 최대 누적으로 건 상태에서 멤버마다 가장 센 공격 1회의 합. AF 에서 4개를 다 칠 수 있다는 가정 — 지속 · 순서 · 자원은 안 본다(자원은 찬 것으로). " +
     "존은 파티가 펼 수 있는 것 중 합이 가장 큰 것. 반복 고점은 첫 턴 · 첫 사용 · 전투 1회 · 스텔라 버스트 시점 효과를 끈 값, 순간 최고점은 켠 값. 스텔라 버스트 기술의 딜은 아직 넣지 않았다."));
-  const copy = () => [`어나더에덴 파티 빌드 (고점) — 반복 고점 ${fmtN(r.scores.repeat)} · 순간 최고점 ${fmtN(r.scores.burst)} · 존 ${z}`,
+  const copy = () => [`어나더에덴 파티 빌드 (고점) — 반복 고점 ${fmtN(r.scores.repeat)} · 순간 최고점 ${fmtN(r.scores.burst)} · 존 ${z}`, ...(mainLine ? [mainLine] : []),
     ...r.ids.flatMap((id, ci) => [`${ci + 1}. ${nm(id)} (${share(ci)})`, `   스킬: ${slotNames(r, ci).join(" / ")}`, `   장비: ${gearCopy(r.gear[ci] || {})}`, `   고점 공격: ${atk(ci)}`]),
     "※ 추정치 · 최대 육성 기준"].join("\n");
   out.append(saveBuildBtn(r, stale), copyBtn(copy));

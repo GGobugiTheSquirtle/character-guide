@@ -292,25 +292,63 @@
       cur = scoreOf(peakOf(team));
       if (!seed && cur < prev.cur * (1 - 1e-9)) ({ team, cur } = prev);   // 정적 식은 근사 — 고점이 내려가면 받지 않는다(주력 가중 갈래는 다음 갈래로 이어지니 그대로)
     };
+    // 대상 상태(독 · 페인)를 거는 스킬은 그 상태 조건 장비와 함께 들어가야 이득이 보인다 — 한 칸 넣기는 장비가 없어 이득 0, 장비 단계는 상태가 없어 안 고른다.
+    //   11-11 M9: 히나 4칸 무작위 고정(독 스킬 포함)이 자유 탐색을 +45.5% 이겼다(장비가 노아키스 AS · 우트팔라카에게 독 조건 그라스타). 그래서 묶음으로 시도한다
+    const statesOf = s => S.liveStates(new Map((s.fx || []).map((u, i) => [i, { u }])));
+    const stateMoves = () => {
+      const cf = { ...conf, via: !!conf.grantsOf };
+      for (let ci = 0; ci < team.length; ci++) {
+        const live = new Set(S.liveStates(peakOf(team).live));
+        const sks = candidates(team[ci], cf).filter(n => !team[ci].slots.includes(n)).map(n => team[ci].actions.skills.find(s => s.name === n))
+          .filter(s => statesOf(s).some(st => !live.has(st)));
+        for (const sk of sks) {
+          const keep = { team, cur };
+          let best = null;
+          for (const k of freeSlots(team[ci])) {                                  // 그 스킬이 들어갈 칸 = 장비 그대로 잃는 몫이 가장 적은 칸
+            const t2 = team.map((m, i) => { if (i !== ci) return m; const sl = m.slots.slice(); sl[k] = sk.name; return { ...fitGrasta(m, sl), slots: sl }; });
+            const q = scoreOf(peakOf(t2));
+            if (!best || q > best.q) best = { t2, q };
+          }
+          if (!best) continue;
+          ({ t2: team, q: cur } = best);
+          gearPass(null);
+          slotPass({ ...cf, passes: 1 });
+          gearPass(null);
+          if (conf.tick) conf.tick(`상태 묶음 ${team[ci].c.nameKo} ${sk.name}: ${(cur / 1e8).toFixed(2)}억`);
+          if (!(cur > keep.cur * (1 + 1e-9))) ({ team, cur } = keep);
+        }
+      }
+    };
     slotPass(conf);
     if (conf.gear) {
-      const fork = { team, cur };
-      let top = null;
-      for (const seed of [null, ...(conf.carryStarts ? team.map(m => m.c.id) : [])]) {
-        ({ team, cur } = fork);
-        gearPass(seed);
-        if (seed) gearPass(null);
-        slotPass({ ...conf, via: !!conf.grantsOf, passes: 2 });
-        gearPass(null);
-        if (conf.tick) conf.tick(`시작 ${seed || "기본"}: 고점 ${(cur / 1e8).toFixed(2)}억`);
-        if (!top || cur > top.cur * (1 + 1e-9)) top = { team, cur };
-      }
-      ({ team, cur } = top);
+      const branches = () => {
+        const fork = { team, cur };
+        let top = null;
+        for (const seed of [null, ...(conf.carryStarts ? team.map(m => m.c.id) : [])]) {
+          ({ team, cur } = fork);
+          gearPass(seed);
+          if (seed) gearPass(null);
+          slotPass({ ...conf, via: !!conf.grantsOf, passes: 2 });
+          gearPass(null);
+          if (conf.tick) conf.tick(`시작 ${seed || "기본"}: 고점 ${(cur / 1e8).toFixed(2)}억`);
+          if (!top || cur > top.cur * (1 + 1e-9)) top = { team, cur };
+        }
+        ({ team, cur } = top);
+      };
+      branches();
+      const settled = team;
+      if (conf.stateMoves !== false) stateMoves();
       // 두 칸 동시는 최고 갈래에서 한 번만(멤버당 후보² 이라 갈래마다 돌리면 수천 번)
       if (conf.pairMoves) {
         const keep = { team, cur };
         slotPass({ ...conf, via: !!conf.grantsOf, passes: 1, pair: true });
         if (team !== keep.team) gearPass(null);
+        if (cur < keep.cur) ({ team, cur } = keep);
+      }
+      // 스킬칸이 바뀌었으면 장비 갈래를 새 칸에서 다시 — 갈래는 옛 칸에 맞춰 골랐다(11-11 M9: 두 칸 바꾸기 뒤 장비 한 번만 다시 → 같은 칸을 고정한 빌드가 +8.1%)
+      if (team !== settled && conf.rebranch !== false) {
+        const keep = { team, cur };
+        branches();
         if (cur < keep.cur) ({ team, cur } = keep);
       }
     } else slotPass({ ...conf, via: !!conf.grantsOf, passes: 2, pair: true });

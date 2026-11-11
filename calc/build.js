@@ -60,6 +60,15 @@
     for (const g of gs || []) { const sk = grantSkill(g); if (sk && !have.has(sk.name)) { have.add(sk.name); extra.push(sk); } }
     return extra.length ? { ...m, actions: { ...m.actions, skills: [...m.actions.skills, ...extra] } } : m;
   }
+  // 고정 스킬칸(m.lock = 이용자가 이름으로 지정한 스킬, 2026-11-11) — 앞칸에 두고 나머지만 시작 스킬칸으로 채운다. 탐색(slotPass)은 고정 칸을 건드리지 않는다
+  function startSlots(x, conf) {
+    if (!(x.lock && x.lock.length)) return x.slots && x.slots.length ? x.slots.slice(0, 4) : initialSlots(x, conf);
+    const has = new Set((x.actions.skills || []).filter(s => s.slot).map(s => s.name));
+    const sl = [...new Set(x.lock)].filter(n => has.has(n)).slice(0, 4);
+    for (const n of [...(x.slots || []), ...initialSlots(x, conf)]) if (sl.length < 4 && has.has(n) && !sl.includes(n)) sl.push(n);
+    return sl;
+  }
+  const freeSlots = m => [0, 1, 2, 3].filter(k => !(m.lock || []).includes(m.slots[k]));
   // 칸에 든 부여 스킬의 그라스타를 앞 칸에 — 일반 칸이 차면 뒤 칸부터 밀어낸다. lockGrasta = 장비 단계 고정
   function fitGrasta(m, slots) {
     const need = [...new Set(slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).viaG).filter(Boolean))];
@@ -78,7 +87,7 @@
     let memo = new Map();
     const gslots = (conf.gear && conf.gear.conf && conf.gear.conf.grastaSlots) || 4;
     let team = party.map(m => {
-      const x = withGrants({ ...m, gslots }, conf), sl = x.slots && x.slots.length ? x.slots.slice(0, 4) : initialSlots(x, conf);
+      const x = withGrants({ ...m, gslots }, conf), sl = startSlots(x, conf);
       return { ...fitGrasta(x, sl), slots: sl };
     });
     const inner = { af: true, afCasts: 6, turns: 3, restarts: 0, passes: 2, memo };
@@ -97,9 +106,10 @@
             const start = ch.reduce((p, [k, n]) => swapIn(p, ci, team[ci].slots[k], n), cur.plan);
             tries.push({ t2, start, q: quick(t2, start) });
           };
-          for (let k = 0; k < 4; k++) for (const n of cand) put([[k, n]]);
+          const fk = freeSlots(team[ci]);
+          for (const k of fk) for (const n of cand) put([[k, n]]);
           // 두 칸 동시(cf.pair) — 한 칸씩은 손해라 못 넘는 조합(아래 pairMoves)
-          if (cf.pair) for (let k1 = 0; k1 < 4; k1++) for (let k2 = k1 + 1; k2 < 4; k2++) for (const n1 of cand) for (const n2 of cand) if (n1 !== n2) put([[k1, n1], [k2, n2]]);
+          if (cf.pair) for (const k1 of fk) for (const k2 of fk) if (k1 < k2) for (const n1 of cand) for (const n2 of cand) if (n1 !== n2) put([[k1, n1], [k2, n2]]);
           tries.sort((a, b) => b.q - a.q);
           for (const t of tries.slice(0, cf.screen)) {
             const r = PL.plan(t.t2, opt, { ...inner, start: t.start });
@@ -238,7 +248,7 @@
     let evals = 0;
     const peakOf = (t, mode) => { evals++; return S.peak(t, opt, { mode, pin: conf.pin }); };   // 메모 없음 — 장면이 평가마다 달라 거의 안 맞고 키만 쌓였다(8분 뒤 메모리 부족)
     let team = party.map(m => {
-      const x = withGrants({ ...m, gslots }, conf), sl = x.slots && x.slots.length ? x.slots.slice(0, 4) : initialSlots(x, conf);
+      const x = withGrants({ ...m, gslots }, conf), sl = startSlots(x, conf);
       return { ...fitGrasta(x, sl), slots: sl };
     });
     let cur = scoreOf(peakOf(team));
@@ -248,8 +258,9 @@
         for (let ci = 0; ci < team.length; ci++) {
           const cand = candidates(team[ci], cf).filter(n => !team[ci].slots.includes(n));
           const moves = [];
-          for (let k = 0; k < 4; k++) for (const n of cand) moves.push([[k, n]]);
-          if (cf.pair) for (let k1 = 0; k1 < 4; k1++) for (let k2 = k1 + 1; k2 < 4; k2++) for (const n1 of cand) for (const n2 of cand) if (n1 !== n2) moves.push([[k1, n1], [k2, n2]]);
+          const fk = freeSlots(team[ci]);
+          for (const k of fk) for (const n of cand) moves.push([[k, n]]);
+          if (cf.pair) for (const k1 of fk) for (const k2 of fk) if (k1 < k2) for (const n1 of cand) for (const n2 of cand) if (n1 !== n2) moves.push([[k1, n1], [k2, n2]]);
           let best = null;
           for (const ch of moves) {
             const t2 = team.map((m, i) => { if (i !== ci) return m; const sl = m.slots.slice(); for (const [k, n] of ch) sl[k] = n; return { ...fitGrasta(m, sl), slots: sl }; });

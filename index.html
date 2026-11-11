@@ -219,6 +219,11 @@
   .cw-num:focus { outline: none; border-color: var(--gold-dim); }
   .skill-table td.up { color: var(--green); } .skill-table td.down { color: var(--red); }
   .cw .skill-table th, .cw .skill-table td { padding: 5px 6px; } .cw .skill-table td:first-child { white-space: nowrap; }
+  details.namespec { margin: 4px 0 10px; border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; }
+  details.namespec summary { cursor: pointer; font-size: 12px; color: var(--accent); }
+  details.namespec ul { margin: 4px 0 6px 18px; padding: 0; font-size: 12px; }
+  details.namespec li.ns-warn { color: var(--red); }
+  details.namespec .ns-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin: 6px 0; font-size: 12px; }
   .inv-ta { width: 100%; background: var(--panel-2); border: 1px solid var(--line); color: var(--text); border-radius: 6px; padding: 8px 10px; font-size: 12px; font-family: inherit; resize: vertical; }
   .inv-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
   .inv-chips .chip, .filter-group .chip { font-size: 11px; padding: 2px 8px; }
@@ -345,6 +350,7 @@
 <script src="calc/scenario.js"></script>
 <script src="calc/planner.js"></script>
 <script src="calc/build.js"></script>
+<script src="calc/name_resolve.js"></script>
 <script>
 const STATE = {
   all: [],
@@ -2262,6 +2268,97 @@ const buildInWorker = (msg, tick, job = {}) => new Promise((res, rej) => {
   w.onerror = e => { w.terminate(); rej(new Error(e.message || "워커 오류")); };
   w.postMessage(msg);
 });
+// ── 이름으로 지정 (2026-11-11) — 캐릭터 · 스킬 이름을 적으면 멤버와 스킬칸을 정한다
+//   해석 = calc/name_resolve.js(AENames) · 이름 색인 data/calc/skill_names.json(ae-db 이름표 한 · 영 · 일, build_skill_names.py). 계산 · 저장 키는 행동 단위 스킬 이름 그대로
+//   적힌 스킬은 그 칸에 고정(O.buildSlots → 멤버 lock, calc/build.js), 남은 칸은 빌드 탐색이 채운다. 주인을 못 가린 이름은 넣지 않고 묻는다(지어내지 않는다)
+let namesP = null;
+const loadNames = () => namesP || (namesP = fetch("data/calc/skill_names.json").then(r => (r.ok ? r.json() : null)).then(d => (d ? AENames.build(d) : null)).catch(() => null));
+function nameWarnText(w) {
+  const q = s => `「${s}」`, who = a => { const l = (a || []).map(nameOf); return l.slice(0, 6).join(" · ") + (l.length > 6 ? ` 외 ${l.length - 6}명` : ""); };
+  switch (w.kind) {
+    case "ambiguous_skill": return `${q(w.skill)}: 가진 캐릭터가 여럿이라 넣지 않았습니다 — 캐릭터 이름을 같이 적어 주세요 (${who(w.owners)})`;
+    case "lone_skill": return `${q(w.skill)}: 짧은 스킬 이름 하나만으로는 캐릭터를 정하지 않습니다 — 캐릭터 이름을 같이 적어 주세요 (${who(w.owners)})`;
+    case "shared_skill": return `${q(w.skill)}: ${nameOf(w.id)}에게 넣었습니다(추정) — ${who(w.alt)}도 가진 스킬`;
+    case "ambiguous_char": return `${q(w.name)}: ${nameOf(w.id)} 쪽으로 읽었습니다(추정) — 다른 후보 ${who(w.alt)}`;
+    case "not_owned": return `${q(w.skill)}: ${nameOf(w.id)}에게 없는 스킬이라 넣지 않았습니다${(w.owners || []).length ? ` (가진 캐릭터: ${who(w.owners)})` : ""}`;
+    case "no_slot": return `${q(w.skill)}: ${nameOf(w.id)}의 스킬칸에 넣는 스킬이 아니라 고정하지 않았습니다`;
+    case "over4": return `${q(w.skill)}: ${nameOf(w.id)}의 스킬칸 4개가 이미 차서 넣지 않았습니다`;
+    case "dup_family": return `${q(w.name)}: 같은 캐릭터가 두 번 적혀 ${nameOf(w.id)} 하나로 합쳤습니다`;
+    case "fuzzy": return `${q(w.from)} → ${q(w.to)} 로 읽었습니다(오타 보정)`;
+  }
+  return JSON.stringify(w);
+}
+// 읽은 결과를 빌드 멤버 · 고정 칸에 반영 — 고정 칸은 글에 적힌 것으로 통째 바꾸고, 멤버는 합친다: 같은 캐릭터(다른 스타일 포함)는 그 자리에서 바꾸고, 새 캐릭터는 뒤에 넣는다. 전방 칸을 넘치면 글에 없는 멤버부터 뺀다
+function applyNameSpec(res, ids, db) {
+  const O = STATE.ov, fam = AENames.family;
+  const got = res.members.filter(m => db.chars[m.id]), skip = res.members.filter(m => !db.chars[m.id]).map(m => m.id);
+  let next = ids.slice();
+  const named = new Set(got.map(m => m.id));
+  for (const m of got) { const i = next.findIndex(id => fam(id) === fam(m.id)); if (i >= 0) next[i] = m.id; else next.push(m.id); }
+  for (let i = 0; next.length > FRONT_N && i < next.length;) { if (named.has(next[i])) i++; else next.splice(i, 1); }
+  const over = next.slice(FRONT_N);
+  next = next.slice(0, FRONT_N);
+  const slots = {};                                                            // 고정은 글에 적힌 대로 다시 정한다(글 상자 = 고정 전체)
+  for (const m of got) if (m.slots.length && next.includes(m.id)) slots[m.id] = m.slots.slice(0, 4);
+  O.buildIds = next; O.buildSlots = slots;
+  return { got: got.filter(m => next.includes(m.id)), over, skip };
+}
+function nameSpecBox(db, ids, rr) {
+  const O = STATE.ov, slots = O.buildSlots || {}, fixed = ids.filter(id => (slots[id] || []).length), rep = STATE.nameRep;
+  const box = el("details", { class: "namespec" });
+  box.open = !!(O.nameOpen || fixed.length || rep);
+  box.addEventListener('toggle', () => { O.nameOpen = box.open; saveOv(); });
+  box.appendChild(el("summary", { text: "이름으로 지정 — 캐릭터 · 스킬 이름을 적어 멤버와 스킬칸 정하기" + (fixed.length ? ` (고정 ${fixed.reduce((n, id) => n + slots[id].length, 0)}칸)` : "") }));
+  const ta = el("textarea", { class: "inv-ta", style: "margin-top:6px", attrs: { rows: "4", "aria-label": "캐릭터 · 스킬 이름",
+    placeholder: "예: 알도 AS 오우거베인 파천, 엑스 베기 황\n시온 AS 질주인람\n— 한 줄에 한 명이 가장 정확합니다. 한국어 · 영어 · 일본어 이름, 붙여 써도 읽습니다." } });
+  ta.value = O.buildText || "";
+  const read = el("button", { class: "slot-btn", text: "읽기" });
+  const note = el("span", { class: "pt more", attrs: { "aria-live": "polite" } });
+  const btns = el("div", { class: "ns-row", children: [read] });
+  if (fixed.length) {
+    const off = el("button", { class: "slot-btn", text: "고정 모두 해제" });
+    off.addEventListener('click', () => { delete O.buildSlots; STATE.nameRep = null; saveOv(); rr(); });
+    btns.appendChild(off);
+  }
+  btns.appendChild(note);
+  box.append(ta, btns);
+  read.addEventListener('click', async () => {
+    read.disabled = true; note.textContent = "이름 색인 읽는 중…";
+    const R = await loadNames();
+    if (!R) { read.disabled = false; note.textContent = "이름 색인(data/calc/skill_names.json)을 읽지 못했습니다."; return; }
+    const res = R.resolve(ta.value, { party: ids }), ap = applyNameSpec(res, ids, db);
+    O.buildText = ta.value;
+    await Promise.all(O.buildIds.map(loadActions));                            // 한국어 스킬 이름표(actKo)
+    const unk = res.unknown.filter(u => u.length >= 3).slice(0, 40).map(u => [u, R.near(u)[0]]).filter(x => x[1]).slice(0, 8);
+    STATE.nameRep = { got: ap.got.map(m => ({ id: m.id, basis: m.basis, slots: m.slots.slice(0, 4) })), warns: res.warnings.map(nameWarnText),
+      over: ap.over, skip: ap.skip, unknown: res.unknown, hint: unk };
+    saveOv(); rr();
+  });
+  // 고정된 칸 — 누르면 그 칸만 푼다
+  for (const id of fixed) {
+    if (!actCache[id]) { loadActions(id).then(rr); break; }                       // 새로 고친 뒤 첫 화면 — 한국어 이름표를 읽고 다시 그린다
+    const line = el("div", { class: "ns-row", children: [el("b", { text: nameOf(id) })] });
+    for (const n of slots[id]) {
+      const chip = el("span", { class: "chip active fx-sel", text: "📌 " + skName(id, n), attrs: { title: "누르면 이 칸의 고정을 푼다" } });
+      chip.addEventListener('click', () => { O.buildSlots[id] = slots[id].filter(x => x !== n); if (!O.buildSlots[id].length) delete O.buildSlots[id]; saveOv(); rr(); });
+      line.appendChild(chip);
+    }
+    box.appendChild(line);
+  }
+  if (rep) {
+    const ul = el("ul"), li = (t, cls) => ul.appendChild(el("li", { class: cls, text: t }));
+    const how = { skills: " (스킬 이름으로 찾음)", cover: " (추정)" };
+    for (const m of rep.got) li(`${nameOf(m.id)}${how[m.basis] || ""} — ${m.slots.length ? m.slots.map(n => skName(m.id, n)).join(" · ") : "스킬 지정 없음"}`);
+    if (!rep.got.length) li("읽은 캐릭터 · 스킬이 없습니다.", "ns-warn");
+    for (const t of rep.warns) li("⚠ " + t, "ns-warn");
+    if (rep.over.length) li(`⚠ 전방 ${FRONT_N}명을 넘어 넣지 않았습니다: ${rep.over.map(nameOf).join(" · ")}`, "ns-warn");
+    if (rep.skip.length) li(`⚠ 계산 데이터가 없어 넣지 않았습니다: ${rep.skip.map(nameOf).join(" · ")}`, "ns-warn");
+    if (rep.unknown.length) li(`못 읽은 낱말 ${rep.unknown.length}개: ${rep.unknown.slice(0, 20).join(", ")}${rep.unknown.length > 20 ? " …" : ""}` + (rep.hint.length ? ` — 비슷한 이름: ${rep.hint.map(([u, k]) => `${u} → ${k}`).join(", ")}` : ""));
+    box.appendChild(ul);
+  }
+  box.appendChild(el("div", { class: "skko-src", style: "margin:4px 0 2px", text: "적힌 스킬은 그 칸에 고정하고(📌) 남은 칸은 「빌드 계산」이 채웁니다. 「읽기」를 누를 때마다 고정은 글에 적힌 대로 다시 정합니다. 여러 캐릭터가 가진 이름은 캐릭터 이름을 같이 적어야 넣습니다. 스킬 이름: 카페 딩님 스킬 DB(출처: 카페 딩님 스킬 검색기) · 공식 공지 · 위키(영어 · 일본어)." }));
+  return box;
+}
 function renderBuildTab(box, db) {
   const O = STATE.ov, S = STATE.calc, rr = renderOpt;
   box.appendChild(buildCondBar(db, rr, { gear: true }));
@@ -2274,7 +2371,7 @@ function renderBuildTab(box, db) {
   for (const id of ids) {
     const c = STATE.all.find(x => x.id === id);
     const chip = el("span", { class: "chip active fx-sel", text: c ? c.nameKo : id });
-    chip.addEventListener('click', () => { O.buildIds = ids.filter(x => x !== id); saveOv(); rr(); });
+    chip.addEventListener('click', () => { O.buildIds = ids.filter(x => x !== id); if (O.buildSlots) delete O.buildSlots[id]; saveOv(); rr(); });
     row.appendChild(chip);
   }
   row.appendChild(charPicker(db, null, x => { O.buildIds = [...new Set([...ids, x.id])]; saveOv(); rr(); }, "추가",
@@ -2291,7 +2388,8 @@ function renderBuildTab(box, db) {
   gsel.value = O.buildGear || "opt";
   gsel.addEventListener('change', () => { O.buildGear = gsel.value; saveOv(); rr(); });   // 다시 그려야 옛 결과에 「조건이 바뀜」이 붙는다
   row.appendChild(gsel);
-  box.append(row, diff);
+  box.append(row, diff, nameSpecBox(db, ids, rr));
+  const lock = ids.map(id => (O.buildSlots || {})[id] || []);   // 이름으로 고정한 스킬칸(멤버 순)
   const run = el("button", { class: "view-btn active", text: "빌드 계산" });
   const cancel = el("button", { class: "slot-btn", text: "취소", style: "margin-left:8px" });
   const prog = el("span", { class: "pt more build-prog", style: "margin-left:10px", attrs: { "aria-live": "polite" } });
@@ -2299,7 +2397,7 @@ function renderBuildTab(box, db) {
   box.append(el("div", { children: [run, cancel, prog] }), bar);
   const out = el("div", { style: "margin-top:12px" });
   box.appendChild(out);
-  const key = JSON.stringify([ids, O.buildMode || "peak", O.buildGear, S.gslots, S.ownedOnly, S.zone, S.enemy, S.cond, S.maxHp, S.pain, DETAIL_KEYS.map(k => S[k]), S.buddy, S.buddyUp, S.buddyStacks]);
+  const key = JSON.stringify([ids, lock, O.buildMode || "peak", O.buildGear, S.gslots, S.ownedOnly, S.zone, S.enemy, S.cond, S.maxHp, S.pain, DETAIL_KEYS.map(k => S[k]), S.buddy, S.buddyUp, S.buddyStacks]);
   // 진행 표시는 STATE.buildJob 에 — 계산 중에 조건을 바꿔 화면을 다시 그려도 막대 · 취소가 이어진다(가장 최근 화면의 paint 가 받는다)
   const paint = () => {
     const J = STATE.buildJob;
@@ -2334,7 +2432,7 @@ function renderBuildTab(box, db) {
     for (const id of ids) {
       const c = STATE.all.find(x => x.id === id), m = calcMember(db, c), act = await loadActions(id);
       if (!m || !act) return fail(`${c ? c.nameKo : id}: 행동 데이터 없음`);
-      team.push({ ...m, fx: [], actions: act });                                 // 효과는 시나리오가 스킬 시전으로 건다
+      team.push({ ...m, fx: [], actions: act, lock: lock[team.length] });                                 // 효과는 시나리오가 스킬 시전으로 건다
     }
     const inv = S.ownedOnly ? STATE.inv : null;
     const msg = { team, opt, mode: O.buildMode || "peak", gear: (O.buildGear || "opt") === "opt", inv,
@@ -2352,7 +2450,7 @@ function renderBuildTab(box, db) {
       return fail("계산 실패: " + e.message);
     }
     STATE.buildJob = null;
-    STATE.buildRes = { key, ids, took: sec(), ...res };
+    STATE.buildRes = { key, ids, lock, took: sec(), ...res };
     if (STATE.view === "opt" && STATE.ov.tab === "build") rr();                // 계산 중에 다시 그려졌을 수 있어 가장 최근 화면에 그린다
   });
   if ((O.buildMode || "peak") === "sim") box.appendChild(methodDetails(
@@ -2373,7 +2471,7 @@ const gearNames = g => [g.weapon, g.armor, ...(g.grasta || []), ...(g.badges || 
 const gameName = x => gko(x) || x.name;                      // 복사 글자 = 게임(한국어판)에 옮겨 적는 이름 — 한국어 대응이 있으면 그것만
 const gearCopy = g => [g.weapon && "무기 " + gameName(g.weapon), g.armor && "방어구 " + gameName(g.armor), (g.grasta || []).length && "그라스타 " + g.grasta.map(gameName).join(", "),
   (g.badges || []).length && "배지 " + g.badges.map(gameName).join(", ")].filter(Boolean).join(" · ") || "—";
-const slotNames = (r, ci) => (r.slots[ci] || []).map((n, k) => (r.via && r.via[ci] && r.via[ci][k] ? `${n} (그라스타 ${r.via[ci][k]})` : skName(r.ids[ci], n)));
+const slotNames = (r, ci) => (r.slots[ci] || []).map((n, k) => (r.via && r.via[ci] && r.via[ci][k] ? `${n} (그라스타 ${r.via[ci][k]})` : (((r.lock || [])[ci] || []).includes(n) ? "📌 " : "") + skName(r.ids[ci], n)));   // 📌 = 이름으로 고정한 칸
 // 멤버별 결과 — 넓은 화면은 표, 휴대폰은 멤버마다 카드(같은 데이터, 2026-11-05 UX 검토 §1 #5). fields = [[제목, 이름 배열]] · 마지막 칸 = 장비(작은 글씨)
 function memberResult(out, members) {
   const heads = members.length ? members[0].fields.map(f => f[0]) : [];

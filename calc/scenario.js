@@ -81,7 +81,7 @@
 
   function newSim(party, opt, memo) {
     return { party, opt, memo, turn: 0, af: false, zone: opt.zone || null, live: new Map(), log: [], dmg: [], byMember: [], onHit: [], res: party.map(() => 0), used: new Map(), first: party.map(() => false),
-      sb: { light: 0, shadow: 0, on: false, fired: 0 } };
+      sb: { light: 0, shadow: 0, on: false, fired: 0 }, lk: party.map(() => 0) };
   }
   // ── 스텔라 버스트(E3-3, 10-18 — 위키 Stellar Awakening §Building · §Flux, 사용자 「행동 수로 차고 어빌리티 · 공명으로 축적량이 다르며 발동 뒤 버프가 있다」) ──
   //   게이지 = 천 에너지 + 명 에너지(합 100%). 전투 시작: 전방 1명마다 자기 정렬에 12.5%(천명 255 가정) · 아군 행동(AF 시전 포함, 턴 종료 행동 · 버디 제외)마다 행동자 정렬에 2.5%
@@ -295,6 +295,102 @@
     else if (/skill hit count \+1 to (?:the )?user/i.test(own)) who = [ci];
     return who ? { who, turns, sb: /stellar burst/i.test(txt) } : null;
   }
+  // 연계(Link, 11-11) — 걸린 아군이 공격 행동을 할 때마다 그 아군 스탯으로 추가 공격 1회(game-info 状態効果 5-24 連携 · 위키 「add-on attack after each attacking move」).
+  //   전엔 개념이 없어 엔진이 버렸다. 원천 꼴:
+  //   딩님 = 부여 단위(이름 연계) + 부여자의 mech 스킬(sub 연계, 이름 「(부여 스킬명)」)에 추가 공격의 위력 · 속성 · 종류.
+  //     종류 ANY = 받은 쪽 무기 종류를 따른다(지팡이 = 마법 → power, 그 밖 → powerMax). anyElem = 유발 공격이 유속성이면 그 속성.
+  //   위키 = 「Give Link [N% x Mod]」 + 「Link: <속성> type <종류> add-on attack …」 줄. [N%] 는 비지팡이 값(마즈리카 3/3 딩님 표와 일치) →
+  //     줄이 마법이라 적지 않았는데 마법으로 나가면 ×0.95(딩님 표 6/6 의 비, 다른 캐릭터에는 가정). 종류 = 줄에 적힌 것 → 없으면 받은 쪽 무기 종류,
+  //     뒤따르는 주석 줄이 「Attack type is determined by the original attack」이면 유발 공격의 종류. 임기응변 · 변화무쌍은 그 줄이 「Can change …」라 적은 것만.
+  //   규칙(game-info): 나중 것이 덮어쓴다(고점에서는 센 쪽을 남긴다) · 유발 공격이 크리 확정이면 연계도 확정 · 행동 소모형 버프는 소모 전에 받는다 ·
+  //     임기응변 · 변화무쌍은 딩님 표가 「적용 가능」이라 적은 것만 · 연계 · 턴 종료 · 반격 공격은 연계를 유발하지 않는다.
+  //   대상은 설명 원문에서 — 딩님 = 연계가 든 줄 위의 「…에게」 줄(우측 · 좌측 아군 · <꼬리표> · 「X 장착자」 · 아군 전체, 앞줄이 「스텔라 버스트 시」면 그때만) /
+  //     위키 = 조건 · 자기 줄(to the right/left of user · 무기 목록 · all party members · 문구 없으면 자신).
+  //   가정(인게임 미측정, plan V1): 공격 행동마다 1회(연속 실행 하위 스킬 · 일반 공격 포함) · 「(XL x2)」 = 합계 배율 · 「x Mod」 유무 구분 안 함 · 「어나더 포스 시 우측 아군」 = 평소에도 우측을 고른 것으로.
+  //   아직: 추가 공격에 딸린 브레이크 축적 · 저항 다운 · 「아군 하나」 지정 부여 · 축적 조건부 대상(Co-Op Stack) · 턴 시뮬 모드 경로(sk 없이 거는 단위)
+  const LINK = T.ko("link"), WPS = T.slots("weapon"), MAGIC = (ATS.find(e => e.k === "magic") || {}).ko;
+  const wpOf = m => (m.weapon && m.weapon.type) || (m.cc && m.cc.weapon) || (m.c && m.c.weaponKo) || "";
+  const wpAt = w => { const x = WPS.find(e => e.ko === w), a = x && ATS.find(e => e.k === x.atk); return a ? a.ko : null; };
+  const LINK_EN = /\bGive Link\b|\bLink \[/;
+  const linkUnit = u => T.is(u.name, "link") || (u.k === "other" && !u.name && LINK_EN.test(u.raw || ""));
+  const linkWiki = u => /\bLink\b/.test(u.raw || "");                       // 원천 구분 — 위키 원문은 대문자 Link(「in link」 = 연속 실행 뜻은 소문자라 여기 안 온다)
+  const linkLine = (lines, u) => { const key = (u.raw || "").trim(); let i = key ? lines.findIndex(l => l.includes(key)) : -1; if (i < 0) i = lines.findIndex(l => LINK_EN.test(l)); return i; };
+  // 추가 공격의 내용(받는 아군 t 기준) — 못 읽으면 null(넣지 않는다)
+  function linkInfo(sim, ci, t, u, skName, sk) {
+    const wat = wpAt(wpOf(sim.party[t])), desc = String((sk && sk.desc) || "");
+    if (linkWiki(u)) {
+      const pct = x => { const r = /\[([\d,]+)%/.exec(x || ""); return r ? +r[1].replace(/,/g, "") : 0; };
+      const mult0 = pct(u.raw) || pct((/\bLink\b[^\n]*?\[[\d,]+%/.exec(desc) || [""])[0]);
+      if (!mult0) return null;
+      const lines = desc.split("\n"), i = linkLine(lines, u), own = i < 0 ? "" : lines[i].slice(lines[i].search(LINK_EN));
+      const RE = /Link:\s*(.*?)add-on attack/i, li = lines.findIndex((l, j) => j >= i && RE.test(l)), dep = l => /^\**/.exec(l)[0].length;
+      if (li < 0) return null;
+      let kids = "";                                                           // 뒤따르는 주석 줄(더 깊거나 같은 깊이 — 문서마다 다르다), 다른 연계 줄 · 얕은 줄에서 멈춘다
+      for (let j = li + 1; j < lines.length && dep(lines[j]) >= dep(lines[li]) && !LINK_EN.test(lines[j]) && !RE.test(lines[j]); j++) if (/determined by|Can change element|Will not change/i.test(lines[j])) kids += lines[j] + "\n";
+      const ll = RE.exec(lines[li]), words = ll[1].split(/[\s()]+/).filter(Boolean), at0 = words.map(atOf).find(Boolean) || null, byTrig = /determined by the original attack/i.test(kids);
+      if (!at0 && !wat && !byTrig) return null;
+      const hits = +(/\bx(\d)\b/.exec(ll[1]) || [])[1] || 1;
+      return { mult: mult0 / hits, magicK: at0 === MAGIC ? 1 : 0.95, hits, element: words.map(elOf).find(Boolean) || "", atk: at0 || wat, byTrig,
+        noFlex: !/Can change element by Kaleido or weapon type by Flexible/i.test(kids), noKal: !/Can change element by Kaleido/i.test(kids), turns: +(/\((\d+) turns?\)/i.exec(own) || [])[1] || null };
+    }
+    const mechs = ((sim.party[ci].actions || {}).skills || []).filter(x => x.kind === "mech" && T.is(x.sub, "link")), inner = x => x.name.replace(/^\(|\)$/g, "");
+    const named = [...desc.matchAll(new RegExp(`${LINK}\\(([^)]+)\\)`, "g"))].map(x => x[1]);
+    const mech = mechs.find(x => inner(x) === skName) || mechs.find(x => named.includes(inner(x))) || mechs.filter(x => String(skName).startsWith(inner(x))).sort((a, b) => b.name.length - a.name.length)[0] || (mechs.length === 1 ? mechs[0] : null);
+    const as = (mech && mech.attacks) || [], a = as.length === 1 ? as[0] : as.find(x => x.atk === wat);
+    if (!a) return null;
+    const any = a.atk === "ANY", at = any ? wat : a.atk;
+    if (!at) return null;
+    const md = String(mech.desc || ""), ok = md.split("\n").filter(l => /^\s*※/.test(l) && /적용 가능/.test(l) && !/여부/.test(l)).join("\n");
+    return { mult: any ? (at === MAGIC ? a.power : a.powerMax ?? a.power) : a.power, multMax: any ? undefined : a.powerMax, hits: a.hits || 1,
+      element: a.element || [...md.matchAll(/(\S+) 속성/g)].map(x => elOf(x[1])).find(Boolean) || "", anyElem: !!a.anyElem, atk: at, scope: /^\(/.test(a.scope || "") ? "" : a.scope || "",
+      single: /단일 공격 시/.test(md.split("\n")[0]), noFlex: !ok.includes(FLEX), noKal: !ok.includes(KAL) };
+  }
+  function linkTargets(sim, ci, u, sk) {
+    const pt = sim.party, all = pt.map((x, i) => i), side = j => (pt[j] && pt[j].pos !== "back" ? [j] : []);
+    const lines = String((sk && sk.desc) || "").split("\n"), sbNow = sim.sb.on || !!(sim.opt.peak && sim.opt.peak !== "repeat");
+    if (linkWiki(u)) {
+      const i = linkLine(lines, u), txt = [u.cond || u._cond || "", u.raw || "", i < 0 ? "" : lines[i].slice(lines[i].search(LINK_EN))].join("\n");
+      let x;
+      if (/Co-Op Stack/i.test(txt)) return [];
+      if (/Thorn Wedge/i.test(txt)) return [ci];
+      if (/left and right of the user/i.test(txt)) return [...side(ci - 1), ...side(ci + 1)];
+      if (/ally (?:to )?the right|nearest ally on the right/i.test(txt)) return side(ci + 1);
+      if (/all(?:y|ies) (?:to )?the left|nearest ally on the left/i.test(txt)) return side(ci - 1);
+      if ((x = /\b((?:[A-Za-z]+\/)+[A-Za-z]+) party members/.exec(txt))) { const ws = x[1].split("/").map(w => (WPS.find(e => e.en.toLowerCase() === w.toLowerCase()) || {}).ko || COMP_EN[w.toLowerCase()]).filter(w => WPK.has(w));
+        if (ws.length) return all.filter(j => ws.includes(wpOf(pt[j]))); }
+      if (/all party members|all allies/i.test(txt)) return all;
+      return [ci];
+    }
+    if (/^자신/.test(u.tc || "")) return [ci];
+    const heads = [];                                                         // 연계가 든 효과 줄마다 — 위의 「…에게」 줄과 그 앞줄(조건)
+    lines.forEach((l, i) => { if (!l.includes(LINK) || /^\s*※/.test(l) || /에게\s*$/.test(l)) return; let h = i - 1; while (h >= 0 && !/에게\s*$/.test(lines[h])) h--;
+      if (h >= 0) heads.push({ head: lines[h], sb: /스텔라 버스트 시/.test(lines[h - 1] || "") }); });
+    if (u.tc === "아군 전체") { const hs = heads.filter(h => /아군 전체/.test(h.head)); return hs.length && hs.every(h => h.sb) && !sbNow ? [] : all; }
+    const who = new Set();
+    for (const h of heads) {
+      if (/아군 전체|자신/.test(h.head) || (h.sb && !sbNow)) continue;
+      const tags = [...h.head.matchAll(/<([^>]+)>/g)].map(x => x[1]), wp = (/(\S+) 장착자/.exec(h.head) || [])[1];
+      if (wp && WPK.has(wp)) tags.push(wp);
+      for (const j of all) if (tags.some(t => tagOk(pt[j].c || {}, t) || wpOf(pt[j]) === t)) who.add(j);
+      if (/우측 아군/.test(h.head)) side(ci + 1).forEach(j => who.add(j));
+      if (/좌측 아군/.test(h.head)) side(ci - 1).forEach(j => who.add(j));
+    }
+    return [...who];
+  }
+  // 행동 경계에서 — 공격이 있었던 행동 뒤 추가 공격 1회(행동 소모형 버프를 깎기 전). trig = 그 행동의 마지막 공격 부분
+  function linkHit(sim, ci, sk, trig) {
+    const e = sim.live.get(`link|${ci}`);
+    if (!e || !trig || sk.kind === "link" || sk.role === "eot" || sk.role === "counter" || isEOT(sk)) return 0;
+    const L = e.u.link;
+    if (L.single && !/하나/.test(trig.scope || "")) return 0;
+    const at = L.byTrig && ATS.some(x => x.ko === trig.atk) ? trig.atk : L.atk, k = at === MAGIC && L.magicK ? L.magicK : 1;
+    if (!at) return 0;
+    const part = { power: L.mult * k, powerMax: L.multMax && L.multMax * k, hits: L.hits, element: L.anyElem && trig.element ? trig.element : L.element, atk: at, scope: L.scope || trig.scope || "", sureCrit: !!trig.sureCrit };
+    const d = attack(sim, ci, { name: `${LINK}: ${e.skill}${trig.sureCrit ? "!" : ""}`, kind: "link", desc: "", _noFlex: L.noFlex, _noKal: L.noKal }, part);
+    consumeBreak(sim, part, L.hits);
+    sim.lk[ci] = (sim.lk[ci] || 0) + d;
+    return d;
+  }
   const ZBUF = /ZONE에 따라 '(?:속성 공격력 UP|버프와 디버프)' 종류 변화|type of buff changes according to active elemental zone/i;
   const zoneAt = sim => { const z = sim.zone && (sim.zone.base || sim.zone); return z && z.up ? (z.up.types || []).map(atOf).find(Boolean) || null : null; };
   const zoneEl = sim => { const z = sim.zone && (sim.zone.base || sim.zone); return z && z.up ? (z.up.types || []).map(elOf).find(Boolean) || null : null; };
@@ -317,6 +413,16 @@
       if (h && !(h.sb && !sim.sb.on && !(sim.opt.peak && sim.opt.peak !== "repeat"))) {
         const turns = u.turns !== undefined ? u.turns : h.turns, until = turns == null ? Infinity : sim.turn + turns;
         for (const t of h.who) { const old = sim.live.get(`hits|${t}`); sim.live.set(`hits|${t}`, { ci: t, u: { k: "skill_hits" }, skill: skName, stacks: 1, until: old ? Math.max(old.until, until) : until }); }
+      }
+      return;
+    }
+    if (linkUnit(u)) {                                                        // 연계 — 대상 아군의 상태 칸(link|대상). 추가 공격은 act 의 행동 경계(linkHit)
+      const pw = L => (L.multMax || L.mult) * L.hits;
+      for (const t of linkTargets(sim, ci, u, sk)) {
+        const L = linkInfo(sim, ci, t, u, skName, sk), old = sim.live.get(`link|${t}`);
+        if (!L || (old && sim.opt.peak && pw(old.u.link) >= pw(L))) continue;
+        const turns = u.turns !== undefined ? u.turns : L.turns;
+        sim.live.set(`link|${t}`, { ci: t, u: { k: "link", link: L }, skill: skName, stacks: 1, until: turns == null ? Infinity : sim.turn + turns });
       }
       return;
     }
@@ -372,7 +478,7 @@
   function fxOf(sim, ci, extra) {
     const out = [];
     for (const e of sim.live.values()) {
-      if (e.ci !== ci || e.u.flat || e.u.k === "kaleido" || e.u.k === "flexible" || e.u.k === "skill_hits") continue;     // 고정 수치는 flatStats 가 스탯에 · 변화무쌍은 공격 속성(attackRaw) · 연격 수는 타수(act)
+      if (e.ci !== ci || e.u.flat || e.u.k === "kaleido" || e.u.k === "flexible" || e.u.k === "skill_hits" || e.u.k === "link") continue;     // 고정 수치는 flatStats 가 스탯에 · 변화무쌍은 공격 속성(attackRaw) · 연격 수는 타수(act) · 연계는 추가 공격(act)
       //   자원 스택(「Critical rate +3% per stack (max 5: +15%)」, perStack)은 원문대로 비례 — 반감 규칙은 같은 스킬 재사용 누적에만(11-09)
       const v = e.left ? e.left : typeof e.u.value === "number" && e.stacks > 1 ? (e.u.perStack ? e.u.value * e.stacks : +C.halfStack(e.u.value, e.stacks).toFixed(2)) : e.u.value;
       out.push({ ...e.u, value: v, base: undefined, _skill: e.skill });
@@ -396,10 +502,10 @@
   function attackRaw(sim, ci, sk, part) {
     const atk = toAttack(part, sk);
     if (/ZONE에 따라 공격 속성 변화/.test(sk.desc || "")) { const el = zoneEl(sim); if (el) atk.element = el; }   // 네코코 ES 유성군 · 적의 플람 얼터 등 14스킬(11-08)
-    { const fl = sim.live.get(`flex|${ci}`); if (fl && !FLEX_IMMUNE.test(sk.desc || "")) { const at = fl.u.at === "zone" ? zoneAt(sim) : fl.u.at;   // 임기응변
+    { const fl = sim.live.get(`flex|${ci}`); if (fl && !sk._noFlex && !FLEX_IMMUNE.test(sk.desc || "")) { const at = fl.u.at === "zone" ? zoneAt(sim) : fl.u.at;   // 임기응변
       // 위력 기반도 바뀐다 — 베기 · 찌르기 · 타격 = 힘, 마 = 지능. 스킬 자체 「힘/지능/속도에 따른 위력」이 있으면 그것(딩님 184648, 11-09 전엔 종류만 바꿔 힘 물리 식 그대로)
       if (at && at !== atk.atk) { atk.dep = OWN_DEP.test(sk.desc || "") ? toAttack({ ...part, atk: at }, sk).dep : at === "마법" ? "magic" : "pwr"; atk.atk = at; } } }
-    { const kl = sim.live.get(`kal|${ci}`); if (kl && !KAL_IMMUNE.test(sk.desc || "")) { const el = kl.u.el === "zone" ? zoneEl(sim) : kl.u.el; if (el) atk.element = el; } }   // 변화무쌍
+    { const kl = sim.live.get(`kal|${ci}`); if (kl && !sk._noKal && !KAL_IMMUNE.test(sk.desc || "")) { const el = kl.u.el === "zone" ? zoneEl(sim) : kl.u.el; if (el) atk.element = el; } }   // 변화무쌍
     // 상태 효과 고정값(힘 · 지능 · 속도 +N) = 딩님 계산기 14~16행 — 공격력에는 더하고 (1 + 힘/32) 배율에는 안 넣는다 → party_calc flatFx(근사 stacks · 정밀 fx.flat).
     //   전에는 기본 스탯에 더해 배율까지 키웠다(영랑 모드 힘 +100 등, 11-04). 행운은 크리율에만 쓰여 스탯에 그대로
     const flatOf = i => { const { lck, ...fl } = flatStats(sim, i); return { m: lck ? withFlat(sim.party[i], { lck }) : sim.party[i], fl }; };
@@ -452,12 +558,13 @@
     sim.res[ci] -= cost;
     if (!depth) { const k = `${ci}|${sk.name}`; sim.first[ci] = !sim.used.get(k); sim.used.set(k, (sim.used.get(k) || 0) + 1); }   // 「전투 1회 · 첫 사용」 조건(11-04)
     let d = 0, lastAtk = null, hadAtk = false;
+    const lk0 = sim.lk[ci] || 0;
     const onHit = () => { for (const u of sim.onHit[ci] || (sim.onHit[ci] = equipOnHit(m, sim.opt))) apply(sim, ci, u, "장비: " + u._equip); };   // 장비 「공격 시」
     // 연격 수 UP — 고른 스킬 1회(행동)에 1타 더: 그 행동에서 처음 치는 공격 부분에, 그 시점에 걸려 있으면(같은 스킬이 공격 앞에서 건 것 포함 — 스텝 순서 규칙 그대로).
     //   일반 공격(대체 기술 포함) · 턴 종료 · 반격 공격은 고른 스킬이 아니라 제외. 연속 실행(exec)은 한 행동이라 하위 스킬과 합쳐 1타
     if (!depth) sim.xh = sk.kind !== "normal" && sk.role !== "basic" && sk.role !== "eot" && sk.role !== "counter" && !isEOT(sk);
     let hitN = 0;                                                             // 다단 강화 — 이 행동(move)에서 이미 친 타수. 행동 경계에서 0(위키 Multipliers: 1 move 안 모든 부분 · 반복은 이어짐)
-    const endAction = () => { if (hadAtk) { consume(sim, ci, lastAtk); onHit(); } hadAtk = false; hitN = 0; };
+    const endAction = () => { if (hadAtk) { d += linkHit(sim, ci, sk, lastAtk); consume(sim, ci, lastAtk); onHit(); } hadAtk = false; hitN = 0; };   // 연계 추가 공격은 행동 소모형 버프를 깎기 전에
     const steps = sk.steps ? sk.steps.slice() : [...(sk.attacks || []).map((a, i) => ({ t: "atk", i, cond: a.cond })), ...(sk.fx || []).map((u, i) => ({ t: "fx", i, cond: u.cond }))];   // 복사 — 분할 처리가 done 표식을 찍는다
     const fxUnits = sk.fx || [];
     for (let k = 0; k < steps.length; k++) {
@@ -468,7 +575,7 @@
       const s2 = steps[k];
       if (!condOk(sim, m, s2.cond, via)) continue;
       for (let r = 0; r < reps; r++) {
-        if (s2.t === "fx") { const u = fxUnits[s2.i]; if (u && (!u.timing || u.timing === "use")) apply(sim, ci, { ...u, cond: undefined }, sk.name, sk); }
+        if (s2.t === "fx") { const u = fxUnits[s2.i]; if (u && (!u.timing || u.timing === "use")) apply(sim, ci, { ...u, cond: undefined, ...(linkUnit(u) ? { _cond: u.cond } : {}) }, sk.name, sk); }
         else if (s2.t === "atk") {
           const a = sk.attacks[s2.i]; if (!a) continue;
           let xh = 0;
@@ -494,7 +601,7 @@
     }
     endAction();
     if (!depth) sim.xh = false;
-    if (!depth) sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: Math.round(d), ...(inSB ? { sb: true } : {}) });
+    if (!depth) sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: Math.round(d), ...(inSB ? { sb: true } : {}), ...(sim.lk[ci] > lk0 ? { link: Math.round(sim.lk[ci] - lk0) } : {}) });
     if (scored && !depth) sim.dmg[sim.turn] = (sim.dmg[sim.turn] || 0) + d;
     if (scored && !depth) (sim.byMember[sim.turn] = sim.byMember[sim.turn] || [])[ci] = ((sim.byMember[sim.turn] || [])[ci] || 0) + d;
     if (!depth && !inSB) sbFire(sim, scored);                                // 행동 경계 — 게이지가 찼으면 스텔라 버스트
@@ -660,7 +767,7 @@
     };
     // 장면 복사 — 효과 칸(live)만 얕게 베낀다(act 가 새 칸을 넣고 브레이크 남은 수를 깎는다)
     const fork = base => { const sim = { ...base, live: new Map([...base.live].map(([k, e]) => [k, { ...e }])), res: base.res.slice(), first: base.first.slice(), used: new Map(),
-      dmg: [], byMember: [], log: [], onHit: [], sb: { ...base.sb } }; return sim; };
+      dmg: [], byMember: [], log: [], onHit: [], sb: { ...base.sb }, lk: base.party.map(() => 0) }; return sim; };
     // o.zoneOnly(11-08) = 허용 존 이름 목록(「Torn Earth (Stance)」) — 실전 장비(격진 · 진의 주문 · 존 광석)가 가리키는 존만 고른다(다른 존은 후보에서 뺀다, 존 없음은 남김).
     //   허용 존을 펼 스킬이 스킬칸에 없으면 존 없음이 되어, 스킬칸 탐색(optimizePeak)이 그 존 전개 스킬(진의 주문 부여 등)을 넣는 쪽으로 간다
     const zKey = s => (s || "").replace(/ Stance$/, "");
@@ -680,13 +787,13 @@
           const n = sk.name;
           if (isEOT(sk) || (mode === "repeat" && onceSkill(sk))) continue;
           if (pin[ci] && !pin[ci].includes(n)) continue;
-          const d = act(fork(base), ci, n, true);
-          if (d > best.d) best = { d, name: n };
+          const f = fork(base), d = act(f, ci, n, true);
+          if (d > best.d) best = { d, name: n, link: f.lk[ci] || 0 };
         }
         const eot = eots[ci].reduce((s, n) => s + act(fork(base), ci, n, true), 0);   // 켜진 턴 종료 공격 1회씩
-        return { d: best.d + eot, name: best.name, eot };
+        return { d: best.d + eot, name: best.name, eot, link: best.link || 0 };
       });
-      const score = per.reduce((s, x) => s + x.d, 0), cand = { score, perMember: per.map(x => x.d), attackOf: per.map(x => x.name), eotOf: per.map(x => x.eot), zone: base.zone, live: base.live };
+      const score = per.reduce((s, x) => s + x.d, 0), cand = { score, perMember: per.map(x => x.d), attackOf: per.map(x => x.name), eotOf: per.map(x => x.eot), linkOf: per.map(x => x.link), zone: base.zone, live: base.live };
       if (zAllow(base.zone) && (!top || score > top.score)) top = cand;
     }
     return top;

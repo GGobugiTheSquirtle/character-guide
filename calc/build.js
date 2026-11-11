@@ -228,16 +228,20 @@
   // 고점 빌드(2026-11-05, 사용자 「4개 다 활용 · 고점 기준 · 단순하게」) — 점수 = scenario.peak(반복 고점: 스킬칸 4개 효과 전부 최대 누적 + 가장 센 공격 1회, 1회성 끔).
   //   행동 계획 · 턴 · 지속 · 자원을 안 본다. 스킬칸 = 한 칸 · 두 칸 좌표 하강, 장비 = 고점 장면의 효과 · 공격을 넣은 partyGear(주력 가중 시작 갈래 포함). 순간 최고점(1회성 포함)은 함께 보고
   //   conf = { gear, grantsOf, tick, carryStarts(기본 켬) } → { team, slots, scores: { repeat, burst }, perMember, attackOf, zone, evals }
+  //   계산식 묶음별 빌드(11-11, 사용자 「가장 센 공격은 애매 — 계산식별로」): conf.pin = { 멤버 번호: [스킬 이름…] } 그 멤버의 공격을 그 스킬들로 고정,
+  //     conf.focus = 멤버 번호 → 목표 = 그 멤버 몫(나머지는 1e-6 동률 깨기) · 장비는 항상 그 멤버 주력 가중. conf.pairMoves: false = 두 칸 동시 이동 생략
   function optimizePeak(party, opt, conf = {}) {
-    conf = { passes: 3, cond: true, carryStarts: true, ...conf };          // 후보에 자원 소비 스킬도 — 고점 = 자원이 찬 상태
+    conf = { passes: 3, cond: true, carryStarts: true, pairMoves: true, ...conf };   // 후보에 자원 소비 스킬도 — 고점 = 자원이 찬 상태
+    const focus = conf.focus != null ? conf.focus : null, fid = focus != null ? party[focus].c.id : null;
+    const scoreOf = r => focus == null ? r.score : r.perMember[focus] + 1e-6 * (r.score - r.perMember[focus]);
     const gslots = (conf.gear && conf.gear.conf && conf.gear.conf.grastaSlots) || 4;
     let evals = 0;
-    const peakOf = (t, mode) => { evals++; return S.peak(t, opt, { mode }); };   // 메모 없음 — 장면이 평가마다 달라 거의 안 맞고 키만 쌓였다(8분 뒤 메모리 부족)
+    const peakOf = (t, mode) => { evals++; return S.peak(t, opt, { mode, pin: conf.pin }); };   // 메모 없음 — 장면이 평가마다 달라 거의 안 맞고 키만 쌓였다(8분 뒤 메모리 부족)
     let team = party.map(m => {
       const x = withGrants({ ...m, gslots }, conf), sl = x.slots && x.slots.length ? x.slots.slice(0, 4) : initialSlots(x, conf);
       return { ...fitGrasta(x, sl), slots: sl };
     });
-    let cur = peakOf(team).score;
+    let cur = scoreOf(peakOf(team));
     const slotPass = cf => {
       for (let pass = 0; pass < cf.passes; pass++) {
         let moved = false;
@@ -249,7 +253,7 @@
           let best = null;
           for (const ch of moves) {
             const t2 = team.map((m, i) => { if (i !== ci) return m; const sl = m.slots.slice(); for (const [k, n] of ch) sl[k] = n; return { ...fitGrasta(m, sl), slots: sl }; });
-            const q = peakOf(t2).score;
+            const q = scoreOf(peakOf(t2));
             if (q > (best ? best.q : cur) * (1 + 1e-9)) best = { t2, q };
           }
           if (best) { team = best.t2; cur = best.q; moved = true; }
@@ -259,8 +263,8 @@
       }
     };
     const O = conf.gear && (root.AEOpt || require("./optimizer.js"));
-    const gearPass = carry => {
-      const pk = peakOf(team);
+    const gearPass = seed => {
+      const carry = seed || fid, pk = peakOf(team);
       const members = team.map((m, ci) => {
         const sk = (m.actions.skills || []).find(x => x.name === pk.attackOf[ci]), part = sk && (sk.attacks || [])[0];
         return { ...m, fx: S.liveFx(pk.live, ci), attack: part ? S.toAttack(part, sk) : undefined, _contrib: null };
@@ -274,8 +278,8 @@
       evals += g.evals;
       const prev = { team, cur };
       team = team.map((m, i) => { const x = g.team[i]; return { ...m, weapon: x.weapon, armor: x.armor, badges: x.badges, grasta: x.grasta, special: (x.gear && x.gear.special) || [] }; });
-      cur = peakOf(team).score;
-      if (!carry && cur < prev.cur * (1 - 1e-9)) ({ team, cur } = prev);   // 정적 식은 근사 — 고점이 내려가면 받지 않는다(주력 가중 갈래는 다음 갈래로 이어지니 그대로)
+      cur = scoreOf(peakOf(team));
+      if (!seed && cur < prev.cur * (1 - 1e-9)) ({ team, cur } = prev);   // 정적 식은 근사 — 고점이 내려가면 받지 않는다(주력 가중 갈래는 다음 갈래로 이어지니 그대로)
     };
     slotPass(conf);
     if (conf.gear) {
@@ -292,10 +296,12 @@
       }
       ({ team, cur } = top);
       // 두 칸 동시는 최고 갈래에서 한 번만(멤버당 후보² 이라 갈래마다 돌리면 수천 번)
-      const keep = { team, cur };
-      slotPass({ ...conf, via: !!conf.grantsOf, passes: 1, pair: true });
-      if (team !== keep.team) gearPass(null);
-      if (cur < keep.cur) ({ team, cur } = keep);
+      if (conf.pairMoves) {
+        const keep = { team, cur };
+        slotPass({ ...conf, via: !!conf.grantsOf, passes: 1, pair: true });
+        if (team !== keep.team) gearPass(null);
+        if (cur < keep.cur) ({ team, cur } = keep);
+      }
     } else slotPass({ ...conf, via: !!conf.grantsOf, passes: 2, pair: true });
     const r = peakOf(team), rb = peakOf(team, "burst");
     return { team, slots: team.map(m => m.slots), via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)),

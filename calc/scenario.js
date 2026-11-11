@@ -572,6 +572,7 @@
   }
   function peak(party, opt, conf = {}) {
     const mode = conf.mode || "repeat";
+    const pin = conf.pin || {};   // { 멤버 번호: [스킬 이름…] } — 그 멤버의 공격 후보를 이 스킬들로 고정(계산식 묶음별 빌드). 없으면 가장 센 공격
     const o = { ...opt, cond: true, peak: mode, lunatic: true, breakOn: true, maxHp: true };
     const skip = u => mode === "repeat" && (u.timing === "sb" || ONE_SHOT.test(u.cond || ""));
     const lives = party.map(m => liveOf(m, mode));
@@ -633,6 +634,7 @@
         for (const sk of pool) {
           const n = sk.name;
           if (isEOT(sk) || (mode === "repeat" && onceSkill(sk))) continue;
+          if (pin[ci] && !pin[ci].includes(n)) continue;
           const d = act(fork(base), ci, n, true);
           if (d > best.d) best = { d, name: n };
         }

@@ -674,6 +674,10 @@
   //   존 = 파티가 펼 수 있는 존 중 점수가 가장 높은 것(+ 각성 단위가 있으면 각성). 그 상태에서 멤버마다 스킬칸 · 일반 공격 중 가장 센 것 1회 → 합.
   //   conf.mode "repeat"(기본, 반복 고점) = 1회성(첫 턴 · 첫 사용 · 전투 1회 · 스텔라 버스트 시점 효과)을 끔 / "burst" = 순간 최고점. 스텔라 버스트 기술 자체는 아직 안 넣는다(따로 다룰 것)
   const ONE_SHOT = /first turn|first time|once per battle|first \d+ turns|최초|첫 턴|전투 중 1회|1회 한정|현재 턴 수 1일/i;
+  // 전투 시작 + 지속이 정해진 효과(「(3 moves)」 · turns · times)도 1회성 — 다시 걸 수 없다(11-12 계산 근거 검토: 히나 「Battle start self-critical x3」 크리 +100% 가
+  //   반복 고점에 계속 켜져 있었다 — LLM 층 단위가 지속을 놓친 3건 포함). 지속 없는 전투 시작 효과(상시)는 그대로
+  const BATTLE_START = /battle start|start of battle|전투 시작/i, LIMITED = /\(\d+\s*(?:moves?|turns?|actions?|회|턴)\)/i;
+  const startLimited = (u, sk) => BATTLE_START.test(u.cond || "") && !!(u.turns || u.times || LIMITED.test(u.raw || "") || LIMITED.test((sk && sk.desc) || ""));
   // 스킬 자체가 전투 1회(11-09 hinaden) — 위키 「Can only be used once per battle」 · 「can be activated once per battle」 · 공지 「전투 중 한 번만 발동 가능」.
   //   반복 고점의 공격 후보에서 뺀다(테오도로스 「역전의 징조」 4800% 가 매 턴 공격으로 들어가 고점 88.5억이 됐다 — 실전은 HP 10% 이하 때 일반 공격이 한 번 바뀌는 기술)
   const ONCE_SK = /can only be used once per battle|can be activated once per battle|전투 중 (?:한 번|1회)만 (?:발동|사용) 가능/i;
@@ -729,7 +733,7 @@
     const mode = conf.mode || "repeat";
     const pin = conf.pin || {};   // { 멤버 번호: [스킬 이름…] } — 그 멤버의 공격 후보를 이 스킬들로 고정(계산식 묶음별 빌드). 없으면 가장 센 공격
     const o = { ...opt, cond: true, peak: mode, lunatic: true, breakOn: true, maxHp: true };
-    const skip = u => mode === "repeat" && (u.timing === "sb" || ONE_SHOT.test(u.cond || ""));
+    const skip = (u, sk) => mode === "repeat" && (u.timing === "sb" || ONE_SHOT.test(u.cond || "") || startLimited(u, sk));
     const lives = party.map(m => liveOf(m, mode));
     // 반격(role counter, 「X - Counter」)도 EOT 처럼 — 발동원이 켜져 있으면 턴마다 1회 더 친다(보스는 매 턴 공격한다고 본다).
     //   공격 후보로 두면 반격이 스킬 대신 「가장 센 공격」으로 잡혔고(질퍼니 AS Crescentia - Counter), 빼기만 하면 반격 빌드 몫이 사라졌다(11-09 시험)
@@ -737,7 +741,7 @@
     const units = party.map((m, ci) => {
       const out = [];
       for (const sk of m.actions.skills || []) if ((lives[ci].has(sk.name) && sk.kind !== "normal") || eots[ci].includes(sk.name))   // 일반 공격은 바뀐 스킬 연결용(효과는 전처럼 안 건다)
-        for (const u0 of sk.fx || []) { const u = normZone(u0, sk); if (!skip(u)) out.push({ u, sk }); }
+        for (const u0 of sk.fx || []) { const u = normZone(u0, sk); if (!skip(u, sk)) out.push({ u, sk }); }
       return out.sort((a, b) => (+a.u.value || 0) - (+b.u.value || 0));
     });
     // 각성할 수 있는 파티는 각성 상태로 본다(11-09) — 각성 스킬은 대개 「전투 1회: awaken Another Zone」이라 반복 고점이 꺼 왔고, 실제로는 위키 「Another Zone」 문서를

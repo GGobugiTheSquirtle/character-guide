@@ -626,17 +626,26 @@
       beams = next.sort((x, y) => y.q - x.q).filter(x => { const k = x.team.map(m => m.c.id).sort().join(","); return !seen.has(k) && seen.add(k); }).slice(0, s === open - 1 ? (conf.top || 5) : beamN);
     }
     // 그라스타 단계(conf.gear — 워커가 무기 고정 · 방어구 · 배지 없는 풀을 준다, 11-12 사용자 「장비 디테일은 못 맞춰도 그라스타까지는」) — 최종 상위 조합만, 갈래 하나로 맞춘 뒤 다시 줄 세운다
+    //   화면은 이 단계를 따로(워커 mode "recgear" = gearCombo, 조합마다 병렬) 돌린다 — 여기는 노드 · 테스트용
     if (conf.gear) beams = beams.map((b, k) => {
-      // 스킬칸 그대로 장비만(passes · branchPasses 0) — 칸을 다시 고르면 조합당 44초 → 17초 · 점수 차 0.02%(11-12 애쉬티어 조합 실측)
-      const r = optimizePeak(b.team, opt, { passes: 0, branchPasses: 0, pairMoves: false, carryStarts: false, stateMoves: false, rebranch: false, focus, gear: conf.gear, grantsOf: conf.grantsOf });
+      const r = gearCombo(b.team, opt, { ...conf, focus });
       evals += r.evals;
       if (conf.tick) conf.tick(`그라스타 맞추기 ${k + 1}/${beams.length}`);
-      return { team: r.team, q: scoreOf({ score: r.scores.repeat, perMember: r.perMember }), q0: b.q, perMember: r.perMember };
+      return { team: r.team, q: r.q, q0: b.q, perMember: r.perMember };
     }).sort((x, y) => y.q - x.q);
         return { combos: beams.map(b => ({ ids: b.team.map(m => m.c.id), slots: b.team.map(m => m.slots), q: b.q, q0: b.q0 ?? null, perMember: b.perMember || null,
       grasta: conf.gear ? b.team.map(m => (m.grasta || []).filter(Boolean).map(g => g.name)) : null })), evals };
   }
 
+
+  // 추천 조합 하나에 그라스타 맞추기(파티원 추천의 그라스타 단계) — 스킬칸 그대로 장비만(passes · branchPasses 0):
+  //   칸을 다시 고르면 조합당 44초 → 17초 · 점수 차 0.02%(11-12 애쉬티어 조합 실측). conf = { gear, grantsOf, focus } → { team, q, perMember, evals }
+  function gearCombo(team, opt, conf) {
+    const focus = conf.focus ?? null;
+    const r = optimizePeak(team, opt, { passes: 0, branchPasses: 0, pairMoves: false, carryStarts: false, stateMoves: false, rebranch: false, focus, gear: conf.gear, grantsOf: conf.grantsOf });
+    const q = focus == null ? r.scores.repeat : r.perMember[focus] + 1e-6 * (r.scores.repeat - r.perMember[focus]);
+    return { team: r.team, q, perMember: r.perMember, evals: r.evals };
+  }
 
   // 기회비용 — 칸(무기 · 방어구 · 그라스타 · 배지 · 스킬)마다 「빼면 A 점수가 얼마 주나」를 자기 몫 / 파티원 몫으로. 계획은 고정(스킬은 그 칸을 안 씀으로)
   function contributions(team, plan, opt) {
@@ -667,7 +676,7 @@
     return { base: base.score, perMember: base.perMember, items: out, backItems };
   }
 
-  const api = { optimize, optimizePeak, optimizeSeq, gearContrib, fxContrib, muteTeam, recommend, candidates, initialSlots, useful, contributions, grantSkill, withGrants, fitGrasta };
+  const api = { optimize, optimizePeak, optimizeSeq, gearContrib, fxContrib, muteTeam, recommend, gearCombo, candidates, initialSlots, useful, contributions, grantSkill, withGrants, fitGrasta };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEBuild = api;
 })(typeof window !== "undefined" ? window : globalThis);

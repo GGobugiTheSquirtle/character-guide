@@ -628,7 +628,7 @@ function drawRec() {
       el("label", { class: "msg" }, el("input", { type: "checkbox", id: "recF", checked: nf !== cand.length && nf > 0 }), ` 고르기 창 필터로 후보 좁히기 (${nf}명 / 전체 ${cand.length}명)`),
       el("button", { class: "btn go", id: "recGo", text: `${4 - ids.length}칸 추천`, onclick: runRec }),
       el("button", { class: "btn", text: "닫기", onclick: () => { box.hidden = true; if (recWorker) { recWorker.terminate(); recWorker = null; } } })),
-    el("div", { class: "msg", id: "recMsg", style: "margin-top:6px", text: "고정 멤버의 스킬칸 = 행동 칸에 넣은 스킬(나머지는 자동) · 순서 무관(고점) 기준 · 장비 = 무기 종류별 최고 공격력 무기(방어구 · 배지 없음), 「그라스타까지」면 상위 조합만 그라스타도(광석 없이 · 스킬칸 그대로) — 고른 뒤 「계산」으로 장비 전부" }),
+    el("div", { class: "msg", id: "recMsg", style: "margin-top:6px", text: "고정 멤버의 스킬칸 = 행동 칸에 넣은 스킬(나머지는 자동) · 순서 무관(고점) 기준 · 장비 = 무기 종류별 최고 공격력 무기(방어구 · 배지 없음), 「그라스타까지」면 상위 조합만 그라스타도(광석 포함 · 스킬칸 그대로) — 고른 뒤 「계산」으로 장비 전부" }),
     el("div", { id: "recList" }));
   if (recOut) drawRecList();
 }
@@ -652,7 +652,7 @@ function runRec() {
   };
   recWorker.onerror = e => { $("recGo").disabled = false; m.textContent = "추천 실패: " + (e.message || "워커 오류"); };
   recWorker.postMessage({ mode: "recommend", team, cands: cand.map(c => ({ c, cc: DB.chars[c.id] })), opt, grasta: withG,
-    db: withG ? { weapons: DB.weapons, armor: DB.armor, grasta: DB.grasta, badges: DB.badges } : { weapons: DB.weapons }, conf: { open: 4 - ids.length, focus: goal === "" ? null : +goal } });
+    db: withG ? { weapons: DB.weapons, armor: DB.armor, grasta: DB.grasta, badges: DB.badges, ores: DB.ores } : { weapons: DB.weapons }, conf: { open: 4 - ids.length, focus: goal === "" ? null : +goal } });
 }
 function drawRecList() {
   const box = $("recList"); box.replaceChildren();

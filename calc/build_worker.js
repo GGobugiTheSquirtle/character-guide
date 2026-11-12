@@ -18,13 +18,12 @@ async function recommend(d) {
     const atks = (x.cc.attacks || []).filter(a => a.mult || a.multMax), attack = AEOpt.attackPool(atks, false)[0] || atks[0];
     return { c: x.c, cc: x.cc, pos: "front", fx: [], atks, attack, weapon: AEParty.bestWeapon(d.db.weapons, x.cc.weapon, attack && attack.dep === "magic"), armor: null, special: [], grasta: [], badges: [], stats: x.cc.stats, zones: x.cc.zones || [], actions: acts[i], lock: [] };
   }).filter(Boolean);
-  // 그라스타 단계(d.grasta) — 무기 = 지금 무기(기본 최강) 고정, 방어구 · 배지 없음, 그라스타(특수 칸 포함 · 광석 없이)만 후보.
-  //   광석 조합까지 넣으면 후보 ~7,000개라 조합당 17초 → 빼면 3.2초 · 점수 −2.7%(11-12 실측) — 추천은 순위용, 광석은 「계산」에서
-  const db = { ...d.db, ores: null };
+  // 그라스타 단계(d.grasta) — 무기 = 지금 무기(기본 최강) 고정, 방어구 · 배지 없음, 그라스타(특수 칸 · 광석 조합 포함)만 후보. 조합당 ≈17초.
+  //   광석을 빼면 3.2초지만 REJECTED(11-12): 광석 없는 그라스타 = 잠재 연성 최대로 세서 「물의 재앙 타격 ×2」 같은 세팅이 뽑혔다 — 사용자 「통증의 힘 + 아무 광석만 해도 저거보다 세다」
   const gear = {};
   if (d.grasta) {
     const cache = new Map();
-    const poolsOf = m => cache.get(m.c.id) || cache.set(m.c.id, { ...AEOpt.ownedPools(db, m.cc, m.c.traits, null).pools, weapons: [m.weapon].filter(Boolean), armor: [], badges: [] }).get(m.c.id);
+    const poolsOf = m => cache.get(m.c.id) || cache.set(m.c.id, { ...AEOpt.ownedPools(d.db, m.cc, m.c.traits, null).pools, weapons: [m.weapon].filter(Boolean), armor: [], badges: [] }).get(m.c.id);
     gear.gear = { poolsOf, conf: { grastaSlots: 4, badgeSlots: 0, counts: null } };
     gear.grantsOf = m => poolsOf(m).grasta.filter(g => g.grant && !g.ore);
   }

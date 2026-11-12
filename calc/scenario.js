@@ -67,12 +67,13 @@
   const normalOf = m => (m.actions.skills || []).find(s => s.kind === "normal" && s.sub === "일반 공격");
   const transformOf = m => (m.actions.skills || []).find(s => s.kind === "normal" && s.sub === "변화한 일반 공격");
   const transformAt = m => { const n = normalOf(m), u = n && (n.fx || []).find(x => x.name === "스킬 변화"); const t = u && /(\d+) 이상 축적/.exec(u.cond || ""); return t ? +t[1] : 1; };
-  // 고정 수치 스탯(힘 +100, flat) — % 가 아니라 스탯에 더한다(party_calc 는 % 만 받는다). 받는 쪽: 「자신」 = 시전자만, 그 밖 아군 편 = 전원
+  // 고정 수치 스탯(힘 +100, flat) — % 가 아니라 스탯에 더한다(party_calc 는 % 만 받는다). 받는 쪽: 「자신」 · 대상 없음 = 시전자만(party_calc allyScope 와 같은 규칙), 그 밖 아군 편 = 전원.
+  //   11-12 전엔 대상 없음 = 전원이라 테오도로스 투지(「Power +5 per stack」 × 99, 위키 원천 대상 빈 고정 수치 53개 전부 본인 효과)가 파티 전원 힘 +495 가 됐다
   const FLAT = { "힘": "pwr", "지능": "int", "속도": "spd", "행운": "lck" };
   function flatStats(sim, ci) {
     const add = {};
     for (const e of sim.live.values()) {
-      if (!e.u.flat || e.u.k !== "stat_pct" || e.u.dir !== "UP" || sideOf(e.u) !== "a" || (/^자신/.test(e.u.tc || "") && e.ci !== ci)) continue;
+      if (!e.u.flat || e.u.k !== "stat_pct" || e.u.dir !== "UP" || sideOf(e.u) !== "a" || ((!e.u.tc || /^자신/.test(e.u.tc)) && e.ci !== ci)) continue;
       for (const st of e.u.stats || []) if (FLAT[st]) add[FLAT[st]] = (add[FLAT[st]] || 0) + (e.u.value || 0) * (e.u.perStack ? e.stacks || 1 : 1);   // 자원 스택(「Power +5 per stack」 × 99)은 비례
     }
     return add;

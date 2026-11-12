@@ -136,6 +136,17 @@
   .slot-no { font-size: 10px; color: var(--muted); }
   .slot-name { font-size: 13px; font-weight: 600; margin: 2px 0 4px; }
   .slot-ctl { display: flex; gap: 4px; }
+  .seq-pal { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin: 4px 0; }
+  .seq-who { min-width: 6em; font-size: 12px; }
+  .slot-btn.seq-atk { border-color: #6b3a3c; color: var(--text); }
+  .seq-list { margin: 8px 0; display: grid; gap: 4px; }
+  .seq-turn { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .seq-t { font-size: 11px; color: var(--muted); min-width: 2.6em; }
+  .seq-cell { display: inline-flex; align-items: center; gap: 2px; }
+  .chip.seq-step { background: transparent; font: inherit; font-size: 12px; }
+  .chip.seq-step.active { background: var(--gold); color: #2a2317; }
+  .seq-tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 4px 0; }
+  tr.seq-goal td { background: rgba(212,175,55,0.08); }
   .slot-btn { background: transparent; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; font-size: 11px; padding: 1px 6px; cursor: pointer; }
   .slot-btn:hover { color: var(--text); border-color: var(--gold-dim); }
   .slot-btn:disabled, .view-btn:disabled { opacity: 0.45; cursor: not-allowed; }
@@ -1888,10 +1899,11 @@ const CALC_ASSUME = "정밀 = 단계마다 소수점 버림(딩님 「AE 대미�
   "가정 — 스탯: 최대 레벨 + 성도 각성 + 명암 255 + 다른 스타일 보드 완성 보너스(캐릭터창 값을 넣으면 그것) · 무작위 배지는 주 스탯 최대치 · 부 스탯 제외 · 무기: 위키 최대 강화 · 스킬 배율: 위키 최대 레벨(범위면 기본값, 「조건부 효과 포함」이면 위값) · 크리: 행운/16% + 크리율 가산 · " +
   "중첩: 위키 Damage Formula/Multipliers(체감 · 반감 · 가산 · 곱). 「특정 아군」 대상 효과 · 고유 축적 · 정신 통일 비율(0.23%/MP 고정)은 단순화 · 미반영. 특수 광석은 글래스터 하나에 1개(전체 장비 모드만 — 보유 목록엔 광석 칸이 없다) · 특수 칸 = 그 캐릭터의 VC · Extreme(명암 255) · Special.";
 // 계산 근거 펼침 — d = memberDamage 결과(o · why · whyOff). head = 요약 앞 글, extra = 스탯 줄 앞에 넣을 줄, ko = 출처 줄의 스킬 이름을 한국어로(파티 빌드)
+const AFF_KO = { weak: "약점", norm: "보통", resist: "경감", null: "무효", absorb: "흡수" };   // party_calc.affinityOf 키 → 화면(표시만)
 function whyDetails(d, head, extra, ko) {
   const o = d.o, pctS = x => (x >= 0 ? "+" : "") + Math.round(x * 100) + "%", tr = ko || (x => x);
   const why = el("details", { class: "skko-raw" });
-  why.appendChild(el("summary", { text: `${head ? head + " — " : ""}힘 ${pctS(o.buff.pwr)} · 지능 ${pctS(o.buff.int)} · 속도 ${pctS(o.buff.spd)} · 저항↓ ${/magic/.test(o.dep || "") ? `마법 ${pctS(o.resDown.magic)}` : `물리 ${pctS(o.resDown.phys)}`} 속성 ${pctS(o.resDown.type)} · 존 ${pctS(o.zone)} · ${o.affinity}` }));
+  why.appendChild(el("summary", { text: `${head ? head + " — " : ""}힘 ${pctS(o.buff.pwr)} · 지능 ${pctS(o.buff.int)} · 속도 ${pctS(o.buff.spd)} · 저항↓ ${/magic/.test(o.dep || "") ? `마법 ${pctS(o.resDown.magic)}` : `물리 ${pctS(o.resDown.phys)}`} 속성 ${pctS(o.resDown.type)} · 존 ${pctS(o.zone)} · 상성 ${AFF_KO[o.affinity] || o.affinity}` }));
   const off = d.whyOff || [];
   why.appendChild(document.createTextNode([...(extra || []), `스탯 힘 ${o.stat.pwr} · 지능 ${o.stat.int} · 속도 ${o.stat.spd} · 행운 ${o.stat.lck} · MP ${o.stat.mp} · 무기 공격력 ${o.weapon.atk} · 마법 공격력 ${o.weapon.matk}`,
     `배율 ${Math.round(o.skillMult * 100)}% · 그룹 ${o.groups.map(pctS).join(" / ")} · 장비 가산 ${o.equip.map(pctS).join(" + ") || "없음"} · 페인/독 ×1.3^${o.punish} · 단일 ${o.single ? "×1.1" : "-"}`,
@@ -2262,7 +2274,7 @@ const buildInWorker = (msg, tick, job = {}) => new Promise((res, rej) => {
     return setTimeout(() => {                                      // 멈추기 전에 「화면이 잠시 멈춥니다」를 한 번 그린다
       const conf = { ...(msg.conf || {}), tick };
       if (msg.gear) { const cache = new Map(); conf.gear = { poolsOf: m => cache.get(m.c.id) || cache.set(m.c.id, AEOpt.ownedPools(msg.db, m.cc, m.c.traits, msg.inv).pools).get(m.c.id), conf: msg.gearConf }; conf.grantsOf = m => conf.gear.poolsOf(m).grasta.filter(g => g.grant && !g.ore); }
-      try { const { team, ...r } = (msg.mode === "peak" ? AEBuild.optimizePeak : AEBuild.optimize)(msg.team, msg.opt, conf); res({ ...r, gear: team.map(m => ({ weapon: m.weapon, armor: m.armor, grasta: m.grasta || [], badges: m.badges || [], special: m.special || [] })) }); }
+      try { const { team, ...r } = msg.mode === "seq" ? AEBuild.optimizeSeq(msg.team, msg.seq, msg.opt, conf) : (msg.mode === "peak" ? AEBuild.optimizePeak : AEBuild.optimize)(msg.team, msg.opt, conf); res({ ...r, gear: team.map(m => ({ weapon: m.weapon, armor: m.armor, grasta: m.grasta || [], badges: m.badges || [], special: m.special || [] })) }); }
       catch (e2) { rej(e2); }
     }, 60);
   }
@@ -2406,6 +2418,61 @@ function mainPickRow(db, ids, mains, focus, rr) {
   });
   return row;
 }
+// 순서 입력(11-12, 사용자 「스킬 목록이 쫙 나오고 순서대로 넣으면 단계마다 대미지 · 그 구간(2번째 B · R · A~D · 전체) 극대화」)
+//   O.buildSeq = [[캐릭터 id, 스킬 이름(영어 키), 목표 표시], …]. 턴 나누기는 엔진과 같은 AEScenario.seqTurns(같은 멤버가 다시 나오면 다음 턴)
+function seqEditor(ids, rr) {
+  const O = STATE.ov, seq = O.buildSeq, nm = id => (STATE.all.find(x => x.id === id) || {}).nameKo || id;
+  const box = el("div", { class: "section seq-ed", children: [el("h3", { text: `행동 순서 ${seq.length}개` })] });
+  const body = el("div", { class: "pt more", text: "스킬 목록 읽는 중…" });
+  box.appendChild(body);
+  const save = next => { O.buildSeq = next; saveOv(); rr(); };
+  Promise.all(ids.map(loadActions)).then(ds => {
+    clear(body); body.className = "";
+    const label = (id, n) => { const s = ((ds[ids.indexOf(id)] || {}).skills || []).find(x => x.name === n); return s && s.kind === "normal" ? "일반 공격" : skKo(id, n); };
+    // 스킬 목록 — 멤버마다 스킬칸 스킬(턴 종료 · 그라스타 · 전용 장비 스킬 제외) + 일반 공격. 공격 스킬은 테두리 강조
+    ds.forEach((d, ci) => {
+      const id = ids[ci], row = el("div", { class: "seq-pal", children: [el("b", { class: "seq-who", text: nm(id) })] });
+      if (!d) { row.appendChild(el("span", { class: "pt more", text: "행동 데이터 없음" })); body.appendChild(row); return; }
+      const list = d.skills.filter(x => (x.slot && !/\bEOT\b/.test(x.name) && !x.viaG && !x.needEquip) || (x.kind === "normal" && x.sub === "일반 공격"));
+      for (const x of list) {
+        const b = el("button", { class: "slot-btn" + ((x.attacks || []).length ? " seq-atk" : ""), text: label(id, x.name),
+          attrs: { title: `${x.name}${(x.attacks || []).length ? " · 공격" : ""}${x.needs ? ` · 자원 소비(${x.needs.join(" · ")})` : ""} — 누르면 순서 끝에 붙습니다` } });
+        b.addEventListener('click', () => save([...seq, [id, x.name, false]]));
+        row.appendChild(b);
+      }
+      const used = new Set(seq.filter(x => x[0] === id && (d.skills.find(y => y.name === x[1]) || {}).slot).map(x => x[1]));
+      row.appendChild(el("span", { class: used.size > 4 ? "role-gap" : "skko-src", text: `스킬칸 ${used.size}/4`, attrs: used.size > 4 ? { title: "스킬칸은 4개 — 순서에 쓴 스킬을 줄이세요" } : {} }));
+      body.appendChild(row);
+    });
+    // 순서 — 턴별 줄, 칸을 누르면 목표 표시 · × 로 빼기
+    const turns = AEScenario.seqTurns(seq.map(([id, n]) => [ids.indexOf(id), n]));
+    const list = el("div", { class: "seq-list" });
+    turns.forEach((r, t) => {
+      const line = el("div", { class: "seq-turn", children: [el("span", { class: "seq-t", text: `${t + 1}턴` })] });
+      for (const x of r) {
+        const [id, n, goal] = seq[x.step];
+        const chip = el("button", { class: "chip seq-step" + (goal ? " active" : ""), attrs: { "aria-pressed": goal ? "true" : "false", title: "누르면 목표 행동 표시 / 해제" },
+          children: [el("b", { text: `${x.step + 1}` }), document.createTextNode(` ${nm(id)} · ${label(id, n)}`)] });
+        chip.addEventListener('click', () => save(seq.map((y, k) => (k === x.step ? [y[0], y[1], !y[2]] : y))));
+        const del = el("button", { class: "slot-btn seq-del", text: "×", attrs: { "aria-label": `${x.step + 1}번 행동 빼기`, title: "이 행동 빼기" } });
+        del.addEventListener('click', () => save(seq.filter((_, k) => k !== x.step)));
+        line.append(el("span", { class: "seq-cell", children: [chip, del] }));
+      }
+      list.appendChild(line);
+    });
+    if (seq.length) body.appendChild(list);
+    const goals = seq.map((x, k) => (x[2] ? k + 1 : 0)).filter(Boolean);
+    const tools = el("div", { class: "ns-row seq-tools", children: [el("span", { class: "pt", text: `목표: ${goals.length ? goals.join(" · ") + "번 행동의 대미지 합" : "전체 행동 합 (순서 칸을 누르면 그 행동만 목표)"}` })] });
+    for (const [t, f, on] of [["목표 모두 해제", () => save(seq.map(y => [y[0], y[1], false])), goals.length], ["마지막 빼기", () => save(seq.slice(0, -1)), seq.length], ["모두 지우기", () => save([]), seq.length]]) {
+      if (!on) continue;
+      const b = el("button", { class: "slot-btn", text: t });
+      b.addEventListener('click', f);
+      tools.appendChild(b);
+    }
+    body.append(tools, el("div", { class: "skko-src", text: "스킬 버튼을 누르면 순서 끝에 붙습니다. 같은 멤버가 다시 나오면 다음 턴입니다. 턴 안은 넣은 순서대로 칩니다(속도는 맞춘다고 봅니다)." }));
+  });
+  return box;
+}
 function renderBuildTab(box, db) {
   const O = STATE.ov, S = STATE.calc, rr = renderOpt;
   box.appendChild(buildCondBar(db, rr, { gear: true }));
@@ -2426,7 +2493,7 @@ function renderBuildTab(box, db) {
   const diff = partyDiffLine(front, ids, () => { delete O.buildIds; saveOv(); rr(); }, "빌드 멤버");
   // 방식(11-05 사용자 「4개 다 활용 · 고점 기준 · 단순하게」) — 고점 = 스킬칸 4개 효과 전부 최대 누적 + 가장 센 공격 1회(기본) / 턴 시뮬 = AF 6회 → 2~4턴
   const msel = el("select", { class: "fx-input" });
-  for (const [v, t] of [["peak", "방식: 고점 (4스킬 효과 전부 · 최대 누적)"], ["sim", "방식: 턴 시뮬 (AF → 3턴)"]]) msel.appendChild(el("option", { text: t, attrs: { value: v } }));
+  for (const [v, t] of [["peak", "방식: 고점 (4스킬 효과 전부 · 최대 누적)"], ["seq", "방식: 순서 입력 (행동마다 대미지)"], ["sim", "방식: 턴 시뮬 (AF → 3턴)"]]) msel.appendChild(el("option", { text: t, attrs: { value: v } }));
   msel.value = O.buildMode || "peak";
   msel.addEventListener('change', () => { O.buildMode = msel.value; saveOv(); rr(); });
   row.appendChild(msel);
@@ -2436,6 +2503,9 @@ function renderBuildTab(box, db) {
   gsel.addEventListener('change', () => { O.buildGear = gsel.value; saveOv(); rr(); });   // 다시 그려야 옛 결과에 「조건이 바뀜」이 붙는다
   row.appendChild(gsel);
   box.append(row, diff, nameSpecBox(db, ids, rr));
+  const seqMode = O.buildMode === "seq";
+  if (seqMode) { O.buildSeq = (O.buildSeq || []).filter(x => ids.includes(x[0])); box.appendChild(seqEditor(ids, rr)); }   // 빠진 멤버의 행동은 지운다
+  const seq = seqMode ? O.buildSeq : null;
   const lock = ids.map(id => (O.buildSlots || {})[id] || []);   // 이름으로 고정한 스킬칸(멤버 순)
   const peakMode = (O.buildMode || "peak") === "peak";            // 주력 지정은 고점 방식만(턴 시뮬은 공격 고정이 없다)
   const mains = ids.map(id => (peakMode && (O.buildMain || {})[id]) || "");
@@ -2448,7 +2518,7 @@ function renderBuildTab(box, db) {
   box.append(el("div", { children: [run, cancel, prog] }), bar);
   const out = el("div", { style: "margin-top:12px" });
   box.appendChild(out);
-  const key = JSON.stringify([ids, lock, mains, focus, O.buildMode || "peak", O.buildGear, S.gslots, S.ownedOnly, S.zone, S.enemy, S.cond, S.maxHp, S.pain, DETAIL_KEYS.map(k => S[k]), S.buddy, S.buddyUp, S.buddyStacks]);
+  const key = JSON.stringify([ids, lock, mains, focus, O.buildMode || "peak", seq, O.buildGear, S.gslots, S.ownedOnly, S.zone, S.enemy, S.cond, S.maxHp, S.pain, DETAIL_KEYS.map(k => S[k]), S.buddy, S.buddyUp, S.buddyStacks]);
   // 진행 표시는 STATE.buildJob 에 — 계산 중에 조건을 바꿔 화면을 다시 그려도 막대 · 취소가 이어진다(가장 최근 화면의 paint 가 받는다)
   const paint = () => {
     const J = STATE.buildJob;
@@ -2473,6 +2543,7 @@ function renderBuildTab(box, db) {
   if (!STATE.buildJob && STATE.buildMsg) { prog.textContent = STATE.buildMsg; STATE.buildMsg = null; }
   run.addEventListener('click', async () => {
     if (ids.length < 2) { prog.textContent = "멤버를 2명 이상 넣으세요."; return; }
+    if (seqMode && !seq.length) { prog.textContent = "행동 순서를 넣으세요 — 위 스킬 버튼을 누르면 순서 끝에 붙습니다."; return; }
     if (STATE.buildJob) return;
     const t0 = performance.now(), sec = () => ((performance.now() - t0) / 1000).toFixed(1);
     const J = STATE.buildJob = { job: {}, text: "스킬 데이터 읽는 중…", paint };
@@ -2495,7 +2566,8 @@ function renderBuildTab(box, db) {
     const msg = { team, opt, mode: O.buildMode || "peak", gear: (O.buildGear || "opt") === "opt", inv,
       gearConf: { grastaSlots: S.gslots || 4, badgeSlots: 2, counts: inv ? { ...inv.w, ...inv.a, ...inv.g, ...inv.b } : null },
       db: { weapons: db.weapons, armor: db.armor, grasta: db.grasta, badges: db.badges, ores: db.ores } };
-    if (Object.keys(pin).length) msg.conf = { pin, ...(foc != null ? { focus: foc, carryStarts: false } : {}) };   // 한 명 몫이 목표면 장비가 늘 그 멤버 주력 가중이라 주력 다중 시작은 뺀다
+    if (Object.keys(pin).length) msg.conf = { pin, ...(foc != null ? { focus: foc, carryStarts: false } : {}) };
+    if (seqMode) { msg.seq = seq.map(([id, n]) => [ids.indexOf(id), n]); msg.conf = { steps: seq.map((x, k) => (x[2] ? k : -1)).filter(k => k >= 0) }; }   // 목표 표시가 없으면 전체   // 한 명 몫이 목표면 장비가 늘 그 멤버 주력 가중이라 주력 다중 시작은 뺀다
     if (J.job.cancelled) { STATE.buildJob = null; STATE.buildMsg = "취소했습니다"; rr(); return; }
     let res;
     J.job.onStart = () => say(J.job.noWorker ? "계산 중 — 이 환경에선 백그라운드 계산이 안 돼 화면이 잠시 멈춥니다…" : "계산 중…");
@@ -2511,6 +2583,11 @@ function renderBuildTab(box, db) {
     STATE.buildRes = { key, ids, lock: team.map(m => m.lock), main: ids.map((_, ci) => (pin[ci] || [])[0] || ""), focus: foc, took: sec(), ...res };
     if (STATE.view === "opt" && STATE.ov.tab === "build") rr();                // 계산 중에 다시 그려졌을 수 있어 가장 최근 화면에 그린다
   });
+  if (seqMode) box.appendChild(methodDetails(
+    "순서 = 넣은 행동을 앞에서부터 — 같은 멤버가 다시 나오면 다음 턴(한 턴 = 멤버마다 1번, 안 나온 멤버는 그 턴 행동 없음). 턴 안은 넣은 순서대로 칩니다(속도는 맞춘다고 봄 — 선제 · 후공 기술만 앞뒤로). " +
+    "지속 · 누적 · 「N회 행동」 소모 · 덮어쓰기 · 스텔라 버스트 게이지는 턴 시뮬과 같은 엔진. AF 는 넣지 않습니다(AF 대미지는 따로). " +
+    "장비 최적화 = 목표 행동(표시가 없으면 전체)의 대미지 합이 가장 크게 — 멤버마다 목표 행동 중 가장 센 것 직전의 버프 · 디버프로 장비를 고르고, 순서 점수가 오를 때만 받습니다. 목표 행동이 없는 멤버의 장비는 점수와 무관합니다. " +
+    "스킬칸 = 순서에 쓴 스킬(멤버당 4개까지). 그라스타가 주는 스킬 · 전용 장비 습득 스킬은 아직 목록에 없습니다. 자원(구슬 · 카운트)이 모자라면 그 행동은 0 으로 표시됩니다. 인게임 대조 전 추정치."));
   if ((O.buildMode || "peak") === "sim") box.appendChild(methodDetails(
     "스킬칸 = 멤버마다 칸 하나씩 다른 스킬로 바꿔 보며 점수가 오르면 채택 · AF = 캐릭터당 6회 시전, 대미지는 점수 밖(버프 · 디버프를 까는 턴) · 2~4턴은 속도순으로 1회씩. " +
     "지속(건 턴 = 0턴) · 누적(A + A/2 × (n−1)) · 「N회 행동」 소모 · 덮어쓰기는 위키 규칙. 자원(구슬 · 카운트 · 게이지)을 쓰는 스킬과 조건부 공격(스텔라 버스트 시 등)은 「조건부 효과 포함」일 때만. " +
@@ -2591,6 +2668,7 @@ function showBuildResult(out, r, again) {
     out = old;
   }
   out.appendChild(assumeLine());
+  if (r.seq) return showSeqResult(out, r, nm, !!again);
   if (r.scores && r.scores.repeat != null) return showPeakResult(out, r, nm, !!again);
   const head = `A ${fmtN(r.scores.A)} (AF 뒤 3턴 합) · B ${fmtN(r.scores.B)} (AF 없이 1턴) · C ${fmtN(r.scores.C)} (AF 없이 3턴)`;
   out.appendChild(el("div", { class: "pt", style: "margin-bottom:8px", children: [el("b", { text: `A ${fmtN(r.scores.A)}` }),
@@ -2615,6 +2693,54 @@ function showBuildResult(out, r, again) {
   out.append(saveBuildBtn(r, !!again), copyBtn(copy));
 }
 
+// 계산 근거 줄의 이름 → 화면 표기: 줄 머리의 장비 이름(긴 이름 먼저) · 「스킬」 이름
+function explainKo(r) {
+  const items = r.gear.flatMap(g => [g.weapon, g.armor, ...(g.grasta || []), ...(g.badges || [])]).filter(Boolean).sort((a, b) => b.name.length - a.name.length);
+  return line => {
+    const it = items.find(x => line.startsWith(x.name + ":") || line.startsWith(x.name + " 「"));
+    if (it) line = gname(it) + line.slice(it.name.length);
+    return line.replace(/「([^」]+)」/g, (m0, n) => { for (const id of r.ids) { const k = skName(id, n); if (k !== n) return `「${k}」`; } return m0; });
+  };
+}
+// 순서 빌드 결과(11-12) — 행동마다 대미지(목표 행동 표시) · 턴 끝 · 스텔라 버스트 몫 · 스킬칸 · 장비 · 행동별 계산 근거
+function showSeqResult(out, r, nm, stale) {
+  const goal = new Set(r.steps), allGoal = r.steps.length === r.seq.length;
+  const an = (ci, sk) => { const a = sk && ((STATE.calcDb.chars[r.ids[ci]] || {}).attacks || []).find(x => x.skill === sk); return a && a.ko ? aname(a) : sk && skKo(r.ids[ci], sk); };
+  const tgt = allGoal ? "전체 행동" : [...goal].map(k => k + 1).join(" · ") + "번 행동";
+  out.appendChild(el("div", { class: "pt", style: "margin-bottom:8px", children: [el("b", { text: `목표 ${fmtN(r.score)}` }),
+    document.createTextNode(` (${tgt}) · 전체 ${fmtN(r.total)} · ${Math.max(...r.turnOf)}턴`)] }));
+  const tb = el("tbody"), tbl = el("table", { class: "skill-table party-table" });
+  tbl.appendChild(el("thead", { children: [el("tr", { children: ["#", "턴", "멤버", "스킬", "대미지", "목표"].map(h => el("th", { text: h })) })] }));
+  const turnSum = {};
+  r.seq.forEach(([ci, n], k) => {
+    const t = r.turnOf[k];
+    turnSum[t] = (turnSum[t] || 0) + r.perStep[k];
+    tb.appendChild(el("tr", { class: goal.has(k) && !allGoal ? "seq-goal" : "", children: [el("td", { text: `${k + 1}` }), el("td", { text: `${t}` }), el("td", { text: nm(r.ids[ci]) }),
+      el("td", { class: "pt", text: an(ci, n) }), el("td", { text: r.skip[k] ? `0 (${r.skip[k]})` : r.perStep[k] ? fmtN(r.perStep[k]) : "—" }), el("td", { text: goal.has(k) ? "●" : "" })] }));
+    const last = k === r.seq.length - 1 || r.turnOf[k + 1] !== t, rest = (r.perTurn[t] || 0) - turnSum[t];
+    if (last && rest > Math.max(1, (r.perTurn[t] || 0) * 1e-6)) tb.appendChild(el("tr", { class: "pt more", children: [el("td"), el("td", { text: `${t}` }), el("td", { attrs: { colspan: "2" }, text: "그 밖 (스텔라 버스트 · 턴 끝 공격)" }), el("td", { text: fmtN(rest) }), el("td")] }));
+  });
+  tbl.appendChild(tb);
+  out.appendChild(el("div", { class: "table-scroll", children: [tbl] }));
+  const share = ci => (r.score ? `목표 몫 ${((r.perMember[ci] / r.score) * 100).toFixed(1)}%` : "");
+  memberResult(out, r.ids.map((id, ci) => ({ name: nm(id), share: share(ci), fields: [["스킬칸", slotNames(r, ci)], ["장비", gearNames(r.gear[ci] || {})]] })));
+  // 행동별 계산 근거 — 목표 행동만(목표 표시가 없으면 전부)
+  const koLine = explainKo(r);
+  const box = el("div", { class: "section", style: "margin-top:10px", children: [el("h3", { text: "계산 근거 — 행동마다" })] });
+  r.seq.forEach(([ci, n], k) => {
+    if (!goal.has(k)) return;
+    for (const x of r.explain[k] || []) {
+      const extra = [`${k + 1}번 · ${r.turnOf[k]}턴 · ${an(ci, x.skill)} · 기대 대미지 ${fmtN(x.d)} · ${x.hits}타 · 크리 확률 ${Math.round(x.p * 100)}%${(x.states || []).length ? ` · 대상 상태 ${x.states.map(s => AETerms.ko(s) || s).join(" · ")}${x.pr < 1 ? ` (걸려 있을 확률 ${Math.round(x.pr * 100)}% 쪽)` : ""}` : ""}`];
+      box.appendChild(whyDetails(x, `${k + 1}. ${nm(r.ids[ci])} ${an(ci, x.skill)} ${fmtN(x.d)}`, extra, koLine));
+    }
+  });
+  if (box.children.length > 1) out.appendChild(box);
+  const copy = () => [`어나더에덴 파티 빌드 (순서) — 목표 ${fmtN(r.score)} (${tgt}) · 전체 ${fmtN(r.total)}`,
+    ...r.seq.map(([ci, n], k) => `${k + 1}. ${r.turnOf[k]}턴 ${nm(r.ids[ci])} ${an(ci, n)} ${r.perStep[k] ? fmtN(r.perStep[k]) : "—"}${goal.has(k) && !allGoal ? " ●" : ""}`),
+    ...r.ids.flatMap((id, ci) => [`${nm(id)} — 스킬: ${slotNames(r, ci).join(" / ")}`, `   장비: ${gearCopy(r.gear[ci] || {})}`]),
+    "※ 추정치 · 최대 육성 기준"].join("\n");
+  out.append(saveBuildBtn(r, stale), copyBtn(copy));
+}
 // 고점 빌드 결과 — 반복 고점(1회성 끔, 이걸로 골랐다) · 순간 최고점(첫 사용 · 첫 턴 등 1회성까지). 스텔라 버스트 기술 딜은 아직 따로
 function showPeakResult(out, r, nm, stale) {
   const z = r.zone ? `${r.zone.name}${r.zone.awake ? " (각성)" : ""}` : "없음";
@@ -2633,12 +2759,7 @@ function showPeakResult(out, r, nm, stale) {
     ["고점 공격 (반복 / 순간)", [atk(ci)]], ["장비", gearNames(r.gear[ci] || {})]] })));
   // 계산 근거(11-12, 사용자 「계산에 들어간 요소 — 힘 · 지능 · 속도 · 심기일체 · 무기공 … 어느 스킬에서 뭐가」) — 반복 고점 공격 1회의 식 입력과 출처 줄
   if (r.explain && r.explain.some(p => p && p.length)) {
-    const items = r.gear.flatMap(g => [g.weapon, g.armor, ...(g.grasta || []), ...(g.badges || [])]).filter(Boolean).sort((a, b) => b.name.length - a.name.length);   // 줄 머리의 장비 이름 → 화면 표기(긴 이름 먼저)
-    const koLine = line => {
-      const it = items.find(x => line.startsWith(x.name + ":") || line.startsWith(x.name + " 「"));
-      if (it) line = gname(it) + line.slice(it.name.length);
-      return line.replace(/「([^」]+)」/g, (m0, n) => { for (const id of r.ids) { const k = skName(id, n); if (k !== n) return `「${k}」`; } return m0; });
-    };
+    const koLine = explainKo(r);
     const box = el("div", { class: "section", style: "margin-top:10px", children: [el("h3", { text: "계산 근거 — 반복 고점 공격 1회" })] });
     r.explain.forEach((parts, ci) => (parts || []).forEach(x => {
       const extra = [`${an(ci, x.skill)} · 기대 대미지 ${fmtN(x.d)} · ${x.hits}타 · 크리 확률 ${Math.round(x.p * 100)}%${(x.states || []).length ? ` · 대상 상태 ${x.states.map(s => AETerms.ko(s) || s).join(" · ")}${x.pr < 1 ? ` (걸려 있을 확률 ${Math.round(x.pr * 100)}% 쪽)` : ""}` : ""}`];

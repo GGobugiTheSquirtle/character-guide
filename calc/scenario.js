@@ -635,12 +635,14 @@
   // 행동 순서 → 턴(11-12, 사용자 「A-B-E-D-A-B-T-R 순서대로 넣고 단계마다 대미지」) — seq = [[멤버 번호, 스킬 이름], …].
   //   같은 멤버가 그 턴에 이미 움직였으면 다음 턴으로 넘긴다(한 턴 = 멤버마다 1회). 순서는 속도를 맞춰 만든다고 보고 턴 안은 입력 순서 그대로(속도순 X) —
   //   선제 · 후공 기술만 앞뒤로(tierOf). 그 턴에 안 나온 멤버는 행동 없음
+  //   수동 효과(11-12, 사용자 「수동으로 효과 부여」) = [멤버 번호, 이름, { fx: [효과 단위] }] — 행동이 아니라 그 자리에서 효과만 건다(턴을 안 쓰고, 그 멤버의 행동으로 세지 않는다)
   function seqTurns(seq) {
     const rows = [];
     let row = null;
-    seq.forEach(([ci, skill], step) => {
-      if (!row || row.some(x => x.ci === ci)) rows.push(row = []);
-      row.push({ step, ci, skill });
+    seq.forEach(([ci, skill, extra], step) => {
+      const free = !!(extra && extra.fx);
+      if (!row || (!free && row.some(x => x.ci === ci && !x.free))) rows.push(row = []);
+      row.push({ step, ci, skill, ...(free ? { free: true, fx: extra.fx } : {}) });
     });
     return rows;
   }
@@ -676,7 +678,10 @@
       timed(sim, "turnStart");
       sbFire(sim, true, true);                                           // 미뤄 둔 스텔라 버스트는 턴 시작에(턴을 안 쓴다)
       for (const tier of ["pre", "mid", "post"]) {
-        if (rows) for (const x of row) { if (tierOf(party[x.ci], x.skill) !== tier) continue; sim.step = x.step; if (conf.snapAt && conf.snapAt.includes(x.step)) snaps[x.step] = { live: new Map([...sim.live].map(([k, e]) => [k, { ...e }])), zone: sim.zone }; perStep[x.step] = act(sim, x.ci, x.skill, true); sim.step = null; }
+        if (rows) for (const x of row) {
+          if (x.free) { if (tier === "mid") for (const u of x.fx) apply(sim, x.ci, { ...u }, x.skill); continue; }   // 수동 효과 — 넣은 자리에서 효과만
+          if (tierOf(party[x.ci], x.skill) !== tier) continue; sim.step = x.step; if (conf.snapAt && conf.snapAt.includes(x.step)) snaps[x.step] = { live: new Map([...sim.live].map(([k, e]) => [k, { ...e }])), zone: sim.zone }; perStep[x.step] = act(sim, x.ci, x.skill, true); sim.step = null;
+        }
         else for (const ci of order(sim)) if (row[ci] && tierOf(party[ci], row[ci]) === tier) act(sim, ci, row[ci], true);
       }
       endTurn(sim);                                                    // ⑪ 만료

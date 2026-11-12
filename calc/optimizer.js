@@ -81,6 +81,7 @@
   function gearOptimize(m, members, opt, pools, conf = {}) {
     const gs = conf.grastaSlots ?? 4, bs = conf.badgeSlots ?? 2, ss = pools.special ? conf.specialSlots ?? 1 : 0;
     const lock = conf.lockGrasta || [];                    // 고정 그라스타(부여 스킬을 쓰려면 그 그라스타가 칸에 있어야 한다) — 앞 칸부터, 탐색 제외
+    const lockB = conf.lockBadges || [];                   // 고정 배지(배지 습득 스킬, 2026-11-12) — 같은 방식
     const w = { ...m };
     const team = swapIn(members, w);
     // 획득 가능 수(2026-10-14 SV — 1회성 보상 글래스터 · 광석을 여러 개 끼우던 것): 글래스터 = 기본 이름별 limit(위키 획득처, null = 반복 획득),
@@ -115,10 +116,10 @@
     const inPool = (it, pool) => (it && pool.some(x => x.name === it.name) ? pool.find(x => x.name === it.name) : null);
     let state = { weapon: inPool(m.weapon, pools.weapons) || pools.weapons[0] || null, armor: inPool(m.armor, pools.armor),
       grasta: pad([...lock, ...normalOf(m).map(g => inPool(g, pools.grasta)).filter(g => g && !lock.includes(g))], gs),
-      badges: pad((m.badges || []).map(b => inPool(b, pools.badges)).filter(Boolean), bs),
+      badges: pad([...lockB, ...(m.badges || []).map(b => inPool(b, pools.badges)).filter(b => b && !lockB.includes(b))], bs),
       special: pad((m.special || []).map(g => inPool(g, pools.special || [])).filter(Boolean), ss) };
     let best = score(state);
-    const slots = ["weapon", "armor", ...state.grasta.map((_, i) => ["grasta", i]).filter(([, i]) => i >= lock.length), ...state.badges.map((_, i) => ["badges", i]), ...state.special.map((_, i) => ["special", i])];
+    const slots = ["weapon", "armor", ...state.grasta.map((_, i) => ["grasta", i]).filter(([, i]) => i >= lock.length), ...state.badges.map((_, i) => ["badges", i]).filter(([, i]) => i >= lockB.length), ...state.special.map((_, i) => ["special", i])];
     for (let pass = 0; pass < 10; pass++) {
       let moved = false;
       for (const sl of slots) {
@@ -195,7 +196,7 @@
         // 지금 낀 그라스타는 후보에 꼭 둔다 — 맞바꾸기로 받은 것이 이 멤버의 가지치기 목록 밖이면 버려져 목표가 내려갔다(2026-10-15)
         const pf = full ? poolsOf(x) : poolsFor(x), extra = x.gear.grasta.filter(g => g && !pf.grasta.includes(g));
         const r = gearOptimize({ ...x, grasta: x.gear.grasta, special: x.gear.special }, team, opt, extra.length ? { ...pf, grasta: [...pf.grasta, ...extra] } : pf,
-          { ...conf, taken: usage(x), others, selfWeight: wt(x), lockGrasta: x.lockGrasta || conf.lockGrasta });   // 멤버별 고정(파티 빌드의 부여 스킬 그라스타, 10-17)
+          { ...conf, taken: usage(x), others, selfWeight: wt(x), lockGrasta: x.lockGrasta || conf.lockGrasta, lockBadges: x.lockBadges || conf.lockBadges });   // 멤버별 고정(파티 빌드의 부여 스킬 그라스타, 10-17)
         evals += r.evals;
         Object.assign(x, { weapon: r.gear.weapon, armor: r.gear.armor, badges: r.gear.badges, gear: { grasta: r.gear.grasta, special: r.gear.special || [] },
           grasta: [...r.gear.grasta, ...(r.gear.special || [])] });
@@ -206,7 +207,7 @@
         if (x === y || team.indexOf(x) > team.indexOf(y)) continue;
         const free = (z, g) => !(z.lockGrasta || []).includes(g);                     // 고정 그라스타는 맞바꾸지 않는다
         const tries = [["weapon"], ["armor"], ...x.gear.grasta.flatMap((g, i) => (free(x, g) ? y.gear.grasta.map((h, j) => (free(y, h) ? ["g", i, j] : null)).filter(Boolean) : [])),
-          ...(x.badges || []).flatMap((_, i) => (y.badges || []).map((_, j) => ["b", i, j]))];
+          ...(x.badges || []).flatMap((b, i) => (!(x.lockBadges || []).includes(b) ? (y.badges || []).map((c, j) => (!(y.lockBadges || []).includes(c) ? ["b", i, j] : null)).filter(Boolean) : []))];
         for (const [k, i, j] of tries) {
           const sw = () => {
             if (k === "weapon" || k === "armor") { if ((x[k] && x[k].type) !== (y[k] && y[k].type)) return false; [x[k], y[k]] = [y[k], x[k]]; }

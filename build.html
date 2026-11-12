@@ -715,7 +715,7 @@ function eqCard(r, id, i, total) {
   const c = charOf(id), g = r.gear[i] || {}, caps = capsOf(r, i), main = caps[0], share = total ? r.perMember[i] / total : 0;
   const card = el("div", { class: "eq" });
   // 머리
-  const o = main && main.o, st = o ? `${o.dep === "magic" ? "지능" : "힘"} ${(o.dep === "magic" ? o.stat.int : o.stat.pwr).toLocaleString()} · ${o.dep === "magic" ? "마법 공격력 " + o.weapon.matk : "무기 공격력 " + o.weapon.atk} · 속도 ${o.stat.spd} · 크리 ${Math.round((main.p || 0) * 100)}%` : "공격 없음(지원)";
+  const o = main && main.o, st = o ? `${o.dep === "magic" ? "지능" : "힘"} ${(o.dep === "magic" ? o.stat.int : o.stat.pwr).toLocaleString()} · ${o.dep === "magic" ? "마법 공격력 " + o.weapon.matk : "무기 공격력 " + o.weapon.atk} · 속도 ${o.stat.spd} · 크리 ${Math.round((main.p || 0) * 100)}%` : main && main.fixed ? "고정 대미지 — 스탯 · 장비와 무관" : "공격 없음(지원)";
   card.append(el("div", { class: "eq-head" }, icon(c),
     el("div", { class: "eq-who" }, el("b", { text: c.nameKo }), el("div", { class: "eq-share" }, el("i", { style: `width:${Math.min(100, share * 100).toFixed(1)}%` })),
       el("span", { class: "msg", text: `${seq(r) ? "목표 몫" : "몫"} ${pct(share)} · ${fmt(r.perMember[i])}${r.kind !== "seq" && r.attackOf[i] ? " · 주력 " + skLabel(id, r.attackOf[i]) : ""}` })),

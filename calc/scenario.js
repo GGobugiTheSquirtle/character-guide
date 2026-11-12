@@ -505,8 +505,23 @@
     if (memo) memo.set(key, v);
     return v;
   }
+  // 고정 대미지(11-12) — 「공격(10,000,000×3회)」류: 스탯 · 버프 · 상성 · 장비 무관, 값 그대로 × 타수. 자신 대상(「공격(⌊현재 HP의 N%⌋)」 = 자해)은 적 대미지 0.
+  //   위값(powerMax = 조건 「대미지 N배」를 다 곱한 값)은 조건부(cond · 고점)일 때만 · 「스텔라 버스트 시 … 대미지 N배」는 SB 중(또는 순간 고점)만 — 아니면 위값 ÷ 그 배수.
+  //   기본값 0(「턴 중 가한 대미지의 10%」처럼 값이 상황에 달린 것)은 0. 전에는 일반 위력으로 계산해 애쉬티어 코즈믹 플레어(1천만 × 3)가
+  //   한 타 상한 99.99억 × 3 = 300억이 됐다(추천 「팀 전체」 1위를 독식, 사용자 「솔로딜 센 애만 계속 나온다」)
+  const SB_X = /스텔라 버스트 시[^※]*?대미지\s*(\d+(?:\.\d+)?)\s*배/;
+  function fixedDmg(sim, ci, sk, atk) {
+    if (!/적/.test(atk.scope || "") || !atk.mult) return 0;
+    let v = (sim.opt.cond || sim.opt.peak) && atk.multMax ? atk.multMax : atk.mult || 0;
+    const sb = SB_X.exec(sk.desc || ""), sbNow = sim.sb.on || !!(sim.opt.peak && sim.opt.peak !== "repeat");
+    if (atk.multMax && v === atk.multMax && sb && !sbNow) v /= +sb[1];
+    v *= atk.hits || 1;
+    if (sim.capture) sim.capture.push({ ci, step: sim.step, skill: sk.name, d: v, perUse: v, hits: atk.hits || 1, p: 1, o: null, fixed: true, why: [], whyOff: [], states: [], pr: 1 });
+    return v;
+  }
   function attackRaw(sim, ci, sk, part) {
     const atk = toAttack(part, sk);
+    if (atk._fixed) return fixedDmg(sim, ci, sk, atk);
     if (/ZONE에 따라 공격 속성 변화/.test(sk.desc || "")) { const el = zoneEl(sim); if (el) atk.element = el; }   // 네코코 ES 유성군 · 적의 플람 얼터 등 14스킬(11-08)
     { const fl = sim.live.get(`flex|${ci}`); if (fl && !sk._noFlex && !FLEX_IMMUNE.test(sk.desc || "")) { const at = fl.u.at === "zone" ? zoneAt(sim) : fl.u.at;   // 임기응변
       // 위력 기반도 바뀐다 — 베기 · 찌르기 · 타격 = 힘, 마 = 지능. 스킬 자체 「힘/지능/속도에 따른 위력」이 있으면 그것(딩님 184648, 11-09 전엔 종류만 바꿔 힘 물리 식 그대로)

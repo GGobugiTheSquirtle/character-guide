@@ -2435,9 +2435,38 @@ const gLabel = name => gname((STATE.calcDb && STATE.calcDb.grasta || []).find(g 
 function seqEditor(db, ids, rr) {
   const O = STATE.ov, seq = O.buildSeq, nm = id => (STATE.all.find(x => x.id === id) || {}).nameKo || id;
   const box = el("div", { class: "section seq-ed", children: [el("h3", { text: `행동 순서 ${seq.length}개` })] });
+  const save = next => { O.buildSeq = next; saveOv(); rr(); };
+  // 글로 넣기 — 이름 해석기(AENames)가 적힌 순서대로 행동을 돌려준다(seq). 순서를 통째로 바꾸고, 글에 나온 캐릭터는 멤버에 넣는다(같은 캐릭터의 다른 스타일이면 바꾼다)
+  const td = el("details", { class: "namespec" });
+  td.open = !!(O.seqTextOpen || STATE.seqRep);
+  td.addEventListener('toggle', () => { O.seqTextOpen = td.open; saveOv(); });
+  td.appendChild(el("summary", { text: "글로 넣기 — 캐릭터 · 스킬 이름을 순서대로 적기" }));
+  const ta = el("textarea", { class: "inv-ta", style: "margin-top:6px", attrs: { rows: "3", "aria-label": "행동 순서 글",
+    placeholder: "예: 녹시스 AS 브레스 윈드 → 우츠하라 현가의 기치 → 히나 선신무의 → 우츠하라 즉신성불\n— 적힌 순서대로 행동이 됩니다. 같은 스킬을 다시 적으면 다시 칩니다." } });
+  ta.value = O.seqText || "";
+  const rd = el("button", { class: "slot-btn", text: "읽어서 순서로" }), note = el("span", { class: "pt more", attrs: { "aria-live": "polite" } });
+  td.append(ta, el("div", { class: "ns-row seq-tools", children: [rd, note] }));
+  if (STATE.seqRep) td.appendChild(el("ul", { class: "skko-src", children: STATE.seqRep.map(t => el("li", { text: t })) }));
+  rd.addEventListener('click', async () => {
+    rd.disabled = true; note.textContent = "이름 색인 읽는 중…";
+    const R = await loadNames();
+    if (!R) { rd.disabled = false; note.textContent = "이름 색인(data/calc/skill_names.json)을 읽지 못했습니다."; return; }
+    const res = R.resolve(ta.value, { party: ids }), next = ids.slice(), rep = res.warnings.filter(w => w.kind !== "no_slot" && w.kind !== "over4").map(nameWarnText), drop = new Set();
+    for (const { id } of res.seq) {
+      if (next.includes(id) || drop.has(id)) continue;
+      const k = next.findIndex(x => R.family(x) === R.family(id));
+      if (k >= 0) next[k] = id; else if (next.length < FRONT_N) next.push(id); else { drop.add(id); rep.push(`${nameOf(id)}: 전방 ${FRONT_N}명이 차서 넣지 않았습니다 — 멤버를 빼고 다시 읽으세요`); }
+    }
+    if (res.unknown.length) rep.push(`못 읽은 글자: ${[...new Set(res.unknown)].slice(0, 12).join(" · ")}`);
+    O.seqText = ta.value; O.buildIds = next;
+    O.buildSeq = res.seq.filter(x => !drop.has(x.id)).map(x => [x.id, x.name, false]);
+    STATE.seqRep = rep.length ? rep : null;
+    if (!O.buildSeq.length) STATE.seqRep = [...(STATE.seqRep || []), "읽은 행동이 없습니다 — 캐릭터 이름과 스킬 이름을 같이 적어 보세요"];
+    saveOv(); rr();
+  });
+  box.appendChild(td);
   const body = el("div", { class: "pt more", text: "스킬 목록 읽는 중…" });
   box.appendChild(body);
-  const save = next => { O.buildSeq = next; saveOv(); rr(); };
   Promise.all(ids.map(loadActions)).then(ds => {
     clear(body); body.className = "";
     const label = (id, n, g) => { if (g) return gLabel(g); const s = ((ds[ids.indexOf(id)] || {}).skills || []).find(x => x.name === n); return s && s.kind === "normal" ? "일반 공격" : skKo(id, n); };

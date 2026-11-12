@@ -107,9 +107,11 @@
     sim.sb[a] += rate;
   }
   //   누르는 시점 = plan.sbAt(턴 번호 — 그 턴 시작에 누른다, 비AF 턴이면 턴을 안 쓰는 추가 행동) · 없으면 차는 즉시. 그 턴 전에 안 찼으면 찬 뒤 바로
-  function sbFire(sim, scored, atTurnStart) {
-    if (sim.sb.off || sim.sb.on || sim.sb.light + sim.sb.shadow < 100) return;
-    const at = sim.plan && sim.plan.sbAt;
+  //   force = 순서 입력의 「스텔라 버스트」 블록(11-12, 사용자 「성도 각성에서 쓰는 스킬 상황」) — 게이지가 찼다고 보고 그 자리에서. 블록이 하나라도 있으면 저절로는 안 나간다(sim.sbManual)
+  function sbFire(sim, scored, atTurnStart, force) {
+    if (sim.sb.off || sim.sb.on) return;
+    if (!force && (sim.sbManual || sim.sb.light + sim.sb.shadow < 100)) return;
+    const at = !force && sim.plan && sim.plan.sbAt;
     if (at && !atTurnStart && sim.turn < at) return;                         // 미루는 중
     if (at && atTurnStart && sim.turn !== at && sim.turn < at) return;
     const flux = sim.sb.light >= sim.sb.shadow ? "light" : "shadow";
@@ -644,9 +646,9 @@
     const rows = [];
     let row = null;
     seq.forEach(([ci, skill, extra], step) => {
-      const free = !!(extra && extra.fx);
+      const free = !!(extra && (extra.fx || extra.sb));                       // 수동 효과 · 스텔라 버스트 블록 = 턴을 안 쓴다
       if (!row || (!free && row.some(x => x.ci === ci && !x.free))) rows.push(row = []);
-      row.push({ step, ci, skill, ...(free ? { free: true, fx: extra.fx } : {}) });
+      row.push({ step, ci, skill, ...(free ? { free: true, fx: extra.fx || [], ...(extra.sb ? { sb: true } : {}) } : {}) });
     });
     return rows;
   }
@@ -663,6 +665,7 @@
       + "||" + (opt.back || []).map(b => (b.grasta || []).map(g => g.name).join(",")).join("|");      // 후열 셔틀 그라스타(공유)
     battleStart(sim);
     sbStart(sim);
+    sim.sbManual = !!(plan.seq && plan.seq.some(x => x[2] && x[2].sb));
     sim.turn = 1;
     let t0 = 1;
     if (plan.af) {
@@ -683,6 +686,7 @@
       sbFire(sim, true, true);                                           // 미뤄 둔 스텔라 버스트는 턴 시작에(턴을 안 쓴다)
       for (const tier of ["pre", "mid", "post"]) {
         if (rows) for (const x of row) {
+          if (x.free && x.sb) { if (tier === "mid") { const d0 = Object.values(sim.dmg).reduce((a, b) => a + b, 0); sbFire(sim, true, false, true); perStep[x.step] = Object.values(sim.dmg).reduce((a, b) => a + b, 0) - d0; } continue; }   // 스텔라 버스트 블록 — 그 SB 의 대미지 = 그 단계 몫
           if (x.free) { if (tier === "mid") for (const u of x.fx) apply(sim, x.ci, { ...u }, x.skill); continue; }   // 수동 효과 — 넣은 자리에서 효과만
           if (tierOf(party[x.ci], x.skill) !== tier) continue; sim.step = x.step; if (conf.snapAt && conf.snapAt.includes(x.step)) snaps[x.step] = { live: new Map([...sim.live].map(([k, e]) => [k, { ...e }])), zone: sim.zone }; perStep[x.step] = act(sim, x.ci, x.skill, true); sim.step = null;
         }

@@ -396,7 +396,7 @@
     // 장비 습득 스킬(11-12, 사용자 「그라스타 스킬이나 배지 스킬이면 장착 칸도 차지」) — m.equipSkills = [{ slot: weapon|armor|grasta|badge, item, skill }](딩님 DB, data/calc/equip_skills.json).
     //   순서에 쓰면 그 장비를 그 칸에 고정: 무기 · 방어구 = 후보를 그것 하나로(lockWeapon · lockArmor) · 그라스타 = lockGrasta · 배지 = lockBadges(optimizer)
     // 수동 효과(seq 항목 [멤버, 이름, { fx }]) — 행동이 아니라 스킬칸 · 이름 검사에서 뺀다(S.seqTurns)
-    const manual = k => !!(seq[k][2] && seq[k][2].fx);
+    const manual = k => !!(seq[k][2] && (seq[k][2].fx || seq[k][2].sb));   // 스텔라 버스트 블록 [-1, "스텔라 버스트", { sb: true }] 도 행동 밖
     const team0 = party.map((m0, ci) => {
       let m = withGrants(m0, { grantsOf: x => x.extraGrants || [] });
       const via = { weapon: "viaW", armor: "viaA", grasta: "viaG", badge: "viaB" };

@@ -537,8 +537,8 @@
   }
 
   // 효과 끄기(11-12, 사용자 「스킬을 고르면 쌓이는 버프 목록 — 일부 효과만 넣고 빼고 · 기여도」, Genshin Optimizer 의 조건부 토글) —
-  //   keys = ["캐릭터 id|스킬 이름|효과 번호"] → 그 효과 단위에 _mute(scenario.apply 가 건너뜀). 행동 단위를 복사해 원본은 그대로
-  const fxKey = (m, sk, i) => `${m.c.id}|${sk.name}|${i}`;
+  //   keys = ["캐릭터 id|분류(sub)|스킬 이름|효과 번호"] → 그 효과 단위에 _mute(scenario.apply 가 건너뜀). 행동 단위를 복사해 원본은 그대로
+  const fxKey = (m, sk, i) => `${m.c.id}|${sk.sub || ""}|${sk.name}|${i}`;   // 같은 이름이 분류만 다른 어빌리티(「(2)」)가 있어 sub 까지
   function muteTeam(party, keys) {
     if (!keys || !keys.length) return party;
     const K = new Set(keys), hit = (m, sk) => (sk.fx || []).some((u, i) => K.has(fxKey(m, sk, i)));

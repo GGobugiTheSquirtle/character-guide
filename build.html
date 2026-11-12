@@ -12,7 +12,48 @@
   :root { --bg: #0d1014; --panel: #151a21; --panel-2: #1b2129; --line: #2a323d; --text: #e7e3d8; --muted: #8d8a82; --gold: #d4af37; --gold-dim: #8a7426; --red: #c66062; --blue: #6b9bd1; }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 "Noto Sans KR", system-ui, sans-serif; }
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
+  .wrap { max-width: 1400px; margin: 0 auto; padding: 20px 16px 60px; }
+  /* 두 칸(11-12) — 왼쪽 = 흐름, 오른쪽 = 쌓이는 효과(폰 = 아래로) */
+  .cols { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 22px; align-items: start; }
+  .side { position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow-y: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); padding: 12px 12px 14px; }
+  .side h2 { font: 700 15px "Noto Serif KR", serif; color: var(--gold); margin: 0 0 2px; }
+  .side .why { color: var(--muted); font-size: 11.5px; margin-bottom: 8px; line-height: 1.5; }
+  .side .stale { color: #e0b25c; font-size: 12px; margin: 6px 0; }
+  .fx-m { margin-top: 12px; }
+  .fx-mh { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+  .fx-mh img { width: 22px; height: 22px; border-radius: 5px; }
+  .fx-mh .n { margin-left: auto; color: var(--muted); font-weight: 400; font-size: 11px; }
+  .fx { display: grid; grid-template-columns: 18px 1fr auto; gap: 2px 6px; align-items: start; padding: 5px 2px; border-bottom: 1px dashed #232a33; font-size: 12px; }
+  .fx input { margin: 2px 0 0; accent-color: var(--gold); }
+  .fx .l { line-height: 1.35; }
+  .fx .src { grid-column: 2 / 4; color: var(--muted); font-size: 10.5px; }
+  .fx .d { color: #e7b4b5; font-size: 11px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .fx .d.z { color: var(--muted); }
+  .fx .bar { grid-column: 2 / 4; height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
+  .fx .bar i { display: block; height: 100%; background: var(--red); }
+  .fx.off .l { color: var(--muted); text-decoration: line-through; }
+  .side details { margin-top: 4px; font-size: 11.5px; color: var(--muted); }
+  .side summary { cursor: pointer; padding: 3px 0; }
+  @media (max-width: 1000px) { .cols { grid-template-columns: 1fr; } .side { position: static; max-height: none; } }
+  /* 후열 셔틀 · 빈 칸 추천 */
+  .back-h { margin: 10px 0 6px; font-size: 12px; color: var(--muted); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+  .back-h b { color: var(--text); font-weight: 600; }
+  .party.back { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .party.back .slot { height: 74px; flex-direction: row; gap: 8px; }
+  .party.back .slot img { width: 44px; height: 44px; }
+  .rec { margin-top: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); padding: 10px 12px; }
+  .rec .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .rec select { background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; font: inherit; }
+  .combo { display: grid; grid-template-columns: 26px 1fr auto; gap: 8px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); }
+  .combo:first-of-type { border-top: 0; }
+  .combo .rank { color: var(--gold); font-weight: 700; text-align: center; }
+  .combo .who { display: flex; flex-wrap: wrap; gap: 10px; }
+  .combo .mem { display: flex; gap: 6px; align-items: flex-start; font-size: 11.5px; }
+  .combo .mem img { width: 36px; height: 36px; border-radius: 6px; }
+  .combo .mem.new img { outline: 2px solid var(--gold); outline-offset: 1px; }
+  .combo .mem .sl { color: var(--muted); font-size: 10.5px; line-height: 1.35; max-width: 170px; }
+  .combo .sc { text-align: right; font-weight: 700; color: var(--gold); }
+  .tag.party { color: #b7a3e6; border-color: #4b3d6b; }
   h1 { font: 700 22px "Noto Serif KR", serif; color: var(--gold); margin: 0 0 4px; }
   .sub { color: var(--muted); font-size: 12px; margin-bottom: 18px; }
   .sec { margin: 18px 0; }
@@ -75,7 +116,7 @@
   .sk:hover { border-color: var(--gold-dim); }
   .sk .n { font-weight: 600; }
   .sk .m { display: flex; gap: 6px; font-size: 11px; color: var(--muted); }
-  .tag { padding: 0 6px; border-radius: 4px; border: 1px solid var(--line); font-size: 11px; }
+  .tag { padding: 0 6px; border-radius: 4px; border: 1px solid var(--line); font-size: 11px; white-space: nowrap; }
   .tag.atk { color: var(--red); border-color: #6b3a3c; }
   .tag.buf { color: var(--blue); border-color: #36506b; }
   .tag.sa { color: var(--gold); border-color: var(--gold-dim); }
@@ -151,6 +192,7 @@
   .foot { margin-top: 26px; color: var(--muted); font-size: 11px; line-height: 1.7; }
   @media (max-width: 640px) {
     .party { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .party.back { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .blk { width: calc(50% - 4px); }
   }
 </style>
@@ -165,9 +207,14 @@
   <h1>파티 빌더</h1>
   <div class="sub">캐릭터를 넣고 → 스킬을 누르면 아래 칸에 쌓이고 → 순서를 맞춘 뒤 계산합니다. 추정치 · 최대 육성 기준 · 기준 적(내구 · 정신 300, 상성 없음).</div>
 
+  <div class="cols"><div class="main">
   <div class="sec">
     <div class="sec-h"><b>① 파티</b><span>칸을 누르면 캐릭터 검색 · 넣은 캐릭터를 누르면 그 캐릭터의 스킬이 아래에</span></div>
     <div class="party" id="party"></div>
+    <div class="back-h"><b>후열 · 셔틀</b><span>공유 그라스타만 나릅니다(공격 · 스킬 없음) — 「장비도 고르기」일 때 그라스타를 골라 줍니다</span></div>
+    <div class="party back" id="back"></div>
+    <div class="bar"><button class="btn" id="recBtn">빈 칸 추천</button><span class="msg">넣은 멤버는 그대로 두고, 남은 전열 칸에 대미지가 가장 커지는 캐릭터 · 스킬칸을 찾습니다</span></div>
+    <div class="rec" id="rec" hidden></div>
   </div>
 
   <div class="pk-ov" id="picker" hidden>
@@ -205,6 +252,9 @@
     <div class="sec-h"><b>④ 결과</b></div>
     <div class="res" id="res"></div>
   </div>
+  </div>
+  <aside class="side" id="side" aria-label="쌓이는 효과"></aside>
+  </div>
 
   <div class="foot">계산 = 이 사이트의 계산 엔진(calc/ · 턴 시뮬 · 고점). 스킬 데이터: 카페 딩님 스킬 DB(출처: 카페 딩님 스킬 검색기) · 나머지는 위키 문장 자동 해석. 인게임 대조 전 추정치.<br>
     순서대로 = 같은 캐릭터가 다시 나오면 다음 턴(한 턴 = 캐릭터마다 1번), 턴 안은 칸 순서대로 칩니다(속도는 맞춘다고 봅니다). 순서 무관 = 고른 스킬을 그 캐릭터의 스킬칸으로(4개까지) — 효과를 모두 최대로 쌓은 상태에서 캐릭터마다 가장 센 공격 1회.</div>
@@ -222,7 +272,9 @@
 "use strict";
 // ── 상태 — 파티 4칸 · 고른 캐릭터 · 행동 칸 · 방식. 이 브라우저에만 저장(cg-builder)
 const KEY = "cg-builder", N = 4;
-const S = Object.assign({ party: [null, null, null, null], active: 0, acts: [], mode: "seq" }, (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } })());
+const S = Object.assign({ party: [null, null, null, null], back: [null, null], active: 0, acts: [], mode: "seq", mute: [] }, (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } })());
+S.back = (S.back || []).concat([null, null]).slice(0, 2); S.mute = S.mute || [];
+const SB_ID = "@sb", SB_NAME = "스텔라 버스트";                          // 순서 입력의 파티 블록(11-12) — 그 자리에서 스텔라 버스트
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
 let ALL = [], DB = null, KO = {}, pickSlot = null, result = null;
 const ACT = {};                                                       // id → 행동 단위 데이터(data/calc/actions)
@@ -233,7 +285,7 @@ const icon = c => (c && c.icon ? el("img", { src: "images/icons/" + c.icon, alt:
 const fam = id => id.replace(/(_alter)?(_as|_es)?$/, "");
 const fmt = x => (x >= 1e8 ? (x / 1e8).toFixed(2) + "억" : x >= 1e4 ? (x / 1e4).toFixed(1) + "만" : Math.round(x).toLocaleString());
 const skillOf = (id, n) => ((ACT[id] || {}).skills || []).find(s => s.name === n);
-const skLabel = (id, n) => { const s = skillOf(id, n); return s ? (s.kind === "normal" ? "일반 공격" : s.ko || s.name) : n; };
+const skLabel = (id, n) => { if (id === SB_ID) return SB_NAME; const s = skillOf(id, n); return s ? (s.kind === "normal" ? "일반 공격" : s.ko || s.name) : n; };
 const oreSplit = n => { const k = String(n || "").lastIndexOf(" + "); return k > 0 ? [n.slice(0, k), n.slice(k + 3)] : null; };   // 광석 합성 그라스타 「그라스타 + 광석」
 const koName = n => KO[n] || (oreSplit(n) ? oreSplit(n).map(x => KO[x] || x).join(" + ") : n);
 const itemKo = it => (it ? koName(it.name) : "");
@@ -252,6 +304,15 @@ function drawParty() {
     box.append(el("div", { class: "slot" + (S.active === i ? " active" : ""), role: "button", tabindex: "0", title: "누르면 이 캐릭터의 스킬", onclick: () => { S.active = i; save(); drawAll(); } },
       el("button", { class: "x", text: "×", "aria-label": `${c.nameKo} 빼기`, title: "빼기", onclick: e => { e.stopPropagation(); removeChar(i); } }), icon(c), el("span", { class: "nm", text: c.nameKo })));
   });
+  const bk = $("back"); bk.replaceChildren();
+  S.back.forEach((id, j) => {
+    const c = id && charOf(id);
+    if (!c) { bk.append(el("div", { class: "slot empty", role: "button", tabindex: "0", onclick: () => openPicker(4 + j) }, el("span", { class: "plus", text: "+" }), el("span", { text: `후열 ${j + 1}` }))); return; }
+    bk.append(el("div", { class: "slot", title: "후열 셔틀 — 공유 그라스타만" }, el("button", { class: "x", text: "×", "aria-label": `${c.nameKo} 빼기`, title: "빼기", onclick: () => { S.back[j] = null; result = null; save(); drawAll(); } }), icon(c), el("span", { class: "nm", text: c.nameKo })));
+  });
+  const n = members().length;
+  $("recBtn").disabled = !(n >= 1 && n < 4);
+  $("recBtn").title = n >= 4 ? "전열이 다 찼습니다" : n ? "" : "먼저 고정할 캐릭터를 넣으세요";
 }
 // 캐릭터 고르기 창 — 티어표 고르기 창과 같은 틀(속성 · 무기 · 스타일 · SA · 천명 · 획득 필터, 이름 · 출시일 정렬). 필터 · 정렬은 이 브라우저에 저장
 const EL_ICON = { fire: "Skill_Type_8_1", water: "Skill_Type_8_8", earth: "Skill_Type_8_2", wind: "Skill_Type_8_4", thunder: "Skill_Type_8_16", shade: "Skill_Type_8_32", crystal: "Skill_Type_8_64", null: "Skill_Type_8_0" };
@@ -274,7 +335,7 @@ function pickMatch(c, q) {
 }
 function openPicker(i) {
   pickSlot = i; $("picker").hidden = false; $("q").value = "";
-  $("pkTitle").textContent = `캐릭터 고르기 — ${i + 1}번 칸${S.party[i] ? " (바꾸기)" : ""}`;
+  $("pkTitle").textContent = i >= 4 ? `캐릭터 고르기 — 후열 ${i - 3}번(셔틀)` : `캐릭터 고르기 — ${i + 1}번 칸${S.party[i] ? " (바꾸기)" : ""}`;
   drawPickF(); drawHits(); $("q").focus();
 }
 const closePicker = () => { $("picker").hidden = true; pickSlot = null; };
@@ -308,7 +369,7 @@ function drawHits() {
   $("pkCnt").textContent = `${pool.length} / ${ALL.length}명`;
   if (!pool.length) { box.append(el("div", { class: "pk-empty", text: "조건에 맞는 캐릭터가 없습니다" })); return; }
   for (const c of pool) {
-    const ok = !!DB.chars[c.id], inP = S.party.includes(c.id);
+    const ok = !!DB.chars[c.id], inP = S.party.includes(c.id) || S.back.includes(c.id);
     box.append(el("button", { class: "cc" + (inP ? " in" : "") + (ok ? "" : " na"), disabled: !ok, title: ok ? `${c.nameKo} · ${c.nameEn || ""}${inP ? " (이미 파티에 있음)" : ""}` : `${c.nameKo} — 계산 자료가 아직 없습니다`, onclick: () => addChar(c.id) },
       el("span", { class: "ic" }, icon(c), c.ls ? el("img", { class: "ls", src: `images/ls/${c.ls}.png`, alt: "" }) : null, c.sa ? el("span", { class: "sa", text: "SA" }) : null),
       el("span", { class: "nm", text: c.nameKo }),
@@ -316,8 +377,13 @@ function drawHits() {
   }
 }
 async function addChar(id) {
+  if (S.party.includes(id) || S.back.includes(id)) { closePicker(); return; }   // 이미 파티에 있음
+  if (pickSlot >= 4) {                                                    // 후열 셔틀 — 같은 캐릭터(다른 스타일 포함)가 앞 · 뒤에 둘은 못 선다
+    if ([...S.party, ...S.back].some(x => x && fam(x) === fam(id))) { closePicker(); return flash(`${charOf(id).nameKo}: 같은 캐릭터가 이미 파티에 있습니다`, true); }
+    S.back[pickSlot - 4] = id; closePicker(); result = null; save(); drawAll(); return;
+  }
+  if (S.back.some(x => x && fam(x) === fam(id))) { closePicker(); return flash(`${charOf(id).nameKo}: 같은 캐릭터가 후열에 있습니다`, true); }
   const same = S.party.findIndex(x => x && fam(x) === fam(id));          // 같은 캐릭터의 다른 스타일은 바꾼다(한 파티에 둘은 못 선다)
-  if (S.party.includes(id)) { closePicker(); return; }                  // 이미 파티에 있음
   const i = same >= 0 ? same : pickSlot;
   if (S.party[i]) S.acts = S.acts.filter(a => a.id !== S.party[i]);
   S.party[i] = id; S.active = i; closePicker(); result = null;
@@ -332,6 +398,11 @@ function drawSkills() {
   const c = charOf(id), d = ACT[id];
   $("skillHint").textContent = `${c.nameKo} — 누르면 아래 행동 칸에 추가`;
   if (!d) { box.append(el("div", { class: "hint", text: "스킬 데이터 없음" })); return; }
+  if (S.mode === "seq" && members().some(x => (charOf(x) || {}).sa)) {
+    const n = S.acts.filter(a => a.id === SB_ID).length;
+    box.append(el("button", { class: "sk", title: "그 자리에서 스텔라 버스트(게이지는 찼다고 봅니다) — 전열 성도 각성 멤버가 스킬칸의 성도 스킬을 씁니다(SB 중엔 바뀐 스킬). 턴을 쓰지 않습니다", onclick: () => addAct(SB_ID, SB_NAME) },
+      el("span", { class: "n", text: SB_NAME }), el("span", { class: "m" }, el("span", { class: "tag party", text: "파티" }), el("span", { class: "tag sa", text: "성도" }), n ? el("span", { class: "cnt", text: `${n}회` }) : null)));
+  }
   for (const s of usable(id)) {
     if (S.mode === "free" && !s.slot) continue;
     const atk = (s.attacks || []).length, n = S.acts.filter(a => a.id === id && a.skill === s.name).length;
@@ -350,7 +421,8 @@ function addAct(id, skill) {
 }
 
 // ── ③ 행동 칸 — 순서대로 = 번호 · 턴 · 끌어서 옮기기 · ★ 목표 / 순서 무관 = 캐릭터별 묶음(스킬칸 4개까지)
-const turnsOf = () => { const t = []; AEScenario.seqTurns(S.acts.map(a => [S.party.indexOf(a.id), a.skill])).forEach((r, k) => r.forEach(x => { t[x.step] = k + 1; })); return t; };
+const seqOf = ids => S.acts.map(a => (a.id === SB_ID ? [-1, SB_NAME, { sb: true }] : [ids.indexOf(a.id), a.skill]));
+const turnsOf = () => { const t = []; AEScenario.seqTurns(seqOf(S.party)).forEach((r, k) => r.forEach(x => { t[x.step] = k + 1; })); return t; };
 let dragFrom = null;
 function drawTray() {
   const box = $("tray"); box.replaceChildren();
@@ -365,7 +437,7 @@ function drawTray() {
         ondragstart: e => { dragFrom = k; b.classList.add("dragging"); e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", String(k)); },
         ondragend: () => b.classList.remove("dragging"), ondragover: e => { e.preventDefault(); b.classList.add("over"); }, ondragleave: () => b.classList.remove("over"),
         ondrop: e => { e.preventDefault(); b.classList.remove("over"); move(dragFrom ?? +e.dataTransfer.getData("text/plain"), k); dragFrom = null; } },
-        el("div", { class: "top" }, el("span", { class: "num", text: k + 1 }), icon(charOf(a.id)), el("span", { class: "t", text: `${t[k]}턴` })),
+        el("div", { class: "top" }, el("span", { class: "num", text: k + 1 }), a.id === SB_ID ? el("span", { class: "tag sa", text: "SB" }) : icon(charOf(a.id)), el("span", { class: "t", text: a.id === SB_ID ? `${t[k]}턴 · 턴 안 씀` : `${t[k]}턴` })),
         el("div", { class: "n", text: skLabel(a.id, a.skill) }),
         dm ? el("div", { class: "dmg" + (dm[k] ? "" : " zero"), text: dm[k] ? fmt(dm[k]) : "—" }) : null,
         el("div", { class: "ctl" },
@@ -413,8 +485,9 @@ async function run() {
   const opt = { enemy: { name: "기준 적", end: 300, spr: 300 }, zone: null, zones: DB.zones, cond: false, punish: [], enemyCount: 1, turns: 0 };
   const msg = { team, opt, mode: S.mode === "seq" ? "seq" : "peak", gear: $("gear").checked, inv: null,
     gearConf: { grastaSlots: 4, badgeSlots: 2, counts: null }, db: { weapons: DB.weapons, armor: DB.armor, grasta: DB.grasta, badges: DB.badges, ores: DB.ores } };
-  msg.conf = { contrib: true };                                     // 장비마다 「빼면 −%」(build.gearContrib)
-  if (S.mode === "seq") { msg.seq = S.acts.map(a => [ids.indexOf(a.id), a.skill]); msg.conf.steps = S.acts.map((a, k) => (a.goal ? k : -1)).filter(k => k >= 0); }
+  const mute = S.mute.filter(k => ids.includes(k.split("|")[0]));
+  msg.conf = { contrib: true, fxContrib: true, mute, back: S.back.filter(Boolean).map(id => ({ c: charOf(id), cc: DB.chars[id] })) };   // 장비 「빼면 −%」 · 효과 「끄면 −%」 · 끈 효과 · 후열 셔틀
+  if (S.mode === "seq") { msg.seq = seqOf(ids); msg.conf.steps = S.acts.map((a, k) => (a.goal ? k : -1)).filter(k => k >= 0); }
   $("run").disabled = true; const t0 = performance.now();
   flash("계산 중…");
   if (worker) worker.terminate();
@@ -423,7 +496,7 @@ async function run() {
     if (d.tick) return flash(`계산 중 — ${d.tick} · ${((performance.now() - t0) / 1000).toFixed(0)}초`);
     $("run").disabled = false; worker.terminate(); worker = null;
     if (d.error) return flash("계산 실패: " + d.error.split("\n")[0], true);
-    result = { kind: S.mode === "seq" ? "seq" : "free", ids, ...d.done };
+    result = { kind: S.mode === "seq" ? "seq" : "free", ids, muteSig: mute.slice().sort().join(","), ...d.done };
     flash(`${((performance.now() - t0) / 1000).toFixed(1)}초`);
     drawAll(); $("resSec").scrollIntoView({ behavior: "smooth", block: "nearest" });
   };
@@ -461,7 +534,137 @@ function drawResult() {
   box.append(el("div", { class: "res-top" }, el("div", { class: "big", text: fmt(total) }),
     el("div", { class: "msg", text: seq ? `${r.steps.length === r.seq.length ? "전체 행동 합" : "★ 목표 행동 합(" + r.steps.map(k => k + 1).join(" · ") + "번)"} · 전체 ${fmt(r.total)} · ${Math.max(...r.turnOf)}턴`
       : `캐릭터마다 가장 센 공격 1회의 합(고점) · 순간 최고점 ${fmt(r.scores.burst)}` })));
-  loadEK().then(() => r.ids.forEach((id, i) => box.append(eqCard(r, id, i, total))));
+  loadEK().then(() => { r.ids.forEach((id, i) => box.append(eqCard(r, id, i, total))); const bc = backCard(r); if (bc) box.append(bc); });
+}
+// 후열 셔틀 — 고른 공유 그라스타 · 빼면 −%
+function backCard(r) {
+  const bk = (r.back || []).filter(b => (b.grasta || []).length);
+  if (!bk.length) return null;
+  const cb = (r.contrib || {}).back || [];
+  return el("div", { class: "eq" }, el("div", { class: "eq-who" }, el("b", { text: "후열 셔틀" }), el("span", { class: "msg", text: " 공유 그라스타만 — 전열에 효과가 갑니다" })),
+    ...(r.back || []).map((b, bi) => !(b.grasta || []).length ? null : el("div", { style: "margin-top:8px" }, el("div", { class: "fx-mh" }, icon(charOf(b.c.id)), el("span", { text: b.c.nameKo })),
+      el("div", { class: "eq-grid", style: "margin-top:6px" }, ...b.grasta.map((g, j) => { const d = ((cb[bi] || [])[j] || {}).drop;
+        return el("div", { class: "eq-tile", style: "cursor:default" }, el("span", { class: "eq-slot", text: `그라스타 ${j + 1}` }), el("span", { class: "eq-name", text: itemKo(g) }), el("span", { class: "eq-st", text: statLine(g) || " " }),
+          d != null ? el("span", { class: "eq-drop" }, el("i", { style: `width:${Math.min(100, Math.max(0, d) * 200).toFixed(1)}%` }), el("em", { text: d > 0.0005 ? `빼면 −${pct(d)}` : "빼도 거의 같음" })) : null); })))));
+}
+
+// ── 쌓이는 효과(11-12, 사용자 「스킬 선택 시 쌓이는 버프 목록 — 일부 효과만 넣고 빼고 · 각 기여도」, Genshin Optimizer 의 조건부 토글 · 팀원 기여도) —
+//   멤버마다: 고른 스킬(계산 뒤 = 실제 스킬칸) · 그 바뀐 스킬 · 어빌리티 · 일반 공격의 효과. 체크를 끄면 계산에서 뺀다(build.muteTeam).
+//   끄면 −% = 그 효과 하나만 끄고 같은 조건으로 다시 잰 감소율(build.fxContrib) — 장비 「빼면 −%」와 같은 방식. 회복 · 보호 · MP · 행동 변화는 대미지에 안 닿아 뺀다
+const FX_SKIP = new Set(["heal", "guard", "cost", "action", "dispel", "af", "order"]);
+const FX_MAIN = new Set(["stat_pct", "dmg", "power", "buff", "zone", "zoneAwake", "ailment", "stack"]);   // 본문에 펼치는 종류 — 나머지(기타)는 닿을 때만 위로
+function fxLabel(u) {
+  const sg = u.dir === "DOWN" ? "−" : "+", pc = u.flat ? "" : "%", v = u.value != null ? `${sg}${u.value}${pc}` : "";
+  switch (u.k) {
+    case "stat_pct": return `${(u.stats || []).join(" · ")} ${v}${u.max ? ` (최대 ${u.max}${pc})` : ""}`;
+    case "dmg": return `${u.what || "대미지"} ${v}`;
+    case "power": return `${u.what || "위력"} ${v}${u.maxStack ? ` (최대 ${u.maxStack}%)` : ""}`;
+    case "zone": return `ZONE ${u.name || ""}`.trim();
+    case "zoneAwake": return "ZONE 각성";
+    case "ailment": return `${u.name || "상태 이상"}${u.value ? ` ${u.value}%` : ""}`;
+    case "stack": return `${u.name || "누적"} +${u.value ?? ""}${u.max ? ` / 최대 ${u.max}` : ""}`;
+    default: return u.name || u.what || u.k;
+  }
+}
+const fxMeta = (u, sk) => [u.tc, u.turns === 0 ? "그 턴" : u.turns ? `${u.turns}턴` : sk.kind === "ability" ? "늘" : "", u.times ? `${u.times}회` : "", u.cond ? "조건부" : ""].filter(Boolean).join(" · ");
+const skName = (id, sk) => (sk.kind === "ability" ? (/^\(\d+\)$/.test(sk.name) ? "어빌리티" : `어빌리티 ${sk.ko || sk.name}`) : skLabel(id, sk.name));
+function fxLines(id, i) {
+  const d = ACT[id]; if (!d) return [];
+  const fresh = result && result.ids && result.ids.includes(id), ri = fresh ? result.ids.indexOf(id) : -1;
+  const used = new Set(fresh && result.slots ? result.slots[ri] : S.acts.filter(a => a.id === id).map(a => a.skill));
+  const out = [];
+  for (const sk of d.skills || []) {
+    if (!(used.has(sk.name) || sk.kind === "ability" || (sk.kind === "variant" && used.has(sk.from)) || (sk.kind === "normal" && used.has(sk.name)))) continue;
+    (sk.fx || []).forEach((u, k) => { if (!FX_SKIP.has(u.k)) out.push({ key: `${id}|${sk.sub || ""}|${sk.name}|${k}`, id, sk, u }); });
+  }
+  return out;
+}
+function drawSide() {
+  const box = $("side"); box.replaceChildren();
+  box.append(el("h2", { text: "쌓이는 효과" }), el("div", { class: "why", text: "고른 스킬 · 어빌리티가 거는 효과입니다. 체크를 끄면 계산에서 뺍니다. 계산 뒤엔 줄마다 「끄면 −%」(그 효과 하나만 빼고 다시 잰 감소율)." }));
+  const ids = members();
+  if (!ids.length) { box.append(el("div", { class: "hint", text: "캐릭터를 넣으면 여기에 쌓입니다" })); return; }
+  const muted = new Set(S.mute), drop = new Map(((result && result.fxContrib) || {}).items ? result.fxContrib.items.map(x => [x.key, x.drop]) : []);
+  const has = !!(result && result.fxContrib);
+  const sig = S.mute.filter(k => ids.includes(k.split("|")[0])).sort().join(",");
+  if (result && result.muteSig !== sig) box.append(el("div", { class: "stale", text: "효과를 바꿨습니다 — 다시 계산하면 반영됩니다" }));
+  if (S.mute.length) box.append(el("button", { class: "btn", style: "font-size:11.5px;padding:3px 10px", text: `끈 효과 ${S.mute.length}개 모두 켜기`, onclick: () => { S.mute = []; save(); drawSide(); } }));
+  const row = x => {
+    const off = muted.has(x.key), d = drop.get(x.key);
+    return el("label", { class: "fx" + (off ? " off" : ""), title: [x.u.cond ? "조건: " + x.u.cond : "", x.u.raw || ""].filter(Boolean).join("\n") || null },
+      el("input", { type: "checkbox", checked: !off, onchange: e => { const i = S.mute.indexOf(x.key); if (e.target.checked) { if (i >= 0) S.mute.splice(i, 1); } else if (i < 0) S.mute.push(x.key); save(); drawSide(); } }),
+      el("span", { class: "l", text: fxLabel(x.u) }),
+      el("span", { class: "d" + (d ? "" : " z"), text: off ? "꺼짐" : !has ? "" : d ? `끄면 −${pct(d)}` : "—" }),
+      el("span", { class: "src", text: [skName(x.id, x.sk), fxMeta(x.u, x.sk)].filter(Boolean).join(" · ") }),
+      d && !off ? el("span", { class: "bar" }, el("i", { style: `width:${Math.min(100, d * 200).toFixed(1)}%` })) : null);
+  };
+  ids.forEach((id, i) => {
+    const c = charOf(id), L = fxLines(id, i);
+    const main = L.filter(x => (x.sk.kind !== "ability" && FX_MAIN.has(x.u.k)) || drop.get(x.key) || muted.has(x.key)), rest = L.filter(x => !main.includes(x));
+    if (has) main.sort((a, b) => (drop.get(b.key) || 0) - (drop.get(a.key) || 0));
+    const g = el("div", { class: "fx-m" }, el("div", { class: "fx-mh" }, icon(c), el("span", { text: c.nameKo }), el("span", { class: "n", text: `${L.length}줄` })), ...main.map(row));
+    if (!main.length) g.append(el("div", { class: "hint", text: "고른 스킬에 대미지에 닿는 효과가 없습니다" }));
+    if (rest.length) g.append(el("details", {}, el("summary", { text: `어빌리티 · 기타 효과 ${rest.length}개 — ${has ? "이 계산엔 안 닿음" : "계산하면 닿는 것만 위로 올라옵니다"}` }), ...rest.map(row)));
+    box.append(g);
+  });
+}
+
+// ── 빈 칸 추천(11-12, 사용자 「파티원 2명을 고정할 때 대미지 극대화가 되는 파티원 조합 및 스킬 목록」) — build.recommend(워커)
+let recWorker = null, recOut = null;
+function drawRec() {
+  const box = $("rec");
+  if (box.hidden) return;
+  const ids = members(), cand = ALL.filter(c => DB.chars[c.id] && ![...S.party, ...S.back].some(x => x && fam(x) === fam(c.id)));
+  const nf = cand.filter(c => pickMatch(c, "")).length;
+  box.replaceChildren(
+    el("div", { class: "row" },
+      el("span", { class: "msg", text: "목표" }),
+      el("select", { id: "recGoal", "aria-label": "추천 목표" }, el("option", { value: "", text: "파티 전체 대미지" }), ...ids.map((id, i) => el("option", { value: String(i), text: `${charOf(id).nameKo}의 대미지` }))),
+      el("label", { class: "msg" }, el("input", { type: "checkbox", id: "recF", checked: nf !== cand.length && nf > 0 }), ` 고르기 창 필터로 후보 좁히기 (${nf}명 / 전체 ${cand.length}명)`),
+      el("button", { class: "btn go", id: "recGo", text: `${4 - ids.length}칸 추천`, onclick: runRec }),
+      el("button", { class: "btn", text: "닫기", onclick: () => { box.hidden = true; if (recWorker) { recWorker.terminate(); recWorker = null; } } })),
+    el("div", { class: "msg", id: "recMsg", style: "margin-top:6px", text: "고정 멤버의 스킬칸 = 행동 칸에 넣은 스킬(나머지는 자동) · 순서 무관(고점) 기준 · 장비는 기본 무기만 — 고른 뒤 「계산」으로 장비까지" }),
+    el("div", { id: "recList" }));
+  if (recOut) drawRecList();
+}
+function runRec() {
+  const ids = members();
+  const cand = ALL.filter(c => DB.chars[c.id] && ![...S.party, ...S.back].some(x => x && fam(x) === fam(c.id)) && (!$("recF").checked || pickMatch(c, "")));
+  const goal = $("recGoal").value, team = ids.map(id => ({ ...teamMember(id), lock: [...new Set(S.acts.filter(a => a.id === id && (skillOf(id, a.skill) || {}).slot).map(a => a.skill))] }));
+  const opt = { enemy: { name: "기준 적", end: 300, spr: 300 }, zone: null, zones: DB.zones, cond: false, punish: [], enemyCount: 1, turns: 0 };
+  const t0 = performance.now(), m = $("recMsg");
+  $("recGo").disabled = true; recOut = null; $("recList").replaceChildren();
+  if (recWorker) recWorker.terminate();
+  recWorker = new Worker("calc/build_worker.js");
+  recWorker.onmessage = async ({ data: d }) => {
+    if (d.tick) { m.textContent = `찾는 중 — ${d.tick} · ${((performance.now() - t0) / 1000).toFixed(0)}초`; return; }
+    $("recGo").disabled = false; recWorker.terminate(); recWorker = null;
+    if (d.error) { m.textContent = "추천 실패: " + d.error.split("\n")[0]; return; }
+    recOut = { fixed: ids, goal, combos: d.done.combos };
+    await Promise.all([...new Set(recOut.combos.flatMap(x => x.ids))].map(loadAct));
+    m.textContent = `${((performance.now() - t0) / 1000).toFixed(0)}초 · 후보 ${cand.length}명 · ${goal === "" ? "파티 전체" : charOf(ids[+goal]).nameKo} 기준 고점(반복) — 「이 조합으로」를 누르면 칸 · 스킬이 채워집니다`;
+    drawRecList();
+  };
+  recWorker.onerror = e => { $("recGo").disabled = false; m.textContent = "추천 실패: " + (e.message || "워커 오류"); };
+  recWorker.postMessage({ mode: "recommend", team, cands: cand.map(c => ({ c, cc: DB.chars[c.id] })), opt, db: { weapons: DB.weapons }, conf: { open: 4 - ids.length, focus: goal === "" ? null : +goal } });
+}
+function drawRecList() {
+  const box = $("recList"); box.replaceChildren();
+  const fixed = new Set(recOut.fixed);
+  recOut.combos.forEach((cb, k) => {
+    box.append(el("div", { class: "combo" }, el("span", { class: "rank", text: k + 1 }),
+      el("div", { class: "who" }, ...cb.ids.map((id, i) => el("div", { class: "mem" + (fixed.has(id) ? "" : " new") }, icon(charOf(id)),
+        el("div", {}, el("div", { text: charOf(id).nameKo + (fixed.has(id) ? "" : " ＋") }), el("div", { class: "sl", text: (cb.slots[i] || []).map(n => skLabel(id, n)).join(" · ") }))))),
+      el("div", { class: "sc" }, el("div", { text: fmt(cb.q) }), el("button", { class: "btn", style: "margin-top:4px;font-size:11.5px;padding:3px 10px", text: "이 조합으로", onclick: () => useCombo(cb) }))));
+  });
+}
+function useCombo(cb) {
+  const add = cb.ids.filter(id => !S.party.includes(id));
+  for (const id of add) { const i = S.party.indexOf(null); if (i < 0) break; S.party[i] = id; }
+  S.mode = "free";
+  S.acts = cb.ids.flatMap((id, i) => (cb.slots[i] || []).map(n => ({ id, skill: n, goal: false })));
+  result = null; save(); drawAll();
+  flash("추천 조합을 넣었습니다(순서 무관) — 「계산」으로 장비까지");
 }
 // 이 캐릭터의 계산 근거 — 순서대로 = 그 캐릭터 행동들(★ 목표 먼저), 고점 = 주력 공격
 function capsOf(r, i) {
@@ -523,7 +726,7 @@ function whyItem(it, d, caps) {
     off.length ? el("div", { class: "eq-sub", text: "이 공격엔 안 들어감" }) : null, ...off.map(x => el("div", { class: "eq-line off", text: x })),
     el("div", { class: "msg", style: "margin-top:6px", text: ding ? "효과 문장 출처: 카페 딩님 「장비 목록」" : lines.length ? "효과 문장: 위키 영어 원문(딩님 장비 목록에 대응이 없는 장비)" : "" })];
 }
-function drawAll() { drawParty(); drawSkills(); drawTray(); drawResult(); }
+function drawAll() { drawParty(); drawSkills(); drawTray(); drawResult(); drawSide(); drawRec(); }
 
 // ── 시작
 document.querySelectorAll(".modes button").forEach(b => b.addEventListener("click", () => {
@@ -538,6 +741,7 @@ $("pkClose").addEventListener("click", closePicker);
 $("picker").addEventListener("pointerdown", e => { if (e.target === $("picker")) closePicker(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("picker").hidden) closePicker(); });
 $("run").addEventListener("click", run);
+$("recBtn").addEventListener("click", () => { $("rec").hidden = false; drawRec(); });
 $("clear").addEventListener("click", () => { S.acts = []; result = null; save(); drawAll(); });
 (async () => {
   const [ix, ...parts] = await Promise.all(["data/index.json", ...["chars", "weapons", "armor", "grasta", "badges", "zones", "ores"].map(n => `data/calc/${n}.json`)].map(u => fetch(u).then(r => r.json())));
@@ -548,6 +752,7 @@ $("clear").addEventListener("click", () => { S.acts = []; result = null; save();
   const em = await fetch("data/calc/equip_map.json").then(r => (r.ok ? r.json() : null)).catch(() => null);
   if (em) for (const rows of [em.weapons, em.armors, em.grasta, em.badges, em.ores]) for (const r of rows || []) if (r.en && r.ko && !KO[r.en]) KO[r.en] = r.ko + (r.reworked ? " (재가공)" : "");
   S.party = S.party.map(id => (id && DB.chars[id] ? id : null));
+  S.back = S.back.map(id => (id && DB.chars[id] ? id : null));
   await Promise.all(members().map(loadAct));
   drawAll();
 })();

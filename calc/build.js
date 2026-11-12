@@ -353,7 +353,8 @@
       }
     } else slotPass({ ...conf, via: !!conf.grantsOf, passes: 2, pair: true });
     const r = S.peak(team, opt, { pin: conf.pin, explain: true }), rb = peakOf(team, "burst");   // 마지막 한 번만 계산 근거를 모은다
-    return { team, slots: team.map(m => m.slots), explain: r.explain, via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)),
+    const contrib = conf.contrib ? gearContrib(team, t => S.peak(t, opt, { pin: conf.pin }).score) : null;
+    return { team, slots: team.map(m => m.slots), explain: r.explain, contrib, via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)),
       scores: { repeat: r.score, burst: rb.score }, perMember: r.perMember, perMemberBurst: rb.perMember, attackOf: r.attackOf, attackOfBurst: rb.attackOf, zone: r.zone, evals };
   }
 
@@ -491,10 +492,27 @@
       ({ team, cur } = best);
     }
     const fin = S.run(team, { af: null, seq }, opt, { scoreSteps: steps, explain: true });   // 마지막 한 번만 계산 근거(메모 없음)
+    const contrib = conf.contrib ? gearContrib(team, t => S.run(t, { af: null, seq }, opt, { scoreSteps: steps }).score) : null;
     const all = Object.values(fin.perTurn).reduce((s, v) => s + v, 0);
-    return { team, slots: team.map(m => m.slots), via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)), outGear: conf.gear ? outMode : null, seq, steps, score: fin.score, total: all, perStep: fin.perStep, turnOf: fin.turnOf, perTurn: fin.perTurn, perMember: fin.perMember,
+    return { team, slots: team.map(m => m.slots), via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)), outGear: conf.gear ? outMode : null, contrib, seq, steps, score: fin.score, total: all, perStep: fin.perStep, turnOf: fin.turnOf, perTurn: fin.perTurn, perMember: fin.perMember,
       skip: seq.map((_, k) => (fin.log.find(e => e.step === k && e.skip) || {}).skip || null),
       explain: seq.map((_, k) => fin.capture.filter(x => x.step === k).map(({ ci: _c, step: _s, ...x }) => x)), evals: evals + 1 };
+  }
+
+  // 장비 기회비용(11-12, 사용자 「장비의 근거 — 약식 식」) — 칸마다 그 장비를 빼고(무기는 능력치 · 효과 0 인 같은 종류) 같은 점수 함수로 다시 잰 감소율.
+  //   score(team) → 수(고점 = S.peak, 순서 = S.run). 장비가 남에게 주는 몫(공유 그라스타 · 「공격 시」 저항 다운)까지 점수 차에 들어간다
+  function gearContrib(team, score) {
+    const base = score(team);
+    const items = team.map((m, ci) => {
+      const out = [], put = patch => team.map((x, i) => (i === ci ? { ...x, ...patch, _contrib: null } : x));
+      const d = (slot, it, t2) => { const v = score(t2); out.push({ slot, name: it.name, drop: base ? (base - v) / base : 0 }); };
+      if (m.weapon) d("weapon", m.weapon, put({ weapon: { ...m.weapon, atk: 0, matk: 0, calc: [], fx: [], stats: {} } }));
+      if (m.armor) d("armor", m.armor, put({ armor: null }));
+      (m.grasta || []).forEach((g, i) => g && d("grasta", g, put({ grasta: m.grasta.filter((_, j) => j !== i), special: (m.special || []).filter(x => x !== g) })));
+      (m.badges || []).forEach((b, i) => b && d("badge", b, put({ badges: m.badges.filter((_, j) => j !== i) })));
+      return out;
+    });
+    return { base, items };
   }
 
   // 기회비용 — 칸(무기 · 방어구 · 그라스타 · 배지 · 스킬)마다 「빼면 A 점수가 얼마 주나」를 자기 몫 / 파티원 몫으로. 계획은 고정(스킬은 그 칸을 안 씀으로)
@@ -526,7 +544,7 @@
     return { base: base.score, perMember: base.perMember, items: out, backItems };
   }
 
-  const api = { optimize, optimizePeak, optimizeSeq, candidates, initialSlots, useful, contributions, grantSkill, withGrants, fitGrasta };
+  const api = { optimize, optimizePeak, optimizeSeq, gearContrib, candidates, initialSlots, useful, contributions, grantSkill, withGrants, fitGrasta };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEBuild = api;
 })(typeof window !== "undefined" ? window : globalThis);

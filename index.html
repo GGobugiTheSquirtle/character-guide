@@ -139,16 +139,25 @@
   .seq-pal { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin: 4px 0; }
   .seq-who { min-width: 6em; font-size: 12px; }
   .slot-btn.seq-atk { border-color: #6b3a3c; color: var(--text); }
-  .seq-list { margin: 8px 0; display: grid; gap: 4px; }
-  .seq-turn { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
   .seq-t { font-size: 11px; color: var(--muted); min-width: 2.6em; }
-  .seq-cell { display: inline-flex; align-items: center; gap: 2px; }
-  .chip.seq-step { background: transparent; font: inherit; font-size: 12px; }
-  .chip.seq-step.active { background: var(--gold); color: #2a2317; }
+  .cs-q { min-width: min(320px, 100%); font-size: 14px; padding: 6px 10px; }
+  .cs-sel { margin-bottom: 8px; }
+  .seq-h { margin-top: 14px; }
+  .seq-ol { list-style: none; padding: 0; margin: 6px 0; display: grid; gap: 4px; }
+  .seq-li { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel-2); cursor: grab; }
+  .seq-li.turn-break { margin-top: 8px; }
+  .seq-li.goal { border-color: var(--gold); }
+  .seq-li.dragging { opacity: 0.4; }
+  .seq-li.over { outline: 2px dashed var(--gold); }
+  .seq-grip { color: var(--muted); }
+  .seq-who2 { color: var(--muted); font-size: 12px; }
+  .seq-sk { flex: 1 1 12em; }
+  .seq-sk.seq-man { font-style: italic; }
+  .slot-btn.seq-goal.on { color: var(--gold); border-color: var(--gold); }
+  .build-cond { margin: 10px 0; }
+  .build-cond summary { cursor: pointer; color: var(--muted); font-size: 12px; }
   .seg-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 10px 0 4px; }
   .slot-btn.seq-on { background: var(--gold); border-color: var(--gold); color: #2a2317; font-weight: 600; }
-  .seq-chars { margin: 6px 0 10px; }
-  .seq-chars summary { cursor: pointer; font-size: 13px; }
   .cgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 6px; margin-top: 6px; max-height: 340px; overflow-y: auto; padding: 2px; }
   .cg-card { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 2px; background: transparent; border: 1px solid var(--line); border-radius: 6px; color: var(--muted); cursor: pointer; font: inherit; font-size: 11px; }
   .cg-card img { width: 44px; height: 44px; border-radius: 6px; object-fit: cover; }
@@ -157,7 +166,6 @@
   .cg-card.on { border-color: var(--gold); color: var(--text); background: rgba(212,175,55,0.12); }
   .seq-abil { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin: 0 0 6px 6em; }
   .seq-abil .chip { cursor: default; font-size: 11px; padding: 1px 8px; }
-  .chip.seq-step.seq-man { border-style: dashed; }
   .seq-manual summary { cursor: pointer; }
   .seq-grant { display: inline-flex; flex-wrap: wrap; gap: 4px; align-items: center; }
   .seq-grant[open] { display: flex; width: 100%; margin-left: 6em; }
@@ -705,7 +713,7 @@ const markViewButtons = () => document.querySelectorAll('#view-toggle .view-btn'
 //   전엔 주소에 화면이 안 남아 휴대폰 뒤로 가기가 모달 대신 사이트를 닫았고, 새로고침하면 캐릭터 탭 · 캐릭터 링크 공유 불가.
 //   상태 → 렌더가 먼저고 주소는 뒤따른다(pushState 는 이벤트를 안 낸다) — 뒤로 가기 · 주소 직접 수정(popstate · hashchange)만 주소 → 상태
 const VIEWS = ["chars", "quests", "dungeons", "party", "opt"], OPT_TABS = ["gear", "party", "build", "inv"];
-const viewHash = () => "#" + (STATE.view === "opt" ? "opt/" + (STATE.ov.tab || "gear") : STATE.view);
+const viewHash = () => "#" + (STATE.view === "opt" ? "opt/" + (STATE.ov.tab || "build") : STATE.view);
 function syncHash() {
   // 모달이 열려 있으면 #c/<id> 유지 · 우리가 부른 뒤로 가기(모달 닫기)가 끝나기 전엔 밀지 않는다 — 끝난 뒤 onPop 이 맞춘다
   if (STATE.modalId || STATE.backPending) return;
@@ -1936,7 +1944,8 @@ function whyDetails(d, head, extra, ko) {
 // ─────────────────────────────────────
 const loadJSON = (k, d) => { try { return JSON.parse(localStorage.getItem(k) || "null") || d; } catch { return d; } };
 STATE.inv = loadJSON('cg-inv', { chars: [], w: {}, a: {}, g: {}, b: {} });
-STATE.ov = loadJSON('cg-ov', { tab: "gear" });
+STATE.ov = loadJSON('cg-ov', { tab: "build" });
+if (!STATE.ov.v1112) { STATE.ov.tab = "build"; STATE.ov.v1112 = 1; }   // 11-12 파티 빌드를 첫 탭으로 — 옛 기본(캐릭터창)이 저장된 브라우저도 한 번은 파티 빌드로
 STATE.ovRes = null;
 function saveInv() { try { localStorage.setItem('cg-inv', JSON.stringify(STATE.inv)); } catch {} }
 function saveOv() { try { localStorage.setItem('cg-ov', JSON.stringify(STATE.ov)); } catch {} }
@@ -1949,7 +1958,7 @@ async function renderOpt() {
   wrap.appendChild(el("h3", { class: "party-h", text: "최적 세팅 — 장비 · 파티 추천" }));
   wrap.appendChild(el("div", { class: "skko-src", text: "버프 · 디버프 · 존을 모두 건 상태에서 스킬 1회 대미지가 가장 큰 장비 · 파티를 찾습니다. 게임 화면과 대조하기 전의 추정치이고, 턴 순서는 보지 않습니다." }));
   const tabs = el("div", { class: "view-toggle", style: "margin:10px 0 14px" });
-  for (const [k, t] of [["gear", "캐릭터창 · 장비 추천"], ["party", "파티 추천"], ["build", "파티 빌드"], ["inv", `보유 목록 (캐릭터 ${STATE.inv.chars.length}명)`]]) {
+  for (const [k, t] of [["build", "파티 빌드"], ["gear", "캐릭터창 · 장비 추천"], ["party", "파티 추천"], ["inv", `보유 목록 (캐릭터 ${STATE.inv.chars.length}명)`]]) {
     const b = el("button", { class: "view-btn" + (STATE.ov.tab === k ? " active" : ""), text: t });
     b.addEventListener('click', () => { STATE.ov.tab = k; saveOv(); renderOpt(); syncHash(); });
     tabs.appendChild(b);
@@ -2378,49 +2387,46 @@ function equipPicks(db, id, ES) {
     }
   return out;
 }
-// 캐릭터 고르기(11-12, 사용자 「캐릭터 보여주기 / 선택하기」) — 아이콘 격자. 이름(목록 검색과 같은 nameMatch) · 속성 · 무기로 거르고, 누르면 넣기 / 빼기.
-//   같은 캐릭터의 다른 스타일을 누르면 바꾼다(한 파티에 둘은 못 선다)
-function charGrid(db, ids, rr) {
-  const O = STATE.ov, pool = STATE.all.filter(c => db.chars[c.id]), fam = id => AENames.family(id);
-  const d = el("details", { class: "seq-chars" });
-  d.open = O.charGridOpen ?? ids.length < FRONT_N;
-  d.addEventListener('toggle', () => { O.charGridOpen = d.open; saveOv(); });
-  d.appendChild(el("summary", { text: `캐릭터 고르기 (${ids.length}/${FRONT_N})` }));
-  const q = el("input", { class: "fx-input", attrs: { placeholder: "이름 (한 · 영 · 일)", "aria-label": "캐릭터 이름으로 거르기" } });
-  const sel = (k, ph) => {
-    const s = el("select", { class: "fx-input", attrs: { "aria-label": ph } });
-    s.appendChild(el("option", { text: ph, attrs: { value: "" } }));
-    for (const v of [...new Set(pool.map(c => c[k]).filter(Boolean))].sort()) s.appendChild(el("option", { text: v, attrs: { value: v } }));
-    return s;
+// 캐릭터 추가(11-12, 사용자 「화면에서 캐릭터 검색해서 선택 → 스킬 목록 쫙 → 추가 → 순서 옮기기」) — 고른 캐릭터 카드(× 빼기) + 검색창 + 결과 아이콘(누르면 추가).
+//   이름 = 목록 검색과 같은 nameMatch(한 · 영 · 일 부분 일치). 같은 캐릭터의 다른 스타일을 누르면 바꾼다(한 파티에 둘은 못 선다). 검색어는 다시 그려도 남긴다(STATE.buildQ)
+function charSearch(db, ids, rr) {
+  const O = STATE.ov, pool = STATE.all.filter(c => db.chars[c.id]), fam = id => AENames.family(id), byId = id => STATE.all.find(c => c.id === id);
+  const drop = x => { if (O.buildSlots) delete O.buildSlots[x]; if (O.buildMain) delete O.buildMain[x]; };
+  const card = (c, on, act, label) => {
+    const b = el("button", { class: "cg-card" + (on ? " on" : ""), attrs: { title: label },
+      children: [c.icon ? el("img", { attrs: { src: "images/icons/" + c.icon, alt: "", loading: "lazy" } }) : el("span", { class: "icon-fallback", text: c.id.slice(0, 3) }), el("span", { class: "cg-n", text: c.nameKo + (on ? " ×" : "") })] });
+    b.addEventListener('click', act);
+    return b;
   };
-  const se = sel("elementKo", "속성 전체"), sw = sel("weaponKo", "무기 전체"), note = el("span", { class: "pt more", attrs: { "aria-live": "polite" } });
-  const grid = el("div", { class: "cgrid" }), MAX = 240;
+  const box = el("div", { class: "section cs" });
+  box.appendChild(el("h3", { text: `1. 캐릭터 (${ids.length}/${FRONT_N})` }));
+  const sel = el("div", { class: "cgrid cs-sel" });
+  for (const id of ids) { const c = byId(id); if (c) sel.appendChild(card(c, true, () => { O.buildIds = ids.filter(x => x !== id); drop(id); saveOv(); rr(); }, "누르면 빼기")); }
+  if (ids.length) box.appendChild(sel);
+  const note = el("span", { class: "pt more", attrs: { "aria-live": "polite" } });
+  const q = el("input", { class: "fx-input cs-q", attrs: { placeholder: "캐릭터 이름 검색 (한 · 영 · 일)", "aria-label": "캐릭터 이름 검색", autocomplete: "off" } });
+  q.value = STATE.buildQ || "";
+  const res = el("div", { class: "cgrid" });
   const paint = () => {
-    clear(grid);
+    clear(res);
     const t = q.value.trim();
-    const hits = pool.filter(c => (!t || nameMatch(c, t)) && (!se.value || c.elementKo === se.value) && (!sw.value || c.weaponKo === sw.value))
-      .sort((a, b) => ids.includes(b.id) - ids.includes(a.id));                       // 고른 캐릭터 먼저
-    for (const c of hits.slice(0, MAX)) {
-      const on = ids.includes(c.id);
-      const b = el("button", { class: "cg-card" + (on ? " on" : ""), attrs: { title: `${c.nameKo}${c.elementKo ? " · " + c.elementKo : ""}${c.weaponKo ? " · " + c.weaponKo : ""}`, "aria-pressed": on ? "true" : "false" },
-        children: [c.icon ? el("img", { attrs: { src: "images/icons/" + c.icon, alt: "", loading: "lazy" } }) : el("span", { class: "icon-fallback", text: c.id.slice(0, 3) }), el("span", { class: "cg-n", text: c.nameKo })] });
-      b.addEventListener('click', () => {
-        const k = ids.findIndex(x => fam(x) === fam(c.id));
-        const drop = x => { if (O.buildSlots) delete O.buildSlots[x]; if (O.buildMain) delete O.buildMain[x]; };
-        if (on) { O.buildIds = ids.filter(x => x !== c.id); drop(c.id); }
-        else if (k >= 0) { drop(ids[k]); O.buildIds = ids.map((x, i) => (i === k ? c.id : x)); }
-        else if (ids.length >= FRONT_N) { note.textContent = `전방 ${FRONT_N}명이 찼습니다 — 먼저 한 명을 빼세요`; return; }
-        else O.buildIds = [...ids, c.id];
-        saveOv(); rr();
-      });
-      grid.appendChild(b);
-    }
-    if (hits.length > MAX) grid.appendChild(el("span", { class: "skko-src", text: `${hits.length - MAX}명 더 — 이름 · 속성 · 무기로 거르세요` }));
+    STATE.buildQ = t;
+    if (!t) { res.appendChild(el("span", { class: "skko-src", text: ids.length < FRONT_N ? "이름을 치면 여기에 나옵니다 — 누르면 추가" : `전방 ${FRONT_N}명이 찼습니다 — 위 카드를 눌러 빼면 다른 캐릭터를 넣을 수 있습니다` })); return; }
+    const hits = pool.filter(c => !ids.includes(c.id) && nameMatch(c, t)).slice(0, 36);
+    if (!hits.length) { res.appendChild(el("span", { class: "skko-src", text: `「${t}」 결과 없음` })); return; }
+    for (const c of hits) res.appendChild(card(c, false, () => {
+      const k = ids.findIndex(x => fam(x) === fam(c.id));
+      if (k >= 0) { drop(ids[k]); O.buildIds = ids.map((x, i) => (i === k ? c.id : x)); }
+      else if (ids.length >= FRONT_N) { note.textContent = `전방 ${FRONT_N}명이 찼습니다 — 위 카드를 눌러 한 명을 빼세요`; return; }
+      else O.buildIds = [...ids, c.id];
+      STATE.buildQ = ""; STATE.buildFocus = true; saveOv(); rr();
+    }, "누르면 추가"));
   };
-  for (const x of [q, se, sw]) x.addEventListener('input', paint);
-  d.append(el("div", { class: "seq-tools", children: [q, se, sw, note] }), grid);
+  q.addEventListener('input', paint);
+  box.append(el("div", { class: "seq-tools", children: [q, note] }), res);
   paint();
-  return d;
+  if (STATE.buildFocus || (STATE.buildQ && ids.length < FRONT_N)) { STATE.buildFocus = false; setTimeout(() => { q.focus(); q.setSelectionRange(q.value.length, q.value.length); }, 0); }
+  return box;
 }
 // 수동 효과 칸(11-12, 사용자 「수동으로 효과 부여」) — 스탯 % 효과 하나를 순서의 그 자리에(턴을 안 쓴다). 스탯 목록 = 파티 스킬에 실제로 나오는 스탯 + 속성별 공격력 · 저항
 function manualBox(ids, ds, nm, add) {
@@ -2447,7 +2453,7 @@ function manualBox(ids, ds, nm, add) {
 function seqEditor(db, ids, rr, mode = "seq") {
   const O = STATE.ov, seqMode = mode === "seq", seq = seqMode ? O.buildSeq || [] : [], nm = id => (STATE.all.find(x => x.id === id) || {}).nameKo || id;
   const fixedOf = id => (O.buildSlots || {})[id] || [];
-  const box = el("div", { class: "section seq-ed", children: [el("h3", { text: seqMode ? `행동 순서 ${seq.length}개` : `스킬 고르기 — 고정 ${ids.reduce((n, id) => n + fixedOf(id).length, 0)}칸` })] });
+  const box = el("div", { class: "section seq-ed", children: [el("h3", { text: seqMode ? `2. 스킬 — 누르면 순서 끝에 추가 (${seq.length}개)` : `2. 스킬 — 누르면 스킬칸에 고정 (${ids.reduce((n, id) => n + fixedOf(id).length, 0)}칸)` })] });
   const save = next => { O.buildSeq = next; saveOv(); rr(); };
   const fixNote = el("span", { class: "pt more", attrs: { "aria-live": "polite" } });
   const toggleFix = (id, n) => {
@@ -2456,8 +2462,7 @@ function seqEditor(db, ids, rr, mode = "seq") {
     O.buildSlots = { ...(O.buildSlots || {}), [id]: cur.includes(n) ? cur.filter(x => x !== n) : [...cur, n] };
     saveOv(); rr();
   };
-  box.appendChild(charGrid(db, ids, rr));
-  const body = el("div", { class: "pt more", text: ids.length ? "스킬 목록 읽는 중…" : "위에서 캐릭터를 고르세요" });
+  const body = el("div", { class: "pt more", text: ids.length ? "스킬 목록 읽는 중…" : "먼저 캐릭터를 추가하세요" });
   box.appendChild(body);
   if (!ids.length) return box;
   Promise.all([Promise.all(ids.map(loadActions)), loadEquipSkills()]).then(([ds, ES]) => {
@@ -2515,23 +2520,30 @@ function seqEditor(db, ids, rr, mode = "seq") {
       body.appendChild(tools);
       return;
     }
-    // 순서 — 턴별 줄, 칸을 누르면 목표 표시 · × 로 빼기(수동 효과는 대미지가 없어 목표가 안 된다)
-    const turns = AEScenario.seqTurns(seq.map(([id, n, , g]) => [ids.indexOf(id), n, g && g.fx ? { fx: g.fx } : undefined]));
-    const list = el("div", { class: "seq-list" });
-    turns.forEach((r, t) => {
-      const line = el("div", { class: "seq-turn", children: [el("span", { class: "seq-t", text: `${t + 1}턴` })] });
-      for (const x of r) {
-        const [id, n, goal, g] = seq[x.step], man = !!(g && g.fx);
-        const chip = el("button", { class: "chip seq-step" + (goal ? " active" : "") + (man ? " seq-man" : ""), attrs: { "aria-pressed": goal ? "true" : "false", title: man ? "수동 효과(턴을 안 씀)" : "누르면 목표 행동 표시 / 해제" },
-          children: [el("b", { text: `${x.step + 1}` }), document.createTextNode(` ${nm(id)} · ${label(id, n, g)}`)] });
-        if (!man) chip.addEventListener('click', () => save(seq.map((y, k) => (k === x.step ? [y[0], y[1], !y[2], ...y.slice(3)] : y))));
-        const del = el("button", { class: "slot-btn seq-del", text: "×", attrs: { "aria-label": `${x.step + 1}번 빼기`, title: "빼기" } });
-        del.addEventListener('click', () => save(seq.filter((_, k) => k !== x.step)));
-        line.append(el("span", { class: "seq-cell", children: [chip, del] }));
-      }
-      list.appendChild(line);
+    // 순서 — 세로 목록(11-12, 사용자 「추가하고 순서 이리저리 옮기기」): 끌어서 놓기 · ↑↓ · × · ☆ 목표. 턴은 엔진과 같은 규칙으로 매긴다(같은 멤버가 다시 나오면 다음 턴)
+    //   수동 효과는 대미지가 없어 목표가 안 된다
+    const turnOf = [];
+    AEScenario.seqTurns(seq.map(([id, n, , g]) => [ids.indexOf(id), n, g && g.fx ? { fx: g.fx } : undefined])).forEach((r, t) => r.forEach(x => { turnOf[x.step] = t + 1; }));
+    const move = (from, to) => { if (to < 0 || to >= seq.length || from === to) return; const a = seq.slice(), [it] = a.splice(from, 1); a.splice(to, 0, it); save(a); };
+    const list = el("ol", { class: "seq-ol" });
+    let dragFrom = null;
+    seq.forEach(([id, n, goal, g], k) => {
+      const man = !!(g && g.fx), li = el("li", { class: "seq-li" + (k && turnOf[k] !== turnOf[k - 1] ? " turn-break" : "") + (goal ? " goal" : ""), attrs: { draggable: "true" } });
+      const btn = (t, f, label, cls = "slot-btn") => { const b = el("button", { class: cls, text: t, attrs: { "aria-label": label, title: label } }); b.addEventListener('click', f); return b; };
+      li.append(el("span", { class: "seq-grip", text: "⠿", attrs: { "aria-hidden": "true" } }), el("span", { class: "seq-t", text: `${turnOf[k]}턴` }), el("b", { text: `${k + 1}` }),
+        el("span", { class: "seq-who2", text: nm(id) }), el("span", { class: "seq-sk" + (man ? " seq-man" : ""), text: label(id, n, g) }),
+        man ? el("span", { class: "skko-src", text: "턴 안 씀" }) : btn(goal ? "★ 목표" : "☆ 목표", () => save(seq.map((y, j) => (j === k ? [y[0], y[1], !y[2], ...y.slice(3)] : y))), goal ? "목표 해제" : "이 행동을 목표로", "slot-btn seq-goal" + (goal ? " on" : "")),
+        btn("↑", () => move(k, k - 1), `${k + 1}번 위로`), btn("↓", () => move(k, k + 1), `${k + 1}번 아래로`), btn("×", () => save(seq.filter((_, j) => j !== k)), `${k + 1}번 빼기`));
+      li.addEventListener('dragstart', e => { dragFrom = k; li.classList.add("dragging"); e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", String(k)); });
+      li.addEventListener('dragend', () => li.classList.remove("dragging"));
+      li.addEventListener('dragover', e => { e.preventDefault(); li.classList.add("over"); });
+      li.addEventListener('dragleave', () => li.classList.remove("over"));
+      li.addEventListener('drop', e => { e.preventDefault(); li.classList.remove("over"); const from = dragFrom ?? +e.dataTransfer.getData("text/plain"); dragFrom = null; move(from, k); });
+      list.appendChild(li);
     });
+    body.appendChild(el("h3", { class: "seq-h", text: `3. 순서 — 끌어서 옮기기 · ↑↓ · ☆ 목표 (${seq.length}개)` }));
     if (seq.length) body.appendChild(list);
+    else body.appendChild(el("div", { class: "skko-src", text: "위 스킬을 누르면 여기에 차례로 쌓입니다" }));
     const goals = seq.map((x, k) => (x[2] ? k + 1 : 0)).filter(Boolean);
     const tools = el("div", { class: "ns-row seq-tools", children: [el("span", { class: "pt", text: `목표: ${goals.length ? goals.join(" · ") + "번 행동의 대미지 합" : "전체 행동 합 (순서 칸을 누르면 그 행동만 목표)"}` })] });
     for (const [t, f, on] of [["목표 모두 해제", () => save(seq.map(y => [y[0], y[1], false, ...y.slice(3)])), goals.length], ["마지막 빼기", () => save(seq.slice(0, -1)), seq.length], ["모두 지우기", () => save([]), seq.length]]) {
@@ -2541,15 +2553,19 @@ function seqEditor(db, ids, rr, mode = "seq") {
       tools.appendChild(b);
     }
     body.append(tools, manualBox(ids, ds, nm, x => save([...seq, x])),
-      el("div", { class: "skko-src", text: "스킬 버튼을 누르면 순서 끝에 붙습니다. 같은 멤버가 다시 나오면 다음 턴입니다. 턴 안은 넣은 순서대로 칩니다(속도는 맞춘다고 봅니다)." }));
+      el("div", { class: "skko-src", text: "같은 멤버가 다시 나오면 다음 턴입니다. 턴 안은 목록 순서대로 칩니다(속도는 맞춘다고 봅니다). ☆ 목표를 누른 행동들의 대미지 합이 가장 크게 장비를 고릅니다 — 하나도 안 누르면 전체 합." }));
   });
   return box;
 }
 function renderBuildTab(box, db) {
   const O = STATE.ov, S = STATE.calc, rr = renderOpt;
-  box.appendChild(buildCondBar(db, rr, { gear: true }));
   const opt = { ...calcOpt(db), zones: db.zones };
-  box.appendChild(enemyLine(opt.enemy));
+  // 전투 조건(적 · 존 · 버디 · 그라스타 칸 · 보유 장비만 …)은 접어서 계산 버튼 위로(11-12 — 화면 맨 위에 있어 어디서부터 할지 안 보였다)
+  const cond = el("details", { class: "build-cond" });
+  cond.open = !!O.condOpen;
+  cond.addEventListener('toggle', () => { O.condOpen = cond.open; saveOv(); });
+  cond.append(el("summary", { text: `전투 조건 · 장비 설정 — 적: ${(opt.enemy && opt.enemy.name) || "기준 적"} · 존: ${S.zone || "없음"} · 그라스타 ${S.gslots || 4}칸${S.ownedOnly ? " · 보유 장비만" : ""}` }),
+    buildCondBar(db, rr, { gear: true }), enemyLine(opt.enemy));
   const front = partyFront(db);
   const ids = (O.buildIds || front).filter(id => id && db.chars[id]).slice(0, FRONT_N);
   // 방식(11-12 사용자 「캐릭터 선택만으로 스킬 목록 → 골라서 순서대로 혹은 순서 무관」) — 버튼. 순서 무관 = 고른 스킬을 칸에 고정하고 나머지 칸은 자동(고점 계산) ·
@@ -2564,14 +2580,7 @@ function renderBuildTab(box, db) {
   }
   modeRow.appendChild(el("span", { class: "skko-src", text: { peak: "고른 스킬은 칸에 고정 · 나머지 칸은 자동", seq: "누른 순서대로 행동 · 행동마다 대미지", sim: "AF → 3턴을 자동으로" }[mode] }));
   const row = el("div", { class: "filter-group", style: "gap:6px;align-items:center;margin:8px 0" });
-  row.appendChild(el("span", { class: "filter-label", text: "전방 멤버" }));
-  for (const id of ids) {
-    const c = STATE.all.find(x => x.id === id);
-    const chip = el("span", { class: "chip active fx-sel", text: c ? c.nameKo : id, attrs: { title: "빼기" } });
-    chip.addEventListener('click', () => { O.buildIds = ids.filter(x => x !== id); if (O.buildSlots) delete O.buildSlots[id]; if (O.buildMain) delete O.buildMain[id]; saveOv(); rr(); });
-    row.appendChild(chip);
-  }
-  if (!ids.length) row.appendChild(el("span", { class: "pt more", text: "아래 「캐릭터 고르기」에서 누르세요" }));
+  row.appendChild(el("span", { class: "filter-label", text: "장비" }));
   const diff = partyDiffLine(front, ids, () => { delete O.buildIds; saveOv(); rr(); }, "빌드 멤버");
   const gsel = el("select", { class: "fx-input" });
   for (const [v, t] of [["opt", "장비: 이 계획에 맞춰 최적화 (수십 초)"], ["saved", "장비: 저장된 것 그대로"]]) gsel.appendChild(el("option", { text: t, attrs: { value: v } }));
@@ -2588,13 +2597,14 @@ function renderBuildTab(box, db) {
     row.appendChild(osel);
   }
   if (seqMode) O.buildSeq = (O.buildSeq || []).filter(x => ids.includes(x[0]));      // 빠진 멤버의 행동은 지운다
-  box.append(modeRow, row, diff, seqEditor(db, ids, rr, mode));
+  box.append(charSearch(db, ids, rr), diff, modeRow, seqEditor(db, ids, rr, mode));
   const seq = seqMode ? O.buildSeq : null;
   const lock = ids.map(id => (O.buildSlots || {})[id] || []);   // 스킬 목록에서 고정한 스킬칸(멤버 순 — 순서 무관 · 턴 시뮬)
   const peakMode = (O.buildMode || "peak") === "peak";            // 주력 지정은 고점 방식만(턴 시뮬은 공격 고정이 없다)
   const mains = ids.map(id => (peakMode && (O.buildMain || {})[id]) || "");
   const focus = mains.filter(Boolean).length === 1 && O.buildGoal !== "party" ? mains.findIndex(Boolean) : null;
   if (peakMode) box.appendChild(mainPickRow(db, ids, mains, focus, rr));
+  box.append(row, cond);
   const run = el("button", { class: "view-btn active", text: "빌드 계산" });
   const cancel = el("button", { class: "slot-btn", text: "취소", style: "margin-left:8px" });
   const prog = el("span", { class: "pt more build-prog", style: "margin-left:10px", attrs: { "aria-live": "polite" } });

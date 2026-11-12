@@ -30,12 +30,44 @@
   .slot.active { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold) inset; }
   .slot .x { position: absolute; top: 4px; right: 6px; background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 15px; padding: 2px 4px; }
   .slot .x:hover { color: var(--red); }
-  .picker { margin-top: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); padding: 10px; }
-  .picker input { width: 100%; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font-size: 15px; }
-  .hits { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 6px; margin-top: 8px; max-height: 300px; overflow-y: auto; }
-  .hit { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 5px 2px; border: 1px solid var(--line); border-radius: 8px; background: transparent; cursor: pointer; font-size: 11px; color: var(--muted); }
-  .hit:hover { border-color: var(--gold-dim); color: var(--text); }
-  .hit img { width: 44px; height: 44px; border-radius: 6px; object-fit: cover; }
+  /* 캐릭터 고르기 창(11-12, 사용자 「티어표에서 캐릭터 고를 때처럼 — 화면 · 검색 · 정렬」) */
+  .pk-ov { position: fixed; inset: 0; z-index: 50; background: rgba(5, 7, 10, 0.78); display: flex; padding: 16px; }
+  .pk-ov[hidden] { display: none; }
+  .pk { margin: auto; width: 100%; max-width: 860px; height: min(88vh, 900px); display: flex; flex-direction: column; background: linear-gradient(180deg, #19202a, var(--panel)); border: 1px solid var(--gold-dim); border-radius: 12px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.55); }
+  .pk-h { display: flex; align-items: center; gap: 10px; padding: 12px 14px 8px; }
+  .pk-h b { font: 700 16px "Noto Serif KR", serif; color: var(--gold); }
+  .pk-h .cnt { color: var(--muted); font-size: 12px; margin-left: auto; }
+  .pk-h .close { background: none; border: 0; color: var(--muted); font-size: 20px; cursor: pointer; padding: 0 4px; }
+  .pk-h .close:hover { color: var(--text); }
+  .pk-s { display: flex; gap: 6px; padding: 0 14px 8px; flex-wrap: wrap; }
+  .pk-s input { flex: 1 1 220px; min-width: 0; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font-size: 15px; }
+  .pk-sort { background: transparent; border: 1px solid var(--line); border-radius: 8px; padding: 0 12px; color: var(--muted); cursor: pointer; font-size: 13px; }
+  .pk-sort.on { color: var(--gold); border-color: var(--gold-dim); }
+  .pk-f { display: flex; flex-direction: column; gap: 5px; padding: 0 14px 10px; border-bottom: 1px solid var(--line); }
+  .pk-row { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+  .pk-row label { width: 44px; flex: none; font-size: 11.5px; color: var(--muted); }
+  .pk-f .sp { width: 10px; }
+  .ft { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; height: 32px; padding: 0 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-2); color: var(--muted); cursor: pointer; font-size: 12px; }
+  .ft img { width: 24px; height: 24px; }
+  .ft:hover { border-color: var(--gold-dim); color: var(--text); }
+  .ft.on { border-color: var(--gold); background: rgba(212, 175, 55, 0.16); color: var(--gold); }
+  .ft.reset { color: var(--red); border-color: transparent; background: none; }
+  .pk-b { flex: 1; overflow-y: auto; padding: 10px 14px 14px; }
+  .pk-g { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 6px; }
+  .cc { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 5px 3px 4px; border: 1px solid var(--line); border-radius: 9px; background: linear-gradient(180deg, #1c2333, #171e2c); cursor: pointer; color: var(--text); }
+  .cc:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .cc .ic { position: relative; width: 62px; height: 62px; }
+  .cc .ic > img { width: 62px; height: 62px; border-radius: 8px; object-fit: cover; display: block; }
+  .cc .ls { position: absolute; left: -3px; top: -3px; width: 18px !important; height: 18px !important; border-radius: 0 !important; }
+  .cc .sa { position: absolute; right: -2px; bottom: -2px; font: 700 9.5px/1 sans-serif; padding: 2px 4px; border-radius: 4px; background: var(--gold); color: #2a2317; }
+  .cc .nm { font-size: 11px; line-height: 1.25; text-align: center; word-break: keep-all; min-height: 2.5em; display: flex; align-items: center; }
+  .cc .mt { display: flex; gap: 1px; }
+  .cc .mt img { width: 16px; height: 16px; }
+  .cc.in { opacity: 0.4; }
+  .cc.in::after { content: "파티"; position: absolute; top: 4px; right: 4px; font-size: 10px; color: var(--gold); }
+  .cc.na { opacity: 0.35; cursor: not-allowed; }
+  .pk-empty { color: var(--muted); padding: 30px; text-align: center; }
+  @media (max-width: 640px) { .pk-ov { padding: 0; } .pk { height: 100vh; max-height: none; border-radius: 0; } .pk-g { grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); } .cc .ic, .cc .ic > img { width: 54px; height: 54px; } }
   .hint { color: var(--muted); font-size: 12px; padding: 6px 2px; }
   /* ② 스킬 */
   .skills { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
@@ -135,9 +167,14 @@
   <div class="sec">
     <div class="sec-h"><b>① 파티</b><span>칸을 누르면 캐릭터 검색 · 넣은 캐릭터를 누르면 그 캐릭터의 스킬이 아래에</span></div>
     <div class="party" id="party"></div>
-    <div class="picker" id="picker" hidden>
-      <input id="q" placeholder="캐릭터 이름 (한 · 영 · 일)" autocomplete="off" aria-label="캐릭터 이름 검색">
-      <div class="hits" id="hits"></div>
+  </div>
+
+  <div class="pk-ov" id="picker" hidden>
+    <div class="pk" role="dialog" aria-modal="true" aria-labelledby="pkTitle">
+      <div class="pk-h"><b id="pkTitle">캐릭터 고르기</b><span class="cnt" id="pkCnt"></span><button class="close" id="pkClose" aria-label="닫기" title="닫기 (Esc)">×</button></div>
+      <div class="pk-s"><input id="q" placeholder="이름 (한 · 영 · 일)" autocomplete="off" aria-label="캐릭터 이름 검색"><span id="pkSort"></span></div>
+      <div class="pk-f" id="pkF"></div>
+      <div class="pk-b"><div class="pk-g" id="hits"></div></div>
     </div>
   </div>
 
@@ -215,19 +252,74 @@ function drawParty() {
       el("button", { class: "x", text: "×", "aria-label": `${c.nameKo} 빼기`, title: "빼기", onclick: e => { e.stopPropagation(); removeChar(i); } }), icon(c), el("span", { class: "nm", text: c.nameKo })));
   });
 }
-function openPicker(i) { pickSlot = i; $("picker").hidden = false; $("q").value = ""; drawHits(); $("q").focus(); }
+// 캐릭터 고르기 창 — 티어표 고르기 창과 같은 틀(속성 · 무기 · 스타일 · SA · 천명 · 획득 필터, 이름 · 출시일 정렬). 필터 · 정렬은 이 브라우저에 저장
+const EL_ICON = { fire: "Skill_Type_8_1", water: "Skill_Type_8_8", earth: "Skill_Type_8_2", wind: "Skill_Type_8_4", thunder: "Skill_Type_8_16", shade: "Skill_Type_8_32", crystal: "Skill_Type_8_64", null: "Skill_Type_8_0" };
+const WP_ICON = { staff: 0, sword: 1, katana: 2, axe: 3, lance: 4, bow: 5, fist: 6, hammer: 7 };
+const elImg = k => (EL_ICON[k] ? el("img", { src: `images/elements/${EL_ICON[k]}.png`, alt: "" }) : null);
+const wpImg = k => (k in WP_ICON ? el("img", { src: `images/weapons/20200000${WP_ICON[k]}_icon.png`, alt: "" }) : null);
+const PF0 = () => ({ el: [], wp: [], st: [], sa: false, ls: null, acq: [] });
+S.pf = Object.assign(PF0(), S.pf || {}); S.psort = S.psort || "date-desc";
+const styleOf = c => { const t = String(c.style || ""); return { base: t.replace(/\s*Alter\s*/, "").trim() || "NS", alter: /Alter/.test(t) }; };
+function pickMatch(c, q) {
+  const f = S.pf, st = styleOf(c);
+  if (q && ![c.nameKo, c.nameEn, c.name_jp].some(n => norm(n).includes(q))) return false;
+  if (f.el.length && !f.el.includes(c.element) && !(c.element2 && f.el.includes(c.element2))) return false;
+  if (f.wp.length && !f.wp.includes(c.weapon)) return false;
+  if (f.st.length && !f.st.some(x => (x === "Alter" ? st.alter : st.base === x))) return false;
+  if (f.sa && !c.sa) return false;
+  if (f.ls && c.ls !== f.ls) return false;
+  if (f.acq.length && !f.acq.includes(c.acq)) return false;
+  return true;
+}
+function openPicker(i) {
+  pickSlot = i; $("picker").hidden = false; $("q").value = "";
+  $("pkTitle").textContent = `캐릭터 고르기 — ${i + 1}번 칸${S.party[i] ? " (바꾸기)" : ""}`;
+  drawPickF(); drawHits(); $("q").focus();
+}
+const closePicker = () => { $("picker").hidden = true; pickSlot = null; };
+function drawPickF() {
+  const f = S.pf, box = $("pkF"), tog = (k, v) => { const a = f[k], x = a.indexOf(v); x >= 0 ? a.splice(x, 1) : a.push(v); };
+  const ft = (on, kids, title, fn) => el("button", { class: "ft" + (on ? " on" : ""), title, "aria-pressed": on ? "true" : "false", onclick: () => { fn(); save(); drawPickF(); drawHits(); } }, kids);
+  const sp = () => el("span", { class: "sp" }), row = (lab, ...kids) => el("div", { class: "pk-row" }, el("label", { text: lab }), ...kids);
+  const EL = AETerms.slots("element"), WP = AETerms.slots("weapon");
+  box.replaceChildren(
+    row("속성", ...EL.map(x => ft(f.el.includes(x.k), elImg(x.k), x.ko, () => tog("el", x.k)))),
+    row("무기", ...WP.map(x => ft(f.wp.includes(x.k), wpImg(x.k), x.ko, () => tog("wp", x.k)))),
+    row("스타일", ...["NS", "AS", "ES", "Alter"].map(x => ft(f.st.includes(x), x === "Alter" ? "AC" : x, x === "Alter" ? "어나더 클래스(Alter)" : x, () => tog("st", x))),
+      ft(f.sa, "SA", "성도 각성", () => { f.sa = !f.sa; }), sp(),
+      ft(f.ls === "light", el("img", { src: "images/ls/light.png", alt: "" }), "천(빛)", () => { f.ls = f.ls === "light" ? null : "light"; }),
+      ft(f.ls === "shadow", el("img", { src: "images/ls/shadow.png", alt: "" }), "명(그림자)", () => { f.ls = f.ls === "shadow" ? null : "shadow"; }), sp(),
+      ...[["free", "무료"], ["gacha", "가챠"], ["buddy", "버디"]].map(([k, ko]) => ft(f.acq.includes(k), ko, ko, () => tog("acq", k))),
+      JSON.stringify(f) !== JSON.stringify(PF0()) ? el("button", { class: "ft reset", text: "필터 지우기", onclick: () => { S.pf = PF0(); save(); drawPickF(); drawHits(); } }) : null));
+  const so = $("pkSort"); so.replaceChildren(...[["date", "출시일"], ["name", "이름"]].map(([k, ko]) => {
+    const on = S.psort.startsWith(k), arrow = !on ? "⇅" : S.psort.endsWith("-desc") ? "▼" : "▲";
+    return el("button", { class: "pk-sort" + (on ? " on" : ""), text: `${ko} ${arrow}`, onclick: () => { S.psort = on ? (S.psort.endsWith("-desc") ? k : k + "-desc") : (k === "date" ? "date-desc" : k); save(); drawPickF(); drawHits(); } });
+  }));
+}
 function drawHits() {
   const q = norm($("q").value), box = $("hits"); box.replaceChildren();
-  if (!q) { box.append(el("div", { class: "hint", text: "이름을 치면 나옵니다 — 누르면 그 칸에 넣습니다" })); return; }
-  const hits = ALL.filter(c => DB.chars[c.id] && !S.party.includes(c.id) && [c.nameKo, c.nameEn, c.name_jp].some(n => norm(n).includes(q))).slice(0, 48);
-  if (!hits.length) { box.append(el("div", { class: "hint", text: "결과 없음" })); return; }
-  for (const c of hits) box.append(el("button", { class: "hit", title: c.nameKo, onclick: () => addChar(c.id) }, icon(c), el("span", { text: c.nameKo })));
+  const [key, dir] = S.psort.endsWith("-desc") ? [S.psort.slice(0, -5), -1] : [S.psort, 1];
+  const val = c => (key === "date" ? c.date || "" : c.nameKo || "");
+  const pool = ALL.filter(c => pickMatch(c, q));
+  pool.sort((a, b) => (q ? (norm(a.nameKo).startsWith(q) ? 0 : 1) - (norm(b.nameKo).startsWith(q) ? 0 : 1) : 0)   // 검색어로 시작하는 이름 먼저
+    || (!!DB.chars[b.id] - !!DB.chars[a.id])                                                                   // 계산 자료가 있는 캐릭터 먼저
+    || val(a).localeCompare(val(b), "ko") * dir || (a.nameKo || "").localeCompare(b.nameKo || "", "ko"));
+  $("pkCnt").textContent = `${pool.length} / ${ALL.length}명`;
+  if (!pool.length) { box.append(el("div", { class: "pk-empty", text: "조건에 맞는 캐릭터가 없습니다" })); return; }
+  for (const c of pool) {
+    const ok = !!DB.chars[c.id], inP = S.party.includes(c.id);
+    box.append(el("button", { class: "cc" + (inP ? " in" : "") + (ok ? "" : " na"), disabled: !ok, title: ok ? `${c.nameKo} · ${c.nameEn || ""}${inP ? " (이미 파티에 있음)" : ""}` : `${c.nameKo} — 계산 자료가 아직 없습니다`, onclick: () => addChar(c.id) },
+      el("span", { class: "ic" }, icon(c), c.ls ? el("img", { class: "ls", src: `images/ls/${c.ls}.png`, alt: "" }) : null, c.sa ? el("span", { class: "sa", text: "SA" }) : null),
+      el("span", { class: "nm", text: c.nameKo }),
+      el("span", { class: "mt" }, elImg(c.element), c.element2 ? elImg(c.element2) : null, wpImg(c.weapon))));
+  }
 }
 async function addChar(id) {
   const same = S.party.findIndex(x => x && fam(x) === fam(id));          // 같은 캐릭터의 다른 스타일은 바꾼다(한 파티에 둘은 못 선다)
+  if (S.party.includes(id)) { closePicker(); return; }                  // 이미 파티에 있음
   const i = same >= 0 ? same : pickSlot;
   if (S.party[i]) S.acts = S.acts.filter(a => a.id !== S.party[i]);
-  S.party[i] = id; S.active = i; pickSlot = null; $("picker").hidden = true; result = null;
+  S.party[i] = id; S.active = i; closePicker(); result = null;
   save(); await loadAct(id); drawAll();
 }
 function removeChar(i) { const id = S.party[i]; S.party[i] = null; S.acts = S.acts.filter(a => a.id !== id); result = null; save(); drawAll(); }
@@ -438,8 +530,11 @@ document.querySelectorAll(".modes button").forEach(b => b.addEventListener("clic
   if (S.mode === "free") { const seen = new Set(); S.acts = S.acts.filter(a => { const k = a.id + "|" + a.skill; if (seen.has(k)) return false; seen.add(k); return (skillOf(a.id, a.skill) || {}).slot; }); }   // 순서 무관 = 스킬칸 스킬 한 번씩
   save(); drawAll();
 }));
-$("q").addEventListener("input", drawHits);
-$("q").addEventListener("keydown", e => { if (e.key === "Escape") { $("picker").hidden = true; pickSlot = null; } });
+let qT = null;
+$("q").addEventListener("input", () => { clearTimeout(qT); qT = setTimeout(drawHits, 100); });
+$("pkClose").addEventListener("click", closePicker);
+$("picker").addEventListener("pointerdown", e => { if (e.target === $("picker")) closePicker(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("picker").hidden) closePicker(); });
 $("run").addEventListener("click", run);
 $("clear").addEventListener("click", () => { S.acts = []; result = null; save(); drawAll(); });
 (async () => {

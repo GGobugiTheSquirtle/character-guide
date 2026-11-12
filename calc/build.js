@@ -99,6 +99,7 @@
       for (let pass = 0; pass < cf.passes; pass++) {
         let moved = false;
         for (let ci = 0; ci < team.length; ci++) {
+          if (cf.only && !cf.only.includes(ci)) continue;                          // 그 멤버만 칸을 고른다(파티원 추천의 다듬기)
           const cand = candidates(team[ci], cf).filter(n => !team[ci].slots.includes(n));
           const tries = [];
           const put = ch => {                                   // ch = [[칸, 새 스킬], …]
@@ -242,6 +243,7 @@
   //     conf.focus = 멤버 번호 → 목표 = 그 멤버 몫(나머지는 1e-6 동률 깨기) · 장비는 항상 그 멤버 주력 가중. conf.pairMoves: false = 두 칸 동시 이동 생략
   function optimizePeak(party, opt, conf = {}) {
     conf = { passes: 3, cond: true, carryStarts: true, pairMoves: true, ...conf };   // 후보에 자원 소비 스킬도 — 고점 = 자원이 찬 상태
+    party = muteTeam(party, conf.mute);
     const focus = conf.focus != null ? conf.focus : null, fid = focus != null ? party[focus].c.id : null;
     const scoreOf = r => focus == null ? r.score : r.perMember[focus] + 1e-6 * (r.score - r.perMember[focus]);
     const gslots = (conf.gear && conf.gear.conf && conf.gear.conf.grastaSlots) || 4;
@@ -256,6 +258,7 @@
       for (let pass = 0; pass < cf.passes; pass++) {
         let moved = false;
         for (let ci = 0; ci < team.length; ci++) {
+          if (cf.only && !cf.only.includes(ci)) continue;                          // 그 멤버만 칸을 고른다(파티원 추천의 다듬기)
           const cand = candidates(team[ci], cf).filter(n => !team[ci].slots.includes(n));
           const moves = [];
           const fk = freeSlots(team[ci]);
@@ -352,9 +355,13 @@
         if (cur < keep.cur) ({ team, cur } = keep);
       }
     } else slotPass({ ...conf, via: !!conf.grantsOf, passes: 2, pair: true });
+    const with_ = (t, o) => { evals++; return scoreOf(S.peak(t, o, { pin: conf.pin })); };
+    if (conf.back && conf.back.length && conf.gear) opt = shuttle(conf.back, team, opt, conf, with_, gslots);
     const r = S.peak(team, opt, { pin: conf.pin, explain: true }), rb = peakOf(team, "burst");   // 마지막 한 번만 계산 근거를 모은다
-    const contrib = conf.contrib ? gearContrib(team, t => S.peak(t, opt, { pin: conf.pin }).score) : null;
-    return { team, slots: team.map(m => m.slots), explain: r.explain, contrib, via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)),
+    const sc = t => S.peak(t, opt, { pin: conf.pin }).score;
+    const contrib = conf.contrib ? { ...gearContrib(team, sc), back: backContrib(team, opt, (t, o) => S.peak(t, o, { pin: conf.pin }).score) } : null;
+    const fxc = conf.fxContrib ? fxContrib(team, sc) : null;
+    return { team, slots: team.map(m => m.slots), explain: r.explain, contrib, fxContrib: fxc, back: opt.back || [], via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)),
       scores: { repeat: r.score, burst: rb.score }, perMember: r.perMember, perMemberBurst: rb.perMember, attackOf: r.attackOf, attackOfBurst: rb.attackOf, zone: r.zone, evals };
   }
 
@@ -381,6 +388,7 @@
   //   AEOpt.partyGear(정적 식 · 근사 — 멤버 비중 = 순서 점수 몫 ÷ 정적 값, 순서 점수가 오를 때만 받는다) → 「공격 시」 부여 무기는 순서 점수로 → conf.gearRounds(기본 2).
   //   목표 행동을 가진 멤버가 둘 이상이면 그 멤버마다 주력 가중 시작 갈래도 돌려 가장 높은 것
   function optimizeSeq(party, seq, opt, conf = {}) {
+    party = muteTeam(party, conf.mute);
     const gslots = (conf.gear && conf.gear.conf && conf.gear.conf.grastaSlots) || 4;
     const steps = conf.steps && conf.steps.length ? conf.steps.filter(k => seq[k]) : seq.map((_, k) => k);
     let evals = 0;
@@ -490,11 +498,14 @@
         if (!best || cur.score > best.cur.score) best = { team, cur };
       }
       ({ team, cur } = best);
+      if (conf.back && conf.back.length) opt = shuttle(conf.back, team, opt, conf, (t, o) => { evals++; return S.run(t, { af: null, seq }, o, { scoreSteps: steps }).score; }, gslots);
     }
     const fin = S.run(team, { af: null, seq }, opt, { scoreSteps: steps, explain: true });   // 마지막 한 번만 계산 근거(메모 없음)
-    const contrib = conf.contrib ? gearContrib(team, t => S.run(t, { af: null, seq }, opt, { scoreSteps: steps }).score) : null;
+    const runO = (t, o) => S.run(t, { af: null, seq }, o, { scoreSteps: steps }).score, sc = t => runO(t, opt);
+    const contrib = conf.contrib ? { ...gearContrib(team, sc), back: backContrib(team, opt, runO) } : null;
+    const fxc = conf.fxContrib ? fxContrib(team, sc) : null;
     const all = Object.values(fin.perTurn).reduce((s, v) => s + v, 0);
-    return { team, slots: team.map(m => m.slots), via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)), outGear: conf.gear ? outMode : null, contrib, seq, steps, score: fin.score, total: all, perStep: fin.perStep, turnOf: fin.turnOf, perTurn: fin.perTurn, perMember: fin.perMember,
+    return { team, slots: team.map(m => m.slots), via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)), outGear: conf.gear ? outMode : null, contrib, fxContrib: fxc, back: opt.back || [], seq, steps, score: fin.score, total: all, perStep: fin.perStep, turnOf: fin.turnOf, perTurn: fin.perTurn, perMember: fin.perMember,
       skip: seq.map((_, k) => (fin.log.find(e => e.step === k && e.skip) || {}).skip || null),
       explain: seq.map((_, k) => fin.capture.filter(x => x.step === k).map(({ ci: _c, step: _s, ...x }) => x)), evals: evals + 1 };
   }
@@ -514,6 +525,100 @@
     });
     return { base, items };
   }
+  // 후열 셔틀 그라스타의 「빼면 −%」 — scoreWith(team, opt)
+  function backContrib(team, opt, scoreWith) {
+    const bk = opt.back || [];
+    if (!bk.length) return [];
+    const base = scoreWith(team, opt);
+    return bk.map((b, bi) => (b.grasta || []).map((g, j) => {
+      const v = scoreWith(team, { ...opt, back: bk.map((x, i) => (i === bi ? { ...x, grasta: x.grasta.filter((_, k) => k !== j) } : x)) });
+      return { name: g.name, drop: base ? (base - v) / base : 0 };
+    }));
+  }
+
+  // 효과 끄기(11-12, 사용자 「스킬을 고르면 쌓이는 버프 목록 — 일부 효과만 넣고 빼고 · 기여도」, Genshin Optimizer 의 조건부 토글) —
+  //   keys = ["캐릭터 id|스킬 이름|효과 번호"] → 그 효과 단위에 _mute(scenario.apply 가 건너뜀). 행동 단위를 복사해 원본은 그대로
+  const fxKey = (m, sk, i) => `${m.c.id}|${sk.name}|${i}`;
+  function muteTeam(party, keys) {
+    if (!keys || !keys.length) return party;
+    const K = new Set(keys), hit = (m, sk) => (sk.fx || []).some((u, i) => K.has(fxKey(m, sk, i)));
+    return party.map(m => (!(m.actions.skills || []).some(sk => hit(m, sk)) ? m
+      : { ...m, actions: { ...m.actions, skills: m.actions.skills.map(sk => (hit(m, sk) ? { ...sk, fx: sk.fx.map((u, i) => (K.has(fxKey(m, sk, i)) ? { ...u, _mute: true } : u)) } : sk)) } }));
+  }
+  // 효과 기여도 — 효과 하나씩 끄고 같은 점수 함수로 다시 잰 감소율(장비 gearContrib 와 같은 방식, 장비 · 스킬칸은 그대로).
+  //   대상 = 스킬칸 스킬 · 그 바뀐 스킬 · 어빌리티 · 일반 공격의 효과 중 대미지에 닿을 수 있는 종류(회복 · 보호 · MP · 행동 변화 · 해제 · 게이지 · 순서 제외)
+  const FX_SKIP = new Set(["heal", "guard", "cost", "action", "dispel", "af", "order"]);
+  function fxContrib(team, score) {
+    const base = score(team), items = [];
+    team.forEach((m, ci) => {
+      const sl = new Set(m.slots || []);
+      for (const sk of m.actions.skills || []) {
+        if (!(sl.has(sk.name) || sk.kind === "ability" || sk.kind === "normal" || (sk.kind === "variant" && sl.has(sk.from)))) continue;
+        (sk.fx || []).forEach((u, i) => {
+          if (u._mute || FX_SKIP.has(u.k)) return;
+          const v = score(team.map((x, j) => (j === ci ? muteTeam([x], [fxKey(x, sk, i)])[0] : x))), drop = base ? (base - v) / base : 0;
+          if (Math.abs(drop) > 1e-6) items.push({ key: fxKey(m, sk, i), ci, skill: sk.name, i, drop });
+        });
+      }
+    });
+    return { base, items };
+  }
+  // 후열 셔틀(11-12 화면 연결 — 사용자 「후열 2개는 순전히 연성 셔틀」) — back = [{c, cc}] 은 공격 · 효과 없이 공유 그라스타만 나른다.
+  //   칸마다 공유 그라스타 후보(장비 후보 중 share · 광석 아님)를 바꿔 점수가 오르면 채택(optimize 의 셔틀과 같은 규칙 — 획득 수 limit 은 전방이 낀 것까지 센다). scoreWith(team, opt)
+  function shuttle(backIn, team, opt, conf, scoreWith, gslots) {
+    const back = backIn.map(b => ({ c: b.c, cc: b.cc, pool: b.pool || (conf.gear.poolsOf(b).grasta || []).filter(g => g.share && !g.ore), grasta: Array(gslots).fill(null) }));
+    const used = g => [...team.flatMap(m => m.grasta || []), ...back.flatMap(b => b.grasta)].filter(x => x && (x.base || x.name) === (g.base || g.name)).length;
+    const put = () => ({ ...opt, back: back.map(b => ({ c: b.c, cc: b.cc, grasta: b.grasta.filter(Boolean) })) });
+    let best = scoreWith(team, put());
+    for (let pass = 0; pass < 3; pass++) {
+      let moved = false;
+      for (const b of back) for (let k = 0; k < gslots; k++) for (const g of [null, ...b.pool]) {
+        const was = b.grasta[k];
+        if (g === was || (g && used(g) >= (g.limit ?? Infinity))) continue;
+        b.grasta[k] = g;
+        const q = scoreWith(team, put());
+        if (q > best * (1 + 1e-9)) { best = q; moved = true; } else b.grasta[k] = was;
+      }
+      if (conf.tick) conf.tick(`후열 셔틀 ${pass + 1}바퀴`);
+      if (!moved) break;
+    }
+    return put();
+  }
+
+  // 파티원 추천(11-12, 사용자 「파티원 2명을 고정할 때 대미지 극대화가 되는 파티원 조합 및 스킬 목록」) — 고점(반복) 점수, 장비 없이(기본 무기).
+  //   fixed = 고정 멤버(lock 스킬칸 그대로) · cands = 후보 멤버(actions 포함) · conf = { open(채울 칸 수), focus(fixed 안 번호 → 그 멤버 몫), beam(2), refine(5), top(5), tick }
+  //   빈 칸마다: 후보 전원을 시작 스킬칸으로 고점 1회(≈13ms) → 상위 refine 명만 그 멤버 스킬칸을 고른다(optimizePeak only) → 갈래 beam 개를 다음 칸으로.
+  //   같은 캐릭터의 다른 스타일은 한 파티에 못 선다(fam)
+  function recommend(fixed, cands, opt, conf = {}) {
+    const open = conf.open ?? Math.max(0, 4 - fixed.length), beamN = conf.beam || 2, refineN = conf.refine || 5, focus = conf.focus ?? null;
+    const fam = id => id.replace(/(_alter)?(_as|_es)?$/, "");
+    const scoreOf = r => (focus == null ? r.score : r.perMember[focus] + 1e-6 * (r.score - r.perMember[focus]));
+    let evals = 0;
+    const base = optimizePeak(fixed, opt, { passes: 2, pairMoves: false });
+    evals += base.evals;
+    let beams = [{ team: base.team, q: base.scores.repeat }];
+    for (let s = 0; s < open; s++) {
+      const next = [];
+      beams.forEach((b, bi) => {
+        const taken = new Set(b.team.map(m => fam(m.c.id)));
+        const scr = cands.filter(c => !taken.has(fam(c.c.id))).map(c => {
+          const t = [...b.team, { ...c, slots: startSlots(c, {}) }];
+          evals++;
+          return { c, q: scoreOf(S.peak(t, opt)) };
+        }).sort((x, y) => y.q - x.q).slice(0, refineN);
+        scr.forEach((x, k) => {
+          const r = optimizePeak([...b.team, x.c], opt, { passes: 2, pairMoves: false, only: [b.team.length], focus });
+          evals += r.evals;
+          next.push({ team: r.team, q: scoreOf({ score: r.scores.repeat, perMember: r.perMember }), perMember: r.perMember });
+          if (conf.tick) conf.tick(`${s + 1}번째 빈 칸 · 갈래 ${bi + 1}/${beams.length} · ${x.c.c.nameKo} (${k + 1}/${scr.length})`);
+        });
+      });
+      const seen = new Set();
+      beams = next.sort((x, y) => y.q - x.q).filter(x => { const k = x.team.map(m => m.c.id).sort().join(","); return !seen.has(k) && seen.add(k); }).slice(0, s === open - 1 ? (conf.top || 5) : beamN);
+    }
+    return { combos: beams.map(b => ({ ids: b.team.map(m => m.c.id), slots: b.team.map(m => m.slots), q: b.q, perMember: b.perMember || null })), evals };
+  }
+
 
   // 기회비용 — 칸(무기 · 방어구 · 그라스타 · 배지 · 스킬)마다 「빼면 A 점수가 얼마 주나」를 자기 몫 / 파티원 몫으로. 계획은 고정(스킬은 그 칸을 안 씀으로)
   function contributions(team, plan, opt) {
@@ -544,7 +649,7 @@
     return { base: base.score, perMember: base.perMember, items: out, backItems };
   }
 
-  const api = { optimize, optimizePeak, optimizeSeq, gearContrib, candidates, initialSlots, useful, contributions, grantSkill, withGrants, fitGrasta };
+  const api = { optimize, optimizePeak, optimizeSeq, gearContrib, fxContrib, muteTeam, recommend, candidates, initialSlots, useful, contributions, grantSkill, withGrants, fitGrasta };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEBuild = api;
 })(typeof window !== "undefined" ? window : globalThis);

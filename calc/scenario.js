@@ -398,6 +398,7 @@
   const zoneAt = sim => { const z = sim.zone && (sim.zone.base || sim.zone); return z && z.up ? (z.up.types || []).map(atOf).find(Boolean) || null : null; };
   const zoneEl = sim => { const z = sim.zone && (sim.zone.base || sim.zone); return z && z.up ? (z.up.types || []).map(elOf).find(Boolean) || null : null; };
   function apply(sim, ci, u, skName, sk) {
+    if (u._mute) return;                                                       // 이용자가 끈 효과(11-12 build.muteTeam — 「쌓이는 효과」 패널)
     u = normZone(u, sk);
     u = normCrit(sim, ci, u);
     // 위키 「Another Zone」 스킬 — 본문(「Awakens any … Zones」)이 cond 칸 · 설명 첫 줄에 있고 효과 단위는 안내 줄뿐 → 각성 단위로

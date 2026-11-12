@@ -27,7 +27,8 @@
     return { af, turns: Array.from({ length: conf.turns }, () => pick.slice()) };
   }
 
-  // conf = { af: true, afCasts: 6, turns: 3, scoreTurns, passes: 4, restarts: 8, seed } → { plan, res, evals }
+  // conf = { af: true, afCasts: 6, turns: 3, scoreTurns, passes: 4, restarts: 8, seed, focus } → { plan, res, evals }
+  //   focus = 멤버 번호 → 점수 = 그 멤버 몫(같으면 팀 합) — 파티원 추천 「1픽 극대화」의 행동 수 점수(11-12)
   //   좌표 하강은 덮어쓰기 · 순서(버프 뒤 공격) 때문에 국소 최적에 걸린다 → 시작 계획 + 시드 고정 무작위 시작 restarts 개 중 가장 좋은 것
   function plan(party, opt, conf = {}) {
     conf = { af: true, afCasts: 6, turns: 3, passes: 4, restarts: 8, seed: 7, ...conf };
@@ -51,7 +52,8 @@
     const scoreTurns = conf.scoreTurns || (conf.af ? Array.from({ length: conf.turns }, (_, i) => i + 2) : Array.from({ length: conf.turns }, (_, i) => i + 1));
     let p = start, evals = 0;
     const memo = conf.memo || new Map();                                  // 같은 상태의 대미지는 한 번만(scenario attack 메모)
-    const score = q => { evals++; return S.run(party, q, opt, { scoreTurns, memo }).score; };
+    const f = conf.focus ?? null;
+    const score = q => { evals++; const r = S.run(party, q, opt, { scoreTurns, memo }); return f == null ? r.score : r.perMember[f] + 1e-6 * (r.score - r.perMember[f]); };
     let best = score(p);
     const cells = [];
     if (p.af) party.forEach((m, ci) => { for (let k = 0; k < conf.afCasts; k++) cells.push(["af", ci, k]); });

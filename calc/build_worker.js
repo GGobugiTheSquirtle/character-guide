@@ -39,10 +39,21 @@ function gearOf(db) {
 onmessage = async ({ data: d }) => {
   try {
     if (d.mode === "recommend") return postMessage({ done: await recommend(d) });
-    // 추천 조합 하나의 그라스타 단계 — { mode: "recgear", team(조합 멤버 + slots · 고정 멤버 lock), opt, focus, db } → { done: { q, perMember, grasta } } · 화면이 조합마다 워커 하나씩 동시에
-    if (d.mode === "recgear") {
-      const r = AEBuild.gearCombo(d.team, d.opt, { focus: d.focus, ...gearOf(d.db) });
-      return postMessage({ done: { q: r.q, perMember: r.perMember, grasta: r.team.map(m => (m.grasta || []).filter(Boolean).map(g => g.name)) } });
+    // 추천 조합 하나 마무리 — { mode: "recfin", team(조합 멤버 + slots · 고정 멤버 lock), opt, focus, grasta: bool, acts: 행동 수 | null, db }
+    //   → { done: { q(최종), qPeak(그라스타 뒤 고점), perMember, grasta, turns } } · 화면이 조합마다 워커 하나씩 동시에. 순서 = 그라스타(고점으로) → 행동 수
+    if (d.mode === "recfin") {
+      let team = d.team;
+      const out = {};
+      if (d.grasta) {
+        const g = AEBuild.gearCombo(team, d.opt, { focus: d.focus, ...gearOf(d.db) });
+        team = g.team;
+        Object.assign(out, { q: g.q, qPeak: g.q, perMember: g.perMember, grasta: team.map(m => (m.grasta || []).filter(Boolean).map(x => x.name)) });
+      }
+      if (d.acts) {
+        const a = AEBuild.actCombo(team, d.opt, { acts: d.acts, focus: d.focus });
+        Object.assign(out, { q: a.q, perMember: a.perMember, turns: a.turns });
+      }
+      return postMessage({ done: out });
     }
     const conf = { ...(d.conf || {}), tick: msg => postMessage({ tick: msg }) };
     if (d.gear) {

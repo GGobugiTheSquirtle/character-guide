@@ -624,11 +624,13 @@ function drawRec() {
       // ① 1픽 극대화 = 그 멤버 몫만(남은 칸은 버프 · 디버프 · 연격 · 연계로 받쳐 주는 쪽이 뽑힌다) · ② 팀 전체 = 네 명 합
       el("select", { id: "recGoal", "aria-label": "추천 목표", onchange: e => { $("recG").checked = e.target.value === ""; } },
         ...ids.map((id, i) => el("option", { value: String(i), text: `① ${charOf(id).nameKo} 대미지 극대화` })), el("option", { value: "", text: "② 팀 전체 대미지" })),
-      el("label", { class: "msg" }, el("input", { type: "checkbox", id: "recG", checked: !ids.length }), " 그라스타까지 맞추기(상위 5개 조합만)"),
+      // 행동 수(11-12 사용자 「행동 수를 선택하게」) — 고점은 버프 거는 행동이 공짜라 자기 강화형 딜러만 뽑힌다. N행동 = 각자 N번 움직인 합(버프 건 행동은 공격 못 함)
+      el("select", { id: "recActs", "aria-label": "행동 수" }, ...[1, 2, 3, 4, 5].map(n => el("option", { value: String(n), text: `${n}행동`, selected: n === 3 })), el("option", { value: "", text: "고점(행동 수 무시)" })),
+      el("label", { class: "msg" }, el("input", { type: "checkbox", id: "recG", checked: !ids.length }), " 그라스타까지 맞추기(상위 조합만)"),
       el("label", { class: "msg" }, el("input", { type: "checkbox", id: "recF", checked: nf !== cand.length && nf > 0 }), ` 고르기 창 필터로 후보 좁히기 (${nf}명 / 전체 ${cand.length}명)`),
       el("button", { class: "btn go", id: "recGo", text: `${4 - ids.length}칸 추천`, onclick: runRec }),
       el("button", { class: "btn", text: "닫기", onclick: () => { box.hidden = true; stopRec(); } })),
-    el("div", { class: "msg", id: "recMsg", style: "margin-top:6px", text: "고정 멤버의 스킬칸 = 행동 칸에 넣은 스킬(나머지는 자동) · 순서 무관(고점) 기준 · 장비 = 무기 종류별 최고 공격력 무기(방어구 · 배지 없음), 「그라스타까지」면 상위 조합만 그라스타도(광석 포함 · 스킬칸 그대로) — 고른 뒤 「계산」으로 장비 전부" }),
+    el("div", { class: "msg", id: "recMsg", style: "margin-top:6px", text: "고정 멤버의 스킬칸 = 행동 칸에 넣은 스킬(나머지는 자동) · 행동 수 = 각자 그만큼 움직인 합(버프 건 행동은 공격 못 함, AF 없음 · 최종 10조합은 계획기로 행동을 다시 고름) · 장비 = 무기 종류별 최고 공격력 무기(방어구 · 배지 없음), 「그라스타까지」면 상위 조합만 그라스타도(광석 포함 · 스킬칸 그대로) — 고른 뒤 「계산」으로 장비 전부" }),
     el("div", { id: "recList" }));
   if (recOut) drawRecList();
 }
@@ -637,6 +639,7 @@ function runRec() {
   const ids = members();
   const cand = ALL.filter(c => DB.chars[c.id] && ![...S.party, ...S.back].some(x => x && fam(x) === fam(c.id)) && (!$("recF").checked || pickMatch(c, "")));
   const lockOf = id => [...new Set(S.acts.filter(a => a.id === id && (skillOf(id, a.skill) || {}).slot).map(a => a.skill))];
+  const acts = +$("recActs").value || null;
   const goal = $("recGoal").value, withG = $("recG").checked, focus = goal === "" ? null : +goal, team = ids.map(id => ({ ...teamMember(id), lock: lockOf(id) }));
   const opt = { enemy: { name: "기준 적", end: 300, spr: 300 }, zone: null, zones: DB.zones, cond: false, punish: [], enemyCount: 1, turns: 0 };
   const t0 = performance.now(), m = $("recMsg"), sec = () => ((performance.now() - t0) / 1000).toFixed(0);
@@ -645,7 +648,7 @@ function runRec() {
   const finish = () => {
     stopRec(); $("recGo").disabled = false;
     const miss = recOut.missing || [];
-    m.textContent = `${sec()}초(조합 찾기 ${t1}초${withG ? ` · 그라스타 ${(+sec() - t1).toFixed(0)}초` : ""}) · 후보 ${cand.length - miss.length}명${miss.length ? `(⚠ 스킬 자료 받기 실패 ${miss.length}명: ${miss.slice(0, 6).join(" · ")}${miss.length > 6 ? " …" : ""} — 다시 눌러 보세요)` : ""} · ${goal === "" ? "팀 전체" : charOf(ids[focus]).nameKo + " 극대화"} · 고점(반복)${withG ? " · 그라스타까지" : " · 기본 무기만"} — 「이 조합으로」를 누르면 칸 · 스킬이 채워집니다`;
+    m.textContent = `${sec()}초(조합 찾기 ${t1}초${withG || acts ? ` · ${[withG && "그라스타", acts && "행동 계획"].filter(Boolean).join(" + ")} ${(+sec() - t1).toFixed(0)}초` : ""}) · 후보 ${cand.length - miss.length}명${miss.length ? `(⚠ 스킬 자료 받기 실패 ${miss.length}명: ${miss.slice(0, 6).join(" · ")}${miss.length > 6 ? " …" : ""} — 다시 눌러 보세요)` : ""} · ${goal === "" ? "팀 전체" : charOf(ids[focus]).nameKo + " 극대화"} · ${acts ? `${acts}행동 합` : "고점(반복)"}${withG ? " · 그라스타까지" : " · 기본 무기만"} — 「이 조합으로」를 누르면 칸 · 스킬이 채워집니다`;
     drawRecList();
   };
   $("recGo").disabled = true; recOut = null; $("recList").replaceChildren();
@@ -656,12 +659,12 @@ function runRec() {
     if (d.tick) { m.textContent = `찾는 중 — ${d.tick} · ${sec()}초`; return; }
     if (d.error) return fail(d.error.split("\n")[0]);
     stopRec();
-    recOut = { fixed: ids, goal, withG, combos: d.done.combos, missing: d.done.missing || [] };
+    recOut = { fixed: ids, goal, withG, acts, combos: d.done.combos, missing: d.done.missing || [] };
     t1 = +sec();
     await Promise.all([...new Set(recOut.combos.flatMap(x => x.ids))].map(loadAct));
-    if (!withG) return finish();
-    // 그라스타 단계 — 조합마다 워커 하나(동시 = 논리 코어 절반까지), 끝나면 다시 줄 세운다
-    const db = { weapons: DB.weapons, armor: DB.armor, grasta: DB.grasta, badges: DB.badges, ores: DB.ores };
+    if (!withG && !acts) return finish();
+    // 마무리 단계(그라스타 → 행동 계획) — 조합마다 워커 하나(동시 = 논리 코어 절반까지), 끝나면 다시 줄 세워 5개만
+    const db = withG ? { weapons: DB.weapons, armor: DB.armor, grasta: DB.grasta, badges: DB.badges, ores: DB.ores } : { weapons: DB.weapons };
     const par = Math.max(1, Math.min(recOut.combos.length, Math.floor((navigator.hardwareConcurrency || 4) / 2)));
     let next = 0, done = 0;
     const one = () => {
@@ -673,18 +676,19 @@ function runRec() {
         if (r.tick) return;
         w.terminate();
         if (r.error) return fail(r.error.split("\n")[0]);
-        Object.assign(cb, { q0: cb.q, q: r.done.q, perMember: r.done.perMember, grasta: r.done.grasta });
-        m.textContent = `그라스타 맞추기 ${++done}/${recOut.combos.length}(동시 ${par}개) · ${sec()}초`;
-        if (done === recOut.combos.length) { recOut.combos.sort((x, y) => y.q - x.q); finish(); } else one();
+        Object.assign(cb, { q0: cb.q, q: r.done.q, qPeak: r.done.qPeak ?? null, perMember: r.done.perMember, grasta: r.done.grasta || null, turns: r.done.turns || null });
+        m.textContent = `${stage} ${++done}/${recOut.combos.length}(동시 ${par}개) · ${sec()}초`;
+        if (done === recOut.combos.length) { recOut.combos = recOut.combos.sort((x, y) => y.q - x.q).slice(0, 5); finish(); } else one();
       };
       w.onerror = e => fail(e.message || "워커 오류");
-      w.postMessage({ mode: "recgear", team: cb.ids.map((id, i) => ({ ...teamMember(id), slots: cb.slots[i], lock: ids.includes(id) ? lockOf(id) : [] })), opt, focus, db });
+      w.postMessage({ mode: "recfin", team: cb.ids.map((id, i) => ({ ...teamMember(id), slots: cb.slots[i], lock: ids.includes(id) ? lockOf(id) : [] })), opt, focus, grasta: withG, acts, db });
     };
-    m.textContent = `그라스타 맞추기 0/${recOut.combos.length}(동시 ${par}개) · ${sec()}초`;
+    const stage = [withG && "그라스타", acts && "행동 계획"].filter(Boolean).join(" + ");
+    m.textContent = `${stage} 0/${recOut.combos.length}(동시 ${par}개) · ${sec()}초`;
     for (let i = 0; i < par; i++) one();
   };
   w0.onerror = e => fail(e.message || "워커 오류");
-  w0.postMessage({ mode: "recommend", team, cands: cand.map(c => ({ c, cc: DB.chars[c.id] })), opt, db: { weapons: DB.weapons }, conf: { open: 4 - ids.length, focus } });
+  w0.postMessage({ mode: "recommend", team, cands: cand.map(c => ({ c, cc: DB.chars[c.id] })), opt, db: { weapons: DB.weapons }, conf: { open: 4 - ids.length, focus, acts, top: acts ? 10 : 5 } });
 }
 function drawRecList() {
   const box = $("recList"); box.replaceChildren();
@@ -693,8 +697,10 @@ function drawRecList() {
     box.append(el("div", { class: "combo" }, el("span", { class: "rank", text: k + 1 }),
       el("div", { class: "who" }, ...cb.ids.map((id, i) => el("div", { class: "mem" + (fixed.has(id) ? "" : " new") }, icon(charOf(id)),
         el("div", {}, el("div", { text: charOf(id).nameKo + (fixed.has(id) ? "" : " ＋") }), el("div", { class: "sl", text: (cb.slots[i] || []).map(n => skLabel(id, n)).join(" · ") }),
-          cb.grasta && (cb.grasta[i] || []).length ? el("div", { class: "sl gr", text: "그라스타 " + cb.grasta[i].map(koName).join(" · ") }) : null)))),
-      el("div", { class: "sc" }, el("div", { text: fmt(cb.q) }), cb.q0 ? el("div", { class: "msg", text: `그라스타 전 ${fmt(cb.q0)}` }) : null, el("button", { class: "btn", style: "margin-top:4px;font-size:11.5px;padding:3px 10px", text: "이 조합으로", onclick: () => useCombo(cb) }))));
+          cb.grasta && (cb.grasta[i] || []).length ? el("div", { class: "sl gr", text: "그라스타 " + cb.grasta[i].map(koName).join(" · ") }) : null,
+          cb.turns ? el("div", { class: "sl gr", text: "행동 " + cb.turns.map(r => (r[i] ? skLabel(id, r[i]) : "쉼")).join(" → ") }) : null)))),
+      el("div", { class: "sc" }, el("div", { text: fmt(cb.q) }), recOut.acts ? el("div", { class: "msg", text: `${recOut.acts}행동 합` }) : null,
+        !recOut.acts && cb.q0 ? el("div", { class: "msg", text: `그라스타 전 ${fmt(cb.q0)}` }) : null, el("button", { class: "btn", style: "margin-top:4px;font-size:11.5px;padding:3px 10px", text: "이 조합으로", onclick: () => useCombo(cb) }))));
   });
 }
 function useCombo(cb) {

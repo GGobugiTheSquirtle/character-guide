@@ -587,7 +587,7 @@
   }
 
   // 파티원 추천(11-12, 사용자 「파티원 2명을 고정할 때 대미지 극대화가 되는 파티원 조합 및 스킬 목록」) — 고점(반복) 점수, 장비 없이(기본 무기).
-  //   fixed = 고정 멤버(lock 스킬칸 그대로) · cands = 후보 멤버(actions 포함) · conf = { open(채울 칸 수), focus(fixed 안 번호 → 그 멤버 몫), beam(2), refine(5), top(5), gear · grantsOf(그라스타 단계), tick }
+  //   fixed = 고정 멤버(lock 스킬칸 그대로) · cands = 후보 멤버(actions 포함) · conf = { open(채울 칸 수), focus(fixed 안 번호 → 그 멤버 몫), beam(2), refine(5), top(5), acts(행동 수 — 없으면 고점), gear · grantsOf(그라스타 단계), tick }
   //   빈 칸마다: 후보 전원을 시작 스킬칸으로 고점 1회(≈13ms) → 상위 refine 명만 그 멤버 스킬칸을 고른다(optimizePeak only) → 갈래 beam 개를 다음 칸으로.
   //   같은 캐릭터의 다른 스타일은 한 파티에 못 선다(fam)
   function recommend(fixed, cands, opt, conf = {}) {
@@ -595,6 +595,23 @@
     const fam = id => id.replace(/(_alter)?(_as|_es)?$/, "");
     const scoreOf = r => (focus == null ? r.score : r.perMember[focus] + 1e-6 * (r.score - r.perMember[focus]));
     let evals = 0;
+    // 행동 수(conf.acts, 11-12) — 거르기 · 갈래 점수도 고점이 아니라 「빠른 N행동 계획」으로: 각자 준비 스킬(칸 순서)을 먼저 최대 N−1번, 남은 행동은 가장 센 공격.
+    //   고점으로 거르면 버프 거는 행동이 공짜라 버퍼 조합이 상위 후보에 못 든다(우츠하라 고정: 딜러 셋 고점 69.4억 vs 버퍼 셋 36.9억 → 3행동 0.3억 vs 3.2억). 정식 계획은 마지막 조합만(actCombo)
+    const acts = conf.acts || null, actTurns = acts ? Array.from({ length: acts }, (_, i) => i + 1) : null;
+    // 가장 센 공격 = 혼자 1회 쳐 본 값(계획기 시작 계획과 같은 방식) — 데이터 위력만 보면 스텔라 버스트 때만 나가는 공격을 골라 0점이 됐다. 멤버 · 칸마다 캐시
+    const atkMemo = new Map();
+    const bestAtk = (m, sks) => {
+      const k = `${m.c.id}|${(m.slots || []).join("|")}`;
+      if (!atkMemo.has(k)) atkMemo.set(k, sks.filter(s => (s.attacks || []).length).map(s => [s.name, (evals++, S.run([m], { af: null, turns: [[s.name]] }, opt).score)]).sort((x, y) => y[1] - x[1]).map(x => x[0])[0] || null);
+      return atkMemo.get(k);
+    };
+    const quickPlan = t => ({ af: null, turns: Array.from({ length: acts }, (_, k) => t.map(m => {
+      const sks = (m.slots || []).map(n => (m.actions.skills || []).find(s => s.name === n)).filter(Boolean);
+      const setup = sks.filter(s => !(s.attacks || []).length && (s.fx || []).some(u => ENGINE.has(u.k)));
+      const atk = bestAtk(m, sks);
+      return k < Math.min(setup.length, acts - 1) || !atk ? (setup[k % (setup.length || 1)] || {}).name || null : atk;
+    })) });
+    const evalT = t => { evals++; return scoreOf(acts ? S.run(t, quickPlan(t), opt, { scoreTurns: actTurns }) : S.peak(t, opt)); };
     const base = optimizePeak(fixed, opt, { passes: 2, pairMoves: false });
     evals += base.evals;
     let beams = [{ team: base.team, q: base.scores.repeat }];
@@ -607,9 +624,8 @@
         //   (11-12 실측: 우츠하라 극대화 6.00억 → 3.85억) 기본 상위는 기본 칸에서 출발 — 다듬는 후보 = 옛 거르기 후보 + 덧붙인 후보
         const pool = cands.filter(c => !taken.has(fam(c.c.id))).map(c => {
           const s0 = startSlots(c, {}), s1 = initialSlots(c, { setupFirst: true });
-          evals++;
-          const q0 = scoreOf(S.peak([...b.team, { ...c, slots: s0 }], opt));
-          const q1 = s1.join("|") === s0.join("|") ? -Infinity : (evals++, scoreOf(S.peak([...b.team, { ...c, slots: s1 }], opt)));
+          const q0 = evalT([...b.team, { ...c, slots: s0 }]);
+          const q1 = s1.join("|") === s0.join("|") ? -Infinity : evalT([...b.team, { ...c, slots: s1 }]);
           return { c, q0, q1, s0, s1 };
         });
         const byA = [...pool].sort((x, y) => y.q0 - x.q0).slice(0, refineN), cut = byA.length ? byA[byA.length - 1].q0 : -Infinity, inA = new Set(byA);
@@ -618,7 +634,7 @@
         scr.forEach((x, k) => {
           const r = optimizePeak([...b.team, { ...x.c, slots: x.sl }], opt, { passes: 2, pairMoves: false, only: [b.team.length], focus });
           evals += r.evals;
-          next.push({ team: r.team, q: scoreOf({ score: r.scores.repeat, perMember: r.perMember }), perMember: r.perMember });
+          next.push({ team: r.team, q: acts ? evalT(r.team) : scoreOf({ score: r.scores.repeat, perMember: r.perMember }), perMember: r.perMember });
           if (conf.tick) conf.tick(`${s + 1}번째 빈 칸 · 갈래 ${bi + 1}/${beams.length} · ${x.c.c.nameKo} (${k + 1}/${scr.length})`);
         });
       });
@@ -645,6 +661,14 @@
     const r = optimizePeak(team, opt, { passes: 0, branchPasses: 0, pairMoves: false, carryStarts: false, stateMoves: false, rebranch: false, focus, gear: conf.gear, grantsOf: conf.grantsOf });
     const q = focus == null ? r.scores.repeat : r.perMember[focus] + 1e-6 * (r.scores.repeat - r.perMember[focus]);
     return { team: r.team, q, perMember: r.perMember, evals: r.evals };
+  }
+
+  // 추천 조합 하나를 행동 수로 다시 재기(11-12 사용자 「행동 수를 선택하게」) — 고점은 버프 거는 행동이 공짜라 자기 강화형 딜러 넷이 늘 최고점이었다.
+  //   스킬칸 그대로, 각자 acts 번 행동(AF 없음 · 한 턴에 한 번) → 계획기가 턴마다 무엇을 쓸지 고른 합. conf = { acts, focus, restarts } → { q, perMember, turns, evals }
+  function actCombo(team, opt, conf) {
+    const PL = root.AEPlanner || require("./planner.js");
+    const r = PL.plan(team, opt, { af: false, turns: conf.acts, passes: 3, restarts: conf.restarts ?? 3, focus: conf.focus ?? null });
+    return { q: r.score, score: r.res.score, perMember: r.res.perMember, turns: r.plan.turns, sbAt: r.plan.sbAt || null, evals: r.evals };
   }
 
   // 기회비용 — 칸(무기 · 방어구 · 그라스타 · 배지 · 스킬)마다 「빼면 A 점수가 얼마 주나」를 자기 몫 / 파티원 몫으로. 계획은 고정(스킬은 그 칸을 안 씀으로)
@@ -676,7 +700,7 @@
     return { base: base.score, perMember: base.perMember, items: out, backItems };
   }
 
-  const api = { optimize, optimizePeak, optimizeSeq, gearContrib, fxContrib, muteTeam, recommend, gearCombo, candidates, initialSlots, useful, contributions, grantSkill, withGrants, fitGrasta };
+  const api = { optimize, optimizePeak, optimizeSeq, gearContrib, fxContrib, muteTeam, recommend, gearCombo, actCombo, candidates, initialSlots, useful, contributions, grantSkill, withGrants, fitGrasta };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEBuild = api;
 })(typeof window !== "undefined" ? window : globalThis);

@@ -1,7 +1,8 @@
 // 이름 해석기 (2026-11-11) — 글에 적힌 캐릭터 · 스킬 이름(한 · 영 · 일 · 별칭)을 멤버 + 스킬칸으로 푼다.
 //   입력 색인 = data/calc/skill_names.json(_tools/character/build_skill_names.py, 이름은 전부 ae-db 이름 표)
 //   const R = AENames.build(index);  R.resolve("알도 회전 베기, 용신참\n시온 AS …", { party: [ids] })
-//     → { members: [{ id, explicit, basis: 'name'|'skills'|'cover', slots: [계산 키], extra, alt }], warnings: [{ kind, … }], unknown: [글자] }
+//     → { members: [{ id, explicit, basis: 'name'|'skills'|'cover', slots: [계산 키], extra, alt }], warnings: [{ kind, … }], unknown: [글자], seq: [{ id, name }] }
+//        seq = 적힌 순서대로의 행동(같은 스킬을 다시 적으면 다시 — 파티 빌드 「순서 입력」, 11-12)
 //   문장을 만들지 않는다(경고는 자료 — 화면이 글로 옮긴다). 계산 키 = 행동 단위 스킬 name.
 //   ctx: party = 지금 파티 id(같은 이름이면 파티 안 캐릭터가 먼저) · fuzzy = 'char'(기본 — 적힌 캐릭터의 스킬 안에서만 한 글자 오타 보정) | 'off' | 'global'(전체에서 — 글 속 낱말 표본 40 중 28이 틀려 기본으로 안 씀)
 //        loneMin = 이름 없이 스킬 하나로 캐릭터를 세우는 최소 글자 수(기본 3) · cover = false 면 「여럿이 가진 이름을 혼자 덮는 캐릭터」 추정을 끈다(측정용)
@@ -300,11 +301,13 @@
         const rival = sc.find(x => x.free && family(x.id) !== family(best.id) && x.own === best.own && x.rank === best.rank && x.inP === best.inP && x.alt === best.alt);
         if (rival) warnings.push({ kind: "ambiguous_char", name: g.label || g.skills.map(t => t.text).join(", "), id: best.id, alt: sc.filter(x => x.free && family(x.id) !== family(best.id) && x.own === best.own && x.rank === best.rank && x.inP === best.inP && x.alt === best.alt).map(x => x.id) });
       }
+      const acts = [];                                       // 행동 순서(11-12 순서 입력) — 글에 적힌 순서 그대로(같은 스킬을 다시 적으면 다시), 멤버가 가진 스킬만
       const members = groups.filter(g => !g.merged).sort((a, b) => a.pos - b.pos).map(g => {
         const slots = [], extra = [], seen = new Set();
         for (const t of g.skills.slice().sort((a, b) => a.pos - b.pos)) {
           const m = skillKeys.get(t.key), e = m.get(g.id);
           if (!e) { warnings.push(t.rivals || t.rivalIds || (!g.explicit && !oneFam(t)) ? { kind: "ambiguous_skill", skill: t.text, owners: ownersOf(t) } : { kind: "not_owned", skill: t.text, id: g.id, owners: [...m.keys()] }); continue; }   // 어림 · 스킬만으로 세운 묶음인데 고른 스타일이 안 가짐 → 묻는다
+          acts.push({ pos: t.pos, id: g.id, name: e.name });
           if (seen.has(e.name)) continue;
           seen.add(e.name);
           const alt = [...new Set((t.rivals || []).map(r => (r.into || r).id).concat(t.rivalIds || []))].filter(id => id && id !== g.id && family(id) !== family(g.id) && m.has(id));
@@ -315,7 +318,7 @@
         }
         return { id: g.id, explicit: g.explicit, basis: g.basis, label: g.label, slots, extra, alt: g.alt || [] };
       });
-      return { members, warnings, unknown };
+      return { members, warnings, unknown, seq: acts.sort((a, b) => a.pos - b.pos).map(({ id, name }) => ({ id, name })) };
     }
     return { resolve, tokenize, near, charKeys, skillKeys, chars, norm, family };
   }

@@ -3,7 +3,7 @@
 //             conf: 탐색 설정(고점 방식의 주력 지정 — pin · focus · carryStarts, 없으면 기본) }
 //   보내는 것: { tick: 진행 문구 } … { done: 결과(멤버 객체 대신 장비만) } | { error }
 importScripts("ae_calc.js", "concepts.js", "ae_pipeline.js", "party_calc.js", "optimizer.js", "scenario.js", "planner.js", "build.js");
-// 파티원 추천(11-12) — { mode: "recommend", team: 고정 멤버, cands: [{ c, cc }](행동 단위는 여기서 받는다), opt, conf: { open, focus } } → { done: { combos } }
+// 파티원 추천(11-12) — { mode: "recommend", team: 고정 멤버, cands: [{ c, cc }](행동 단위는 여기서 받는다), opt, grasta: bool, db, conf: { open, focus } } → { done: { combos } }
 //   후보 멤버 = 화면 teamMember 와 같은 꼴(기본 무기 · 주력 공격 · 장비 없음)
 async function recommend(d) {
   const tick = msg => postMessage({ tick: msg });
@@ -18,7 +18,17 @@ async function recommend(d) {
     const atks = (x.cc.attacks || []).filter(a => a.mult || a.multMax), attack = AEOpt.attackPool(atks, false)[0] || atks[0];
     return { c: x.c, cc: x.cc, pos: "front", fx: [], atks, attack, weapon: AEParty.bestWeapon(d.db.weapons, x.cc.weapon, attack && attack.dep === "magic"), armor: null, special: [], grasta: [], badges: [], stats: x.cc.stats, zones: x.cc.zones || [], actions: acts[i], lock: [] };
   }).filter(Boolean);
-  return AEBuild.recommend(d.team, cands, d.opt, { ...(d.conf || {}), tick });
+  // 그라스타 단계(d.grasta) — 무기 = 지금 무기(기본 최강) 고정, 방어구 · 배지 없음, 그라스타(특수 칸 포함 · 광석 없이)만 후보.
+  //   광석 조합까지 넣으면 후보 ~7,000개라 조합당 17초 → 빼면 3.2초 · 점수 −2.7%(11-12 실측) — 추천은 순위용, 광석은 「계산」에서
+  const db = { ...d.db, ores: null };
+  const gear = {};
+  if (d.grasta) {
+    const cache = new Map();
+    const poolsOf = m => cache.get(m.c.id) || cache.set(m.c.id, { ...AEOpt.ownedPools(db, m.cc, m.c.traits, null).pools, weapons: [m.weapon].filter(Boolean), armor: [], badges: [] }).get(m.c.id);
+    gear.gear = { poolsOf, conf: { grastaSlots: 4, badgeSlots: 0, counts: null } };
+    gear.grantsOf = m => poolsOf(m).grasta.filter(g => g.grant && !g.ore);
+  }
+  return AEBuild.recommend(d.team, cands, d.opt, { ...(d.conf || {}), ...gear, tick });
 }
 onmessage = async ({ data: d }) => {
   try {

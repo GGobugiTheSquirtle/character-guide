@@ -53,6 +53,8 @@
   .combo .mem.new img { outline: 2px solid var(--gold); outline-offset: 1px; }
   .combo .mem .sl { color: var(--muted); font-size: 10.5px; line-height: 1.35; max-width: 170px; }
   .combo .sc { text-align: right; font-weight: 700; color: var(--gold); }
+  .combo .sc .msg { font-weight: 400; font-size: 10.5px; }
+  .combo .mem .sl.gr { color: var(--text); opacity: .75; }
   .tag.party { color: #b7a3e6; border-color: #4b3d6b; }
   h1 { font: 700 22px "Noto Serif KR", serif; color: var(--gold); margin: 0 0 4px; }
   .sub { color: var(--muted); font-size: 12px; margin-bottom: 18px; }
@@ -619,18 +621,21 @@ function drawRec() {
   box.replaceChildren(
     el("div", { class: "row" },
       el("span", { class: "msg", text: "목표" }),
-      el("select", { id: "recGoal", "aria-label": "추천 목표" }, el("option", { value: "", text: "파티 전체 대미지" }), ...ids.map((id, i) => el("option", { value: String(i), text: `${charOf(id).nameKo}의 대미지` }))),
+      // ① 1픽 극대화 = 그 멤버 몫만(남은 칸은 버프 · 디버프 · 연격 · 연계로 받쳐 주는 쪽이 뽑힌다) · ② 팀 전체 = 네 명 합
+      el("select", { id: "recGoal", "aria-label": "추천 목표", onchange: e => { $("recG").checked = e.target.value === ""; } },
+        ...ids.map((id, i) => el("option", { value: String(i), text: `① ${charOf(id).nameKo} 대미지 극대화` })), el("option", { value: "", text: "② 팀 전체 대미지" })),
+      el("label", { class: "msg" }, el("input", { type: "checkbox", id: "recG", checked: !ids.length }), " 그라스타까지 맞추기(상위 5개 조합만)"),
       el("label", { class: "msg" }, el("input", { type: "checkbox", id: "recF", checked: nf !== cand.length && nf > 0 }), ` 고르기 창 필터로 후보 좁히기 (${nf}명 / 전체 ${cand.length}명)`),
       el("button", { class: "btn go", id: "recGo", text: `${4 - ids.length}칸 추천`, onclick: runRec }),
       el("button", { class: "btn", text: "닫기", onclick: () => { box.hidden = true; if (recWorker) { recWorker.terminate(); recWorker = null; } } })),
-    el("div", { class: "msg", id: "recMsg", style: "margin-top:6px", text: "고정 멤버의 스킬칸 = 행동 칸에 넣은 스킬(나머지는 자동) · 순서 무관(고점) 기준 · 장비는 기본 무기만 — 고른 뒤 「계산」으로 장비까지" }),
+    el("div", { class: "msg", id: "recMsg", style: "margin-top:6px", text: "고정 멤버의 스킬칸 = 행동 칸에 넣은 스킬(나머지는 자동) · 순서 무관(고점) 기준 · 장비 = 무기 종류별 최고 공격력 무기(방어구 · 배지 없음), 「그라스타까지」면 상위 조합만 그라스타도(광석 없이 · 스킬칸 그대로) — 고른 뒤 「계산」으로 장비 전부" }),
     el("div", { id: "recList" }));
   if (recOut) drawRecList();
 }
 function runRec() {
   const ids = members();
   const cand = ALL.filter(c => DB.chars[c.id] && ![...S.party, ...S.back].some(x => x && fam(x) === fam(c.id)) && (!$("recF").checked || pickMatch(c, "")));
-  const goal = $("recGoal").value, team = ids.map(id => ({ ...teamMember(id), lock: [...new Set(S.acts.filter(a => a.id === id && (skillOf(id, a.skill) || {}).slot).map(a => a.skill))] }));
+  const goal = $("recGoal").value, withG = $("recG").checked, team = ids.map(id => ({ ...teamMember(id), lock: [...new Set(S.acts.filter(a => a.id === id && (skillOf(id, a.skill) || {}).slot).map(a => a.skill))] }));
   const opt = { enemy: { name: "기준 적", end: 300, spr: 300 }, zone: null, zones: DB.zones, cond: false, punish: [], enemyCount: 1, turns: 0 };
   const t0 = performance.now(), m = $("recMsg");
   $("recGo").disabled = true; recOut = null; $("recList").replaceChildren();
@@ -640,13 +645,14 @@ function runRec() {
     if (d.tick) { m.textContent = `찾는 중 — ${d.tick} · ${((performance.now() - t0) / 1000).toFixed(0)}초`; return; }
     $("recGo").disabled = false; recWorker.terminate(); recWorker = null;
     if (d.error) { m.textContent = "추천 실패: " + d.error.split("\n")[0]; return; }
-    recOut = { fixed: ids, goal, combos: d.done.combos };
+    recOut = { fixed: ids, goal, withG, combos: d.done.combos };
     await Promise.all([...new Set(recOut.combos.flatMap(x => x.ids))].map(loadAct));
-    m.textContent = `${((performance.now() - t0) / 1000).toFixed(0)}초 · 후보 ${cand.length}명 · ${goal === "" ? "파티 전체" : charOf(ids[+goal]).nameKo} 기준 고점(반복) — 「이 조합으로」를 누르면 칸 · 스킬이 채워집니다`;
+    m.textContent = `${((performance.now() - t0) / 1000).toFixed(0)}초 · 후보 ${cand.length}명 · ${goal === "" ? "팀 전체" : charOf(ids[+goal]).nameKo + " 극대화"} · 고점(반복)${withG ? " · 그라스타까지" : " · 기본 무기만"} — 「이 조합으로」를 누르면 칸 · 스킬이 채워집니다`;
     drawRecList();
   };
   recWorker.onerror = e => { $("recGo").disabled = false; m.textContent = "추천 실패: " + (e.message || "워커 오류"); };
-  recWorker.postMessage({ mode: "recommend", team, cands: cand.map(c => ({ c, cc: DB.chars[c.id] })), opt, db: { weapons: DB.weapons }, conf: { open: 4 - ids.length, focus: goal === "" ? null : +goal } });
+  recWorker.postMessage({ mode: "recommend", team, cands: cand.map(c => ({ c, cc: DB.chars[c.id] })), opt, grasta: withG,
+    db: withG ? { weapons: DB.weapons, armor: DB.armor, grasta: DB.grasta, badges: DB.badges } : { weapons: DB.weapons }, conf: { open: 4 - ids.length, focus: goal === "" ? null : +goal } });
 }
 function drawRecList() {
   const box = $("recList"); box.replaceChildren();
@@ -654,8 +660,9 @@ function drawRecList() {
   recOut.combos.forEach((cb, k) => {
     box.append(el("div", { class: "combo" }, el("span", { class: "rank", text: k + 1 }),
       el("div", { class: "who" }, ...cb.ids.map((id, i) => el("div", { class: "mem" + (fixed.has(id) ? "" : " new") }, icon(charOf(id)),
-        el("div", {}, el("div", { text: charOf(id).nameKo + (fixed.has(id) ? "" : " ＋") }), el("div", { class: "sl", text: (cb.slots[i] || []).map(n => skLabel(id, n)).join(" · ") }))))),
-      el("div", { class: "sc" }, el("div", { text: fmt(cb.q) }), el("button", { class: "btn", style: "margin-top:4px;font-size:11.5px;padding:3px 10px", text: "이 조합으로", onclick: () => useCombo(cb) }))));
+        el("div", {}, el("div", { text: charOf(id).nameKo + (fixed.has(id) ? "" : " ＋") }), el("div", { class: "sl", text: (cb.slots[i] || []).map(n => skLabel(id, n)).join(" · ") }),
+          cb.grasta && (cb.grasta[i] || []).length ? el("div", { class: "sl gr", text: "그라스타 " + cb.grasta[i].map(koName).join(" · ") }) : null)))),
+      el("div", { class: "sc" }, el("div", { text: fmt(cb.q) }), cb.q0 ? el("div", { class: "msg", text: `그라스타 전 ${fmt(cb.q0)}` }) : null, el("button", { class: "btn", style: "margin-top:4px;font-size:11.5px;padding:3px 10px", text: "이 조합으로", onclick: () => useCombo(cb) }))));
   });
 }
 function useCombo(cb) {

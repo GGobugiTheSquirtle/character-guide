@@ -31,7 +31,8 @@
     const power = s => Math.max(0, ...(s.attacks || []).map(a => (a.power ?? a.mult ?? 0) * (a.hits || 1)));
     const setup = cand.filter(s => !(s.attacks || []).length).sort((a, b) => b.fx.filter(u => ENGINE.has(u.k)).length - a.fx.filter(u => ENGINE.has(u.k)).length);
     const atk = cand.filter(s => (s.attacks || []).length).sort((a, b) => power(b) - power(a));
-    const pick = [...setup.slice(0, 2), ...atk.slice(0, 2)];
+    const ns = conf && conf.setupFirst ? 4 : 2;                                   // setupFirst = 지원 위주(준비 스킬부터 4칸) — 파티원 추천의 거르기용
+    const pick = [...setup.slice(0, ns), ...atk.slice(0, 4 - ns)];
     for (const s of [...atk, ...setup]) if (pick.length < 4 && !pick.includes(s)) pick.push(s);
     return pick.slice(0, 4).map(s => s.name);
   }
@@ -331,7 +332,7 @@
           ({ team, cur } = fork);
           gearPass(seed);
           if (seed) gearPass(null);
-          slotPass({ ...conf, via: !!conf.grantsOf, passes: 2 });
+          slotPass({ ...conf, via: !!conf.grantsOf, passes: conf.branchPasses ?? 2 });   // branchPasses 0 = 스킬칸 그대로 장비만(파티원 추천의 그라스타 단계)
           gearPass(null);
           if (conf.tick) conf.tick(`시작 ${seed || "기본"}: 고점 ${(cur / 1e8).toFixed(2)}억`);
           if (!top || cur > top.cur * (1 + 1e-9)) top = { team, cur };
@@ -586,7 +587,7 @@
   }
 
   // 파티원 추천(11-12, 사용자 「파티원 2명을 고정할 때 대미지 극대화가 되는 파티원 조합 및 스킬 목록」) — 고점(반복) 점수, 장비 없이(기본 무기).
-  //   fixed = 고정 멤버(lock 스킬칸 그대로) · cands = 후보 멤버(actions 포함) · conf = { open(채울 칸 수), focus(fixed 안 번호 → 그 멤버 몫), beam(2), refine(5), top(5), tick }
+  //   fixed = 고정 멤버(lock 스킬칸 그대로) · cands = 후보 멤버(actions 포함) · conf = { open(채울 칸 수), focus(fixed 안 번호 → 그 멤버 몫), beam(2), refine(5), top(5), gear · grantsOf(그라스타 단계), tick }
   //   빈 칸마다: 후보 전원을 시작 스킬칸으로 고점 1회(≈13ms) → 상위 refine 명만 그 멤버 스킬칸을 고른다(optimizePeak only) → 갈래 beam 개를 다음 칸으로.
   //   같은 캐릭터의 다른 스타일은 한 파티에 못 선다(fam)
   function recommend(fixed, cands, opt, conf = {}) {
@@ -601,13 +602,21 @@
       const next = [];
       beams.forEach((b, bi) => {
         const taken = new Set(b.team.map(m => fam(m.c.id)));
-        const scr = cands.filter(c => !taken.has(fam(c.c.id))).map(c => {
-          const t = [...b.team, { ...c, slots: startSlots(c, {}) }];
+        // 거르기 = 기본 시작 칸(준비 2 + 공격 2) 상위 refine 명 + 지원 위주 시작 칸(준비 스킬부터 4)으로 재야만 그 컷을 넘는 후보(최대 3명)
+        //   한 가지만 재면 버프 3~4개짜리 서포터가 버프 절반으로 재져 빠진다. 다만 다듬기 출발점을 지원 위주로 바꾸면 좌표 하강이 더 낮은 곳에 멈출 수 있어
+        //   (11-12 실측: 우츠하라 극대화 6.00억 → 3.85억) 기본 상위는 기본 칸에서 출발 — 다듬는 후보 = 옛 거르기 후보 + 덧붙인 후보
+        const pool = cands.filter(c => !taken.has(fam(c.c.id))).map(c => {
+          const s0 = startSlots(c, {}), s1 = initialSlots(c, { setupFirst: true });
           evals++;
-          return { c, q: scoreOf(S.peak(t, opt)) };
-        }).sort((x, y) => y.q - x.q).slice(0, refineN);
+          const q0 = scoreOf(S.peak([...b.team, { ...c, slots: s0 }], opt));
+          const q1 = s1.join("|") === s0.join("|") ? -Infinity : (evals++, scoreOf(S.peak([...b.team, { ...c, slots: s1 }], opt)));
+          return { c, q0, q1, s0, s1 };
+        });
+        const byA = [...pool].sort((x, y) => y.q0 - x.q0).slice(0, refineN), cut = byA.length ? byA[byA.length - 1].q0 : -Infinity, inA = new Set(byA);
+        const byB = pool.filter(x => !inA.has(x) && x.q1 > cut).sort((x, y) => y.q1 - x.q1).slice(0, conf.refineSupport ?? 3);
+        const scr = [...byA.map(x => ({ c: x.c, sl: x.s0 })), ...byB.map(x => ({ c: x.c, sl: x.s1 }))];
         scr.forEach((x, k) => {
-          const r = optimizePeak([...b.team, x.c], opt, { passes: 2, pairMoves: false, only: [b.team.length], focus });
+          const r = optimizePeak([...b.team, { ...x.c, slots: x.sl }], opt, { passes: 2, pairMoves: false, only: [b.team.length], focus });
           evals += r.evals;
           next.push({ team: r.team, q: scoreOf({ score: r.scores.repeat, perMember: r.perMember }), perMember: r.perMember });
           if (conf.tick) conf.tick(`${s + 1}번째 빈 칸 · 갈래 ${bi + 1}/${beams.length} · ${x.c.c.nameKo} (${k + 1}/${scr.length})`);
@@ -616,7 +625,16 @@
       const seen = new Set();
       beams = next.sort((x, y) => y.q - x.q).filter(x => { const k = x.team.map(m => m.c.id).sort().join(","); return !seen.has(k) && seen.add(k); }).slice(0, s === open - 1 ? (conf.top || 5) : beamN);
     }
-    return { combos: beams.map(b => ({ ids: b.team.map(m => m.c.id), slots: b.team.map(m => m.slots), q: b.q, perMember: b.perMember || null })), evals };
+    // 그라스타 단계(conf.gear — 워커가 무기 고정 · 방어구 · 배지 없는 풀을 준다, 11-12 사용자 「장비 디테일은 못 맞춰도 그라스타까지는」) — 최종 상위 조합만, 갈래 하나로 맞춘 뒤 다시 줄 세운다
+    if (conf.gear) beams = beams.map((b, k) => {
+      // 스킬칸 그대로 장비만(passes · branchPasses 0) — 칸을 다시 고르면 조합당 44초 → 17초 · 점수 차 0.02%(11-12 애쉬티어 조합 실측)
+      const r = optimizePeak(b.team, opt, { passes: 0, branchPasses: 0, pairMoves: false, carryStarts: false, stateMoves: false, rebranch: false, focus, gear: conf.gear, grantsOf: conf.grantsOf });
+      evals += r.evals;
+      if (conf.tick) conf.tick(`그라스타 맞추기 ${k + 1}/${beams.length}`);
+      return { team: r.team, q: scoreOf({ score: r.scores.repeat, perMember: r.perMember }), q0: b.q, perMember: r.perMember };
+    }).sort((x, y) => y.q - x.q);
+        return { combos: beams.map(b => ({ ids: b.team.map(m => m.c.id), slots: b.team.map(m => m.slots), q: b.q, q0: b.q0 ?? null, perMember: b.perMember || null,
+      grasta: conf.gear ? b.team.map(m => (m.grasta || []).filter(Boolean).map(g => g.name)) : null })), evals };
   }
 
 

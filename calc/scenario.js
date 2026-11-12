@@ -533,7 +533,7 @@
       if (sim.capture && last && (!cap || pr > cap.pr)) cap = { pr, r: last, on };
     }
     // 계산 근거(sim.capture — peak 가 최고점을 고른 뒤 한 번만 켠다): 확률 상태 조합 중 가장 흔한 쪽의 식 입력 · 출처 줄
-    if (sim.capture && cap) sim.capture.push({ ci, skill: sk.name, d: v, perUse: cap.r.perUse, hits: cap.r.hits, p: cap.r.p, o: cap.r.o, why: cap.r.why, whyOff: cap.r.whyOff, states: cap.on, pr: cap.pr });
+    if (sim.capture && cap) sim.capture.push({ ci, step: sim.step, skill: sk.name, d: v, perUse: cap.r.perUse, hits: cap.r.hits, p: cap.r.p, o: cap.r.o, why: cap.r.why, whyOff: cap.r.whyOff, states: cap.on, pr: cap.pr });
     return v;
   }
   // 행동 소모형(times) — 대미지 행동 1회마다. 크리율은 물리/마법 각각
@@ -557,7 +557,7 @@
     if (!depth && !inSB) { sbGain(sim, ci); }                                 // 행동 1회 = 게이지(스텔라 버스트 안 실행 · 하위 스킬은 제외)
     if (sk.sub === "일반 공격") { const t = transformOf(m); if (t && sim.res[ci] >= transformAt(m)) sk = t; }   // 구슬이 차 있으면 변화한 일반 공격으로
     const cost = resCost(sk, via);
-    if (cost && sim.res[ci] < cost) { sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: 0, skip: "자원 부족" }); return 0; }
+    if (cost && sim.res[ci] < cost) { sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: 0, skip: "자원 부족", ...(sim.step != null && !depth ? { step: sim.step } : {}) }); return 0; }
     sim.res[ci] -= cost;
     if (!depth) { const k = `${ci}|${sk.name}`; sim.first[ci] = !sim.used.get(k); sim.used.set(k, (sim.used.get(k) || 0) + 1); }   // 「전투 1회 · 첫 사용」 조건(11-04)
     let d = 0, lastAtk = null, hadAtk = false;
@@ -604,7 +604,7 @@
     }
     endAction();
     if (!depth) sim.xh = false;
-    if (!depth) sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: Math.round(d), ...(inSB ? { sb: true } : {}), ...(sim.lk[ci] > lk0 ? { link: Math.round(sim.lk[ci] - lk0) } : {}) });
+    if (!depth) sim.log.push({ turn: sim.turn, af: sim.af, ci, who: m.c.nameKo, skill: sk.name, dmg: Math.round(d), ...(sim.step != null && !inSB ? { step: sim.step } : {}), ...(inSB ? { sb: true } : {}), ...(sim.lk[ci] > lk0 ? { link: Math.round(sim.lk[ci] - lk0) } : {}) });
     if (scored && !depth) sim.dmg[sim.turn] = (sim.dmg[sim.turn] || 0) + d;
     if (scored && !depth) (sim.byMember[sim.turn] = sim.byMember[sim.turn] || [])[ci] = ((sim.byMember[sim.turn] || [])[ci] || 0) + d;
     if (!depth && !inSB) sbFire(sim, scored);                                // 행동 경계 — 게이지가 찼으면 스텔라 버스트
@@ -632,8 +632,23 @@
   // 속도순(선제 · 후공 상태는 다음 판) — 같은 속도는 좌→우
   const order = sim => sim.party.map((m, i) => i).sort((a, b) => ((sim.party[b].stats || {}).spd || 0) - ((sim.party[a].stats || {}).spd || 0) || a - b);
 
+  // 행동 순서 → 턴(11-12, 사용자 「A-B-E-D-A-B-T-R 순서대로 넣고 단계마다 대미지」) — seq = [[멤버 번호, 스킬 이름], …].
+  //   같은 멤버가 그 턴에 이미 움직였으면 다음 턴으로 넘긴다(한 턴 = 멤버마다 1회). 순서는 속도를 맞춰 만든다고 보고 턴 안은 입력 순서 그대로(속도순 X) —
+  //   선제 · 후공 기술만 앞뒤로(tierOf). 그 턴에 안 나온 멤버는 행동 없음
+  function seqTurns(seq) {
+    const rows = [];
+    let row = null;
+    seq.forEach(([ci, skill], step) => {
+      if (!row || row.some(x => x.ci === ci)) rows.push(row = []);
+      row.push({ step, ci, skill });
+    });
+    return rows;
+  }
+
   // 시나리오 실행 → { perTurn: {턴: 대미지}, score, log }
   //   plan.af = 멤버마다 6개(없으면 AF 없음) · plan.turns = 턴마다 멤버별 스킬 · conf.scoreTurns = 점수에 넣는 턴(기본: AF 면 2~4, 아니면 계획의 모든 턴) · conf.memo = 대미지 메모(Map)
+  //   plan.seq = 행동 순서(seqTurns — plan.turns 대신) → 결과 perStep[행동 번호] = 그 행동의 대미지(스텔라 버스트 · 턴 끝은 빼고 perTurn 에만) ·
+  //     conf.scoreSteps = 점수에 넣는 행동 번호(없으면 턴 점수 그대로) · conf.explain = 행동마다 계산 근거(capture — 메모 없이)
   function run(party, plan, opt, conf = {}) {
     const sim = newSim(party, opt, conf.memo || null);
     sim.plan = plan;
@@ -654,19 +669,28 @@
       timed(sim, "turnEnd");
       t0 = 2;
     }
-    (plan.turns || []).forEach((row, i) => {
+    const rows = plan.seq ? seqTurns(plan.seq) : null, perStep = plan.seq ? plan.seq.map(() => 0) : null, snaps = {};   // snaps = conf.snapAt 행동 직전 장면(빌드 장비 단계용)
+    if (conf.explain) sim.capture = [];
+    (rows || plan.turns || []).forEach((row, i) => {
       sim.turn = t0 + i;
       timed(sim, "turnStart");
       sbFire(sim, true, true);                                           // 미뤄 둔 스텔라 버스트는 턴 시작에(턴을 안 쓴다)
-      for (const tier of ["pre", "mid", "post"])
-        for (const ci of order(sim)) if (row[ci] && tierOf(party[ci], row[ci]) === tier) act(sim, ci, row[ci], true);
+      for (const tier of ["pre", "mid", "post"]) {
+        if (rows) for (const x of row) { if (tierOf(party[x.ci], x.skill) !== tier) continue; sim.step = x.step; if (conf.snapAt && conf.snapAt.includes(x.step)) snaps[x.step] = { live: new Map([...sim.live].map(([k, e]) => [k, { ...e }])), zone: sim.zone }; perStep[x.step] = act(sim, x.ci, x.skill, true); sim.step = null; }
+        else for (const ci of order(sim)) if (row[ci] && tierOf(party[ci], row[ci]) === tier) act(sim, ci, row[ci], true);
+      }
       endTurn(sim);                                                    // ⑪ 만료
       timed(sim, "turnEnd");                                           // ⑭ 턴 종료 효과(만료 뒤 — 1턴 효과가 다음 턴까지 산다)
     });
     const perTurn = Object.fromEntries(Object.entries(sim.dmg).map(([t, v]) => [t, v]));
+    const extra = { log: sim.log, live: sim.live, zone: sim.zone, res: sim.res, sb: sim.sb, ...(rows ? { perStep, turnOf: plan.seq.map((_, s) => t0 + rows.findIndex(r => r.some(x => x.step === s))) } : {}), ...(sim.capture ? { capture: sim.capture } : {}), ...(conf.snapAt ? { snaps } : {}) };
+    if (rows && conf.scoreSteps) {
+      const want = conf.scoreSteps;
+      return { perTurn, perMember: party.map((m, ci) => want.reduce((s, k) => s + (plan.seq[k] && plan.seq[k][0] === ci ? perStep[k] : 0), 0)), score: want.reduce((s, k) => s + (perStep[k] || 0), 0), ...extra };
+    }
     const want = conf.scoreTurns || Object.keys(perTurn).map(Number);
     const perMember = party.map((m, ci) => want.reduce((s, t) => s + ((sim.byMember[t] || [])[ci] || 0), 0));   // 멤버별 점수 몫(기회비용 나누기용)
-    return { perTurn, perMember, score: want.reduce((s, t) => s + (perTurn[t] || 0), 0), log: sim.log, live: sim.live, zone: sim.zone, res: sim.res, sb: sim.sb };
+    return { perTurn, perMember, score: want.reduce((s, t) => s + (perTurn[t] || 0), 0), ...extra };
   }
 
   // 고점 한 장면(2026-11-05, 사용자 「AF 에서 4개 다 칠 수 있으니 4개 다 활용 · 고점 기준 · 단순하게」) — 턴 · 지속 · 자원 · 순서를 안 본다.
@@ -818,7 +842,7 @@
   const liveFx = (live, ci) => fxOf({ live }, ci);
   // 살아 있는 대상 상태(확률 0.5 이상) — 장비 단계의 정적 식에 opt.punish 로
   const liveStates = live => [...new Set([...live.values()].filter(e => tstateOf(e.u) && (e.u.p ?? 1) >= 0.5).map(e => tstateOf(e.u)))];
-  const api = { run, peak, toAttack, liveFx, liveStates, normalOf };
+  const api = { run, peak, seqTurns, toAttack, liveFx, liveStates, normalOf };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEScenario = api;
 })(typeof window !== "undefined" ? window : globalThis);

@@ -357,6 +357,72 @@
       scores: { repeat: r.score, burst: rb.score }, perMember: r.perMember, perMemberBurst: rb.perMember, attackOf: r.attackOf, attackOfBurst: rb.attackOf, zone: r.zone, evals };
   }
 
+  // 순서 빌드(11-12, 사용자 「A-B-E-D-A-B-T-R — 2번째 B · R · A~D 구간 · 전체의 대미지 극대화」) — 행동 순서 seq = [[멤버 번호, 스킬], …] 를 고정하고 장비만 고른다.
+  //   턴 나누기 · 턴 안 순서 = S.seqTurns(속도는 이용자가 맞춘다고 본다). 목표 = conf.steps(행동 번호, 없으면 전부)의 대미지 합. AF 는 넣지 않는다(AF 대미지는 따로 볼 것 — 사용자).
+  //   스킬칸 = 순서에 나온 스킬칸 스킬(멤버당 4개 넘으면 오류). 장비 = 멤버마다 목표 행동 중 가장 센 것 직전 장면(snapAt)의 살아 있는 효과 + 그 공격으로
+  //   AEOpt.partyGear(정적 식 · 근사 — 멤버 비중 = 순서 점수 몫 ÷ 정적 값, 순서 점수가 오를 때만 받는다) → 「공격 시」 부여 무기는 순서 점수로 → conf.gearRounds(기본 2).
+  //   목표 행동을 가진 멤버가 둘 이상이면 그 멤버마다 주력 가중 시작 갈래도 돌려 가장 높은 것
+  function optimizeSeq(party, seq, opt, conf = {}) {
+    const gslots = (conf.gear && conf.gear.conf && conf.gear.conf.grastaSlots) || 4;
+    const steps = conf.steps && conf.steps.length ? conf.steps.filter(k => seq[k]) : seq.map((_, k) => k);
+    let evals = 0;
+    const team0 = party.map((m, ci) => {
+      const has = new Map((m.actions.skills || []).map(s => [s.name, s]));
+      for (const [c, n] of seq) if (c === ci && !has.has(n)) throw new Error(`${m.c.nameKo}: 스킬 「${n}」 없음`);
+      const sl = [...new Set(seq.filter(([c]) => c === ci).map(([, n]) => n))].filter(n => has.get(n).slot);
+      if (sl.length > 4) throw new Error(`${m.c.nameKo}: 순서에 쓴 스킬칸 스킬이 ${sl.length}개 — 스킬칸은 4개`);
+      return { ...m, gslots, slots: sl };
+    });
+    const runOf = (t, c2 = {}) => { evals++; return S.run(t, { af: null, seq }, opt, { scoreSteps: steps, ...c2 }); };
+    let team = team0, cur = runOf(team);
+    const O = conf.gear && (root.AEOpt || require("./optimizer.js"));
+    const gearPass = (carry, force) => {
+      const key = team.map((m, ci) => steps.filter(k => seq[k][0] === ci).sort((a, b) => cur.perStep[b] - cur.perStep[a])[0]);
+      const sr = runOf(team, { snapAt: key.filter(k => k != null) });
+      const top = cur.perMember.indexOf(Math.max(...cur.perMember)), topSnap = key[top] != null ? sr.snaps[key[top]] : null;
+      const members = team.map((m, ci) => {
+        const k = key[ci], sk = k != null && (m.actions.skills || []).find(s => s.name === seq[k][1]);
+        const part = sk && (sk.attacks || []).find(a => !a.cond || opt.cond), sn = k != null ? sr.snaps[k] : null;
+        return { ...m, fx: sn ? S.liveFx(sn.live, ci) : [], attack: part ? S.toAttack(part, sk) : undefined, _contrib: null };
+      });
+      const punish = [...new Set([...(opt.punish || []), ...key.filter(k => k != null).flatMap(k => S.liveStates(sr.snaps[k].live))])];
+      const gopt = { ...opt, zone: (topSnap && topSnap.zone) || opt.zone, turns: key[top] != null ? sr.turnOf[key[top]] : 1, punish };
+      const pre = AP.prepare(members, gopt), scale = {};
+      members.forEach((m, i) => { const st = (AP.memberDamage(m, members, gopt, pre) || {}).perUse || 0; scale[m.c.id] = st > 0 ? cur.perMember[i] / st : cur.score > 0 ? 0 : 1; });
+      const g = O.partyGear(members, gopt, conf.gear.poolsOf, { ...(conf.gear.conf || {}), ...(carry ? { objective: "carry", carry } : {}), scale });
+      evals += g.evals;
+      const prev = { team, cur };
+      team = team.map((m, i) => { const x = g.team[i]; return { ...m, weapon: x.weapon, armor: x.armor, badges: x.badges, grasta: x.grasta, special: (x.gear && x.gear.special) || [] }; });
+      cur = runOf(team);
+      if (!force && cur.score < prev.cur.score * (1 - 1e-9)) ({ team, cur } = prev);   // 정적 식은 근사 — 순서 점수가 내려가면 받지 않는다
+      // 부여 무기 — 「공격 시 적 저항 다운 · 페인/독」 무기는 정적 식이 모른다 → 순서 점수로. 다른 멤버가 든 무기는 건너뜀
+      team.forEach((m, ci) => {
+        for (const w of (conf.gear.poolsOf(m).weapons || []).filter(hasInflict)) {
+          if (w === team[ci].weapon || team.some((o, j) => j !== ci && o.weapon && o.weapon.name === w.name)) continue;
+          const t2 = team.map((x, j) => (j === ci ? { ...x, weapon: w } : x)), r = runOf(t2);
+          if (r.score > cur.score * (1 + 1e-9)) { team = t2; cur = r; }
+        }
+      });
+    };
+    if (conf.gear) {
+      const tgt = team0.filter((m, ci) => steps.some(k => seq[k][0] === ci)).map(m => m.c.id);
+      let best = null;
+      for (const seed of [null, ...(tgt.length > 1 ? tgt : [])]) {
+        team = team0; cur = runOf(team);
+        if (seed) gearPass(seed, true);
+        for (let r = 0; r < (conf.gearRounds ?? 2); r++) gearPass(null, false);
+        if (conf.tick) conf.tick(`시작 ${seed || "기본"}: ${(cur.score / 1e8).toFixed(2)}억`);
+        if (!best || cur.score > best.cur.score) best = { team, cur };
+      }
+      ({ team, cur } = best);
+    }
+    const fin = S.run(team, { af: null, seq }, opt, { scoreSteps: steps, explain: true });   // 마지막 한 번만 계산 근거(메모 없음)
+    const all = Object.values(fin.perTurn).reduce((s, v) => s + v, 0);
+    return { team, slots: team.map(m => m.slots), seq, steps, score: fin.score, total: all, perStep: fin.perStep, turnOf: fin.turnOf, perTurn: fin.perTurn, perMember: fin.perMember,
+      skip: seq.map((_, k) => (fin.log.find(e => e.step === k && e.skip) || {}).skip || null),
+      explain: seq.map((_, k) => fin.capture.filter(x => x.step === k).map(({ ci: _c, step: _s, ...x }) => x)), evals: evals + 1 };
+  }
+
   // 기회비용 — 칸(무기 · 방어구 · 그라스타 · 배지 · 스킬)마다 「빼면 A 점수가 얼마 주나」를 자기 몫 / 파티원 몫으로. 계획은 고정(스킬은 그 칸을 안 씀으로)
   function contributions(team, plan, opt) {
     const sc = { scoreTurns: [2, 3, 4] };
@@ -386,7 +452,7 @@
     return { base: base.score, perMember: base.perMember, items: out, backItems };
   }
 
-  const api = { optimize, optimizePeak, candidates, initialSlots, useful, contributions, grantSkill, withGrants, fitGrasta };
+  const api = { optimize, optimizePeak, optimizeSeq, candidates, initialSlots, useful, contributions, grantSkill, withGrants, fitGrasta };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEBuild = api;
 })(typeof window !== "undefined" ? window : globalThis);

@@ -89,8 +89,11 @@
   //   턴 소비 없이 실행(「스텔라 버스트 시」 조건 켬, MP 는 안 셈) → 많은 쪽 에너지 = 플럭스 → 그쪽 「스텔라 버스트 강화」(timing sb) 발동 → 게이지 0. 공명(Resonance) 축적은 아직
   const ALIGN = { light: "light", shadow: "shadow", 천: "light", 명: "shadow" };
   const alignOf = m => ALIGN[(m.c && m.c.ls) || ""] || null;
-  const isSA = m => (m.c && m.c.sa != null ? !!m.c.sa : (m.actions.skills || []).some(s => /^성도 스킬/.test(s.sub || "")));   // index sa 가 정본, 없으면 성도 스킬 보유로
-  const stellarOf = m => (m.slots || []).map(n => (m.actions.skills || []).find(s => s.name === n)).find(s => s && /^성도 스킬/.test(s.sub || ""));
+  const STELLAR = /^성도 스킬|^stellar_skills$/;                              // 딩님 「성도 스킬 …」 · 위키 stellar_skills(11-12 — 전엔 위키 원천 68명이 SB 때 아무것도 안 썼다)
+  const isSA = m => (m.c && m.c.sa != null ? !!m.c.sa : (m.actions.skills || []).some(s => STELLAR.test(s.sub || "")));   // index sa 가 정본, 없으면 성도 스킬 보유로
+  const stellarOf = m => (m.slots || []).map(n => (m.actions.skills || []).find(s => s.name === n)).find(s => s && s.slot && STELLAR.test(s.sub || ""));
+  //   SB 중엔 바뀐 스킬(「When used during Stellar Burst: Activate X instead」 · 딩님 변화한 성도 스킬 「스텔라 버스트 시」)을 쓴다
+  const sbSkillOf = (m, sk) => (m.actions.skills || []).find(v => v.kind === "variant" && v.from === sk.name && /스텔라 버스트/.test(v.fromCond || "")) || sk;
   function sbStart(sim) {
     if (!sim.party.some(isSA)) { sim.sb.off = true; return; }                  // 성도 각성 멤버가 없으면 게이지 자체가 없다
     for (const m of sim.party) { const a = alignOf(m); if (a) sim.sb[a] += 12.5; }
@@ -116,7 +119,7 @@
       const sk = isSA(m) && stellarOf(m);
       if (!sk || n >= 4) return;
       n++;
-      act(sim, ci, sk.name, scored, undefined, 0, true);
+      act(sim, ci, sbSkillOf(m, sk).name, scored, undefined, 0, true);
     });
     sim.party.forEach((m, ci) => {                                           // 발동 뒤 버프 — 플럭스가 맞는 「스텔라 버스트 강화」
       for (const sk of m.actions.skills || []) if (sk.kind === "ability")
@@ -729,7 +732,7 @@
   const AWAKE_TXT = /awakens? (?:another|radical) zone/i;
   function liveOf(m, mode) {
     const sk = m.actions.skills || [], slots = m.slots || [], lc = s => (s.desc || "").toLowerCase();
-    const off = s => mode === "repeat" && s.sub === "stellar_skills";
+    const off = s => mode === "repeat" && s.sub === "stellar_skills" && s.kind !== "ability";   // 성도 칸의 누적 설명(늘 켜짐)은 끄지 않는다
     const on = new Set(sk.filter(s => (s.kind === "ability" || slots.includes(s.name) || s.role === "basic" || (s.kind === "normal" && s.sub === "일반 공격")) && !off(s) && !isEOT(s)).map(s => s.name));
     for (let pass = 0; pass < 4; pass++) {
       const live = sk.filter(s => on.has(s.name)), before = on.size;

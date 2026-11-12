@@ -78,6 +78,7 @@
   .tag { padding: 0 6px; border-radius: 4px; border: 1px solid var(--line); font-size: 11px; }
   .tag.atk { color: var(--red); border-color: #6b3a3c; }
   .tag.buf { color: var(--blue); border-color: #36506b; }
+  .tag.sa { color: var(--gold); border-color: var(--gold-dim); }
   .sk .cnt { margin-left: auto; color: var(--gold); }
   .abil { margin-top: 8px; font-size: 12px; color: var(--muted); }
   .abil span { display: inline-block; margin: 2px 6px 2px 0; padding: 0 8px; border: 1px solid var(--line); border-radius: 999px; }
@@ -337,6 +338,7 @@ function drawSkills() {
     box.append(el("button", { class: "sk", title: (s.desc || s.name).replace(/\s+/g, " "), onclick: () => addAct(id, s.name) },
       el("span", { class: "n", text: s.kind === "normal" ? "일반 공격" : s.ko || s.name }),
       el("span", { class: "m" }, el("span", { class: "tag " + (atk ? "atk" : "buf"), text: atk ? "공격" : "효과" }), s.mp ? el("span", { text: `MP ${s.mp}` }) : null,
+        /^성도 스킬|^stellar_skills$/.test(s.sub || "") ? el("span", { class: "tag sa", title: "성도 스킬 — 스킬칸에 두면 스텔라 버스트 때 자동으로 씁니다", text: "성도" }) : null,
         s.needEquip ? el("span", { text: "전용 장비" }) : null, n ? el("span", { class: "cnt", text: `${n}회` }) : null)));
   }
   const ab = d.skills.filter(s => s.kind === "ability" && !/^\(효과 없음\)/.test(s.desc || ""));

@@ -183,6 +183,7 @@
 
   /* 영입 조건 · 조건템 (2026-09-22) */
   .view-toggle { display: flex; gap: 6px; overflow-x: auto; max-width: 100%; min-width: 0; scrollbar-width: thin; }   /* 탭은 한 줄 — 좁으면 가로로 민다 */
+  a.view-btn { text-decoration: none; display: inline-block; }
   .view-btn { padding: 5px 12px; border: 1px solid var(--line); background: var(--panel-2); color: var(--muted); border-radius: 6px; font-size: 12px; cursor: pointer; font-family: inherit; white-space: nowrap; }
   .view-btn:hover { border-color: var(--gold-dim); color: var(--text); }
   .view-btn.active { background: var(--gold); border-color: var(--gold); color: #2a2317; font-weight: 600; }
@@ -744,6 +745,7 @@ function buildViewToggle() {
     b.addEventListener('click', () => setView(key));
     wrap.appendChild(b);
   }
+  wrap.appendChild(el("a", { class: "view-btn", text: "파티 빌더", attrs: { href: "build.html", title: "캐릭터 넣기 → 스킬 누르기 → 순서 맞추기 → 계산(새 화면, 2026-11-12)" } }));
 }
 
 // 표기 신뢰도 마크 — est(추정)만 눈에 띄게

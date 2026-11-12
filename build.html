@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>파티 빌더 — 어나더에덴</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  /* 파티 빌더(2026-11-12, 사용자 「캐릭터 선택 → 스킬 목록 → 그 아래 칸에 누른 순서대로 → 순서 맞추고 · 순서대로/순서 무관」 — 처음부터 다시 설계).
+     흐름 = 위에서 아래로 한 줄: ① 파티 칸 4 ② 고른 캐릭터의 스킬 ③ 행동 칸(누른 순서대로, 끌어서 옮김) ④ 계산. 계산 엔진은 index.html 과 같은 calc/ */
+  :root { --bg: #0d1014; --panel: #151a21; --panel-2: #1b2129; --line: #2a323d; --text: #e7e3d8; --muted: #8d8a82; --gold: #d4af37; --gold-dim: #8a7426; --red: #c66062; --blue: #6b9bd1; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 "Noto Sans KR", system-ui, sans-serif; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font: 700 22px "Noto Serif KR", serif; color: var(--gold); margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 12px; margin-bottom: 18px; }
+  .sec { margin: 18px 0; }
+  .sec-h { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+  .sec-h b { font: 700 15px "Noto Serif KR", serif; color: var(--gold); }
+  .sec-h span { color: var(--muted); font-size: 12px; }
+  button { font: inherit; color: inherit; }
+  /* ① 파티 칸 */
+  .party { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .slot { position: relative; height: 112px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; padding: 6px; }
+  .slot.empty { border-style: dashed; color: var(--muted); font-size: 13px; }
+  .slot.empty .plus { font-size: 26px; line-height: 1; }
+  .slot img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
+  .slot .nm { font-size: 12px; text-align: center; line-height: 1.25; }
+  .slot.active { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold) inset; }
+  .slot .x { position: absolute; top: 4px; right: 6px; background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 15px; padding: 2px 4px; }
+  .slot .x:hover { color: var(--red); }
+  .picker { margin-top: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); padding: 10px; }
+  .picker input { width: 100%; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font-size: 15px; }
+  .hits { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 6px; margin-top: 8px; max-height: 300px; overflow-y: auto; }
+  .hit { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 5px 2px; border: 1px solid var(--line); border-radius: 8px; background: transparent; cursor: pointer; font-size: 11px; color: var(--muted); }
+  .hit:hover { border-color: var(--gold-dim); color: var(--text); }
+  .hit img { width: 44px; height: 44px; border-radius: 6px; object-fit: cover; }
+  .hint { color: var(--muted); font-size: 12px; padding: 6px 2px; }
+  /* ② 스킬 */
+  .skills { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+  .sk { text-align: left; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); padding: 8px 10px; cursor: pointer; display: flex; flex-direction: column; gap: 3px; min-height: 58px; }
+  .sk:hover { border-color: var(--gold-dim); }
+  .sk .n { font-weight: 600; }
+  .sk .m { display: flex; gap: 6px; font-size: 11px; color: var(--muted); }
+  .tag { padding: 0 6px; border-radius: 4px; border: 1px solid var(--line); font-size: 11px; }
+  .tag.atk { color: var(--red); border-color: #6b3a3c; }
+  .tag.buf { color: var(--blue); border-color: #36506b; }
+  .sk .cnt { margin-left: auto; color: var(--gold); }
+  .abil { margin-top: 8px; font-size: 12px; color: var(--muted); }
+  .abil span { display: inline-block; margin: 2px 6px 2px 0; padding: 0 8px; border: 1px solid var(--line); border-radius: 999px; }
+  /* ③ 행동 칸 */
+  .modes { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .modes button { background: transparent; border: 0; padding: 6px 14px; cursor: pointer; color: var(--muted); }
+  .modes button.on { background: var(--gold); color: #2a2317; font-weight: 600; }
+  .tray { min-height: 96px; border: 1px dashed var(--line); border-radius: 10px; background: var(--panel); padding: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; margin-top: 8px; }
+  .tray .empty { color: var(--muted); font-size: 13px; margin: auto; }
+  .blk { position: relative; width: 132px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-2); padding: 6px 8px 8px; cursor: grab; display: flex; flex-direction: column; gap: 3px; user-select: none; }
+  .blk.atk { border-left: 3px solid #8a4446; }
+  .blk.goal { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold) inset; }
+  .blk.dragging { opacity: 0.35; }
+  .blk.over { outline: 2px dashed var(--gold); outline-offset: 2px; }
+  .blk .top { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+  .blk .top img { width: 22px; height: 22px; border-radius: 4px; object-fit: cover; }
+  .blk .num { color: var(--gold); font-weight: 700; }
+  .blk .t { margin-left: auto; }
+  .blk .n { font-size: 12.5px; font-weight: 600; line-height: 1.3; word-break: keep-all; }
+  .blk .ctl { display: flex; gap: 2px; margin-top: 2px; }
+  .blk .ctl button { background: transparent; border: 1px solid var(--line); border-radius: 4px; padding: 0 6px; font-size: 11px; color: var(--muted); cursor: pointer; }
+  .blk .ctl button.star.on { color: var(--gold); border-color: var(--gold); }
+  .blk .dmg { font-size: 12px; color: var(--gold); font-weight: 700; }
+  .blk .dmg.zero { color: var(--muted); font-weight: 400; }
+  .group { width: 100%; display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
+  .group-h { width: 100%; font-size: 12px; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+  .group-h img { width: 20px; height: 20px; border-radius: 4px; }
+  .group-h .warn { color: var(--red); }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+  .btn { background: transparent; border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; cursor: pointer; color: var(--muted); }
+  .btn:hover { color: var(--text); border-color: var(--gold-dim); }
+  .btn.go { background: var(--gold); border-color: var(--gold); color: #2a2317; font-weight: 700; padding: 8px 20px; }
+  .btn:disabled { opacity: 0.5; cursor: default; }
+  .msg { color: var(--muted); font-size: 12px; }
+  .msg.err { color: var(--red); }
+  /* ④ 결과 */
+  .res { border: 1px solid var(--line); border-radius: 10px; background: var(--panel); padding: 12px 14px; }
+  .res .big { font: 700 20px "Noto Serif KR", serif; color: var(--gold); }
+  .res table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12.5px; }
+  .res th, .res td { text-align: left; padding: 6px 8px; border-top: 1px solid var(--line); vertical-align: top; }
+  .res th { color: var(--muted); font-weight: 400; }
+  .scroll { overflow-x: auto; }
+  .res td:first-child, .res td:nth-child(3), .res th { white-space: nowrap; }
+  .foot { margin-top: 26px; color: var(--muted); font-size: 11px; line-height: 1.7; }
+  @media (max-width: 640px) {
+    .party { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .blk { width: calc(50% - 4px); }
+  }
+</style>
+
+<!-- goatcounter:begin -->
+<script>window.goatcounter={path:function(p){return location.host+p}}</script>
+<script data-goatcounter="https://aebguide.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<!-- goatcounter:end -->
+</head>
+<body>
+<div class="wrap">
+  <h1>파티 빌더</h1>
+  <div class="sub">캐릭터를 넣고 → 스킬을 누르면 아래 칸에 쌓이고 → 순서를 맞춘 뒤 계산합니다. 추정치 · 최대 육성 기준 · 기준 적(내구 · 정신 300, 상성 없음).</div>
+
+  <div class="sec">
+    <div class="sec-h"><b>① 파티</b><span>칸을 누르면 캐릭터 검색 · 넣은 캐릭터를 누르면 그 캐릭터의 스킬이 아래에</span></div>
+    <div class="party" id="party"></div>
+    <div class="picker" id="picker" hidden>
+      <input id="q" placeholder="캐릭터 이름 (한 · 영 · 일)" autocomplete="off" aria-label="캐릭터 이름 검색">
+      <div class="hits" id="hits"></div>
+    </div>
+  </div>
+
+  <div class="sec" id="skillSec">
+    <div class="sec-h"><b>② 스킬</b><span id="skillHint"></span></div>
+    <div class="skills" id="skills"></div>
+    <div class="abil" id="abil"></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><b>③ 행동 칸</b>
+      <div class="modes" role="group" aria-label="순서">
+        <button data-m="seq">순서대로</button><button data-m="free">순서 무관</button>
+      </div>
+      <span id="modeHint"></span>
+    </div>
+    <div class="tray" id="tray"></div>
+    <div class="bar">
+      <button class="btn go" id="run">계산</button>
+      <label class="msg"><input type="checkbox" id="gear" checked> 장비도 고르기 (수십 초)</label>
+      <button class="btn" id="clear">칸 비우기</button>
+      <span class="msg" id="msg" aria-live="polite"></span>
+    </div>
+  </div>
+
+  <div class="sec" id="resSec" hidden>
+    <div class="sec-h"><b>④ 결과</b></div>
+    <div class="res" id="res"></div>
+  </div>
+
+  <div class="foot">계산 = 이 사이트의 계산 엔진(calc/ · 턴 시뮬 · 고점). 스킬 데이터: 카페 딩님 스킬 DB(출처: 카페 딩님 스킬 검색기) · 나머지는 위키 문장 자동 해석. 인게임 대조 전 추정치.<br>
+    순서대로 = 같은 캐릭터가 다시 나오면 다음 턴(한 턴 = 캐릭터마다 1번), 턴 안은 칸 순서대로 칩니다(속도는 맞춘다고 봅니다). 순서 무관 = 고른 스킬을 그 캐릭터의 스킬칸으로(4개까지) — 효과를 모두 최대로 쌓은 상태에서 캐릭터마다 가장 센 공격 1회.</div>
+</div>
+
+<script src="calc/ae_calc.js"></script>
+<script src="calc/concepts.js"></script>
+<script src="calc/ae_pipeline.js"></script>
+<script src="calc/party_calc.js"></script>
+<script src="calc/optimizer.js"></script>
+<script src="calc/scenario.js"></script>
+<script src="calc/planner.js"></script>
+<script src="calc/build.js"></script>
+<script>
+"use strict";
+// ── 상태 — 파티 4칸 · 고른 캐릭터 · 행동 칸 · 방식. 이 브라우저에만 저장(cg-builder)
+const KEY = "cg-builder", N = 4;
+const S = Object.assign({ party: [null, null, null, null], active: 0, acts: [], mode: "seq" }, (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } })());
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
+let ALL = [], DB = null, KO = {}, pickSlot = null, result = null;
+const ACT = {};                                                       // id → 행동 단위 데이터(data/calc/actions)
+const $ = id => document.getElementById(id);
+const el = (tag, attrs = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(attrs)) { if (v == null || v === false) continue; if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v === true ? "" : v); } for (const c of kids.flat()) if (c != null) e.append(c); return e; };
+const charOf = id => ALL.find(c => c.id === id);
+const icon = c => (c && c.icon ? el("img", { src: "images/icons/" + c.icon, alt: "", loading: "lazy" }) : el("span", { text: c ? c.id.slice(0, 3) : "" }));
+const fam = id => id.replace(/(_alter)?(_as|_es)?$/, "");
+const fmt = x => (x >= 1e8 ? (x / 1e8).toFixed(2) + "억" : x >= 1e4 ? (x / 1e4).toFixed(1) + "만" : Math.round(x).toLocaleString());
+const skillOf = (id, n) => ((ACT[id] || {}).skills || []).find(s => s.name === n);
+const skLabel = (id, n) => { const s = skillOf(id, n); return s ? (s.kind === "normal" ? "일반 공격" : s.ko || s.name) : n; };
+const itemKo = it => (it ? KO[it.name] || it.name : "");
+const norm = s => String(s || "").normalize("NFKC").toLowerCase().replace(/\s+/g, "");
+const members = () => S.party.filter(Boolean);
+const loadAct = id => ACT[id] ? Promise.resolve(ACT[id]) : fetch(`data/calc/actions/${id}.json`).then(r => (r.ok ? r.json() : null)).then(d => (ACT[id] = d)).catch(() => null);
+// 스킬 목록에 낼 것 — 스킬칸 스킬(턴 종료 공격 제외) + 일반 공격(순서대로만 — 스킬칸이 아니라서)
+const usable = id => ((ACT[id] || {}).skills || []).filter(s => (s.slot && !/\bEOT\b/.test(s.name)) || (s.kind === "normal" && s.sub === "일반 공격"));
+
+// ── ① 파티
+function drawParty() {
+  const box = $("party"); box.replaceChildren();
+  S.party.forEach((id, i) => {
+    const c = id && charOf(id);
+    if (!c) { box.append(el("div", { class: "slot empty", role: "button", tabindex: "0", onclick: () => openPicker(i) }, el("span", { class: "plus", text: "+" }), el("span", { text: "캐릭터 넣기" }))); return; }
+    box.append(el("div", { class: "slot" + (S.active === i ? " active" : ""), role: "button", tabindex: "0", title: "누르면 이 캐릭터의 스킬", onclick: () => { S.active = i; save(); drawAll(); } },
+      el("button", { class: "x", text: "×", "aria-label": `${c.nameKo} 빼기`, title: "빼기", onclick: e => { e.stopPropagation(); removeChar(i); } }), icon(c), el("span", { class: "nm", text: c.nameKo })));
+  });
+}
+function openPicker(i) { pickSlot = i; $("picker").hidden = false; $("q").value = ""; drawHits(); $("q").focus(); }
+function drawHits() {
+  const q = norm($("q").value), box = $("hits"); box.replaceChildren();
+  if (!q) { box.append(el("div", { class: "hint", text: "이름을 치면 나옵니다 — 누르면 그 칸에 넣습니다" })); return; }
+  const hits = ALL.filter(c => DB.chars[c.id] && !S.party.includes(c.id) && [c.nameKo, c.nameEn, c.name_jp].some(n => norm(n).includes(q))).slice(0, 48);
+  if (!hits.length) { box.append(el("div", { class: "hint", text: "결과 없음" })); return; }
+  for (const c of hits) box.append(el("button", { class: "hit", title: c.nameKo, onclick: () => addChar(c.id) }, icon(c), el("span", { text: c.nameKo })));
+}
+async function addChar(id) {
+  const same = S.party.findIndex(x => x && fam(x) === fam(id));          // 같은 캐릭터의 다른 스타일은 바꾼다(한 파티에 둘은 못 선다)
+  const i = same >= 0 ? same : pickSlot;
+  if (S.party[i]) S.acts = S.acts.filter(a => a.id !== S.party[i]);
+  S.party[i] = id; S.active = i; pickSlot = null; $("picker").hidden = true; result = null;
+  save(); await loadAct(id); drawAll();
+}
+function removeChar(i) { const id = S.party[i]; S.party[i] = null; S.acts = S.acts.filter(a => a.id !== id); result = null; save(); drawAll(); }
+
+// ── ② 스킬(고른 캐릭터 하나)
+function drawSkills() {
+  const id = S.party[S.active], box = $("skills"); box.replaceChildren(); $("abil").replaceChildren();
+  if (!id) { $("skillHint").textContent = members().length ? "위에서 캐릭터를 누르세요" : "먼저 캐릭터를 넣으세요"; return; }
+  const c = charOf(id), d = ACT[id];
+  $("skillHint").textContent = `${c.nameKo} — 누르면 아래 행동 칸에 추가`;
+  if (!d) { box.append(el("div", { class: "hint", text: "스킬 데이터 없음" })); return; }
+  for (const s of usable(id)) {
+    if (S.mode === "free" && !s.slot) continue;
+    const atk = (s.attacks || []).length, n = S.acts.filter(a => a.id === id && a.skill === s.name).length;
+    box.append(el("button", { class: "sk", title: (s.desc || s.name).replace(/\s+/g, " "), onclick: () => addAct(id, s.name) },
+      el("span", { class: "n", text: s.kind === "normal" ? "일반 공격" : s.ko || s.name }),
+      el("span", { class: "m" }, el("span", { class: "tag " + (atk ? "atk" : "buf"), text: atk ? "공격" : "효과" }), s.mp ? el("span", { text: `MP ${s.mp}` }) : null,
+        s.needEquip ? el("span", { text: "전용 장비" }) : null, n ? el("span", { class: "cnt", text: `${n}회` }) : null)));
+  }
+  const ab = d.skills.filter(s => s.kind === "ability" && !/^\(효과 없음\)/.test(s.desc || ""));
+  if (ab.length) $("abil").append("어빌리티(늘 적용): ", ...ab.map(s => el("span", { title: (s.desc || "").replace(/\s+/g, " "), text: /^\(\d+\)$/.test(s.name) ? (s.desc || s.name).replace(/\s+/g, " ").slice(0, 30) + "…" : s.ko || s.name })));
+}
+function addAct(id, skill) {
+  if (S.mode === "free" && S.acts.some(a => a.id === id && a.skill === skill)) return flash(`${skLabel(id, skill)}: 순서 무관에선 한 번만 넣습니다`);
+  S.acts.push({ id, skill, goal: false }); result = null; save(); drawAll();
+}
+
+// ── ③ 행동 칸 — 순서대로 = 번호 · 턴 · 끌어서 옮기기 · ★ 목표 / 순서 무관 = 캐릭터별 묶음(스킬칸 4개까지)
+const turnsOf = () => { const t = []; AEScenario.seqTurns(S.acts.map(a => [S.party.indexOf(a.id), a.skill])).forEach((r, k) => r.forEach(x => { t[x.step] = k + 1; })); return t; };
+let dragFrom = null;
+function drawTray() {
+  const box = $("tray"); box.replaceChildren();
+  document.querySelectorAll(".modes button").forEach(b => b.classList.toggle("on", b.dataset.m === S.mode));
+  $("modeHint").textContent = S.mode === "seq" ? "끌어서 순서를 바꿉니다 · ★ = 목표 행동(그 대미지가 가장 크게 장비를 고름, 없으면 전체)" : "순서는 보지 않습니다 · 고른 스킬 = 그 캐릭터의 스킬칸(4개까지), 나머지 칸은 자동";
+  if (!S.acts.length) { box.append(el("div", { class: "empty", text: "위 스킬을 누르면 여기에 쌓입니다" })); return; }
+  if (S.mode === "seq") {
+    const t = turnsOf(), dm = result && result.kind === "seq" ? result.perStep : null;
+    S.acts.forEach((a, k) => {
+      const s = skillOf(a.id, a.skill), atk = s && (s.attacks || []).length;
+      const b = el("div", { class: "blk" + (atk ? " atk" : "") + (a.goal ? " goal" : ""), draggable: "true",
+        ondragstart: e => { dragFrom = k; b.classList.add("dragging"); e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", String(k)); },
+        ondragend: () => b.classList.remove("dragging"), ondragover: e => { e.preventDefault(); b.classList.add("over"); }, ondragleave: () => b.classList.remove("over"),
+        ondrop: e => { e.preventDefault(); b.classList.remove("over"); move(dragFrom ?? +e.dataTransfer.getData("text/plain"), k); dragFrom = null; } },
+        el("div", { class: "top" }, el("span", { class: "num", text: k + 1 }), icon(charOf(a.id)), el("span", { class: "t", text: `${t[k]}턴` })),
+        el("div", { class: "n", text: skLabel(a.id, a.skill) }),
+        dm ? el("div", { class: "dmg" + (dm[k] ? "" : " zero"), text: dm[k] ? fmt(dm[k]) : "—" }) : null,
+        el("div", { class: "ctl" },
+          el("button", { class: "star" + (a.goal ? " on" : ""), text: "★", title: a.goal ? "목표 해제" : "목표로", "aria-label": `${k + 1}번 목표`, onclick: () => { a.goal = !a.goal; result = null; save(); drawAll(); } }),
+          el("button", { text: "◀", title: "앞으로", "aria-label": `${k + 1}번 앞으로`, onclick: () => move(k, k - 1) }),
+          el("button", { text: "▶", title: "뒤로", "aria-label": `${k + 1}번 뒤로`, onclick: () => move(k, k + 1) }),
+          el("button", { text: "×", title: "빼기", "aria-label": `${k + 1}번 빼기`, onclick: () => { S.acts.splice(k, 1); result = null; save(); drawAll(); } })));
+      box.append(b);
+    });
+    return;
+  }
+  for (const id of members()) {
+    const mine = S.acts.map((a, k) => ({ a, k })).filter(x => x.a.id === id);
+    if (!mine.length) continue;
+    const slots = mine.filter(x => (skillOf(id, x.a.skill) || {}).slot).length, c = charOf(id);
+    const used = result && result.kind === "free" ? result.attackOf[S.party.filter(Boolean).indexOf(id)] : null;
+    const g = el("div", { class: "group" }, el("div", { class: "group-h" }, icon(c), el("span", { text: c.nameKo }), el("span", { class: slots > 4 ? "warn" : "", text: `스킬칸 ${slots}/4` })));
+    for (const { a, k } of mine) {
+      const s = skillOf(id, a.skill), atk = s && (s.attacks || []).length;
+      g.append(el("div", { class: "blk" + (atk ? " atk" : "") + (used === a.skill ? " goal" : "") }, el("div", { class: "n", text: skLabel(id, a.skill) }),
+        used === a.skill ? el("div", { class: "dmg", text: `주력 ${fmt(result.perMember[S.party.filter(Boolean).indexOf(id)])}` }) : null,
+        el("div", { class: "ctl" }, el("button", { text: "×", title: "빼기", "aria-label": "빼기", onclick: () => { S.acts.splice(k, 1); result = null; save(); drawAll(); } }))));
+    }
+    box.append(g);
+  }
+}
+function move(from, to) { if (to < 0 || to >= S.acts.length || from === to || from == null) return; const [x] = S.acts.splice(from, 1); S.acts.splice(to, 0, x); result = null; save(); drawAll(); }
+let flashT = 0;
+function flash(t, err) { const m = $("msg"); m.textContent = t; m.className = "msg" + (err ? " err" : ""); clearTimeout(flashT); if (!err) flashT = setTimeout(() => { if (m.textContent === t) m.textContent = ""; }, 4000); }
+
+// ── ④ 계산 — 엔진은 워커(calc/build_worker.js): 순서대로 = optimizeSeq(행동 순서 · 목표 행동), 순서 무관 = optimizePeak(고른 스킬 = 스킬칸 고정)
+function teamMember(id) {
+  const c = charOf(id), cc = DB.chars[id], atks = cc.attacks.filter(a => a.mult || a.multMax), attack = AEOpt.attackPool(atks, false)[0] || atks[0];
+  return { c, cc, pos: "front", fx: [], atks, attack, weapon: AEParty.bestWeapon(DB.weapons, cc.weapon, attack && attack.dep === "magic"), armor: null, special: [], grasta: [], badges: [], stats: cc.stats, zones: cc.zones || [], actions: ACT[id] };
+}
+let worker = null;
+async function run() {
+  const ids = members();
+  if (!ids.length) return flash("캐릭터를 넣으세요", true);
+  if (!S.acts.length) return flash("스킬을 하나 이상 넣으세요", true);
+  const over = ids.filter(id => new Set(S.acts.filter(a => a.id === id && (skillOf(id, a.skill) || {}).slot).map(a => a.skill)).size > 4);
+  if (over.length) return flash(`${over.map(id => charOf(id).nameKo).join(" · ")}: 스킬칸은 4개 — 서로 다른 스킬을 4개까지`, true);
+  await Promise.all(ids.map(loadAct));
+  const team = ids.map(id => ({ ...teamMember(id), lock: S.mode === "free" ? [...new Set(S.acts.filter(a => a.id === id && (skillOf(id, a.skill) || {}).slot).map(a => a.skill))] : [] }));
+  const opt = { enemy: { name: "기준 적", end: 300, spr: 300 }, zone: null, zones: DB.zones, cond: false, punish: [], enemyCount: 1, turns: 0 };
+  const msg = { team, opt, mode: S.mode === "seq" ? "seq" : "peak", gear: $("gear").checked, inv: null,
+    gearConf: { grastaSlots: 4, badgeSlots: 2, counts: null }, db: { weapons: DB.weapons, armor: DB.armor, grasta: DB.grasta, badges: DB.badges, ores: DB.ores } };
+  if (S.mode === "seq") { msg.seq = S.acts.map(a => [ids.indexOf(a.id), a.skill]); msg.conf = { steps: S.acts.map((a, k) => (a.goal ? k : -1)).filter(k => k >= 0) }; }
+  $("run").disabled = true; const t0 = performance.now();
+  flash("계산 중…");
+  if (worker) worker.terminate();
+  worker = new Worker("calc/build_worker.js");
+  worker.onmessage = ({ data: d }) => {
+    if (d.tick) return flash(`계산 중 — ${d.tick} · ${((performance.now() - t0) / 1000).toFixed(0)}초`);
+    $("run").disabled = false; worker.terminate(); worker = null;
+    if (d.error) return flash("계산 실패: " + d.error.split("\n")[0], true);
+    result = { kind: S.mode === "seq" ? "seq" : "free", ids, ...d.done };
+    flash(`${((performance.now() - t0) / 1000).toFixed(1)}초`);
+    drawAll(); $("resSec").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  };
+  worker.onerror = e => { $("run").disabled = false; flash("계산 실패: " + (e.message || "워커 오류"), true); };
+  worker.postMessage(msg);
+}
+function drawResult() {
+  const sec = $("resSec"), box = $("res"); box.replaceChildren();
+  if (!result) { sec.hidden = true; return; }
+  sec.hidden = false;
+  const r = result, nm = id => charOf(id).nameKo;
+  if (r.kind === "seq") {
+    const all = r.steps.length === r.seq.length;
+    box.append(el("div", { class: "big", text: fmt(r.score) }), el("div", { class: "msg", text: `${all ? "전체 행동 합" : "★ 목표 행동 합(" + r.steps.map(k => k + 1).join(" · ") + "번)"} · 전체 ${fmt(r.total)} · ${Math.max(...r.turnOf)}턴` }));
+  } else box.append(el("div", { class: "big", text: fmt(r.scores.repeat) }), el("div", { class: "msg", text: `캐릭터마다 가장 센 공격 1회의 합(고점) · 순간 최고점 ${fmt(r.scores.burst)}` }));
+  const tb = el("tbody");
+  r.ids.forEach((id, i) => {
+    const g = r.gear[i] || {}, gear = [g.weapon, g.armor, ...(g.grasta || []), ...(g.badges || [])].filter(Boolean).map(itemKo).join(" · ") || "—";
+    const slots = (r.slots[i] || []).map(n => skLabel(id, n)).join(" · ") || "—";
+    const dmg = r.kind === "seq" ? r.perMember[i] : r.perMember[i];
+    tb.append(el("tr", {}, el("td", {}, el("b", { text: nm(id) })), el("td", { text: slots }), el("td", { text: r.kind === "free" ? `${skLabel(id, r.attackOf[i]) || "—"} ${fmt(dmg)}` : fmt(dmg) }), el("td", { text: gear })));
+  });
+  box.append(el("div", { class: "scroll" }, el("table", {}, el("thead", {}, el("tr", {}, ...["캐릭터", "스킬칸", r.kind === "free" ? "주력 공격" : "목표 몫", "장비"].map(h => el("th", { text: h })))), tb)));
+}
+function drawAll() { drawParty(); drawSkills(); drawTray(); drawResult(); }
+
+// ── 시작
+document.querySelectorAll(".modes button").forEach(b => b.addEventListener("click", () => {
+  if (S.mode === b.dataset.m) return;
+  S.mode = b.dataset.m; result = null;
+  if (S.mode === "free") { const seen = new Set(); S.acts = S.acts.filter(a => { const k = a.id + "|" + a.skill; if (seen.has(k)) return false; seen.add(k); return (skillOf(a.id, a.skill) || {}).slot; }); }   // 순서 무관 = 스킬칸 스킬 한 번씩
+  save(); drawAll();
+}));
+$("q").addEventListener("input", drawHits);
+$("q").addEventListener("keydown", e => { if (e.key === "Escape") { $("picker").hidden = true; pickSlot = null; } });
+$("run").addEventListener("click", run);
+$("clear").addEventListener("click", () => { S.acts = []; result = null; save(); drawAll(); });
+(async () => {
+  const [ix, ...parts] = await Promise.all(["data/index.json", ...["chars", "weapons", "armor", "grasta", "badges", "zones", "ores"].map(n => `data/calc/${n}.json`)].map(u => fetch(u).then(r => r.json())));
+  ALL = ix.characters || ix;
+  DB = Object.fromEntries(["chars", "weapons", "armor", "grasta", "badges", "zones", "ores"].map((n, i) => [n, parts[i]]));
+  DB.badges = DB.badges.filter(b => Object.keys(b.stats || {}).length || (b.calc || []).length).sort((a, b) => (b.kind === "random") - (a.kind === "random"));
+  // 장비 한국어 이름 — 딩님 「장비 목록」 ↔ 계산 DB 확실 대응(equip_map.json, 이름 단위 — 변형 조건은 생략)
+  const em = await fetch("data/calc/equip_map.json").then(r => (r.ok ? r.json() : null)).catch(() => null);
+  if (em) for (const rows of [em.weapons, em.armors, em.grasta, em.badges]) for (const r of rows || []) if (r.en && r.ko && !KO[r.en]) KO[r.en] = r.ko + (r.reworked ? " (재가공)" : "");
+  S.party = S.party.map(id => (id && DB.chars[id] ? id : null));
+  await Promise.all(members().map(loadAct));
+  drawAll();
+})();
+</script>
+</body>
+</html>

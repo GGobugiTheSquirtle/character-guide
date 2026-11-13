@@ -191,7 +191,18 @@
     if ((x = /^「(.+?)」로 발동 시$/.exec(cond))) return via === x[1];
     if ((x = /^「(.+?)」로 발동하지 않았을 시$/.exec(cond))) return via !== x[1];
     if ((x = /^「(.+?)」 습득 시$/.exec(cond))) return (m.actions.skills || []).some(s => s.name === x[1]);
+    { const st = stateCond(sim, m, cond); if (st !== null) return st; }
     return !!sim.opt.cond;
+  }
+  // 상태로 정해지는 조건(11-13 감사) → true/false, 모르면 null. 전엔 opt.cond(고점 = 켬)라 영어 「When used during Stellar Burst」 · 「어나더 포스 시」가
+  //   반복 고점에서 상시로 켜졌다(니나 Dreamlike Stitch 루나틱 복사 · 포슬린 AS SB 심기일체 · 루비 크리 위력 +3900%). 순간 최고점(burst)은 SB · AF 도 켠다. 「또는」 묶음은 판정하지 않는다
+  function stateCond(sim, m, cond) {
+    if (!cond || /또는|\bor\b/i.test(cond)) return null;
+    const neg = /\bnot (?:in|during|used)|아닐 시|않을 시/i.test(cond), burst = !!(sim.opt.peak && sim.opt.peak !== "repeat");
+    if (/stellar burst|스텔라 버스트/i.test(cond)) return burst ? null : neg ? !sim.sb.on : !!sim.sb.on;
+    if (/another force|어나더 포스/i.test(cond) && !/combo|콤보|게이지|gauge/i.test(cond)) return burst ? null : neg ? !sim.af : !!sim.af;
+    if (m && /^(?:when |if )?(?:the )?user (?:is )?(?:in|on) (?:the )?front ?-?line$/i.test(cond.trim())) return m.pos !== "back";   // 전방 조건 = 평소 충족
+    return null;
   }
   // 「속성 ZONE에 따라 ANOTHER ZONE 전개 종류 변화」(네코코 ES) — 빌더는 7속성 「극 X」 전개로 펼치지만 실제는 지금 존을 각성(없으면 기본 「극 풍왕진」).
   //   전엔 번개 파티에서 고점이 「극 휘정진」을 골라 실전(초뢰진)과 어긋났다(11-08) → [추가 효과] 극 X 단위는 각성으로
@@ -412,7 +423,8 @@
     //   지금 존의 속성 단위만 남기고 조건을 뗀다, 속성 존이 없으면 조건 없는 기본 단위만
     if (u.k === "stat_pct" && ZBUF.test((sk && sk.desc) || "")) { const ue = (u.stats || []).map(x => elOf((/^(\S+) 속성/.exec(x) || [])[1])).find(Boolean);
       if (ue) { const ze = zoneEl(sim); if (ze) { if (ue !== ze) return; u = { ...u, cond: undefined }; } else if (u.cond) return; } }
-    if (u.cond && (!sim.opt.cond || compOk(sim, u.cond) === false || (u.k !== "zone" && u.k !== "zoneAwake" && zoneCond(sim, u.cond) === false))) return;
+    const stc = u.cond ? stateCond(sim, sim.party[ci], u.cond) : null;   // 상태 조건(전방 · SB 중 · AF 중)은 opt.cond 와 무관하게 상태로 판정
+    if (u.cond && stc !== true && (!sim.opt.cond || stc === false || compOk(sim, u.cond) === false || (u.k !== "zone" && u.k !== "zoneAwake" && zoneCond(sim, u.cond) === false))) return;
     if (sk && !gateOk(sim, sk)) return;
     if (!needOk(sim, ci, u.need)) return;
     { const f = flexOf(u, sk); if (f) { const until = u.turns == null ? Infinity : sim.turn + u.turns; for (const t of (f.who === "all" ? sim.party.map((x, i) => i) : [ci])) if (!f.el || ((sim.party[t].c || {}).elementKo === f.el)) sim.live.set(`flex|${t}`, { ci: t, u: { k: "flexible", at: f.at }, skill: skName, stacks: 1, until }); return; } }

@@ -234,9 +234,14 @@
   const envOk = (cond, env) => !!env && (cond === "severe" ? !!env.severe : env.type === cond);
   function equipFor(items, atk, opt) {
     const out = { equip: [], typeEquip: [], punish: 0, punishV: [], skillFx: [], crit: 0, mcrit: 0, critDmg: 0, mcritDmg: 0, stats: {}, groups: [], slots: {}, skillMul: 1, src: [] };
-    // slot = 정밀 엔진(ae_pipeline) 칸 — 근사 엔진에는 모두 곱(groups)으로 들어간다
+    // 정밀 칸의 합산·체감·연속곱 구분을 근사에서도 유지한다.
+    const summed = new Set(["zoneAwake", "zoneCond", "lsAlly", "growthAtk", "growthHit", "fallen"]), buckets = {};
     const mult = (it, label, x, slot = "condE", raw = x) => {
-      if (x > 0) { out.groups.push(x / 100); (out.slots[slot] = out.slots[slot] || []).push(raw); out.src.push(`${it.name}: ${label} +${+x.toFixed(2)}%`); }
+      if (x > 0) {
+        if (summed.has(slot) || slot === "overthrowE") (buckets[slot] = buckets[slot] || []).push(x / 100);
+        else out.groups.push(x / 100);
+        (out.slots[slot] = out.slots[slot] || []).push(raw); out.src.push(`${it.name}: ${label} +${+x.toFixed(2)}%`);
+      }
     };
     // 효과 중복 불가(위키 「Not stackable」 — 겨누어 쏘기 · MP 소비 공격 · 봉인 인핸스 · 적 수 · 약점 강화 · 약점 공격 글래스터): 장비 전체에서 종류별 최댓값 하나만 (2026-10-13)
     const once = {};
@@ -305,6 +310,7 @@
     const keys = Object.keys(once).sort((a, b) => (CONDE.indexOf(a) + 1 || 99) - (CONDE.indexOf(b) + 1 || 99));
     for (const key of keys) { const u = once[key]; mult(u.it, u.label, u.x, u.slot, u.raw); }
     if (fallen.length) mult({ name: fallen.map(([it]) => it.name).join(" + ") }, KL("fallen"), Math.min(300, fallen.reduce((a, [, x]) => a + x, 0)), "fallen");
+    for (const [slot, vals] of Object.entries(buckets)) out.groups.push(slot === "overthrowE" ? C.diminish(vals.slice(0, 2)) : C.additive(vals));
     return out;
   }
 
@@ -569,7 +575,10 @@
     const oc = (magic ? ag.magic_overcritical : ag.overcritical) ? Math.max(0, Math.min(1, (rate - 1) / 10)) : 0;
     // 25억 경감(opt.cap === false 면 끔) — 1타마다. 최적화 목표가 캡을 모르면 1타가 큰 조합을 과대평가한다(2026-10-15, 추천 상위가 1타 수십억)
     const capF = opt.cap === false ? v => v : C.softCap;
-    const hitOf = ob => [capF(C.damage({ ...ob, crit: false }).total), capF(C.damage({ ...ob, crit: true, critDmg }).total * (1 + oc) * critX)];
+    const hitOf = ob => {
+      const raw = C.damage({ ...ob, crit: true, critDmg }).total * critX;
+      return [capF(C.damage({ ...ob, crit: false }).total), (1 - oc) * capF(raw) + oc * capF(2 * raw)];
+    };
     const p = (ag.sureCrit || sx.risktaker) ? 1 : Math.max(0, Math.min(1, rate));
     // 다단 강화(Multi-upgrade, 2026-11-04 빌더 대조 — statuses.json 에 있었으나 미반영): 한 행동의 n번째 타 위력 ×1 · 1.25 · 1.5 · 2 · 3(이후 3, 위키 Damage Formula/Multipliers).
     //   딩님 v4.016 = 위력 % UP 칸(합산). opt.hitOffset = 이 공격 앞에 같은 행동에서 이미 친 타수(시나리오가 넘긴다). 25억 경감은 타마다
@@ -602,7 +611,7 @@
       return true;
     };
     const pick = (g, on) => g.src.filter((_, i) => usedTag(g.srcTag[i]) === on);
-    const res = { normal, crit, p, expected: exp1, rest, hits, perUse, o, conds: cx.on,
+    const res = { normal, crit, p, expected: exp1, rest, hits, perUse, o, conds: cx.on, overCritProbability: oc,
       get why() { return [...pick(ag, true), ...pick(eg, true), ...eq.src, ...ev.src, ...(fv.length ? [`MP · 상태 비례 그룹(정신 통일 · 심기일체 · 호시탐탐 · 하극상): +${(focusV * 100).toFixed(1)}% (최대 MP ${maxMp}${focus.length ? ` × ${focus.map(x => (x * 100).toFixed(2) + "%").join(" + ")}` : ""})`] : []), ...cx.on.map(c => `조건: ${c.label} ×${c.x}`), ...(kb ? [`브레이크: 첫 ${kb}타 ×2`] : [])]; },
       get whyOff() { return [...pick(ag, false), ...pick(eg, false)]; } };
     // 정밀값(ae_pipeline — 딩님 계산기와 정수 일치 엔진): 난수 전 구간 평균. 근사보다 0~0.4% 낮다(단계마다 버림)
@@ -621,15 +630,17 @@
           typeNE: pct(typeNet), wielder: pct(dmgNet), eagleEyes: focusV ? [focusV * 100, 0] : [],
           weak: o.weakBuff ? [o.weakBuff * 100] : [], typeE: eq.equip.map(x => x * 100), statusE: [...eq.punishV, ...(sl.statusE || [])],
           enhance: sl.enhance, fallen: sl.fallen, condE: sl.condE, risktaker: sx.risktaker * 100 || undefined, mindsEye: sx.mindsEye * 100 || undefined,
-          condNB: o.skillFx.map(x => x * 100), critDmg: pct(critDmg), overCrit: oc * 100 || undefined, aim: sum(sl.aim) || undefined,
+          condNB: o.skillFx.map(x => x * 100), critDmg: pct(critDmg), overCrit: (critX - 1) * 100 || undefined, aim: sum(sl.aim) || undefined,
           zoneAwake: sl.zoneAwake, zoneCond: sl.zoneCond, lsAlly: sl.lsAlly, overthrowE: sl.overthrowE, growthAtk: sl.growthAtk, wins: (sl.wins || [])[0],
           zone: pct(o.zone), cheer: ev.groups.map(x => x * 100), aura: bud ? bud.aura.map(x => x * 100) : [], break: sx.brk * 100 || undefined } };
     } });
     Object.defineProperty(res, "precise", { enumerable: false, get() {
       const P = root.AEPipe || (typeof require === "function" ? require("./ae_pipeline.js") : null);
       if (!P) return null;
-      const r = P.compute(res.pipeInput);
-      return { normal: r.avg, crit: r.critAvg * critX, p, expected: p * r.critAvg * critX + (1 - p) * r.avg };
+      const ip = res.pipeInput, r = P.compute(ip);
+      // overCrit는 해당 분기의 크리 증가량이다. 분기별 정수 처리·경감이 끝난 뒤 발동 확률로 섞는다.
+      const crit = oc ? (1 - oc) * r.critAvg + oc * P.compute({ ...ip, fx: { ...ip.fx, overCrit: (2 * critX - 1) * 100 } }).critAvg : r.critAvg;
+      return { normal: r.avg, crit, p, expected: p * crit + (1 - p) * r.avg };
     } });
     return res;
   }

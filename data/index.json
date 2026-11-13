@@ -3880,6 +3880,7 @@
         "속도 DOWN",
         "속도 UP",
         "속도 UP (수치)",
+        "연격 수 UP",
         "지능 UP",
         "지능 UP (수치)",
         "힘 UP",
@@ -6078,6 +6079,7 @@
         "MP 회복",
         "ZONE 기타",
         "기도",
+        "대미지 UP",
         "독",
         "모든 속성 공격력 UP",
         "모든 속성 저항 UP",
@@ -6107,13 +6109,13 @@
         "enemy_utility": 1,
         "atk_state": 4,
         "mode": 4,
-        "atk_buff": 6,
+        "atk_buff": 9,
         "surv_buff": 6,
         "state_unknown": 8,
         "recover": 8,
         "resource": 5,
         "surv_state": 4,
-        "power": 6,
+        "power": 3,
         "atk_debuff": 1,
         "dot": 1,
         "zone": 2,
@@ -8022,6 +8024,7 @@
       "effect_tags": [
         "HP 회복",
         "MP 회복",
+        "대미지 UP",
         "물리 저항 DOWN",
         "받는 대미지 DOWN",
         "속도 UP",
@@ -8033,8 +8036,8 @@
         "state_unknown": 3,
         "attack": 7,
         "surv_debuff": 2,
-        "atk_buff": 4,
-        "power": 2,
+        "atk_buff": 5,
+        "power": 1,
         "tempo": 1,
         "surv_buff": 1,
         "atk_debuff": 1,
@@ -8856,6 +8859,7 @@
         "HP 최대치 UP",
         "HP 회복",
         "MP 회복",
+        "그림자 속성 저항 DOWN",
         "기도",
         "날리기 무효",
         "대미지 UP",
@@ -8885,7 +8889,7 @@
         "recover": 7,
         "surv_buff": 7,
         "attack": 2,
-        "atk_debuff": 2,
+        "atk_debuff": 3,
         "dot": 1,
         "atk_buff": 6
       },
@@ -10587,6 +10591,7 @@
       "effect_tags": [
         "ZONE 기타",
         "땅 속성 저항 UP",
+        "모든 속성 공격력 UP",
         "물리 저항 DOWN",
         "물리 크리티컬 위력 UP",
         "속도 UP",
@@ -10596,11 +10601,11 @@
       "roles": {
         "zone": 4,
         "surv_debuff": 2,
+        "atk_buff": 3,
         "attack": 3,
         "atk_debuff": 1,
         "tempo": 1,
         "surv_buff": 1,
-        "atk_buff": 1,
         "resource": 1,
         "atk_state": 1
       },
@@ -11941,6 +11946,7 @@
         "물리 크리티컬율 UP",
         "번개 속성 저항 DOWN",
         "속도 UP",
+        "창 · 활 장착자 대미지 UP",
         "크리티컬 발생 확정",
         "페인"
       ],
@@ -11951,7 +11957,7 @@
         "zone": 8,
         "attack": 7,
         "atk_debuff": 7,
-        "atk_buff": 4,
+        "atk_buff": 5,
         "tempo": 1,
         "surv_buff": 1,
         "power": 2
@@ -12504,6 +12510,7 @@
         "HP 회복",
         "MP 회복",
         "ZONE 기타",
+        "검 · 도 · 도끼 장착자 대미지 UP",
         "그림자 속성 공격력 UP",
         "땅 속성 공격력 UP",
         "루나틱",
@@ -12520,7 +12527,7 @@
         "mode": 1,
         "zone": 8,
         "attack": 7,
-        "atk_buff": 7,
+        "atk_buff": 8,
         "resource": 1,
         "power": 3,
         "surv_debuff": 1,
@@ -13548,22 +13555,25 @@
       "effect_tags": [
         "대미지 UP",
         "독",
+        "마법 크리티컬율 UP",
         "모든 속성 저항 UP",
         "물 속성 저항 UP",
         "물리 저항 UP",
         "속도 DOWN",
         "정신 통일",
-        "페인"
+        "지능 UP",
+        "페인",
+        "힘 UP"
       ],
       "roles": {
         "surv_buff": 4,
         "attack": 4,
         "surv_debuff": 1,
         "atk_state": 1,
+        "atk_buff": 4,
         "dot": 1,
         "atk_debuff": 1,
-        "power": 2,
-        "atk_buff": 1
+        "power": 2
       },
       "traits": [
         "Dragon Palace",
@@ -14193,6 +14203,7 @@
         "물리 크리티컬율 UP",
         "상태 이상 회복",
         "속도 DOWN",
+        "속도 UP",
         "지능 DOWN",
         "찌르기 저항 DOWN",
         "힘 UP"
@@ -14204,7 +14215,8 @@
         "atk_buff": 3,
         "surv_debuff": 2,
         "atk_debuff": 3,
-        "power": 2
+        "power": 2,
+        "tempo": 1
       },
       "traits": [
         "단것 애호가",
@@ -14824,6 +14836,7 @@
       },
       "skills_en": true,
       "effect_tags": [
+        "검 · 도끼 · 도 장착자 대미지 UP",
         "공격 대미지 흡수",
         "모든 속성 저항 DOWN",
         "물리 크리티컬 위력 UP",
@@ -14836,7 +14849,7 @@
         "recover": 2,
         "surv_debuff": 1,
         "atk_debuff": 3,
-        "atk_buff": 3,
+        "atk_buff": 4,
         "resource": 2
       },
       "traits": [
@@ -16333,6 +16346,7 @@
       "effect_tags": [
         "ZONE 기타",
         "땅 속성 저항 UP",
+        "모든 속성 공격력 UP",
         "물리 저항 DOWN",
         "물리 크리티컬 위력 UP",
         "속도 UP",
@@ -16340,11 +16354,11 @@
       ],
       "roles": {
         "surv_debuff": 3,
+        "atk_buff": 4,
         "attack": 3,
         "atk_debuff": 1,
         "tempo": 1,
         "surv_buff": 1,
-        "atk_buff": 1,
         "zone": 1
       },
       "traits": [
@@ -16396,7 +16410,8 @@
         "바람 속성 공격력 UP",
         "바람 속성 저항 DOWN",
         "상태 이상 회복",
-        "수면"
+        "수면",
+        "지능 UP"
       ],
       "roles": {
         "attack": 5,
@@ -16406,7 +16421,7 @@
         "recover": 2,
         "resource": 4,
         "dot": 1,
-        "atk_buff": 2
+        "atk_buff": 3
       },
       "traits": [
         "엘프",
@@ -16518,7 +16533,7 @@
         "attack": 6,
         "surv_debuff": 3,
         "surv_state": 4,
-        "surv_buff": 3,
+        "surv_buff": 4,
         "recover": 1,
         "resource": 4,
         "power": 2,
@@ -17009,7 +17024,7 @@
         "atk_buff": 2,
         "tempo": 1,
         "resource": 2,
-        "surv_buff": 2
+        "surv_buff": 3
       },
       "traits": [
         "안경",
@@ -17385,7 +17400,7 @@
         "surv_debuff": 5,
         "recover": 2,
         "resource": 2,
-        "atk_buff": 3,
+        "atk_buff": 4,
         "tempo": 1,
         "surv_state": 1,
         "atk_debuff": 1

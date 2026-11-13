@@ -72,36 +72,108 @@
   // m = 계산 멤버(c · fx · stats · attack · weapon …), members = m 을 포함한 파티(혼자면 [m])
   // conf = { grastaSlots: 4, badgeSlots: 2, specialSlots: 1(pools.special 이 있을 때), dupGrasta: true, counts: {이름: 보유 수} | null }
   //   counts 가 있으면 그 수까지만(보유 모드), 없으면 그라스타는 dupGrasta 로 중복 허용, 고유 배지는 1개(무작위 배지는 중복 가능)
+  //   scoreFn(team) 이 있으면 해당 멤버를 후보 장비로 바꾼 전체 파티를 같은 목적 함수로 평가한다.
   // 반환 { gear: {weapon, armor, grasta[], badges[]}, value, start, evals }
   // 파티 안의 같은 멤버(id)를 w 로 바꾼 명단 — 없으면 끝에 넣는다
   // 일반 칸 그라스타 — 화면 멤버(calcMember)는 대미지 계산용 grasta 에 특수 칸(special)까지 넣어 둔다
   const normalOf = m => (m.grasta || []).filter(g => !(m.special || []).includes(g));
   const swapIn = (members, w) => members.some(x => x.c.id === w.c.id) ? members.map(x => (x.c.id === w.c.id ? w : x)) : [...members, w];
+  const gearKey = (it, kind) => { const name = kind === "g" ? it.base || it.name : it.name; return name ? kind + ":" + name : null; };
+  const gearEntries = s => [[s.weapon, "e"], [s.armor, "e"], ...(s.grasta || []).map(g => [g, "g"]), ...(s.special || []).map(g => [g, "g"]), ...(s.badges || []).map(b => [b, "b"])].filter(([it]) => it);
+  const gearLimit = (it, kind, conf) => conf.counts ? conf.counts[kind === "g" ? it.base || it.name : it.name] || 0
+    : kind === "g" ? conf.dupGrasta === false ? 1 : it.limit ?? Infinity : kind === "b" ? it.kind === "random" ? Infinity : 1 : 1;
+  function quantityError(state, conf) {
+    for (const [key, n] of [["grasta", conf.grastaSlots ?? 4], ["badges", conf.badgeSlots ?? 2], ["special", conf.specialSlots ?? 1]])
+      if ((state[key] || []).filter(Boolean).length > n) return "장착 칸";
+    const used = {}, add = k => (used[k] = (used[k] || 0) + 1) + ((conf.taken || {})[k] || 0);
+    for (const [it, kind] of gearEntries(state)) {
+      const key = gearKey(it, kind);
+      if ((key ? add(key) : 1) > gearLimit(it, kind, conf)) return it.name || "이름 없는 장비";
+      if (it.ore && add("o:" + it.ore) > (it.oreLimit ?? Infinity)) return it.ore;
+    }
+    return null;
+  }
+  const locksOf = (m, conf) => ({ weapon: m.lockWeapon || null, armor: m.lockArmor || null,
+    grasta: m.lockGrasta || conf.lockGrasta || [], badges: m.lockBadges || conf.lockBadges || [], special: [] });
+  const memberGear = m => ({ weapon: m.weapon, armor: m.armor, grasta: normalOf(m), special: m.special || [], badges: m.badges || [] });
+  function countGear(out, state, delta = 1) {
+    for (const [it, kind] of gearEntries(state)) {
+      const k = gearKey(it, kind); if (k) out[k] = (out[k] || 0) + delta;
+      if (it.ore) out["o:" + it.ore] = (out["o:" + it.ore] || 0) + delta;
+    }
+    return out;
+  }
+  function fitsPools(state, pools, locks) {
+    const has = (key, it) => !it || (pools[key === "weapon" ? "weapons" : key] || []).some(x => x.name === it.name)
+      || (Array.isArray(locks[key]) ? locks[key] : [locks[key]]).some(x => x && x.name === it.name);
+    const hasLocks = key => { const need = {}; for (const it of locks[key] || []) need[it.name] = (need[it.name] || 0) + 1;
+      return Object.entries(need).every(([name, n]) => (state[key] || []).filter(x => x && x.name === name).length >= n); };
+    return ["weapon", "armor"].every(k => has(k, state[k]) && (!locks[k] || (state[k] && state[k].name === locks[k].name)))
+      && ["grasta", "badges", "special"].every(k => (state[k] || []).every(it => has(k, it))
+        && hasLocks(k));
+  }
+  // 입력을 바꾸지 않는 최종 검사. 후보 풀은 선택 사항이며 명시 잠금은 후보 밖이어도 수량을 지키면 유지한다.
+  function validateTeam(team, conf = {}, poolsOf) {
+    const all = { ...(conf.taken || {}) };
+    team.forEach(m => countGear(all, memberGear(m)));
+    for (const m of team) {
+      const state = memberGear(m), taken = countGear({ ...all }, state, -1);
+      const bad = quantityError(state, { ...conf, taken });
+      if (bad) throw new RangeError(`${m.c.id}: ${bad}의 보유 수·획득 제한을 초과합니다.`);
+      const pools = poolsOf ? poolsOf(m) : { weapons: [state.weapon].filter(Boolean), armor: [state.armor].filter(Boolean), grasta: state.grasta, badges: state.badges, special: state.special };
+      if (!fitsPools(state, pools, locksOf(m, conf))) throw new RangeError(`${m.c.id}: 장착 후보 또는 고정 장비 조건과 맞지 않습니다.`);
+    }
+    return true;
+  }
+  function initialGear(m, pools, conf) {
+    const locks = locksOf(m, conf), gs = conf.grastaSlots ?? 4, bs = conf.badgeSlots ?? 2, ss = pools.special ? conf.specialSlots ?? 1 : 0;
+    if (locks.grasta.length > gs || locks.badges.length > bs) throw new Error("고정 장비 수가 장착 칸보다 많습니다.");
+    const s = { weapon: null, armor: null, grasta: Array(gs).fill(null), badges: Array(bs).fill(null), special: Array(ss).fill(null) };
+    const inPool = (it, pool) => it && (pool || []).find(x => x.name === it.name);
+    const put = (key, i, item, required = false) => {
+      // 스킬을 부여하는 고정 장비는 대미지 후보에서 빠질 수 있다. 잠금은 유지하되 수량은 아래에서 검사한다.
+      const it = inPool(item, pools[key === "weapon" ? "weapons" : key]) || (required ? item : null);
+      if (!it) return false;
+      if (i < 0) s[key] = it; else s[key][i] = it;
+      const bad = quantityError(s, conf);
+      if (bad) {
+        if (i < 0) s[key] = null; else s[key][i] = null;
+        if (required) throw new Error(`고정 장비 ${bad}: 보유 수·획득 제한 또는 다른 파티원 사용 수와 충돌합니다.`);
+        return false;
+      }
+      return true;
+    };
+    for (const key of ["weapon", "armor"]) if (locks[key]) put(key, -1, locks[key], true);
+    for (const key of ["grasta", "badges"]) locks[key].forEach((it, i) => put(key, i, it, true));
+    for (const key of ["weapon", "armor"]) if (!locks[key] && m[key]) put(key, -1, m[key]);
+    for (const [key, source] of [["grasta", normalOf(m)], ["badges", m.badges || []], ["special", m.special || []]]) {
+      for (const it of source.filter(Boolean)) {
+        if ((locks[key] || []).some(g => g.name === it.name)) continue;
+        const i = s[key].findIndex(x => !x); if (i < 0) break;
+        put(key, i, it);
+      }
+    }
+    if (!s.weapon) for (const it of pools.weapons || []) if (put("weapon", -1, it)) break;
+    return s;
+  }
 
   function gearOptimize(m, members, opt, pools, conf = {}) {
-    const gs = conf.grastaSlots ?? 4, bs = conf.badgeSlots ?? 2, ss = pools.special ? conf.specialSlots ?? 1 : 0;
-    const lock = conf.lockGrasta || [];                    // 고정 그라스타(부여 스킬을 쓰려면 그 그라스타가 칸에 있어야 한다) — 앞 칸부터, 탐색 제외
-    const lockB = conf.lockBadges || [];                   // 고정 배지(배지 습득 스킬, 2026-11-12) — 같은 방식
+    const lock = m.lockGrasta || conf.lockGrasta || [];                    // 고정 그라스타(부여 스킬을 쓰려면 그 그라스타가 칸에 있어야 한다) — 앞 칸부터, 탐색 제외
+    const lockB = m.lockBadges || conf.lockBadges || [];                   // 고정 배지(배지 습득 스킬, 2026-11-12) — 같은 방식
     const w = { ...m };
     const team = swapIn(members, w);
     // 획득 가능 수(2026-10-14 SV — 1회성 보상 글래스터 · 광석을 여러 개 끼우던 것): 글래스터 = 기본 이름별 limit(위키 획득처, null = 반복 획득),
     //   특수 광석 = 광석별 oreLimit. 보유 모드(conf.counts)는 보유 수
     // 파티 공동(2026-10-15): conf.taken = 다른 파티원이 이미 쓴 수({"g:기본 이름" · "o:광석" · "e:무기/방어구" · "b:배지": 수}),
     //   conf.others = [{m, w}] 이 멤버의 그라스타(공유)가 바꾸는 파티원 대미지 × 가중치, conf.selfWeight = 자기 대미지 가중치(기본 1)
-    const tkey = (it, kind) => (kind === "g" ? "g:" + (it.base || it.name) : kind === "b" ? "b:" + it.name : "e:" + it.name);
-    const taken = (it, kind) => (conf.taken || {})[tkey(it, kind)] || 0;
-    const limit = (it, kind) => {
-      if (conf.counts) return conf.counts[kind === "g" ? it.base || it.name : it.name] || 0;
-      if (kind === "g") return conf.dupGrasta === false ? 1 : it.limit ?? Infinity;
-      if (kind === "b") return it.kind === "random" ? Infinity : 1;
-      return 1;
-    };
     let evals = 0;
-    const pre = P.prepare(team, opt);                     // 장비는 파티 버프와 무관 — 한 번만
+    const pre = conf.scoreFn ? null : P.prepare(team, opt);                     // 장비는 파티 버프와 무관 — 한 번만
     const score = s => {
       w.weapon = s.weapon; w.armor = s.armor;
-      w.grasta = [...s.grasta, ...(s.special || [])].filter(Boolean); w.badges = s.badges.filter(Boolean);
+      w.special = s.special.filter(Boolean); w.gear = { grasta: s.grasta.filter(Boolean), special: w.special };
+      w.grasta = [...w.gear.grasta, ...w.special]; w.badges = s.badges.filter(Boolean);
       evals++;
+      if (conf.scoreFn) return conf.scoreFn(team);
       const d = P.memberDamage(w, team, opt, pre);
       const own = (conf.selfWeight ?? 1) * (d ? d.perUse : 0);
       if (!conf.others || !conf.others.length) return own;
@@ -110,29 +182,21 @@
       return own + othersV;
     };
     let othersSig = null, othersV = 0;
-    const pad = (a, n) => Array.from({ length: n }, (_, i) => (a || [])[i] || null);
-    const start = score({ weapon: m.weapon || null, armor: m.armor || null, grasta: pad(normalOf(m), gs), badges: pad(m.badges, bs), special: pad(m.special, ss) });
-    // 탐색은 후보 안에서만 — 지금 장비가 후보(보유 목록) 밖이면 빈 칸에서 시작
-    const inPool = (it, pool) => (it && pool.some(x => x.name === it.name) ? pool.find(x => x.name === it.name) : null);
-    let state = { weapon: inPool(m.weapon, pools.weapons) || pools.weapons[0] || null, armor: inPool(m.armor, pools.armor),
-      grasta: pad([...lock, ...normalOf(m).map(g => inPool(g, pools.grasta)).filter(g => g && !lock.includes(g))], gs),
-      badges: pad([...lockB, ...(m.badges || []).map(b => inPool(b, pools.badges)).filter(b => b && !lockB.includes(b))], bs),
-      special: pad((m.special || []).map(g => inPool(g, pools.special || [])).filter(Boolean), ss) };
-    let best = score(state);
-    const slots = ["weapon", "armor", ...state.grasta.map((_, i) => ["grasta", i]).filter(([, i]) => i >= lock.length), ...state.badges.map((_, i) => ["badges", i]).filter(([, i]) => i >= lockB.length), ...state.special.map((_, i) => ["special", i])];
+    // 초기값도 후보·보유 수·획득 제한을 만족시킨 뒤 탐색한다. 잠금 충돌은 초기화에서 오류로 반환한다.
+    let state = initialGear(m, pools, conf);
+    const start = score(state);
+    let best = start;
+    const slots = [...(m.lockWeapon ? [] : ["weapon"]), ...(m.lockArmor ? [] : ["armor"]), ...state.grasta.map((_, i) => ["grasta", i]).filter(([, i]) => i >= lock.length), ...state.badges.map((_, i) => ["badges", i]).filter(([, i]) => i >= lockB.length), ...state.special.map((_, i) => ["special", i])];
     for (let pass = 0; pass < 10; pass++) {
       let moved = false;
       for (const sl of slots) {
         const [key, i] = Array.isArray(sl) ? sl : [sl, -1];
         const pool = key === "weapon" ? pools.weapons : key === "armor" ? pools.armor : key === "grasta" ? pools.grasta : key === "special" ? pools.special : pools.badges;
-        const kind = key === "grasta" || key === "special" ? "g" : key === "badges" ? "b" : "e";
-        const used = it => (i < 0 ? 0 : state[key].filter((x, j) => j !== i && x && (kind === "g" ? (x.base || x.name) === (it.base || it.name) : x === it)).length);
-        const oreFull = it => key === "grasta" && it.ore && state.grasta.filter((x, j) => j !== i && x && x.ore === it.ore).length + ((conf.taken || {})["o:" + it.ore] || 0) >= (it.oreLimit ?? Infinity);
         for (const it of [null, ...pool]) {
           if (it === null && key === "weapon" && pools.weapons.length) continue;
-          if (it && (used(it) + taken(it, kind) >= limit(it, kind) || oreFull(it))) continue;
           const s2 = { ...state, grasta: [...state.grasta], badges: [...state.badges], special: [...state.special] };
           if (i < 0) s2[key] = it; else s2[key][i] = it;
+          if (quantityError(s2, conf)) continue;
           const v = score(s2);
           if (v > best * (1 + 1e-9)) { best = v; state = s2; moved = true; }
         }
@@ -150,22 +214,29 @@
   //   carry 면 그 멤버 대미지가 목표(다른 멤버는 1e-3 — 남는 장비로 무난하게), 그 멤버를 먼저 채운다
   function partyGear(members, opt, poolsOf, conf = {}) {
     const team = members.map(m => ({ ...m, gear: { grasta: normalOf(m), special: m.special || [] } }));
+    const fullPools = new Map(team.map(m => [m.c.id, poolsOf(m)]));
     // conf.scale = {id: 배율}(11-08) — 정적 식 값을 고점 장면 몫에 맞추는 멤버별 배율(build.optimizePeak). 정적 식은 자원 · 단계로 커지는 공격을 모른다
     //   (세스타 AS 변화한 일반 공격: 정적 217만 vs 고점 86억) → 그 멤버 비중이 0 이 되어 공유 그라스타가 남에게만 쏠렸다
     const wt = x => (conf.objective === "carry" ? (x.c.id === conf.carry ? 1 : 1e-3) : 1) * ((conf.scale || {})[x.c.id] ?? 1);
     const order = conf.objective === "carry" ? [...team].sort((a, b) => wt(b) - wt(a)) : team;
     const usage = except => {
-      const t = {}, add = k => (t[k] = (t[k] || 0) + 1);
-      for (const x of team) {
-        if (x === except) continue;
-        if (x.weapon) add("e:" + x.weapon.name);
-        if (x.armor) add("e:" + x.armor.name);
-        for (const g of x.grasta || []) { add("g:" + (g.base || g.name)); if (g.ore) add("o:" + g.ore); }
-        for (const b of x.badges || []) if (b.kind !== "random") add("b:" + b.name);
-      }
+      const t = { ...(conf.taken || {}) };
+      for (const x of team) if (x !== except) countGear(t, memberGear(x));
       return t;
     };
-    const total = () => { const pre = P.prepare(team, opt); return team.reduce((s, x) => s + wt(x) * ((P.memberDamage(x, team, opt, pre) || {}).perUse || 0), 0); };
+    const repaired = team.some(x => quantityError(memberGear(x), { ...conf, taken: usage(x) }) || !fitsPools(memberGear(x), fullPools.get(x.c.id), locksOf(x, conf)));
+    // 나중 멤버의 고정 장비를 먼저 예약해 초기 중복을 고칠 때 잠금을 빼앗지 않는다.
+    const reserved = {}, allocated = { ...(conf.taken || {}) };
+    team.forEach(x => countGear(reserved, locksOf(x, conf)));
+    for (const x of team) {
+      countGear(reserved, locksOf(x, conf), -1);
+      const taken = { ...allocated }; for (const [k, v] of Object.entries(reserved)) taken[k] = (taken[k] || 0) + v;
+      const s = initialGear(x, fullPools.get(x.c.id), { ...conf, taken });
+      Object.assign(x, { weapon: s.weapon, armor: s.armor, badges: s.badges.filter(Boolean), special: s.special.filter(Boolean),
+        gear: { grasta: s.grasta.filter(Boolean), special: s.special.filter(Boolean) }, grasta: [...s.grasta, ...s.special].filter(Boolean) });
+      countGear(allocated, s);
+    }
+    const total = () => { if (conf.scoreFn) return conf.scoreFn(team); const pre = P.prepare(team, opt); return team.reduce((s, x) => s + wt(x) * ((P.memberDamage(x, team, opt, pre) || {}).perUse || 0), 0); };
     let evals = 0, best = -Infinity;
     const hist = [];
     // 그라스타 가지치기(conf.pruneGrasta, 기본 80) — 광석 조합까지 ~5,300개라 멤버마다 「혼자 꼈을 때 1회 사용 대미지」 상위 N 만 남긴다.
@@ -173,7 +244,7 @@
     const N = conf.pruneGrasta ?? 80, pruned = new Map();
     const poolsFor = x => {
       if (pruned.has(x.c.id)) return pruned.get(x.c.id);
-      const p = poolsOf(x);
+      const p = fullPools.get(x.c.id);
       let out = p;
       if (N && p.grasta.length > N) {
         const pre = P.prepare(team, opt), solo = { ...x, grasta: [] };
@@ -194,11 +265,11 @@
       for (const x of order) {
         const others = team.filter(o => o !== x).map(o => ({ m: o, w: wt(o) }));
         // 지금 낀 그라스타는 후보에 꼭 둔다 — 맞바꾸기로 받은 것이 이 멤버의 가지치기 목록 밖이면 버려져 목표가 내려갔다(2026-10-15)
-        const pf = full ? poolsOf(x) : poolsFor(x), extra = x.gear.grasta.filter(g => g && !pf.grasta.includes(g));
+        const pf = full ? fullPools.get(x.c.id) : poolsFor(x), extra = x.gear.grasta.filter(g => g && !pf.grasta.includes(g));
         const r = gearOptimize({ ...x, grasta: x.gear.grasta, special: x.gear.special }, team, opt, extra.length ? { ...pf, grasta: [...pf.grasta, ...extra] } : pf,
           { ...conf, taken: usage(x), others, selfWeight: wt(x), lockGrasta: x.lockGrasta || conf.lockGrasta, lockBadges: x.lockBadges || conf.lockBadges });   // 멤버별 고정(파티 빌드의 부여 스킬 그라스타, 10-17)
         evals += r.evals;
-        Object.assign(x, { weapon: r.gear.weapon, armor: r.gear.armor, badges: r.gear.badges, gear: { grasta: r.gear.grasta, special: r.gear.special || [] },
+        Object.assign(x, { weapon: r.gear.weapon, armor: r.gear.armor, badges: r.gear.badges, special: r.gear.special || [], gear: { grasta: r.gear.grasta, special: r.gear.special || [] },
           grasta: [...r.gear.grasta, ...(r.gear.special || [])] });
       }
       let v = total();
@@ -215,7 +286,8 @@
             else { [x.gear.grasta[i], y.gear.grasta[j]] = [y.gear.grasta[j], x.gear.grasta[i]]; for (const z of [x, y]) z.grasta = [...z.gear.grasta, ...z.gear.special]; }
             return true;
           };
-          const fits = () => k !== "g" || [x, y].every(z => z.gear.grasta.every(g => !g || !(g.req && g.req.length) || g.req.some(t => (z.c.traits || []).includes(t) || t === ((z.weapon && z.weapon.type) || (z.cc && z.cc.weapon)))));
+          const fits = () => [x, y].every(z => fitsPools(memberGear(z), fullPools.get(z.c.id), locksOf(z, conf))
+            && (k !== "g" || z.gear.grasta.every(g => !g || !(g.req && g.req.length) || g.req.some(t => (z.c.traits || []).includes(t) || t === ((z.weapon && z.weapon.type) || (z.cc && z.cc.weapon))))));
           if (!sw()) continue;
           const nv = fits() ? total() : -Infinity;
           if (nv > v * (1 + 1e-9)) v = nv; else sw();
@@ -228,7 +300,7 @@
       if (stuck || pass === (conf.passes ?? 3) - 1) { if (!polish) break; full = true; }
     }
     const pre = P.prepare(team, opt);
-    return { team, value: best, hist, evals,
+    return { team, value: best, hist, evals, repaired,
       per: team.map(x => ({ id: x.c.id, attack: x.attack, expected: (P.memberDamage(x, team, opt, pre) || {}).perUse || 0, gear: { weapon: x.weapon, armor: x.armor, badges: x.badges, ...x.gear } })) };
   }
 
@@ -321,7 +393,7 @@
     const top = Math.max(1, ...solo.values());
     // 파티에 주는 것이 있나 — 아군 전체 버프 또는 적 디버프(단독 딜이 낮아도 남긴다)
     const filled = x => x === true || (Array.isArray(x) ? x.length > 0 : !!x && typeof x === "object" && (x.buffs ? x.buffs.length > 0 : Object.keys(x).length > 0));
-    const helps = m => { const c = P.contrib(m, opt); return [c.all, c.enemy].some(g => Object.entries(g).some(([k, x]) => k !== "src" && filled(x))); };
+    const helps = m => { const c = P.contrib(m, opt); return c.who.length > 0 || [c.all, c.enemy].some(g => Object.entries(g).some(([k, x]) => k !== "src" && filled(x))); };
     const pool = cands.filter(m => fixed.includes(m.c.id) || solo.get(m.c.id) >= top * 0.05 || helps(m)).map(m => m.c.id);
     const starts = [...pool].filter(id => !fixed.includes(id)).sort((a, b) => solo.get(b) - solo.get(a)).slice(0, conf.starts ?? 8);
     if (!starts.length) starts.push(null);
@@ -389,7 +461,7 @@
     return { pools: damagePools(sub, cc, traits, { special: true }), counts: { ...inv.w, ...inv.a, ...inv.g, ...inv.b } };
   }
 
-  const api = { baseId, canGrasta, withOre, specialPool, damagePools, ownedPools, grantAttacks, attackPool, gearOptimize, partyGear, partySearchGeared, bestSetup, bestAttack, scoreParty, partySearch };
+  const api = { baseId, canGrasta, withOre, specialPool, damagePools, ownedPools, grantAttacks, attackPool, gearOptimize, partyGear, validateTeam, partySearchGeared, bestSetup, bestAttack, scoreParty, partySearch };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEOpt = api;
 })(typeof window !== "undefined" ? window : globalThis);

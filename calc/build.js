@@ -703,10 +703,12 @@
       const atk = bestAtk(m, sks);
       return k < Math.min(setup.length, acts - 1) || !atk ? (setup[k % (setup.length || 1)] || {}).name || null : atk;
     })) });
-    const evalT = t => { evals++; return scoreOf(acts ? S.run(t, quickPlan(t), opt, { scoreTurns: actTurns }) : S.peak(t, opt, { focus })); };
+    const evalR = t => { evals++; return acts ? S.run(t, quickPlan(t), opt, { scoreTurns: actTurns }) : S.peak(t, opt, { focus }); };
+    const evalT = t => scoreOf(evalR(t));
     const base = optimizePeak(fixed, opt, { passes: 2, pairMoves: false, focus });
     evals += base.evals;
-    let beams = [{ team: base.team, q: scoreOf({ score: base.scores.repeat, perMember: base.perMember }) }];
+    const baseResult = acts ? evalR(base.team) : { score: base.scores.repeat, perMember: base.perMember };
+    let beams = [{ team: base.team, q: scoreOf(baseResult), perMember: baseResult.perMember }];
     for (let s = 0; s < open; s++) {
       const next = [];
       beams.forEach((b, bi) => {
@@ -726,7 +728,8 @@
         scr.forEach((x, k) => {
           const r = optimizePeak([...b.team, { ...x.c, slots: x.sl }], opt, { passes: 2, pairMoves: false, only: [b.team.length], focus });
           evals += r.evals;
-          next.push({ team: r.team, q: acts ? evalT(r.team) : scoreOf({ score: r.scores.repeat, perMember: r.perMember }), perMember: r.perMember });
+          const result = acts ? evalR(r.team) : { score: r.scores.repeat, perMember: r.perMember };
+          next.push({ team: r.team, q: scoreOf(result), perMember: result.perMember });
           if (conf.tick) conf.tick(`${s + 1}번째 빈 칸 · 갈래 ${bi + 1}/${beams.length} · ${x.c.c.nameKo} (${k + 1}/${scr.length})`);
         });
       });
@@ -739,7 +742,10 @@
       const r = gearCombo(b.team, opt, { ...conf, focus });
       evals += r.evals;
       if (conf.tick) conf.tick(`그라스타 맞추기 ${k + 1}/${beams.length}`);
-      return { team: r.team, q: r.q, q0: b.q, perMember: r.perMember };
+      // 장비 단계 뒤에도 선택한 행동 수·초점으로 재어 순위를 매긴다.
+      const result = acts ? actCombo(r.team, opt, { acts, focus, restarts: conf.restarts }) : r;
+      if (acts) evals += result.evals;
+      return { team: r.team, q: result.q, q0: b.q, perMember: result.perMember };
     }).sort((x, y) => y.q - x.q);
         return { combos: beams.map(b => ({ ids: b.team.map(m => m.c.id), slots: b.team.map(m => m.slots), q: b.q, q0: b.q0 ?? null, perMember: b.perMember || null,
       grasta: conf.gear ? b.team.map(m => (m.grasta || []).filter(Boolean).map(g => g.name)) : null })), evals };

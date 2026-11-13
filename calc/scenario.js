@@ -20,7 +20,7 @@
     const magic = a.atk === "마법";
     const dep = (a.dep === "pwr" || a.dep === "magicpwr") && magic ? "magicpwr" : magic ? "magic" : a.dep === "int" ? "int" : a.dep === "spd" ? "spd" : "pwr";
     const mult = a.power ?? a.mult, multMax = a.powerMax ?? a.multMax;
-    return { skill: sk.name, mult, multMax, hits: a.hits || 1, element: a.element || "", atk: a.atk || "", scope: a.scope || "", dep,
+    return { skill: sk.name, mult, multMax, multRep: a.powerRep, hits: a.hits || 1, element: a.element || "", atk: a.atk || "", scope: a.scope || "", dep,
       conds: a.conds, mp: sk.mp || 0, sec: "skills", _sure: !!a.sureCrit, _fixed: !!a.fixed, _ignoreDef: !!a.ignoreDef, _burstMax: burstMax(sk) };
   }
   // 위값이 1회성 · 마무리에서 나오는 스킬(설명문, 11-05) — 「스텔라 버스트 시 위력 N배」 · 「스텔라 버스트로 발동한 횟수」 · 「대상 HP 비율이 낮을수록」.
@@ -73,7 +73,7 @@
   function flatStats(sim, ci) {
     const add = {};
     for (const e of sim.live.values()) {
-      if (!e.u.flat || e.u.k !== "stat_pct" || e.u.dir !== "UP" || sideOf(e.u) !== "a" || ((!e.u.tc || /^자신/.test(e.u.tc)) && e.ci !== ci)) continue;
+      if (!e.u.flat || e.u.k !== "stat_pct" || e.u.dir !== "UP" || sideOf(e.u) !== "a" || ((!e.u.tc || /^자신/.test(e.u.tc)) && e.ci !== ci) || (Array.isArray(e.u.who) && e.u.who.length && !P.recvOk(sim.party[ci], e.u.who))) continue;
       for (const st of e.u.stats || []) if (FLAT[st]) add[FLAT[st]] = (add[FLAT[st]] || 0) + (e.u.value || 0) * (e.u.perStack ? e.stacks || 1 : 1);   // 자원 스택(「Power +5 per stack」 × 99)은 비례
     }
     return add;
@@ -229,7 +229,8 @@
     if (!el) { const m = /change (?:the )?(?:element of [^;]*?|all party members |user (?:attacks )?)?to (\w+)/i.exec(raw); el = m ? (elOf(m[1]) || (/target/i.test(m[1]) ? "zone" : null)) : null; }
     if (!el) return null;
     let who = "self";
-    if (/아군 전체|적과 아군/.test(tc) || /all party members/i.test(raw)) who = "all";
+    if (Array.isArray(u.who) && u.who.length) who = "tag";
+    else if (/아군 전체|적과 아군/.test(tc) || /all party members/i.test(raw)) who = "all";
     else if (/^특정/.test(tc)) {
       if (/single party member|stacked ally/i.test(raw)) return null;
       who = /user/i.test(raw) ? "self" : "tag";
@@ -254,7 +255,7 @@
   const ATS = T.slots("attack_type"), FLEX = T.ko("flexible");
   const atOf = x => { x = String(x || "").trim().toLowerCase(); const v = ATS.find(e => x === e.ko || x === e.en.toLowerCase() || x === e.en.toLowerCase() + "ing" || (x === "piercing" && e.k === "pierce")); return v ? v.ko : null; };
   const flexName = n => T.is(String(n || "").replace(/\(.*\)\s*$/, "").trim(), "flexible");
-  const OWN_DEP = /(?:힘|지능|속도)에 따른 위력|based on (?:the )?(?:user'?s? )?(?:pwr|int|spd|power|intelligence|speed)/i;   // 스킬 자체 위력 기반 문구(임기응변이 못 바꾼다)
+  const OWN_DEP = /(?:힘|지능|속도)에 따른 위력|based on (?:the )?(?:user'?s? )?(?:pwr|int|spd|power|intelligence|speed)\b/i;   // 스킬 자체 위력 기반 문구(임기응변이 못 바꾼다)
   const FLEX_IMMUNE = new RegExp(`${FLEX}[^\\n]*적용 불가|will not change[^.\\n]*weapon type by flexible`, "i");
   function flexOf(u, sk) {
     const raw = u.raw || u.what || "";
@@ -368,6 +369,7 @@
       return [ci];
     }
     if (/^자신/.test(u.tc || "")) return [ci];
+    if (Array.isArray(u.who) && u.who.length) return all.filter(j => P.recvOk(pt[j], u.who));   // 조건 아군(빌더가 대상 줄 꼬리표로 채움, 11-13)
     const heads = [];                                                         // 연계가 든 효과 줄마다 — 위의 「…에게」 줄과 그 앞줄(조건)
     lines.forEach((l, i) => { if (!l.includes(LINK) || /^\s*※/.test(l) || /에게\s*$/.test(l)) return; let h = i - 1; while (h >= 0 && !/에게\s*$/.test(lines[h])) h--;
       if (h >= 0) heads.push({ head: lines[h], sb: /스텔라 버스트 시/.test(lines[h - 1] || "") }); });
@@ -515,7 +517,8 @@
     if (!/적/.test(atk.scope || "") || !atk.mult) return 0;
     let v = (sim.opt.cond || sim.opt.peak) && atk.multMax ? atk.multMax : atk.mult || 0;
     const sb = SB_X.exec(sk.desc || ""), sbNow = sim.sb.on || !!(sim.opt.peak && sim.opt.peak !== "repeat");
-    if (atk.multMax && v === atk.multMax && sb && !sbNow) v /= +sb[1];
+    if (atk.multMax && v === atk.multMax && atk.multRep != null && sim.opt.peak === "repeat" && !sim.sb.on) v = atk.multRep;   // 1회성 블록 배수 제외(빌더 rep_power)
+    else if (atk.multMax && v === atk.multMax && sb && !sbNow) v /= +sb[1];
     v *= atk.hits || 1;
     if (sim.capture) sim.capture.push({ ci, step: sim.step, skill: sk.name, d: v, perUse: v, hits: atk.hits || 1, p: 1, o: null, fixed: true, why: [], whyOff: [], states: [], pr: 1 });
     return v;
@@ -544,7 +547,7 @@
     }
     // breakOn: 시나리오가 건 브레이크 축적은 확정 사실(남은 개수 left 로 소모) — 정적 식의 「조건부일 때만」 기본값을 켠다
     // 일반 공격 대미지 UP = 일반 공격만 — 다른 스킬을 「연속 실행」하는 변화 평타(세스타 이도신랑)는 받지 않는다(딩님 236165, 11-09)
-    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, zoneAwake: !!(sim.zone && sim.zone.awake), turns: sim.turn, af: sim.af, punish, breakOn: sim.opt.breakOn ?? true, lunatic: sim.opt.lunatic ?? true, normalAtk: sk.kind === "normal" && !/연속 실행/.test(sk.desc || ""), hitOffset: part._h0 || 0, firstUse: !!sim.first[ci], explain: !!sim.capture }); last = r; return r ? r.perUse : 0; };
+    const dmg = punish => { const r = P.memberDamage(m, members, { ...sim.opt, zone: sim.zone, zoneAwake: !!(sim.zone && sim.zone.awake), turns: sim.turn, af: sim.af, stellar: sim.sb.on, punish, breakOn: sim.opt.breakOn ?? true, lunatic: sim.opt.lunatic ?? true, normalAtk: sk.kind === "normal" && !/연속 실행/.test(sk.desc || ""), hitOffset: part._h0 || 0, firstUse: !!sim.first[ci], explain: !!sim.capture }); last = r; return r ? r.perUse : 0; };
     const mb = [...maybe];
     let v = 0, last = null, cap = null;
     for (let mask = 0; mask < 1 << mb.length; mask++) {
@@ -564,7 +567,7 @@
     for (const [k, e] of sim.live) {
       if (!e.times || e.ci == null) continue;
       const st = (e.u.stats || [])[0] || "";
-      const holderGets = sideOf(e.u) === "a" && (e.u.tc === "아군 전체" || e.ci === ci);
+      const holderGets = sideOf(e.u) === "a" && ((e.u.tc === "아군 전체" && !(Array.isArray(e.u.who) && e.u.who.length && !P.recvOk(sim.party[ci], e.u.who))) || e.ci === ci);
       if (!holderGets) continue;
       if (/크리티컬율/.test(st) && /마법/.test(st) !== magic) continue;
       if (--e.times <= 0) sim.live.delete(k);

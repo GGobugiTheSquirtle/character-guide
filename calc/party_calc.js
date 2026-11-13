@@ -16,10 +16,17 @@
   //   → 'all'(파티 전원) | 'self'(본인) | 'skill'(본인의 그 공격 스킬에만) | null
   function allyScope(u) {
     const tc = u.tc || "";
-    if (tc === "아군 전체") return "all";
+    if (tc === "아군 전체") return Array.isArray(u.who) && u.who.length ? "who" : "all";
     if (tc === "자신") return "self";
     if (!tc) return u._atkItem ? "skill" : "self";            // 공격 스킬 속 성질(확정 크리 등)은 그 스킬에만
     return null;
+  }
+  // 조건 아군(u.who = 꼬리표 목록 — 무기 · 속성 · 천명 · 성격, 2026-11-13 감사): 하나라도 맞는 아군만 받는다. 무기는 실제 장착 무기 → 직업 무기
+  //   전엔 「<지팡이> 아군」 · 「Bow equipped characters」가 「특정 아군」(아무도 안 받음)이나 아군 전체(전원)로 뭉개졌다
+  function recvOk(m, who) {
+    const c = (m && m.c) || {}, wp = (m && ((m.weapon && m.weapon.type) || (m.cc && m.cc.weapon))) || c.weaponKo || "";
+    return who.some(t => t === "천" || t === "light" ? c.ls === "light" : t === "명" || t === "shadow" ? c.ls === "shadow"
+      : wp === t || c.elementKo === t || c.element2Ko === t || (c.traits || []).includes(t));
   }
   const enemySide = u => /적/.test(u.tc || "") || (!u.tc && u.dir === "DOWN");
   const usable = (u, opt) => !u.explain && u.k !== "meta" && (!u.cond || opt.cond);
@@ -53,7 +60,7 @@
     const key = opt.cond ? 1 : 0;
     s._contrib = s._contrib || [];
     if (s._contrib[key]) return s._contrib[key];
-    const c = { all: newAG(), self: newAG(), skill: {}, enemy: newEG() };
+    const c = { all: newAG(), self: newAG(), skill: {}, enemy: newEG(), who: [] };
     for (const u0 of s.fx) {
       if (!usable(u0, opt)) continue;
       // 값 범위(2026-10-15) — 위값(누적 최대 · ANOTHER ZONE · 진 전개 2배 …)은 「조건부 효과 포함」일 때만, 기본은 아래값(base · 딩님 표로 올리기 전 _base).
@@ -63,6 +70,7 @@
       if (u.value == null && (u.k === "stat_pct" || u.k === "dmg")) continue;      // 값 없는 단위(「축적 수에 따라 …」)는 계산 · 근거에서 뺀다
       const sc = allyScope(u);
       if (sc === "all" || sc === "self") addAlly(c[sc], u, s);
+      else if (sc === "who") c.who.push([u, s]);
       else if (sc === "skill") for (const n of new Set([u._skill, u._skillEn].filter(Boolean))) addAlly(c.skill[n] = c.skill[n] || newAG(), u, s);
       addEnemy(c.enemy, u, s);
     }
@@ -72,9 +80,9 @@
   // 파티 공통분(아군 전체 버프 합 · 적 디버프 합) — 같은 파티 안에서 멤버 · 공격 · 존 · 장비만 바꿔 여러 번 계산할 때 한 번만 만든다.
   //   멤버별 합(own)도 여기 쌓는다 — 파티 구성이 바뀌면 prepare 를 다시 부를 것
   function prepare(members, opt) {
-    const all = newAG(), eg = newEG();
-    for (const s of members) { const c = contrib(s, opt); mergeInto(all, c.all); mergeInto(eg, c.enemy); }
-    return { all, eg, own: new Map() };
+    const all = newAG(), eg = newEG(), who = [];
+    for (const s of members) { const c = contrib(s, opt); mergeInto(all, c.all); mergeInto(eg, c.enemy); who.push(...c.who); }
+    return { all, eg, who, own: new Map() };
   }
   function ownGroups(pre, dst, opt) {
     const own = contrib(dst, opt);
@@ -82,12 +90,13 @@
     const key = dst.c.id + "|" + sk;
     if (pre.own && pre.own.has(key)) return pre.own.get(key);
     const g = mergeInto(mergeInto(newAG(), pre.all), own.self);
+    for (const [u, s] of pre.who || []) if (recvOk(dst, u.who)) addAlly(g, u, s);
     if (sk) mergeInto(g, own.skill[sk]);
     if (pre.own) pre.own.set(key, g);
     return g;
   }
   // 한 멤버가 받는 아군 효과 → 그룹
-  const allyGroups = (members, dst, opt) => ownGroups({ all: prepare(members, opt).all }, dst, opt);
+  const allyGroups = (members, dst, opt) => { const p = prepare(members, opt); return ownGroups({ all: p.all, who: p.who }, dst, opt); };
   // 그룹 순효과 메모 — 같은 그룹 객체에서 같은 키를 다시 계산하지 않는다(그룹은 만든 뒤 바뀌지 않는다)
   function net(g, key, f) {
     const m = g._net || (g._net = new Map());
@@ -367,7 +376,7 @@
       // 고점(opt.peak, 11-05 사용자 「4개 다 쓸 수 있다 · 고점 기준 · 단순하게」): 상황이 정하는 조건(상성 · 대상 상태 · 존 · 적 수 · 크리 · 파티 구성)은 실제대로,
       //   나머지(누적 · 모드 · 비례 · HP · AF · 턴 · 스텔라)는 켠다 — 단 반복 고점("repeat")은 1회성(턴 = 첫 턴 · 첫 사용 · 전투 1회, 스텔라)을 끈다. 순간 최고점("burst")은 전부
       if (x.peak && (PEAK_FREE.has(c.t) || (c.t === "other" && !/enemy has pain|Characters are in the frontline/i.test(c.label || "")))) {
-        if (x.peak === "repeat" && (c.t === "turn" || c.t === "stellar")) continue;
+        if (x.peak === "repeat" && (c.t === "turn" || c.t === "stellar" || (c.t === "af" && !/not in/i.test(c.label || "")))) continue;   // AF 대미지는 점수 밖(11-13 감사)
         if (c.t === "crit") out.crit *= c.x; else out.all *= c.x;
         out.on.push(c);
         continue;
@@ -462,7 +471,7 @@
           note(ag, "*", `${who.c.nameKo}: ${sk.name} 가하는 대미지 +${v}%${w.crit ? "(크리)" : ""}`);
           continue;
         }
-        if (allyScope(u) === "all") addAlly(ag, u, who);
+        { const sc = allyScope(u); if (sc === "all" || (sc === "who" && recvOk(m, u.who))) addAlly(ag, u, who); }
         addEnemy(eg, u, who);
       }
     }
@@ -528,7 +537,8 @@
     const cx = condMult(atk, aff, opt, brk, { lun, members, peak: opt.peak });
     const cap = atk.multMax || Infinity;
     //   고점: 조건이 적혀 있으면 아래값 × 켜진 조건(1회성을 뺄 수 있게), 없으면 위값(누적 최대 등 — 원인이 안 적힌 범위). 반복 고점에서 위값이 1회성 · 마무리(_burstMax)면 아래값
-    const baseMult = opt.peak ? ((atk.conds || []).length ? Math.min(cap, (atk.mult || 0) * cx.all) : opt.peak === "repeat" && atk._burstMax ? atk.mult || 0 : atk.multMax || atk.mult || 0)
+    //   반복 고점 위값 multRep(딩님 원천 — 1회성 블록(SB · 최초 사용 · 첫 턴 · AF) 배수를 뺀 위값, 빌더 rep_power 11-13)이 있으면 그 값. 스텔라 버스트 중(opt.stellar)은 위값 그대로
+    const baseMult = opt.peak ? ((atk.conds || []).length ? Math.min(cap, (atk.mult || 0) * cx.all) : opt.peak === "repeat" && atk.multRep != null && !opt.stellar ? atk.multRep : opt.peak === "repeat" && atk._burstMax ? atk.mult || 0 : atk.multMax || atk.mult || 0)
       : (opt.cond && atk.multMax) || Math.min(cap, (atk.mult || 0) * cx.all);
     const critX = Math.min(cx.crit, cap / Math.max(baseMult, 1e-9)) * (bud ? bud.critAura.reduce((a, v) => a * (1 + v), 1) : 1);
     const o = {
@@ -707,7 +717,7 @@
   const presetCtx = (atk, weapon) => ({ element: (atk && atk.element) || null, atk: (atk && atk.atk) || "", magic: !!atk && (atk.dep === "magic" || atk.dep === "magicpwr"), weapon: weapon || "" });
 
   const api = { allyGroups, enemyGroups, prepare, equipFor, envFor, statusOf, affinityOf, zoneMult, memberDamage, bestWeapon, posReq, contrib, buddyGroups, sharedItems,
-    PRESET, presetValue, presetStats, presetMember, presetCtx, envOk, whoOk };
+    PRESET, presetValue, presetStats, presetMember, presetCtx, envOk, whoOk, recvOk };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEParty = api;
 })(typeof window !== "undefined" ? window : globalThis);

@@ -43,7 +43,8 @@
 
   // 효과 기여 — 멤버마다 효과 단위를 한 번만 분류해 s._contrib 에 둔다(파티 탐색은 같은 멤버를 수십만 번 합친다).
   //   s.fx 를 바꾸면 s._contrib 를 지울 것
-  const newAG = () => ({ pwr: { buffs: [] }, int: { buffs: [] }, spd: { buffs: [] }, type: {}, dmg: { buffs: [] }, wdmg: {},
+  const STAT_KEYS = { pwr: "pwr", int: "int", spd: "spd", max_mp: "mp", lck: "lck" };
+  const newAG = () => ({ pwr: { buffs: [], debuffs: [] }, int: { buffs: [], debuffs: [] }, spd: { buffs: [], debuffs: [] }, mp: { buffs: [], debuffs: [] }, flat: {}, type: {}, dmg: { buffs: [] }, wdmg: {},
     crit: [], mcrit: [], critDmg: [], mcritDmg: [], weak: [], focusPhys: [], focusMag: [], sureCrit: false, overthrow: false,
     minds_eye: false, risktaker: false, overcritical: false, magic_overcritical: false, multi_upgrade: false, sacrifice: false, eagle_eyes: [], src: [], srcTag: [] });   // 상태 칸 = 개념 id
   const newEG = () => ({ phys: [], magic: [], type: {}, atk: {}, def: [], mdef: [], breaks: [], src: [], srcTag: [] });
@@ -51,7 +52,7 @@
     for (const [k, x] of Object.entries(h)) {
       if (typeof x === "boolean") g[k] = g[k] || x;
       else if (Array.isArray(x)) { if (x.length) g[k].push(...x); }
-      else if (x.buffs) { if (x.buffs.length) g[k].buffs.push(...x.buffs); }
+      else if (x.buffs) { for (const dir of ["buffs", "debuffs"]) if (x[dir] && x[dir].length) (g[k][dir] = g[k][dir] || []).push(...x[dir]); }
       else for (const [e, vs] of Object.entries(x)) (g[k][e] = g[k][e] || []).push(...vs);
     }
     return g;
@@ -138,14 +139,15 @@
   const who = (s, u) => s.c.nameKo + (u._skill ? ` 「${u._skill}」` : "");
   function addAlly(g, u, s) {
     const v = (u.value || 0) / 100;
-    if ((u.k === "stat_pct") && u.dir === "UP") {
+    if (u.k === "stat_pct" && (u.dir === "UP" || u.dir === "DOWN")) {
       for (const st of u.stats || []) {
         let hit = true;
         const id = T.cid(st);
         let tag = id;
-        if (id === "pwr") g.pwr.buffs.push(v);
-        else if (id === "int") g.int.buffs.push(v);
-        else if (id === "spd") g.spd.buffs.push(v);
+        const key = STAT_KEYS[id];
+        if (u.flat && key) (g.flat[key] = g.flat[key] || []).push((u.dir === "DOWN" ? -1 : 1) * (u.value || 0));
+        else if (!u.flat && key && g[key]) g[key][u.dir === "DOWN" ? "debuffs" : "buffs"].push(v);
+        else if (u.flat || u.dir !== "UP") hit = false;
         else if (id === "crit_rate") g.crit.push(v);
         else if (id === "magic_crit_rate") g.mcrit.push(v);
         else if (id === "crit_dmg") g.critDmg.push(v);
@@ -157,7 +159,7 @@
           const key = e && (sub ? `${e}|${sub}` : e);
           if (key) { (g.type[key] = g.type[key] || []).push(v); tag = "type:" + key; } else hit = false;
         } else hit = false;
-        if (hit) note(g, tag, `${who(s, u)}: ${st} +${u.value}%`);
+        if (hit) note(g, tag, `${who(s, u)}: ${st} ${u.dir === "DOWN" ? "-" : "+"}${u.value}${u.flat ? "" : "%"}`);
       }
     } else if (u.k === "dmg" && u.dir === "UP" && T.cid(u.what) === "weak_dmg") {
       // 「약점 시 대미지 N% UP」(낭전-식 · 배지) = 약점 배율 +N/100 가산(딩님 파이프라인 「약점 대미지 UP 합」 · 시련 광석과 같은 자리 — 가정, 10-18 영상 대조로 공백 발견). 약점 타에만 들어간다
@@ -503,6 +505,13 @@
     const ev = envFor(opt.env, atk, opt);
     const st = { ...m.stats };
     for (const [k, v] of Object.entries(eq.stats)) st[k] = (st[k] || 0) + v;
+    // 고정 스탯도 같은 대상·출처 집계를 사용한다. 행운은 크리율, 나머지는 상태 고정값 칸으로 전달한다.
+    const fl0 = { ...(m.flatFx || {}) };
+    for (const [k, vals] of Object.entries(ag.flat)) fl0[k] = (fl0[k] || 0) + vals.reduce((a, v) => a + v, 0);
+    if (fl0.lck) st.lck = (st.lck || 0) + fl0.lck;
+    delete fl0.lck;
+    const mpBuff = net(ag, "mp", () => C.groupNet(ag.mp));
+    const mpBase = (st.mp || 0) + (fl0.mp || 0), maxMp = Math.max(0, mpBase + Math.trunc(Number((mpBase * mpBuff).toPrecision(15))));
     const magic = atk.dep === "magic" || atk.dep === "magicpwr";
     const typeKey = atk.element || null;
     const tb = typeBuffs(ag.type, typeKey, atk.atk, magic);
@@ -514,7 +523,7 @@
     if (auraNet) groups.push(auraNet);
     const focus = magic ? ag.focusMag : ag.focusPhys;
     // 정신 통일 · 심기일체 · 호시탐탐 · 하극상(스킬) — 한 감쇠 그룹(각 상한: 정신 통일 250% · 하극상 100%, 합 350%). 딩님 계산기 행 30~32 (2026-10-13)
-    const fv = [...(focus.length ? [C.mentalFocus(st.mp || 0, focus)] : []), ...ev.focus,
+    const fv = [...(focus.length ? [C.mentalFocus(maxMp, focus)] : []), ...ev.focus,
       ...(ag.overthrow && opt.enemy && opt.enemy.lv ? [Math.min(1, opt.enemy.lv * opt.enemy.lv / 200 / 100)] : [])];
     // 상태(2026-10-13): 루나틱 · 호시탐탐은 발동 조건(opt.lunatic · opt.enemyFirst, 기본 = 조건부 효과 포함), 브레이크는 opt.breakOn(기본 같음)
     const lun = opt.lunatic ?? !!opt.cond, brk = opt.breakOn ?? !!opt.cond;
@@ -527,8 +536,8 @@
     const nBrk = brk ? Math.max(eg.breaks.includes("*") ? 1 : 0, eg.breaks.filter(bMatch).length) : 0;
     const sx = { mindsEye: lun && ag.minds_eye ? 0.5 : 0, risktaker: lun && ag.risktaker ? 0.7 : 0, brk: nBrk ? 1 : 0 };
     // 루나틱 솔선(2026-11-04 빌더 대조) — 초기 내구만큼 힘 · 초기 정신만큼 지능 = 상태 효과 고정값(딩님 14 · 15행). 초기 = 캐릭터 + 장비(빌더 「솔선의 초기 내구 · 정신」)
-    const fl0 = m.flatFx || {}, van = lun && ag.sacrifice;
-    const flatFx = van ? { ...fl0, pwr: (fl0.pwr || 0) + (st.end || 0), int: (fl0.int || 0) + (st.spr || 0) } : (m.flatFx || undefined);
+    const van = lun && ag.sacrifice;
+    const flatFx = van ? { ...fl0, pwr: (fl0.pwr || 0) + (st.end || 0), int: (fl0.int || 0) + (st.spr || 0) } : fl0;
     for (const x of [sx.mindsEye, sx.risktaker]) if (x) groups.push(x);
     // 방어 무시(공격 단위 ignoreDef — 발경참 · 흉랑체, 10-18 영상 대조로 공백 발견) = 그 공격만 적 내구 · 정신 0
     const en = atk._ignoreDef ? { ...(opt.enemy || {}), end: 0, spr: 0 } : (opt.enemy || { end: 0, spr: 0 });
@@ -543,7 +552,7 @@
     const critX = Math.min(cx.crit, cap / Math.max(baseMult, 1e-9)) * (bud ? bud.critAura.reduce((a, v) => a * (1 + v), 1) : 1);
     const o = {
       dep: atk.dep, elemental: !!atk.element, stat: st, weapon: { atk: (m.weapon || {}).atk || 0, matk: (m.weapon || {}).matk || 0 },
-      buff: { pwr: net(ag, "pwr", () => C.groupNet(ag.pwr)), int: net(ag, "int", () => C.groupNet(ag.int)), spd: net(ag, "spd", () => C.groupNet(ag.spd)) },
+      buff: { pwr: net(ag, "pwr", () => C.groupNet(ag.pwr)), int: net(ag, "int", () => C.groupNet(ag.int)), spd: net(ag, "spd", () => C.groupNet(ag.spd)), mp: mpBuff },
       enemy: { def: (en.end || 0) * (1 - net(eg, "def", () => C.groupNet({ buffs: eg.def }))),
         mdef: (en.spr || 0) * (1 - net(eg, "mdef", () => C.groupNet({ buffs: eg.mdef }))) },
       affinity: aff, skillMult: baseMult / 100 * eq.skillMul, skillFx: eq.skillFx, zone: zoneMult(opt.zone, atk, aff, opt),
@@ -593,7 +602,7 @@
     };
     const pick = (g, on) => g.src.filter((_, i) => usedTag(g.srcTag[i]) === on);
     const res = { normal, crit, p, expected: exp1, rest, hits, perUse, o, conds: cx.on,
-      get why() { return [...pick(ag, true), ...pick(eg, true), ...eq.src, ...ev.src, ...(fv.length ? [`MP · 상태 비례 그룹(정신 통일 · 심기일체 · 호시탐탐 · 하극상): +${(focusV * 100).toFixed(1)}% (최대 MP ${st.mp || 0}${focus.length ? ` × ${focus.map(x => (x * 100).toFixed(2) + "%").join(" + ")}` : ""})`] : []), ...cx.on.map(c => `조건: ${c.label} ×${c.x}`), ...(kb ? [`브레이크: 첫 ${kb}타 ×2`] : [])]; },
+      get why() { return [...pick(ag, true), ...pick(eg, true), ...eq.src, ...ev.src, ...(fv.length ? [`MP · 상태 비례 그룹(정신 통일 · 심기일체 · 호시탐탐 · 하극상): +${(focusV * 100).toFixed(1)}% (최대 MP ${maxMp}${focus.length ? ` × ${focus.map(x => (x * 100).toFixed(2) + "%").join(" + ")}` : ""})`] : []), ...cx.on.map(c => `조건: ${c.label} ×${c.x}`), ...(kb ? [`브레이크: 첫 ${kb}타 ×2`] : [])]; },
       get whyOff() { return [...pick(ag, false), ...pick(eg, false)]; } };
     // 정밀값(ae_pipeline — 딩님 계산기와 정수 일치 엔진): 난수 전 구간 평균. 근사보다 0~0.4% 낮다(단계마다 버림)
     // pipeInput = 정밀 엔진 입력 그대로(칸별 진단 _tools/character/diagnose_party.cjs 가 칸을 하나씩 빼 본다, 2026-11-07)
@@ -606,7 +615,7 @@
         elemental: o.elemental, affinity: o.affinity, cap: opt.cap !== false,
         stats: { mp: st.mp || 0, atk: (st.pwr || 0) + w.atk, matk: (st.int || 0) + w.matk, pwr: st.pwr || 0, int: st.int || 0, spd: st.spd || 0 },
         enemy: { lv: (opt.enemy && opt.enemy.lv) || 0, def: en.end || 0, mdef: en.spr || 0 },
-        fx: { power: f0 > 1 ? [(f0 - 1) * 100] : [], flat: flatFx ? Object.fromEntries(Object.entries(flatFx).map(([k, v]) => [k, [v]])) : {}, pct: { pwr: pct(o.buff.pwr), int: pct(o.buff.int), spd: pct(o.buff.spd), def: negPct(defNet), mdef: negPct(mdefNet) },
+        fx: { power: f0 > 1 ? [(f0 - 1) * 100] : [], flat: Object.fromEntries(Object.entries(flatFx).map(([k, v]) => [k, [v]])), pct: { pwr: pct(o.buff.pwr), int: pct(o.buff.int), spd: pct(o.buff.spd), mp: pct(mpBuff), def: negPct(defNet), mdef: negPct(mdefNet) },
           resPhysMag: negPct(magic ? o.resDown.magic : o.resDown.phys), resType: negPct(o.resDown.type),
           typeNE: pct(typeNet), wielder: pct(dmgNet), eagleEyes: focusV ? [focusV * 100, 0] : [],
           weak: o.weakBuff ? [o.weakBuff * 100] : [], typeE: eq.equip.map(x => x * 100), statusE: [...eq.punishV, ...(sl.statusE || [])],

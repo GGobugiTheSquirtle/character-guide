@@ -67,19 +67,6 @@
   const normalOf = m => (m.actions.skills || []).find(s => s.kind === "normal" && s.sub === "일반 공격");
   const transformOf = m => (m.actions.skills || []).find(s => s.kind === "normal" && s.sub === "변화한 일반 공격");
   const transformAt = m => { const n = normalOf(m), u = n && (n.fx || []).find(x => x.name === "스킬 변화"); const t = u && /(\d+) 이상 축적/.exec(u.cond || ""); return t ? +t[1] : 1; };
-  // 고정 수치 스탯(힘 +100, flat) — % 가 아니라 스탯에 더한다(party_calc 는 % 만 받는다). 받는 쪽: 「자신」 · 대상 없음 = 시전자만(party_calc allyScope 와 같은 규칙), 그 밖 아군 편 = 전원.
-  //   11-12 전엔 대상 없음 = 전원이라 테오도로스 투지(「Power +5 per stack」 × 99, 위키 원천 대상 빈 고정 수치 53개 전부 본인 효과)가 파티 전원 힘 +495 가 됐다
-  const FLAT = { "힘": "pwr", "지능": "int", "속도": "spd", "행운": "lck" };
-  function flatStats(sim, ci) {
-    const add = {};
-    for (const e of sim.live.values()) {
-      if (!e.u.flat || e.u.k !== "stat_pct" || e.u.dir !== "UP" || sideOf(e.u) !== "a" || ((!e.u.tc || /^자신/.test(e.u.tc)) && e.ci !== ci) || (Array.isArray(e.u.who) && e.u.who.length && !P.recvOk(sim.party[ci], e.u.who))) continue;
-      for (const st of e.u.stats || []) if (FLAT[st]) add[FLAT[st]] = (add[FLAT[st]] || 0) + (e.u.value || 0) * (e.u.perStack ? e.stacks || 1 : 1);   // 자원 스택(「Power +5 per stack」 × 99)은 비례
-    }
-    return add;
-  }
-  const withFlat = (m, fl) => (Object.keys(fl).length ? { ...m, stats: { ...m.stats, ...Object.fromEntries(Object.keys(fl).map(k => [k, ((m.stats || {})[k] || 0) + fl[k]])) } } : m);
-
   function newSim(party, opt, memo) {
     return { party, opt, memo, turn: 0, af: false, zone: opt.zone || null, live: new Map(), log: [], dmg: [], byMember: [], onHit: [], res: party.map(() => 0), used: new Map(), first: party.map(() => false),
       sb: { light: 0, shadow: 0, on: false, fired: 0 }, lk: party.map(() => 0) };
@@ -503,7 +490,7 @@
   function fxOf(sim, ci, extra) {
     const out = [];
     for (const e of sim.live.values()) {
-      if (e.ci !== ci || e.u.flat || e.u.k === "kaleido" || e.u.k === "flexible" || e.u.k === "skill_hits" || e.u.k === "link") continue;     // 고정 수치는 flatStats 가 스탯에 · 변화무쌍은 공격 속성(attackRaw) · 연격 수는 타수(act) · 연계는 추가 공격(act)
+      if (e.ci !== ci || e.u.k === "kaleido" || e.u.k === "flexible" || e.u.k === "skill_hits" || e.u.k === "link") continue;     // 고정값·% 모두 party_calc에서 집계, 특수 상태는 공격 단계에서 처리
       //   자원 스택(「Critical rate +3% per stack (max 5: +15%)」, perStack)은 원문대로 비례 — 반감 규칙은 같은 스킬 재사용 누적에만(11-09)
       const v = e.left ? e.left : typeof e.u.value === "number" && e.stacks > 1 ? (e.u.perStack ? e.u.value * e.stacks : +C.halfStack(e.u.value, e.stacks).toFixed(2)) : e.u.value;
       out.push({ ...e.u, value: v, base: undefined, _skill: e.skill });
@@ -548,10 +535,7 @@
       // 위력 기반도 바뀐다 — 베기 · 찌르기 · 타격 = 힘, 마 = 지능. 스킬 자체 「힘/지능/속도에 따른 위력」이 있으면 그것(딩님 184648, 11-09 전엔 종류만 바꿔 힘 물리 식 그대로)
       if (at && at !== atk.atk) { atk.dep = OWN_DEP.test(sk.desc || "") ? toAttack({ ...part, atk: at }, sk).dep : at === "마법" ? "magic" : "pwr"; atk.atk = at; } } }
     { const kl = sim.live.get(`kal|${ci}`); if (kl && !sk._noKal && !KAL_IMMUNE.test(sk.desc || "")) { const el = kl.u.el === "zone" ? zoneEl(sim) : kl.u.el; if (el) atk.element = el; } }   // 변화무쌍
-    // 상태 효과 고정값(힘 · 지능 · 속도 +N) = 딩님 계산기 14~16행 — 공격력에는 더하고 (1 + 힘/32) 배율에는 안 넣는다 → party_calc flatFx(근사 stacks · 정밀 fx.flat).
-    //   전에는 기본 스탯에 더해 배율까지 키웠다(영랑 모드 힘 +100 등, 11-04). 행운은 크리율에만 쓰여 스탯에 그대로
-    const flatOf = i => { const { lck, ...fl } = flatStats(sim, i); return { m: lck ? withFlat(sim.party[i], { lck }) : sim.party[i], fl }; };
-    const members = sim.party.map((m0, i) => { const { m, fl } = flatOf(i); return { ...m, flatFx: Object.keys(fl).length ? fl : null, fx: fxOf(sim, i, i === ci && atk._sure ? [{ k: "buff", name: "크리티컬 발생 확정", _skill: sk.name, _atkItem: true }] : null), _contrib: null }; });
+    const members = sim.party.map((m, i) => ({ ...m, fx: fxOf(sim, i, i === ci && atk._sure ? [{ k: "buff", name: "크리티컬 발생 확정", _skill: sk.name, _atkItem: true }] : null), _contrib: null }));
     const m = { ...members[ci], attack: atk };
     members[ci] = m;
     // 대상 상태 — 확실한 것(p = 1 · 화면 토글)과 확률 상태(p < 1, 켠 값 · 끈 값을 p 로 섞음)

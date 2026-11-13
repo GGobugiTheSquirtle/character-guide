@@ -72,11 +72,47 @@
   const freeSlots = m => [0, 1, 2, 3].filter(k => !(m.lock || []).includes(m.slots[k]));
   // 칸에 든 부여 스킬의 그라스타를 앞 칸에 — 일반 칸이 차면 뒤 칸부터 밀어낸다. lockGrasta = 장비 단계 고정
   function fitGrasta(m, slots) {
-    const need = [...new Set(slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).viaG).filter(Boolean))];
+    const userLocks = m._userLockGrasta || m.lockGrasta || [];
+    const need = userLocks.slice();
+    for (const g of slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).viaG).filter(Boolean))
+      if (!need.some(x => x.name === g.name)) need.push(g);
     if (!need.length && !(m.lockGrasta || []).length) return m;
     const spec = m.special || [], normal = (m.grasta || []).filter(g => !spec.includes(g));
     const keep = normal.filter(g => !need.some(x => x.name === g.name));          // 전에 고정했던 것도 자리가 있으면 그대로 둔다
-    return { ...m, grasta: [...need, ...keep].slice(0, Math.max(normal.length, need.length, m.gslots || 0)).concat(spec), lockGrasta: need };
+    return { ...m, grasta: [...need, ...keep].slice(0, Math.max(normal.length, need.length, m.gslots || 0)).concat(spec), lockGrasta: need, _userLockGrasta: userLocks };
+  }
+  // 스킬·장비의 직접 교체도 공통 수량·잠금 검사에 통과한 후보만 비교한다.
+  function validGear(team, conf, back = conf._fixedBack || []) {
+    if (!conf.gear) return true;
+    const O = root.AEOpt || require("./optimizer.js");
+    const gconf = conf.gear.conf || {}, rearSlots = gconf.grastaSlots || 4;
+    const tail = back.map(b => ({ ...b, weapon: null, armor: null, badges: [], special: [], grasta: (b.grasta || []).filter(Boolean), _backPool: b.pool || b.grasta || [] }));
+    O.validateTeam(team, gconf, conf.gear.poolsOf); // 전열 0칸 설정이어도 기존 후열 셔틀은 4칸을 쓴다.
+    return O.validateTeam([...team, ...tail], { ...gconf, grastaSlots: Math.max(gconf.grastaSlots ?? 4, rearSlots) }, m => m._backPool
+      ? { weapons: [], armor: [], badges: [], grasta: m._backPool }
+      : conf.gear.poolsOf(m));
+  }
+  function gearFits(team, conf, back) {
+    try { return validGear(team, conf, back); }
+    catch (e) { if (e instanceof RangeError) return false; throw e; }
+  }
+  function frontGearConf(conf) {
+    const gconf = conf.gear.conf || {}, taken = { ...(gconf.taken || {}) };
+    for (const b of conf._fixedBack || []) for (const g of b.grasta || []) if (g) {
+      const key = "g:" + (g.base || g.name); taken[key] = (taken[key] || 0) + 1;
+      if (g.ore) taken["o:" + g.ore] = (taken["o:" + g.ore] || 0) + 1;
+    }
+    return { ...gconf, taken };
+  }
+  // 같은 장비 세팅은 한 장비 단계 안에서만 재사용한다. 파티/계획/초점은 해당 단계 동안 고정이다.
+  function gearScorer(score) {
+    const ids = new WeakMap(), cache = new Map(); let next = 0;
+    const id = it => { if (!it) return 0; if (!ids.has(it)) ids.set(it, ++next); return ids.get(it); };
+    return team => {
+      const key = team.map(m => [id(m.weapon), id(m.armor), (m.grasta || []).map(id).join(","), (m.special || []).map(id).join(","), (m.badges || []).map(id).join(",")].join("/")).join("|");
+      if (!cache.has(key)) cache.set(key, score(team));
+      return cache.get(key);
+    };
   }
   const hasInflict = w => [...(w.fx || []), ...(w.calc || [])].some(f => f.k === "inflict");
   const swapIn = (plan, ci, from, to) => ({ af: plan.af && plan.af.map((r, i) => (i === ci ? r.map(x => (x === from ? to : x)) : r.slice())),
@@ -85,8 +121,9 @@
   // party: 멤버(계산 멤버 + actions), opt: 전투 조건. conf = { passes: 2, equipSkills: false, tick(msg) } → { slots, plan, scores:{A,B,C}, perTurn, evals }
   function optimize(party, opt, conf = {}) {
     conf = { passes: 3, screen: 4, cond: !!opt.cond, carryStarts: true, pairMoves: true, punishStart: true, ...conf };
+    conf._fixedBack = conf.back?.length ? [] : opt.back || [];
     let memo = new Map();
-    const gslots = (conf.gear && conf.gear.conf && conf.gear.conf.grastaSlots) || 4;
+    const gslots = conf.gear?.conf?.grastaSlots ?? 4;
     let team = party.map(m => {
       const x = withGrants({ ...m, gslots }, conf), sl = startSlots(x, conf);
       return { ...fitGrasta(x, sl), slots: sl };
@@ -105,6 +142,7 @@
           const tries = [];
           const put = ch => {                                   // ch = [[칸, 새 스킬], …]
             const t2 = team.map((m, i) => { if (i !== ci) return m; const sl = m.slots.slice(); for (const [k, n] of ch) sl[k] = n; return { ...fitGrasta(m, sl), slots: sl }; });
+            if (!gearFits(t2, conf)) return;
             const start = ch.reduce((p, [k, n]) => swapIn(p, ci, team[ci].slots[k], n), cur.plan);
             tries.push({ t2, start, q: quick(t2, start) });
           };
@@ -127,7 +165,7 @@
     const gearHist = [];
     const O = conf.gear && (root.AEOpt || require("./optimizer.js"));
     const gearPass = (rounds, carry) => {
-      const gconf = carry ? { ...(conf.gear.conf || {}), objective: "carry", carry } : conf.gear.conf || {};
+      const gconf = { ...frontGearConf(conf), ...(carry ? { objective: "carry", carry } : {}) };
       for (let round = 0; round < rounds; round++) {
         const snap = S.run(team, { af: cur.plan.af, turns: [cur.plan.turns[0]] }, opt, { memo: new Map() });
         const members = team.map((m, ci) => {
@@ -141,15 +179,23 @@
           return { ...m, fx: S.liveFx(snap.live, ci), attack: part ? S.toAttack(part, sk) : undefined, _contrib: null };
         });
         const punish = [...new Set([...(opt.punish || []), ...S.liveStates(snap.live)])];      // 파티가 건 페인 · 독(정적 식은 대상 상태를 모른다)
-        const g = O.partyGear(members, { ...opt, zone: snap.zone || opt.zone, turns: 2, punish }, conf.gear.poolsOf, gconf);
-        evals += g.evals;
+        const scoreFn = gearScorer(t => {
+          evals++;
+          const r = S.run(t, cur.plan, opt, { scoreTurns: [2, 3, 4], memo });
+          const ci = carry ? t.findIndex(m => m.c.id === carry) : -1;
+          return ci < 0 ? r.score : r.perMember[ci] + 1e-6 * (r.score - r.perMember[ci]);
+        });
+        const g = O.partyGear(members, { ...opt, zone: snap.zone || opt.zone, turns: 2, punish }, conf.gear.poolsOf, { ...gconf, scoreFn });
         team = team.map((m, i) => { const x = g.team[i]; return { ...m, weapon: x.weapon, armor: x.armor, badges: x.badges, grasta: x.grasta, special: (x.gear && x.gear.special) || [] }; });
         // 부여 무기 — 「공격 시 적 저항 다운 · 페인/독」 무기만 시나리오 점수로(계획 고정). 다른 멤버가 든 무기는 건너뜀
         let base = quick(team, cur.plan);
         team.forEach((m, ci) => {
+          if (m.lockWeapon) return;
           for (const w of (conf.gear.poolsOf(m).weapons || []).filter(hasInflict)) {
             if (w === m.weapon || team.some((o, j) => j !== ci && o.weapon && o.weapon.name === w.name)) continue;
-            const t2 = team.map((x, j) => (j === ci ? { ...x, weapon: w } : x)), q = quick(t2, cur.plan);
+            const t2 = team.map((x, j) => (j === ci ? { ...x, weapon: w } : x));
+            if (!gearFits(t2, conf)) continue;
+            const q = quick(t2, cur.plan);
             if (q > base * (1 + 1e-9)) { base = q; team = t2; }
           }
         });
@@ -208,7 +254,7 @@
     } else if (conf.grantsOf) slotPass({ ...conf, via: true, passes: 2 });
     // 후열 셔틀(10-18) — conf.back = [{c, cc, pool?}] 은 공격 · 효과 없이 공유 그라스타만 나른다. 칸마다 후보를 바꿔 A 점수(계획 고정)가 오르면 채택 → 다시 계획.
     //   후보 = pool(없으면 장비 후보 중 공유 그라스타). 획득 가능 수(limit)는 전방이 낀 것까지 세고, 같은 그라스타를 둘이 나르면 둘 다 들어간다(공유분 중첩, 10-15 사용자 확인)
-    const back = (conf.back || []).map(b => ({ c: b.c, cc: b.cc, pool: b.pool || (conf.gear ? (conf.gear.poolsOf(b).grasta || []).filter(g => g.share && !g.ore) : []), grasta: Array(gslots).fill(null) }));
+    const back = (conf.back || []).map(b => ({ c: b.c, cc: b.cc, pool: b.pool || (conf.gear ? (conf.gear.poolsOf(b).grasta || []).filter(g => g.share && !g.ore) : []), grasta: Array(gslots || 4).fill(null) }));
     if (back.length) {
       const setBack = () => { opt = { ...opt, back: back.map(b => ({ c: b.c, cc: b.cc, grasta: b.grasta.filter(Boolean) })) }; };
       const used = g => [...team.flatMap(m => m.grasta || []), ...back.flatMap(b => b.grasta)].filter(x => x && (x.base || x.name) === (g.base || g.name)).length;
@@ -218,8 +264,10 @@
         let moved = false;
         for (const b of back) for (let k = 0; k < gslots; k++) for (const g of [null, ...b.pool]) {
           const was = b.grasta[k];
-          if (g === was || (g && used(g) >= (g.limit ?? Infinity))) continue;
-          b.grasta[k] = g; setBack();
+          if (g === was || (!conf.gear && g && used(g) >= (g.limit ?? Infinity))) continue;
+          b.grasta[k] = g;
+          if (!gearFits(team, conf, back)) { b.grasta[k] = was; continue; }
+          setBack();
           const q = quick(team, cur.plan);
           if (q > best * (1 + 1e-9)) { best = q; moved = true; } else { b.grasta[k] = was; setBack(); }
         }
@@ -228,6 +276,7 @@
       cur = PL.plan(team, opt, { ...inner, start: cur.plan, memo });
       evals += cur.evals;
     }
+    validGear(team, conf, back.length ? back : conf._fixedBack);
     // 확정 — 재시작 8 로 계획을 다시, 보조 점수 B(1턴) · C(3턴)는 AF 없이 따로 계획
     const fin = PL.plan(team, opt, { af: true, afCasts: 6, turns: 3, restarts: 8, memo, start: cur.plan });
     const b = PL.plan(team, opt, { af: false, turns: 1, restarts: 4, memo });
@@ -244,12 +293,13 @@
   //     conf.focus = 멤버 번호 → 목표 = 그 멤버 몫(나머지는 1e-6 동률 깨기) · 장비는 항상 그 멤버 주력 가중. conf.pairMoves: false = 두 칸 동시 이동 생략
   function optimizePeak(party, opt, conf = {}) {
     conf = { passes: 3, cond: true, carryStarts: true, pairMoves: true, ...conf };   // 후보에 자원 소비 스킬도 — 고점 = 자원이 찬 상태
+    conf._fixedBack = conf.back?.length ? [] : opt.back || [];
     party = muteTeam(party, conf.mute);
     const focus = conf.focus != null ? conf.focus : null, fid = focus != null ? party[focus].c.id : null;
     const scoreOf = r => focus == null ? r.score : r.perMember[focus] + 1e-6 * (r.score - r.perMember[focus]);
-    const gslots = (conf.gear && conf.gear.conf && conf.gear.conf.grastaSlots) || 4;
+    const gslots = conf.gear?.conf?.grastaSlots ?? 4;
     let evals = 0;
-    const peakOf = (t, mode) => { evals++; return S.peak(t, opt, { mode, pin: conf.pin }); };   // 메모 없음 — 장면이 평가마다 달라 거의 안 맞고 키만 쌓였다(8분 뒤 메모리 부족)
+    const peakOf = (t, mode, goal = focus) => { evals++; return S.peak(t, opt, { mode, pin: conf.pin, focus: goal }); };   // 메모 없음 — 장면이 평가마다 달라 거의 안 맞고 키만 쌓였다(8분 뒤 메모리 부족)
     let team = party.map(m => {
       const x = withGrants({ ...m, gslots }, conf), sl = startSlots(x, conf);
       return { ...fitGrasta(x, sl), slots: sl };
@@ -268,6 +318,7 @@
           let best = null;
           for (const ch of moves) {
             const t2 = team.map((m, i) => { if (i !== ci) return m; const sl = m.slots.slice(); for (const [k, n] of ch) sl[k] = n; return { ...fitGrasta(m, sl), slots: sl }; });
+            if (!gearFits(t2, conf)) continue;
             const q = scoreOf(peakOf(t2));
             if (q > (best ? best.q : cur) * (1 + 1e-9)) best = { t2, q };
           }
@@ -288,13 +339,14 @@
       // 멤버 비중 = 고점 몫 ÷ 정적 값(11-08, optimizer.partyGear conf.scale) — 고점 몫이 0 인 멤버(버프만)는 자기 대미지 비중 0
       const pre = AP.prepare(members, gopt), scale = {};
       members.forEach((m, i) => { const st = (AP.memberDamage(m, members, gopt, pre) || {}).perUse || 0; scale[m.c.id] = st > 0 ? pk.perMember[i] / st : 1; });
-      const gconf = { ...(conf.gear.conf || {}), ...(carry ? { objective: "carry", carry } : {}), scale };
+      const goal = carry ? team.findIndex(m => m.c.id === carry) : focus;
+      const scoreFn = gearScorer(t => { const r = peakOf(t, undefined, goal == null || goal < 0 ? null : goal); return goal == null || goal < 0 ? r.score : r.perMember[goal] + 1e-6 * (r.score - r.perMember[goal]); });
+      const gconf = { ...frontGearConf(conf), ...(carry ? { objective: "carry", carry } : {}), scale, scoreFn };
       const g = O.partyGear(members, gopt, conf.gear.poolsOf, gconf);
-      evals += g.evals;
       const prev = { team, cur };
       team = team.map((m, i) => { const x = g.team[i]; return { ...m, weapon: x.weapon, armor: x.armor, badges: x.badges, grasta: x.grasta, special: (x.gear && x.gear.special) || [] }; });
       cur = scoreOf(peakOf(team));
-      if (!seed && cur < prev.cur * (1 - 1e-9)) ({ team, cur } = prev);   // 정적 식은 근사 — 고점이 내려가면 받지 않는다(주력 가중 갈래는 다음 갈래로 이어지니 그대로)
+      if (!g.repaired && !seed && cur < prev.cur * (1 - 1e-9)) ({ team, cur } = prev);   // 불법 초기 세팅의 정규화는 점수가 내려가도 되돌리지 않는다.
     };
     // 대상 상태(독 · 페인)를 거는 스킬은 그 상태 조건 장비와 함께 들어가야 이득이 보인다 — 한 칸 넣기는 장비가 없어 이득 0, 장비 단계는 상태가 없어 안 고른다.
     //   11-11 M9: 히나 4칸 무작위 고정(독 스킬 포함)이 자유 탐색을 +45.5% 이겼다(장비가 노아키스 AS · 우트팔라카에게 독 조건 그라스타). 그래서 묶음으로 시도한다
@@ -310,6 +362,7 @@
           let best = null;
           for (const k of freeSlots(team[ci])) {                                  // 그 스킬이 들어갈 칸 = 장비 그대로 잃는 몫이 가장 적은 칸
             const t2 = team.map((m, i) => { if (i !== ci) return m; const sl = m.slots.slice(); sl[k] = sk.name; return { ...fitGrasta(m, sl), slots: sl }; });
+            if (!gearFits(t2, conf)) continue;
             const q = scoreOf(peakOf(t2));
             if (!best || q > best.q) best = { t2, q };
           }
@@ -356,11 +409,12 @@
         if (cur < keep.cur) ({ team, cur } = keep);
       }
     } else slotPass({ ...conf, via: !!conf.grantsOf, passes: 2, pair: true });
-    const with_ = (t, o) => { evals++; return scoreOf(S.peak(t, o, { pin: conf.pin })); };
+    const with_ = (t, o) => { evals++; return scoreOf(S.peak(t, o, { pin: conf.pin, focus })); };
     if (conf.back && conf.back.length && conf.gear) opt = shuttle(conf.back, team, opt, conf, with_, gslots);
-    const r = S.peak(team, opt, { pin: conf.pin, explain: true }), rb = peakOf(team, "burst");   // 마지막 한 번만 계산 근거를 모은다
-    const sc = t => S.peak(t, opt, { pin: conf.pin }).score;
-    const contrib = conf.contrib ? { ...gearContrib(team, sc), back: backContrib(team, opt, (t, o) => S.peak(t, o, { pin: conf.pin }).score) } : null;
+    validGear(team, conf);
+    const r = S.peak(team, opt, { pin: conf.pin, focus, explain: true }), rb = peakOf(team, "burst");   // 마지막 한 번만 계산 근거를 모은다
+    const sc = t => scoreOf(S.peak(t, opt, { pin: conf.pin, focus }));
+    const contrib = conf.contrib ? { ...gearContrib(team, sc), back: backContrib(team, opt, (t, o) => scoreOf(S.peak(t, o, { pin: conf.pin, focus }))) } : null;
     const fxc = conf.fxContrib ? fxContrib(team, sc) : null;
     return { team, slots: team.map(m => m.slots), explain: r.explain, contrib, fxContrib: fxc, back: opt.back || [], via: team.map(m => m.slots.map(n => ((m.actions.skills || []).find(s => s.name === n) || {}).via || null)),
       scores: { repeat: r.score, burst: rb.score }, perMember: r.perMember, perMemberBurst: rb.perMember, attackOf: r.attackOf, attackOfBurst: rb.attackOf, zone: r.zone, evals };
@@ -369,18 +423,34 @@
   // 속도 중심 장비(11-12, 사용자 「목표 밖 멤버 — 공격 중심 / 속도 중심」) — 남은 장비에서 속도 합이 큰 것(같으면 힘 + 지능). 다른 멤버가 쓴 장비(무기 · 방어구 · 배지 · 그라스타 기본 이름)는 피한다.
   //   고정 칸(lockWeapon · lockArmor · lockGrasta · lockBadges)은 그대로. 정적 식으로 재지 않는다(속도는 순서 입력에선 대미지에 안 들어간다 — 이용자가 순서를 맞추는 데 쓴다)
   //   keep = 목표를 받치는 장비는 그대로 — 「공격 시 적 저항 다운 · 페인/독」 무기 · 공유 그라스타(남에게 가는 효과). 사용자 「목표 밖이라도 공격하면 루나로 내성 깎기가 되는 경우」
-  function speedGear(m, team, pools, keep) {
+  function speedGear(m, team, pools, keep, conf) {
     const spd = it => ((it && it.stats) || {}).spd || 0, sub = it => { const st = (it && it.stats) || {}; return (st.pwr || 0) + (st.int || 0) + (it && (it.atk || 0) + (it.matk || 0)) * 1e-3; };
     const by = (a, b) => spd(b) - spd(a) || sub(b) - sub(a);
-    const others = team.filter(x => x.c.id !== m.c.id), usedE = new Set(others.flatMap(x => [x.weapon, x.armor].filter(Boolean).map(i => i.name)));
-    const usedG = new Set(others.flatMap(x => (x.grasta || []).map(g => g.base || g.name))), usedB = new Set(others.flatMap(x => (x.badges || []).filter(b => b && b.kind !== "random").map(b => b.name)));
-    const weapon = m.lockWeapon || (keep && m.weapon && hasInflict(m.weapon) ? m.weapon : null) || (pools.weapons || []).filter(w => !usedE.has(w.name)).sort(by)[0] || m.weapon;
-    const armor = m.lockArmor || (pools.armor || []).filter(a => !usedE.has(a.name)).sort(by)[0] || m.armor;
-    const lockG = [...(m.lockGrasta || []), ...(keep ? (m.grasta || []).filter(g => g && g.share && !(m.lockGrasta || []).includes(g) && !(m.special || []).includes(g)) : [])], gs = Math.max(m.gslots || 4, lockG.length), seenG = new Set(lockG.map(g => g.base || g.name)), grasta = [...lockG];
-    for (const g of (pools.grasta || []).slice().sort(by)) { if (grasta.length >= gs) break; const b = g.base || g.name; if (usedG.has(b) || seenG.has(b)) continue; seenG.add(b); grasta.push(g); }
-    const lockB = m.lockBadges || [], badges = [...lockB];
-    for (const b of (pools.badges || []).slice().sort(by)) { if (badges.length >= 2) break; if (b.kind !== "random" && (usedB.has(b.name) || badges.includes(b))) continue; badges.push(b); }
-    return { weapon, armor, grasta: [...grasta, ...(m.special || [])], badges };
+    const O = root.AEOpt || require("./optimizer.js"), special = m.special || [];
+    const grasta = [...(m.lockGrasta || []), ...(keep ? (m.grasta || []).filter(g => g && g.share && !(m.lockGrasta || []).includes(g) && !special.includes(g)) : [])];
+    let state = { weapon: m.lockWeapon || (keep && m.weapon && hasInflict(m.weapon) ? m.weapon : null), armor: m.lockArmor || null,
+      grasta: [...grasta, ...special], special, badges: [...(m.lockBadges || [])] };
+    const put = patch => {
+      const next = { ...state, ...patch }, t = team.map(x => x.c.id === m.c.id ? { ...m, ...next } : x);
+      try { O.validateTeam(t, conf); state = next; return true; }
+      catch (e) { if (e instanceof RangeError) return false; throw e; }
+    };
+    for (const [key, list] of [["weapon", "weapons"], ["armor", "armor"]])
+      if (!state[key]) for (const it of (pools[list] || []).slice().sort(by)) if (put({ [key]: it })) break;
+    for (let k = grasta.length; k < (conf.grastaSlots ?? m.gslots ?? 4); k++) {
+      let found = false;
+      for (const g of (pools.grasta || []).slice().sort(by)) {
+        const normal = state.grasta.filter(x => !special.includes(x));
+        if (put({ grasta: [...normal, g, ...special] })) { found = true; break; }
+      }
+      if (!found) break;
+    }
+    for (let k = state.badges.length; k < (conf.badgeSlots ?? 2); k++) {
+      let found = false;
+      for (const b of (pools.badges || []).slice().sort(by)) if (put({ badges: [...state.badges, b] })) { found = true; break; }
+      if (!found) break;
+    }
+    return state;
   }
 
   // 순서 빌드(11-12, 사용자 「A-B-E-D-A-B-T-R — 2번째 B · R · A~D 구간 · 전체의 대미지 극대화」) — 행동 순서 seq = [[멤버 번호, 스킬], …] 를 고정하고 장비만 고른다.
@@ -389,8 +459,9 @@
   //   AEOpt.partyGear(정적 식 · 근사 — 멤버 비중 = 순서 점수 몫 ÷ 정적 값, 순서 점수가 오를 때만 받는다) → 「공격 시」 부여 무기는 순서 점수로 → conf.gearRounds(기본 2).
   //   목표 행동을 가진 멤버가 둘 이상이면 그 멤버마다 주력 가중 시작 갈래도 돌려 가장 높은 것
   function optimizeSeq(party, seq, opt, conf = {}) {
+    conf = { ...conf, _fixedBack: conf.back?.length ? [] : opt.back || [] };
     party = muteTeam(party, conf.mute);
-    const gslots = (conf.gear && conf.gear.conf && conf.gear.conf.grastaSlots) || 4;
+    const gslots = conf.gear?.conf?.grastaSlots ?? 4;
     const steps = conf.steps && conf.steps.length ? conf.steps.filter(k => seq[k]) : seq.map((_, k) => k);
     let evals = 0;
     // 그라스타 부여 스킬(11-12) — 순서에 쓴 것의 그라스타 = m.extraGrants(화면이 넣는다) → 행동에 덧붙이고 그 그라스타를 앞 칸에 고정(fitGrasta · 장비 단계 lockGrasta)
@@ -410,13 +481,25 @@
       const used = sl.map(n => has.get(n));
       // 고정 장비는 후보 목록의 같은 이름 객체로(워커로 넘어온 것은 복사본 — 객체가 다르면 같은 배지가 빈 칸에 한 번 더 들어간다)
       const P0 = conf.gear ? conf.gear.poolsOf(m) : null, inP = (it, list) => (P0 && it && (P0[list] || []).find(x => x.name === it.name)) || it;
-      const lw = inP((used.find(x => x.viaW) || {}).viaW, "weapons"), la = inP((used.find(x => x.viaA) || {}).viaA, "armor");
+      const required = (key, locked, pool) => {
+        const items = [...new Map(used.filter(x => x[key]).map(x => [x[key].name, x[key]])).values()];
+        if (items.length > 1 || (locked && items.some(x => x.name !== locked.name)))
+          throw new RangeError(`${m.c.nameKo}: 장비 습득 스킬과 고정 장비 조건이 충돌합니다.`);
+        return inP(items[0], pool);
+      };
+      const lw = required("viaW", m.lockWeapon, "weapons"), la = required("viaA", m.lockArmor, "armor");
       const lb = [...new Set(used.filter(x => x.viaB).map(x => x.viaB.name))].map(n => inP(used.find(x => x.viaB && x.viaB.name === n).viaB, "badges"));
       if (lb.length > 2) throw new Error(`${m.c.nameKo}: 배지 스킬 ${lb.length}개 — 배지 칸은 2개`);
       const x = { ...fitGrasta({ ...m, gslots }, sl), slots: sl };
       if (lw) Object.assign(x, { weapon: lw, lockWeapon: lw });
       if (la) Object.assign(x, { armor: la, lockArmor: la });
-      if (lb.length) Object.assign(x, { badges: [...lb, ...(x.badges || []).filter(b => b && !lb.includes(b))].slice(0, Math.max(2, lb.length)), lockBadges: lb });
+      if (lb.length) {
+        const locks = [...(m.lockBadges || [])];
+        for (const b of lb) if (!locks.some(x => x.name === b.name)) locks.push(b);
+        const slots = conf.gear?.conf?.badgeSlots ?? 2;
+        if (locks.length > slots) throw new RangeError(`${m.c.nameKo}: 배지 습득 스킬과 고정 배지가 장착 칸을 초과합니다.`);
+        Object.assign(x, { badges: [...locks, ...(x.badges || []).filter(b => b && !locks.some(g => g.name === b.name))].slice(0, slots), lockBadges: locks });
+      }
       return x;
     });
     // 칸 고정을 지키는 장비 후보 — 무기 · 방어구는 고정한 것 하나
@@ -450,12 +533,15 @@
       const fixed = m => ({ ...poolsOf(m), weapons: [m.weapon].filter(Boolean), armor: [m.armor].filter(Boolean), grasta: (m.grasta || []).filter(x => !(m.special || []).includes(x)), badges: (m.badges || []).filter(Boolean) });
       const keepOut = new Set(outMode === "keep" ? team.filter((m, i) => !isT(i)).map(m => m.c.id) : []);   // 목표 밖 장비 「저장 그대로」(11-12)
       const pools1 = m => (keepOut.has(m.c.id) ? fixed(m) : poolsOf(m));
-      const g = O.partyGear(members.map((m, i) => (tsc[i] ? m : { ...m, attack: undefined })), gopt, pools1, { ...(conf.gear.conf || {}), ...(carry ? { objective: "carry", carry } : {}), scale });
-      evals += g.evals;
+      const scoreFn = gearScorer(t => {
+        const r = runOf(t), ci = carry ? t.findIndex(m => m.c.id === carry) : -1;
+        return ci < 0 ? r.score : r.perMember[ci] + 1e-6 * (r.score - r.perMember[ci]);
+      });
+      const g = O.partyGear(members.map((m, i) => (tsc[i] ? m : { ...m, attack: undefined })), gopt, pools1, { ...frontGearConf(conf), ...(carry ? { objective: "carry", carry } : {}), scale, scoreFn });
       const prev = { team, cur };
       team = put(g.team);
       cur = runOf(team);
-      if (!force && cur.score < prev.cur.score * (1 - 1e-9)) ({ team, cur } = prev);   // 정적 식은 근사 — 순서 점수가 내려가면 받지 않는다
+      if (!g.repaired && !force && cur.score < prev.cur.score * (1 - 1e-9)) ({ team, cur } = prev);
       // 2단계 = 목표 밖 멤버(11-12) — 목표 멤버 장비는 지금 낀 것만 후보로 묶고, 목표 밖 멤버는 자기 몫이 목표 점수의 1e-3 인 비중으로 남은 장비에서 고른다.
       //   한 번에(비중 > 0) 고르면 목표 밖 멤버가 개수 제한 장비를 먼저 쥐어 목표가 내려갔다(2번째 Finish 목표 0.0114 → 0.0092억 · 넘기는 순서를 바꾸면 우츠하라 목표 −9%)
       const out = members.map((m, i) => !tsc[i] && (outMode === "spd" || st[i] > 0));
@@ -463,18 +549,20 @@
         const nt = out.filter(Boolean).length, own = new Map();
         const members2 = members.map((m, i) => ({ ...m, weapon: team[i].weapon, armor: team[i].armor, badges: team[i].badges, grasta: team[i].grasta, special: team[i].special, _contrib: null }));
         members2.forEach((m, i) => { scale[m.c.id] = out[i] ? 1e-3 * (cur.score || 1) / st[i] / nt : tsc[i]; if (!out[i]) own.set(m.c.id, fixed(m)); });
-        const g2 = O.partyGear(members2, gopt, m => own.get(m.c.id) || poolsOf(m), { ...(conf.gear.conf || {}), scale });
+        const g2 = O.partyGear(members2, gopt, m => own.get(m.c.id) || poolsOf(m), { ...frontGearConf(conf), scale });
         evals += g2.evals;
         const keep = { team, cur };
         team = put(g2.team.map((x, i) => (out[i] ? x : { ...members2[i], gear: { special: members2[i].special } })));
         cur = runOf(team);
-        if (cur.score < keep.cur.score * (1 - 1e-9)) ({ team, cur } = keep);
+        if (!g2.repaired && cur.score < keep.cur.score * (1 - 1e-9)) ({ team, cur } = keep);
       }
       // 속도 중심 — 멤버마다: 전부 속도 → 목표가 내려가면 목표를 받치는 장비는 지키고 나머지만 속도 → 그래도 내려가면 그대로(목표가 먼저)
       if (outMode === "spd") team.forEach((m, i) => {
         if (!out[i]) return;
         for (const keep of [false, true]) {
-          const t2 = team.map((x, j) => (j === i ? { ...x, ...speedGear(x, team, poolsOf(x), keep) } : x)), r = runOf(t2);
+          const t2 = team.map((x, j) => (j === i ? { ...x, ...speedGear(x, team, poolsOf(x), keep, conf.gear.conf || {}) } : x));
+          if (!gearFits(t2, conf)) continue;
+          const r = runOf(t2);
           if (r.score >= cur.score * (1 - 1e-9)) { team = t2; cur = r; break; }
         }
       });
@@ -483,7 +571,9 @@
         if (m.lockWeapon) return;
         for (const w of (poolsOf(m).weapons || []).filter(hasInflict)) {
           if (w === team[ci].weapon || team.some((o, j) => j !== ci && o.weapon && o.weapon.name === w.name)) continue;
-          const t2 = team.map((x, j) => (j === ci ? { ...x, weapon: w } : x)), r = runOf(t2);
+          const t2 = team.map((x, j) => (j === ci ? { ...x, weapon: w } : x));
+          if (!gearFits(t2, conf)) continue;
+          const r = runOf(t2);
           if (r.score > cur.score * (1 + 1e-9)) { team = t2; cur = r; }
         }
       });
@@ -501,6 +591,7 @@
       ({ team, cur } = best);
       if (conf.back && conf.back.length) opt = shuttle(conf.back, team, opt, conf, (t, o) => { evals++; return S.run(t, { af: null, seq }, o, { scoreSteps: steps }).score; }, gslots);
     }
+    validGear(team, conf);
     const fin = S.run(team, { af: null, seq }, opt, { scoreSteps: steps, explain: true });   // 마지막 한 번만 계산 근거(메모 없음)
     const runO = (t, o) => S.run(t, { af: null, seq }, o, { scoreSteps: steps }).score, sc = t => runO(t, opt);
     const contrib = conf.contrib ? { ...gearContrib(team, sc), back: backContrib(team, opt, runO) } : null;
@@ -567,22 +658,23 @@
   // 후열 셔틀(11-12 화면 연결 — 사용자 「후열 2개는 순전히 연성 셔틀」) — back = [{c, cc}] 은 공격 · 효과 없이 공유 그라스타만 나른다.
   //   칸마다 공유 그라스타 후보(장비 후보 중 share · 광석 아님)를 바꿔 점수가 오르면 채택(optimize 의 셔틀과 같은 규칙 — 획득 수 limit 은 전방이 낀 것까지 센다). scoreWith(team, opt)
   function shuttle(backIn, team, opt, conf, scoreWith, gslots) {
-    const back = backIn.map(b => ({ c: b.c, cc: b.cc, pool: b.pool || (conf.gear.poolsOf(b).grasta || []).filter(g => g.share && !g.ore), grasta: Array(gslots).fill(null) }));
-    const used = g => [...team.flatMap(m => m.grasta || []), ...back.flatMap(b => b.grasta)].filter(x => x && (x.base || x.name) === (g.base || g.name)).length;
+    const back = backIn.map(b => ({ c: b.c, cc: b.cc, pool: b.pool || (conf.gear.poolsOf(b).grasta || []).filter(g => g.share && !g.ore), grasta: Array(gslots || 4).fill(null) }));
     const put = () => ({ ...opt, back: back.map(b => ({ c: b.c, cc: b.cc, grasta: b.grasta.filter(Boolean) })) });
     let best = scoreWith(team, put());
     for (let pass = 0; pass < 3; pass++) {
       let moved = false;
-      for (const b of back) for (let k = 0; k < gslots; k++) for (const g of [null, ...b.pool]) {
+      for (const b of back) for (let k = 0; k < b.grasta.length; k++) for (const g of [null, ...b.pool]) {
         const was = b.grasta[k];
-        if (g === was || (g && used(g) >= (g.limit ?? Infinity))) continue;
+        if (g === was) continue;
         b.grasta[k] = g;
+        if (!gearFits(team, conf, back)) { b.grasta[k] = was; continue; }
         const q = scoreWith(team, put());
         if (q > best * (1 + 1e-9)) { best = q; moved = true; } else b.grasta[k] = was;
       }
       if (conf.tick) conf.tick(`후열 셔틀 ${pass + 1}바퀴`);
       if (!moved) break;
     }
+    validGear(team, conf, back);
     return put();
   }
 
@@ -611,10 +703,10 @@
       const atk = bestAtk(m, sks);
       return k < Math.min(setup.length, acts - 1) || !atk ? (setup[k % (setup.length || 1)] || {}).name || null : atk;
     })) });
-    const evalT = t => { evals++; return scoreOf(acts ? S.run(t, quickPlan(t), opt, { scoreTurns: actTurns }) : S.peak(t, opt)); };
-    const base = optimizePeak(fixed, opt, { passes: 2, pairMoves: false });
+    const evalT = t => { evals++; return scoreOf(acts ? S.run(t, quickPlan(t), opt, { scoreTurns: actTurns }) : S.peak(t, opt, { focus })); };
+    const base = optimizePeak(fixed, opt, { passes: 2, pairMoves: false, focus });
     evals += base.evals;
-    let beams = [{ team: base.team, q: base.scores.repeat }];
+    let beams = [{ team: base.team, q: scoreOf({ score: base.scores.repeat, perMember: base.perMember }) }];
     for (let s = 0; s < open; s++) {
       const next = [];
       beams.forEach((b, bi) => {

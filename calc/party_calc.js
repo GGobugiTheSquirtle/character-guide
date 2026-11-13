@@ -487,6 +487,21 @@
     return { ag, eg, aura, critAura };
   }
 
+  // 대미지와 행동 순서가 공유하는 상태 스탯. 기본값·고정값·% 칸은 따로 보존한다.
+  function statInputs(m, ag, equipment = {}) {
+    const st = { ...m.stats }, flat = { ...(m.flatFx || {}) };
+    for (const [k, v] of Object.entries(equipment)) st[k] = (st[k] || 0) + v;
+    for (const [k, vals] of Object.entries(ag.flat)) flat[k] = (flat[k] || 0) + vals.reduce((a, v) => a + v, 0);
+    if (flat.lck) st.lck = (st.lck || 0) + flat.lck;
+    delete flat.lck;
+    const buff = Object.fromEntries(["pwr", "int", "spd", "mp"].map(k => [k, net(ag, k, () => C.groupNet(ag[k]))]));
+    const current = Object.fromEntries(Object.keys(buff).map(k => {
+      const base = (st[k] || 0) + (flat[k] || 0);
+      return [k, Math.max(0, base + Math.trunc(Number((base * buff[k]).toPrecision(15))))];
+    }));
+    return { st, flat, buff, current };
+  }
+
   // 멤버 한 명의 선택 공격 1타 — {normal, crit, p, expected, why}. pre = prepare(members, opt) 를 넘기면 파티 공통분을 다시 만들지 않는다
   function memberDamage(m, members, opt, pre) {
     const atk = m.attack;
@@ -510,15 +525,8 @@
     const lsN = side => opt[side === "light" ? "lightAllies" : "shadowAllies"] ?? holders.filter(h => h.c && h.c.ls === side).length;
     const eq = equipFor([m.weapon, m.armor, ...(m.grasta || []), ...(m.badges || []), ...sharedItems(m, holders, opt)], atk, { ...opt, lightAllies: lsN("light"), shadowAllies: lsN("shadow"), _weak: aff === "weak", _who: m.c });
     const ev = envFor(opt.env, atk, opt);
-    const st = { ...m.stats };
-    for (const [k, v] of Object.entries(eq.stats)) st[k] = (st[k] || 0) + v;
-    // 고정 스탯도 같은 대상·출처 집계를 사용한다. 행운은 크리율, 나머지는 상태 고정값 칸으로 전달한다.
-    const fl0 = { ...(m.flatFx || {}) };
-    for (const [k, vals] of Object.entries(ag.flat)) fl0[k] = (fl0[k] || 0) + vals.reduce((a, v) => a + v, 0);
-    if (fl0.lck) st.lck = (st.lck || 0) + fl0.lck;
-    delete fl0.lck;
-    const mpBuff = net(ag, "mp", () => C.groupNet(ag.mp));
-    const mpBase = (st.mp || 0) + (fl0.mp || 0), maxMp = Math.max(0, mpBase + Math.trunc(Number((mpBase * mpBuff).toPrecision(15))));
+    const { st, flat: fl0, buff, current } = statInputs(m, ag, eq.stats);
+    const mpBuff = buff.mp, maxMp = current.mp;
     const magic = atk.dep === "magic" || atk.dep === "magicpwr";
     const typeKey = atk.element || null;
     const tb = typeBuffs(ag.type, typeKey, atk.atk, magic);
@@ -559,7 +567,7 @@
     const critX = Math.min(cx.crit, cap / Math.max(baseMult, 1e-9)) * (bud ? bud.critAura.reduce((a, v) => a * (1 + v), 1) : 1);
     const o = {
       dep: atk.dep, elemental: !!atk.element, stat: st, weapon: { atk: (m.weapon || {}).atk || 0, matk: (m.weapon || {}).matk || 0 },
-      buff: { pwr: net(ag, "pwr", () => C.groupNet(ag.pwr)), int: net(ag, "int", () => C.groupNet(ag.int)), spd: net(ag, "spd", () => C.groupNet(ag.spd)), mp: mpBuff },
+      buff,
       enemy: { def: (en.end || 0) * (1 - net(eg, "def", () => C.groupNet({ buffs: eg.def }))),
         mdef: (en.spr || 0) * (1 - net(eg, "mdef", () => C.groupNet({ buffs: eg.mdef }))) },
       affinity: aff, skillMult: baseMult / 100 * eq.skillMul, skillFx: eq.skillFx, zone: zoneMult(opt.zone, atk, aff, opt),
@@ -737,7 +745,7 @@
   }
   const presetCtx = (atk, weapon) => ({ element: (atk && atk.element) || null, atk: (atk && atk.atk) || "", magic: !!atk && (atk.dep === "magic" || atk.dep === "magicpwr"), weapon: weapon || "" });
 
-  const api = { allyScope, allyGroups, enemyGroups, prepare, equipFor, envFor, statusOf, affinityOf, zoneMult, memberDamage, bestWeapon, posReq, contrib, buddyGroups, sharedItems,
+  const api = { statInputs, allyScope, allyGroups, enemyGroups, prepare, equipFor, envFor, statusOf, affinityOf, zoneMult, memberDamage, bestWeapon, posReq, contrib, buddyGroups, sharedItems,
     PRESET, presetValue, presetStats, presetMember, presetCtx, envOk, whoOk, recvOk };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEParty = api;

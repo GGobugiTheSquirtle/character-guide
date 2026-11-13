@@ -450,7 +450,7 @@
       const aw = /^극 /.test(u.name || "") ? 2 : /^절 /.test(u.name || "") ? 5 : u.k === "zoneAwake" ? 2 : 0;
       const base = (u.name || "").replace(/^(극|절) /, "");
       const z = u.k === "zoneAwake" ? (sim.zone && (sim.zone.base || sim.zone)) : (sim.opt.zones || []).find(x => x.name === base || x.ko === base);   // zones.json ko = 용어집(terms) 한국어
-      if (!z) return;
+      if (!z || sim.zone?.awake) return;                         // 각성 중에는 일반 전개·재각성으로 덮거나 수명을 갱신하지 않는다.
       sim.zone = aw ? { ...z, up: { ...z.up, v: (z.up.v || 0) * 2 }, awake: true, base: z, until: sim.turn + aw } : z;
       return;
     }
@@ -469,7 +469,7 @@
     const stacks = u.maxStack > 1 ? Math.min(u.maxStack, (old && old.skill === skName ? old.stacks : 0) + 1) : 1;
     const until = u.turns == null ? (u.times ? Infinity : Infinity) : sim.turn + u.turns;    // 만료 = 그 턴 끝
     // 브레이크 축적(stack 엘리멘탈/웨폰 브레이크 「N 축적」)은 남은 개수 left — 일치 타마다 1개 소모(consumeBreak), 다시 걸면 더해진다
-    const left = u.k === "stack" ? Math.max(1, Math.floor(u.value || 1)) + (old && old.left ? old.left : 0) : undefined;
+    const left = P.statusOf(u)?.id === "break" ? 1 : u.k === "stack" ? Math.max(1, Math.floor(u.value || 1)) + (old && old.left ? old.left : 0) : undefined;
     const scope = u.times && sideOf(u) === "a" ? P.allyScope(u) : null;
     const remaining = scope ? sim.party.map((m, i) => (scope === "all" || (scope === "who" && P.recvOk(m, u.who)) || ((scope === "self" || scope === "skill") && i === ci)) ? u.times : 0) : null;
     // remaining은 수신자별 잔여. times는 기존 진단용 최대 잔여이며, 소모 판정에는 remaining만 쓴다.
@@ -660,8 +660,21 @@
         for (const u of sk.fx || []) if (u.timing === timing) apply(sim, ci, u, sk.name, sk);
     });
   }
-  // 그 턴 행동의 계층 — 선제(tier pre) → 보통 → 후공(post). 계층 안은 속도순(난수 없음 = 기대값)
-  const tierOf = (m, name) => { let sk = (m.actions.skills || []).find(s => s.name === name); if (sk && sk.sub === "일반 공격") sk = transformOf(m) || sk; return (sk && sk.tier) || "mid"; };
+  // 스킬 고유의 선제·후공과 부여 상태를 구분해 부여 순서대로 계층을 판정한다.
+  const tierOf = (sim, ci, name) => {
+    const m = sim.party[ci];
+    let sk = (m.actions.skills || []).find(s => s.name === name);
+    if (sk && sk.sub === "일반 공격") sk = transformOf(m) || sk;
+    let tier = (sk && sk.tier) || "mid";
+    for (const e of sim.live.values()) {
+      if (sideOf(e.u) !== "a") continue;
+      const sc = P.allyScope(e.u), gets = e.remaining ? e.remaining[ci] > 0 : sc === "all" || (sc === "who" && P.recvOk(m, e.u.who)) || ((sc === "self" || sc === "skill") && e.ci === ci);
+      if (!gets) continue;
+      if (T.is(e.u.name, "first_strike") && tier !== "post") tier = "pre";
+      if (T.is(e.u.name, "delay") && tier !== "pre") tier = "post";
+    }
+    return tier;
+  };
   function endTurn(sim) {
     for (const [k, e] of sim.live) if (e.until <= sim.turn) sim.live.delete(k);
     if (sim.zone && sim.zone.awake && sim.zone.until <= sim.turn) sim.zone = null;   // 각성 존 종료 = 원래 존까지 사라진다(⑪)
@@ -672,8 +685,18 @@
         if (sk.kind === "ability") for (const u of sk.fx || []) if (u.timing === "always" || u.timing === "battleStart" || !u.timing) apply(sim, ci, { ...u, turns: u.timing === "battleStart" ? u.turns : null }, sk.name, sk);
     });
   }
-  // 속도순(선제 · 후공 상태는 다음 판) — 같은 속도는 좌→우
-  const order = sim => sim.party.map((m, i) => i).sort((a, b) => ((sim.party[b].stats || {}).spd || 0) - ((sim.party[a].stats || {}).spd || 0) || a - b);
+  // 턴 시작·SB 처리 뒤의 상태 스탯으로 한 번 정렬한다. 근접 속도의 난수 분포는 별도 모델이다.
+  const order = sim => {
+    const members = sim.party.map((m, ci) => ({ ...m, fx: fxOf(sim, ci), _contrib: null }));
+    const opt = { ...sim.opt, zone: sim.zone, zoneAwake: !!sim.zone?.awake, turns: sim.turn, af: sim.af };
+    const holders = [...members, ...(opt.back || [])];
+    const speeds = members.map(m => {
+      const ag = P.allyGroups(members, m, opt);
+      const eq = P.equipFor([m.weapon, m.armor, ...(m.grasta || []), ...(m.badges || []), ...P.sharedItems(m, holders, opt)], m.attack || {}, { ...opt, _who: m.c });
+      return P.statInputs(m, ag, eq.stats).current.spd;
+    });
+    return members.map((_, i) => i).sort((a, b) => speeds[b] - speeds[a] || a - b);
+  };
 
   // 행동 순서 → 턴(11-12, 사용자 「A-B-E-D-A-B-T-R 순서대로 넣고 단계마다 대미지」) — seq = [[멤버 번호, 스킬 이름], …].
   //   같은 멤버가 그 턴에 이미 움직였으면 다음 턴으로 넘긴다(한 턴 = 멤버마다 1회). 순서는 속도를 맞춰 만든다고 보고 턴 안은 입력 순서 그대로(속도순 X) —
@@ -721,13 +744,15 @@
       sim.turn = t0 + i;
       timed(sim, "turnStart");
       sbFire(sim, true, true);                                           // 미뤄 둔 스텔라 버스트는 턴 시작에(턴을 안 쓴다)
+      const tiers = party.map((_, ci) => tierOf(sim, ci, rows ? row.find(x => x.ci === ci && !x.free)?.skill : row[ci]));
+      const turnOrder = rows ? null : order(sim);
       for (const tier of ["pre", "mid", "post"]) {
         if (rows) for (const x of row) {
           if (x.free && x.sb) { if (tier === "mid") { const d0 = Object.values(sim.dmg).reduce((a, b) => a + b, 0); sbFire(sim, true, false, true); perStep[x.step] = Object.values(sim.dmg).reduce((a, b) => a + b, 0) - d0; } continue; }   // 스텔라 버스트 블록 — 그 SB 의 대미지 = 그 단계 몫
           if (x.free) { if (tier === "mid") for (const u of x.fx) apply(sim, x.ci, { ...u }, x.skill); continue; }   // 수동 효과 — 넣은 자리에서 효과만
-          if (tierOf(party[x.ci], x.skill) !== tier) continue; sim.step = x.step; if (conf.snapAt && conf.snapAt.includes(x.step)) snaps[x.step] = { live: new Map([...sim.live].map(([k, e]) => [k, { ...e }])), zone: sim.zone }; perStep[x.step] = act(sim, x.ci, x.skill, true); sim.step = null;
+          if (tiers[x.ci] !== tier) continue; sim.step = x.step; if (conf.snapAt && conf.snapAt.includes(x.step)) snaps[x.step] = { live: new Map([...sim.live].map(([k, e]) => [k, { ...e }])), zone: sim.zone }; perStep[x.step] = act(sim, x.ci, x.skill, true); sim.step = null;
         }
-        else for (const ci of order(sim)) if (row[ci] && tierOf(party[ci], row[ci]) === tier) act(sim, ci, row[ci], true);
+        else for (const ci of turnOrder) if (row[ci] && tiers[ci] === tier) act(sim, ci, row[ci], true);
       }
       endTurn(sim);                                                    // ⑪ 만료
       timed(sim, "turnEnd");                                           // ⑭ 턴 종료 효과(만료 뒤 — 1턴 효과가 다음 턴까지 산다)
@@ -849,6 +874,15 @@
     // 장면 복사 — 효과 칸(live)만 얕게 베낀다(act 가 새 칸을 넣고 브레이크 남은 수를 깎는다)
     const fork = base => { const sim = { ...base, live: new Map([...base.live].map(([k, e]) => [k, { ...e }])), res: base.res.slice(), first: base.first.slice(), used: new Map(),
       dmg: [], byMember: [], log: [], onHit: [], sb: { ...base.sb }, lk: base.party.map(() => 0) }; return sim; };
+    const runTeam = (base, names, explain = false) => {
+      const sim = fork(base), perMember = party.map(() => 0), eotOf = party.map(() => 0);
+      if (explain) { sim.memo = null; sim.capture = []; }
+      const tiers = names.map((name, ci) => tierOf(sim, ci, name));
+      const ranks = { pre: 0, mid: 1, post: 2 }, sequence = order(sim).sort((a, b) => ranks[tiers[a]] - ranks[tiers[b]]);
+      for (const ci of sequence) if (names[ci]) perMember[ci] += act(sim, ci, names[ci], true);
+      for (const ci of order(sim)) for (const name of eots[ci]) { const d = act(sim, ci, name, true); eotOf[ci] += d; perMember[ci] += d; }
+      return { score: perMember.reduce((a, v) => a + v, 0), perMember, eotOf, linkOf: sim.lk, sequence, capture: sim.capture };
+    };
     // o.zoneOnly(11-08) = 허용 존 이름 목록(「Torn Earth (Stance)」) — 실전 장비(격진 · 진의 주문 · 존 광석)가 가리키는 존만 고른다(다른 존은 후보에서 뺀다, 존 없음은 남김).
     //   허용 존을 펼 스킬이 스킬칸에 없으면 존 없음이 되어, 스킬칸 탐색(optimizePeak)이 그 존 전개 스킬(진의 주문 부여 등)을 넣는 쪽으로 간다
     const zKey = s => (s || "").replace(/ Stance$/, "");
@@ -864,27 +898,42 @@
         const nor = normalOf(m);
         const pool = (m.actions.skills || []).filter(s => s === nor || (lives[ci].has(s.name) && (s.slot || s.role === "basic" || s.kind === "variant")
           && (s.kind !== "variant" || !s.fromCond || condOk(base, m, s.fromCond) !== false)));
+        const names = [];
         for (const sk of pool) {
           const n = sk.name;
           if (isEOT(sk) || (mode === "repeat" && onceSkill(sk))) continue;
           if (pin[ci] && !pin[ci].includes(n)) continue;
+          names.push(n);
           const f = fork(base), d = act(f, ci, n, true);
           if (d > best.d) best = { d, name: n, link: f.lk[ci] || 0 };
         }
         const eot = eots[ci].reduce((s, n) => s + act(fork(base), ci, n, true), 0);   // 켜진 턴 종료 공격 1회씩
-        return { d: best.d + eot, name: best.name, eot, link: best.link || 0 };
+        return { d: best.d + eot, name: best.name, eot, link: best.link || 0, names };
       });
-      const score = per.reduce((s, x) => s + x.d, 0), cand = { score, perMember: per.map(x => x.d), attackOf: per.map(x => x.name), eotOf: per.map(x => x.eot), linkOf: per.map(x => x.link), zone: base.zone, live: base.live };
-      if (zAllow(base.zone) && (!top || score > top.score)) { top = cand; topBase = base; }
+      const names = per.map(x => x.name);
+      const objective = r => conf.focus == null ? r.score : r.perMember[conf.focus] + 1e-6 * (r.score - r.perMember[conf.focus]);
+      let team = runTeam(base, names);
+      // 공유 소모가 있으면 개인 최고 공격 선택도 팀 목적에 맞게 한 차례 다듬는다.
+      if ([...base.live.values()].some(e => e.left)) for (let ci = 0; ci < party.length; ci++) {
+        let best = team, chosen = names[ci];
+        for (const name of per[ci].names) {
+          if (name === names[ci]) continue;
+          const trial = names.slice(); trial[ci] = name;
+          const candidate = runTeam(base, trial);
+          if (objective(candidate) > objective(best) + 1e-6) { best = candidate; chosen = name; }
+        }
+        names[ci] = chosen; team = best;
+      }
+      const cand = { score: team.score, perMember: team.perMember, attackOf: names, eotOf: team.eotOf, linkOf: team.linkOf,
+        individualPerMember: per.map(x => x.d), actionOrder: team.sequence, zone: base.zone, live: base.live };
+      const score = team.score;
+      if (zAllow(base.zone) && (!top || objective(cand) > objective(top))) { top = cand; topBase = base; }
     }
-    // 계산 근거(conf.explain, 11-12) — 멤버마다 고른 공격을 같은 장면에서 한 번 더 쳐서 식 입력(스탯 · 무기 · 버프 % · 배율 · 그룹)과 출처 줄(누구 「스킬」: 무엇)을 모은다
-    if (top && conf.explain) top.explain = party.map((m, ci) => {
-      if (!top.attackOf[ci]) return [];
-      const f = fork(topBase);
-      f.memo = null; f.capture = [];
-      act(f, ci, top.attackOf[ci], true);
-      return f.capture.filter(x => x.ci === ci).map(({ ci: _, ...x }) => x);
-    });
+    // 설명도 팀과 같은 공유 장면을 재생해 소모 이후 상태와 일치시킨다.
+    if (top && conf.explain) {
+      const team = runTeam(topBase, top.attackOf, true);
+      top.explain = party.map((_, ci) => team.capture.filter(x => x.ci === ci).map(({ ci: _, ...x }) => x));
+    }
     return top;
   }
 

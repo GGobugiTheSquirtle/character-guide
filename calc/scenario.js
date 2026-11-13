@@ -470,7 +470,10 @@
     const until = u.turns == null ? (u.times ? Infinity : Infinity) : sim.turn + u.turns;    // 만료 = 그 턴 끝
     // 브레이크 축적(stack 엘리멘탈/웨폰 브레이크 「N 축적」)은 남은 개수 left — 일치 타마다 1개 소모(consumeBreak), 다시 걸면 더해진다
     const left = u.k === "stack" ? Math.max(1, Math.floor(u.value || 1)) + (old && old.left ? old.left : 0) : undefined;
-    sim.live.set(key, { ci, u, skill: skName, stacks, until, times: u.times || null, left });
+    const scope = u.times && sideOf(u) === "a" ? P.allyScope(u) : null;
+    const remaining = scope ? sim.party.map((m, i) => (scope === "all" || (scope === "who" && P.recvOk(m, u.who)) || ((scope === "self" || scope === "skill") && i === ci)) ? u.times : 0) : null;
+    // remaining은 수신자별 잔여. times는 기존 진단용 최대 잔여이며, 소모 판정에는 remaining만 쓴다.
+    sim.live.set(key, { ci, u, skill: skName, stacks, until, times: u.times || null, remaining, caster: remaining ? sim.party[ci].c.nameKo : null, left });
   }
   // 브레이크 소모 — 그 공격의 일치 타 수만큼(엘리멘탈 = 같은 속성, 웨폰 = 같은 공격 종류, 일반 = 아무 타). party_calc 는 fxOf 가 넘긴 남은 개수(value)로 첫 타들에 ×2
   function consumeBreak(sim, atk, hits) {
@@ -486,14 +489,14 @@
       if (hits <= 0) break;
     }
   }
-  // 살아 있는 효과 → 시전자별 fx(누적은 A + A/2·(n−1) 한 값)
+  // 살아 있는 효과 → 일반 효과는 시전자별, 횟수 효과는 남은 횟수가 있는 수신자에게만 펼친다.
   function fxOf(sim, ci, extra) {
     const out = [];
     for (const e of sim.live.values()) {
-      if (e.ci !== ci || e.u.k === "kaleido" || e.u.k === "flexible" || e.u.k === "skill_hits" || e.u.k === "link") continue;     // 고정값·% 모두 party_calc에서 집계, 특수 상태는 공격 단계에서 처리
+      if ((e.remaining ? !e.remaining[ci] : e.ci !== ci) || e.u.k === "kaleido" || e.u.k === "flexible" || e.u.k === "skill_hits" || e.u.k === "link") continue;     // 고정값·% 모두 party_calc에서 집계, 특수 상태는 공격 단계에서 처리
       //   자원 스택(「Critical rate +3% per stack (max 5: +15%)」, perStack)은 원문대로 비례 — 반감 규칙은 같은 스킬 재사용 누적에만(11-09)
       const v = e.left ? e.left : typeof e.u.value === "number" && e.stacks > 1 ? (e.u.perStack ? e.u.value * e.stacks : +C.halfStack(e.u.value, e.stacks).toFixed(2)) : e.u.value;
-      out.push({ ...e.u, value: v, base: undefined, _skill: e.skill });
+      out.push({ ...e.u, value: v, base: undefined, _skill: e.skill, ...(e.remaining ? { _self: true, _caster: e.caster } : {}) });
     }
     return extra ? out.concat(extra) : out;
   }
@@ -503,7 +506,7 @@
     const memo = sim.memo;
     let key;
     if (memo) {
-      const live = [...sim.live.entries()].map(([k, e]) => `${k}#${e.stacks}#${e.left || e.u.value}`).sort().join(";");
+      const live = [...sim.live.entries()].map(([k, e]) => `${k}#${e.stacks}#${e.left || e.u.value}${e.remaining ? "#" + e.remaining.map(n => n > 0 ? 1 : 0).join("") : ""}`).sort().join(";");
       key = `${sim.gear}|${ci}|${sk.name}|${part.power ?? part.mult}x${part.hits || 1}${part.element || ""}${part.atk || ""}|${(sim.zone || {}).name || ""}${sim.zone && sim.zone.awake ? "!" : ""}|${sim.turn}|${sim.af ? 1 : 0}${sim.sb.on ? "S" : ""}|h${part._h0 || 0}${sim.first[ci] ? "F" : ""}|${live}`;
       if (memo.has(key)) return memo.get(key);
     }
@@ -526,14 +529,19 @@
     if (sim.capture) sim.capture.push({ ci, step: sim.step, skill: sk.name, d: v, perUse: v, hits: atk.hits || 1, p: 1, o: null, fixed: true, why: [], whyOff: [], states: [], pr: 1 });
     return v;
   }
+  function attackType(sim, ci, sk, part) {
+    const fl = sim.live.get(`flex|${ci}`);
+    return !part.fixed && fl && !sk._noFlex && !FLEX_IMMUNE.test(sk.desc || "")
+      ? (fl.u.at === "zone" ? zoneAt(sim) : fl.u.at) || part.atk : part.atk;
+  }
   function attackRaw(sim, ci, sk, part) {
     const atk = toAttack(part, sk);
     if (atk._fixed) return fixedDmg(sim, ci, sk, atk);
     if (/ZONE에 따라 공격 속성 변화/.test(sk.desc || "")) { const el = zoneEl(sim); if (el) atk.element = el; }
     else if (atk.anyElem && !atk.element) { const el = zoneEl(sim) || ((sim.opt.enemy || {}).weak || [])[0]; if (el) atk.element = el; }   // 속성 = 상황 따라(딩님 ANY · 위키 일곱 속성 나열) — 존 속성, 없으면 적 약점(11-13)   // 네코코 ES 유성군 · 적의 플람 얼터 등 14스킬(11-08)
-    { const fl = sim.live.get(`flex|${ci}`); if (fl && !sk._noFlex && !FLEX_IMMUNE.test(sk.desc || "")) { const at = fl.u.at === "zone" ? zoneAt(sim) : fl.u.at;   // 임기응변
+    { const at = attackType(sim, ci, sk, part);
       // 위력 기반도 바뀐다 — 베기 · 찌르기 · 타격 = 힘, 마 = 지능. 스킬 자체 「힘/지능/속도에 따른 위력」이 있으면 그것(딩님 184648, 11-09 전엔 종류만 바꿔 힘 물리 식 그대로)
-      if (at && at !== atk.atk) { atk.dep = OWN_DEP.test(sk.desc || "") ? toAttack({ ...part, atk: at }, sk).dep : at === "마법" ? "magic" : "pwr"; atk.atk = at; } } }
+      if (at && at !== atk.atk) { atk.dep = OWN_DEP.test(sk.desc || "") ? toAttack({ ...part, atk: at }, sk).dep : at === "마법" ? "magic" : "pwr"; atk.atk = at; } }
     { const kl = sim.live.get(`kal|${ci}`); if (kl && !sk._noKal && !KAL_IMMUNE.test(sk.desc || "")) { const el = kl.u.el === "zone" ? zoneEl(sim) : kl.u.el; if (el) atk.element = el; } }   // 변화무쌍
     const members = sim.party.map((m, i) => ({ ...m, fx: fxOf(sim, i, i === ci && atk._sure ? [{ k: "buff", name: "크리티컬 발생 확정", _skill: sk.name, _atkItem: true }] : null), _contrib: null }));
     const m = { ...members[ci], attack: atk };
@@ -563,15 +571,16 @@
     return v;
   }
   // 행동 소모형(times) — 대미지 행동 1회마다. 크리율은 물리/마법 각각
-  function consume(sim, ci, atk) {
-    const magic = atk.atk === "마법";
+  function consume(sim, ci, kinds, prior) {
     for (const [k, e] of sim.live) {
-      if (!e.times || e.ci == null) continue;
-      const st = (e.u.stats || [])[0] || "";
-      const holderGets = sideOf(e.u) === "a" && ((e.u.tc === "아군 전체" && !(Array.isArray(e.u.who) && e.u.who.length && !P.recvOk(sim.party[ci], e.u.who))) || e.ci === ci);
-      if (!holderGets) continue;
-      if (/크리티컬율/.test(st) && /마법/.test(st) !== magic) continue;
-      if (--e.times <= 0) sim.live.delete(k);
+      if (!e.remaining || !e.remaining[ci] || !prior.has(e)) continue;
+      const ids = (e.u.stats || []).map(st => T.cid(st));
+      if (ids.includes("crit_rate") && !ids.includes("magic_crit_rate") && !kinds.has(false)) continue;
+      if (ids.includes("magic_crit_rate") && !ids.includes("crit_rate") && !kinds.has(true)) continue;
+      // 복사해 보관한 스냅숏·고점 장면을 바꾸지 않도록 배열을 교체한다.
+      e.remaining = e.remaining.map((n, i) => i === ci ? n - 1 : n);
+      e.times = Math.max(...e.remaining);
+      if (e.times <= 0) sim.live.delete(k);
     }
   }
   // 스킬 1회 = 스텝 순서대로(E3, docs/ae-battle-engine-audit.md §5) — fx: 그 순간 걸기 / atk: 분할이면 타마다(첫 타 뒤 그 공격의 상태 부여를 걸고 남은 타), 아니면 첫 타 상태로 타수 /
@@ -593,7 +602,12 @@
     //   일반 공격(대체 기술 포함) · 턴 종료 · 반격 공격은 고른 스킬이 아니라 제외. 연속 실행(exec)은 한 행동이라 하위 스킬과 합쳐 1타
     if (!depth) sim.xh = sk.kind !== "normal" && sk.role !== "basic" && sk.role !== "eot" && sk.role !== "counter" && !isEOT(sk);
     let hitN = 0;                                                             // 다단 강화 — 이 행동(move)에서 이미 친 타수. 행동 경계에서 0(위키 Multipliers: 1 move 안 모든 부분 · 반복은 이어짐)
-    const endAction = () => { if (hadAtk) { d += linkHit(sim, ci, sk, lastAtk); consume(sim, ci, lastAtk); onHit(); } hadAtk = false; hitN = 0; };   // 연계 추가 공격은 행동 소모형 버프를 깎기 전에
+    let prior = new Set(sim.live.values());                                    // 부여·갱신한 행동은 새 효과의 횟수를 소모하지 않는다.
+    const kinds = new Set();                                                  // 혼합 공격도 종류마다 한 번만, 임기응변 적용 후 종류로 판정
+    const endAction = () => {
+      if (hadAtk) { d += linkHit(sim, ci, sk, lastAtk); if (!isEOT(sk) && sk.role !== "eot" && sk.role !== "counter") consume(sim, ci, kinds, prior); onHit(); }
+      hadAtk = false; hitN = 0; kinds.clear(); prior = new Set(sim.live.values());
+    };   // 연계 추가 공격은 행동 소모형 버프를 깎기 전에
     const steps = sk.steps ? sk.steps.slice() : [...(sk.attacks || []).map((a, i) => ({ t: "atk", i, cond: a.cond })), ...(sk.fx || []).map((u, i) => ({ t: "fx", i, cond: u.cond }))];   // 복사 — 분할 처리가 done 표식을 찍는다
     const fxUnits = sk.fx || [];
     for (let k = 0; k < steps.length; k++) {
@@ -613,6 +627,7 @@
           if (sim.xh && sk.kind !== "normal") { xh = sim.live.has(`hits|${ci}`) ? 1 : 0; sim.xh = false; }
           const hits = (a.hits || 1) + xh;
           hadAtk = true; lastAtk = a;
+          kinds.add(attackType(sim, ci, sk, a) === MAGIC);
           // 타마다 다시 계산 — 첫 타 뒤 이 공격 줄의 상태 부여(바로 뒤 fx 스텝 중 적 대상 상태 · 축적)를 걸어 둘째 타부터 「대상 페인」 등을 받게.
           //   타 사이에 바뀌는 것(뒤따르는 상태 부여 · 소모되는 브레이크)이 없으면 한 번에(속도 — 타마다 부르면 4인 60초 → 300초)
           const follow = [];

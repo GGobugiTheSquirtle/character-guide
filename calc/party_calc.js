@@ -15,6 +15,7 @@
   //   공식 한국어 스킬은 _skill 이 한국어라 공격 목록(위키 영어)과 _skillEn 으로 맞춘다 (2026-10-08)
   //   → 'all'(파티 전원) | 'self'(본인) | 'skill'(본인의 그 공격 스킬에만) | null
   function allyScope(u) {
+    if (u._self) return "self";                         // 시나리오가 수신자별 잔여 횟수로 펼친 효과
     const tc = u.tc || "";
     if (tc === "아군 전체") return Array.isArray(u.who) && u.who.length ? "who" : "all";
     if (tc === "자신") return "self";
@@ -136,7 +137,7 @@
   const weaponsOf = t => (/장착자|equipped/i.test(t) && !/모든 무기|any weapon|all weapon/i.test(t) ? WEAPON_WORDS.filter(([, r]) => r.test(t)).map(([w]) => w) : []);
   // 출처 줄 = 시전자 + 그 효과를 건 스킬(u._skill — 시나리오 · flatEffects 가 붙인다, 11-12 사용자 「어디 스킬에서 뭐가 추가」)
   const note = (g, tag, text) => { g.src.push(text); g.srcTag.push(tag); };   // 꼬리표 = 들어간 칸(memberDamage 의 why 가 공격마다 거른다)
-  const who = (s, u) => s.c.nameKo + (u._skill ? ` 「${u._skill}」` : "");
+  const who = (s, u) => (u._caster || s.c.nameKo) + (u._skill ? ` 「${u._skill}」` : "");
   function addAlly(g, u, s) {
     const v = (u.value || 0) / 100;
     if (u.k === "stat_pct" && (u.dir === "UP" || u.dir === "DOWN")) {
@@ -725,7 +726,7 @@
   }
   const presetCtx = (atk, weapon) => ({ element: (atk && atk.element) || null, atk: (atk && atk.atk) || "", magic: !!atk && (atk.dep === "magic" || atk.dep === "magicpwr"), weapon: weapon || "" });
 
-  const api = { allyGroups, enemyGroups, prepare, equipFor, envFor, statusOf, affinityOf, zoneMult, memberDamage, bestWeapon, posReq, contrib, buddyGroups, sharedItems,
+  const api = { allyScope, allyGroups, enemyGroups, prepare, equipFor, envFor, statusOf, affinityOf, zoneMult, memberDamage, bestWeapon, posReq, contrib, buddyGroups, sharedItems,
     PRESET, presetValue, presetStats, presetMember, presetCtx, envOk, whoOk, recvOk };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEParty = api;

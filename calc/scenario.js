@@ -203,6 +203,8 @@
     if (/another force|어나더 포스/i.test(cond) && !/combo|콤보|게이지|gauge/i.test(cond)) return burst ? null : neg ? !sim.af : !!sim.af;
     if (m && /^(?:when |if )?(?:the )?user (?:is )?(?:in|on) (?:the )?front ?-?line$/i.test(cond.trim())) return m.pos !== "back";   // 전방 조건 = 평소 충족
     if (/^(?:자신의 )?레벨이 \d+ 이상 시$/.test(cond.trim())) return true;   // 만렙 가정(세스타 AS 「레벨 30 이상 시 낭지 축적」)
+    let w;
+    if (m && (w = /^자신이 (\S+) 장착자(가 아닐)? 시$/.exec(cond.trim()))) return (wpOf(m) === w[1]) !== !!w[2];   // 「자신이 지팡이 장착자가 아닐 시」(마즈리카 연계)
     return null;
   }
   // 「속성 ZONE에 따라 ANOTHER ZONE 전개 종류 변화」(네코코 ES) — 빌더는 7속성 「극 X」 전개로 펼치지만 실제는 지금 존을 각성(없으면 기본 「극 풍왕진」).
@@ -329,6 +331,7 @@
   //   아직: 추가 공격에 딸린 브레이크 축적 · 저항 다운 · 「아군 하나」 지정 부여 · 축적 조건부 대상(Co-Op Stack) · 턴 시뮬 모드 경로(sk 없이 거는 단위)
   const LINK = T.ko("link"), WPS = T.slots("weapon"), MAGIC = (ATS.find(e => e.k === "magic") || {}).ko;
   const wpOf = m => (m.weapon && m.weapon.type) || (m.cc && m.cc.weapon) || (m.c && m.c.weaponKo) || "";
+  const WTYPE = { "검": "베기", "도": "베기", "도끼": "베기", "창": "찌르기", "활": "찌르기", "권갑": "타격", "망치": "타격", "지팡이": "마법" };   // 무기 → 일반 공격 종류
   const wpAt = w => { const x = WPS.find(e => e.ko === w), a = x && ATS.find(e => e.k === x.atk); return a ? a.ko : null; };
   const LINK_EN = /\bGive Link\b|\bLink \[/;
   const linkUnit = u => T.is(u.name, "link") || (u.k === "other" && !u.name && LINK_EN.test(u.raw || ""));
@@ -611,6 +614,8 @@
     for (let k = 0; k < steps.length; k++) {
       const st = steps[k];
       if (!condOk(sim, m, st.cond, via)) continue;
+      if (st.unless && condOk(sim, m, st.unless, via)) continue;             // 대체 공격의 기본판 — 변화 조건이면 변화판(alt)이 대신 나간다(빌더 steps_of, 11-13)
+      if (st.wpn && WTYPE[wpOf(m)] !== st.wpn) continue;                     // 무기 종류별 변화판 — 장착 무기의 공격 종류 하나만
       let reps = 1;
       if (st.t === "repeat") { reps = st.n || 1; k++; if (k >= steps.length) break; }
       const s2 = steps[k];

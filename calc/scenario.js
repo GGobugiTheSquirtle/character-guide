@@ -21,7 +21,7 @@
     const dep = (a.dep === "pwr" || a.dep === "magicpwr") && magic ? "magicpwr" : magic ? "magic" : a.dep === "int" ? "int" : a.dep === "spd" ? "spd" : "pwr";
     const mult = a.power ?? a.mult, multMax = a.powerMax ?? a.multMax;
     return { skill: sk.name, mult, multMax, multRep: a.powerRep, hits: a.hits || 1, element: a.element || "", atk: a.atk || "", scope: a.scope || "", dep,
-      conds: a.conds, mp: sk.mp || 0, sec: "skills", _sure: !!a.sureCrit, _fixed: !!a.fixed, _ignoreDef: !!a.ignoreDef, _burstMax: burstMax(sk) };
+      conds: a.conds, mp: sk.mp || 0, sec: "skills", anyElem: !!a.anyElem, _sure: !!a.sureCrit, _fixed: !!a.fixed, _ignoreDef: !!a.ignoreDef, _burstMax: burstMax(sk) };
   }
   // 위값이 1회성 · 마무리에서 나오는 스킬(설명문, 11-05) — 「스텔라 버스트 시 위력 N배」 · 「스텔라 버스트로 발동한 횟수」 · 「대상 HP 비율이 낮을수록」.
   //   고점 반복(peak "repeat")에서 조건 칸이 빈 공격(딩님 원천)은 이때 위값 대신 기본값(셴화 테서렉트 ×60 = 대상 HP 낮을수록 — 반복 고점에 들어가 106억이 됐다)
@@ -542,7 +542,8 @@
   function attackRaw(sim, ci, sk, part) {
     const atk = toAttack(part, sk);
     if (atk._fixed) return fixedDmg(sim, ci, sk, atk);
-    if (/ZONE에 따라 공격 속성 변화/.test(sk.desc || "")) { const el = zoneEl(sim); if (el) atk.element = el; }   // 네코코 ES 유성군 · 적의 플람 얼터 등 14스킬(11-08)
+    if (/ZONE에 따라 공격 속성 변화/.test(sk.desc || "")) { const el = zoneEl(sim); if (el) atk.element = el; }
+    else if (atk.anyElem && !atk.element) { const el = zoneEl(sim) || ((sim.opt.enemy || {}).weak || [])[0]; if (el) atk.element = el; }   // 속성 = 상황 따라(딩님 ANY · 위키 일곱 속성 나열) — 존 속성, 없으면 적 약점(11-13)   // 네코코 ES 유성군 · 적의 플람 얼터 등 14스킬(11-08)
     { const fl = sim.live.get(`flex|${ci}`); if (fl && !sk._noFlex && !FLEX_IMMUNE.test(sk.desc || "")) { const at = fl.u.at === "zone" ? zoneAt(sim) : fl.u.at;   // 임기응변
       // 위력 기반도 바뀐다 — 베기 · 찌르기 · 타격 = 힘, 마 = 지능. 스킬 자체 「힘/지능/속도에 따른 위력」이 있으면 그것(딩님 184648, 11-09 전엔 종류만 바꿔 힘 물리 식 그대로)
       if (at && at !== atk.atk) { atk.dep = OWN_DEP.test(sk.desc || "") ? toAttack({ ...part, atk: at }, sk).dep : at === "마법" ? "magic" : "pwr"; atk.atk = at; } } }

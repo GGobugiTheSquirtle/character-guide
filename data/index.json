@@ -6025,9 +6025,9 @@
         "resource": 10,
         "mode": 4,
         "zone": 7,
+        "attack": 5,
         "atk_buff": 13,
         "tempo": 4,
-        "attack": 2,
         "power": 5,
         "surv_state": 3,
         "surv_debuff": 1,
@@ -10600,9 +10600,9 @@
       ],
       "roles": {
         "zone": 4,
+        "attack": 5,
         "surv_debuff": 2,
         "atk_buff": 3,
-        "attack": 3,
         "atk_debuff": 1,
         "tempo": 1,
         "surv_buff": 1,
@@ -16353,9 +16353,9 @@
         "힘 DOWN"
       ],
       "roles": {
+        "attack": 6,
         "surv_debuff": 3,
         "atk_buff": 4,
-        "attack": 3,
         "atk_debuff": 1,
         "tempo": 1,
         "surv_buff": 1,
@@ -16530,7 +16530,7 @@
         "힘 DOWN"
       ],
       "roles": {
-        "attack": 6,
+        "attack": 8,
         "surv_debuff": 3,
         "surv_state": 4,
         "surv_buff": 4,
@@ -21950,7 +21950,7 @@
       "roles": {
         "surv_buff": 3,
         "recover": 4,
-        "attack": 2,
+        "attack": 4,
         "atk_buff": 1
       },
       "traits": [

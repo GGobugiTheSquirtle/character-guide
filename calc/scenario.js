@@ -202,6 +202,7 @@
     if (/stellar burst|스텔라 버스트/i.test(cond)) return burst ? null : neg ? !sim.sb.on : !!sim.sb.on;
     if (/another force|어나더 포스/i.test(cond) && !/combo|콤보|게이지|gauge/i.test(cond)) return burst ? null : neg ? !sim.af : !!sim.af;
     if (m && /^(?:when |if )?(?:the )?user (?:is )?(?:in|on) (?:the )?front ?-?line$/i.test(cond.trim())) return m.pos !== "back";   // 전방 조건 = 평소 충족
+    if (/^(?:자신의 )?레벨이 \d+ 이상 시$/.test(cond.trim())) return true;   // 만렙 가정(세스타 AS 「레벨 30 이상 시 낭지 축적」)
     return null;
   }
   // 「속성 ZONE에 따라 ANOTHER ZONE 전개 종류 변화」(네코코 ES) — 빌더는 7속성 「극 X」 전개로 펼치지만 실제는 지금 존을 각성(없으면 기본 「극 풍왕진」).

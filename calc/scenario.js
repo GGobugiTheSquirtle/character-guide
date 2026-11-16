@@ -404,8 +404,17 @@
   const ZBUF = /ZONE에 따라 '(?:속성 공격력 UP|버프와 디버프)' 종류 변화|type of buff changes according to active elemental zone/i;
   const zoneAt = sim => { const z = sim.zone && (sim.zone.base || sim.zone); return z && z.up ? (z.up.types || []).map(atOf).find(Boolean) || null : null; };
   const zoneEl = sim => { const z = sim.zone && (sim.zone.base || sim.zone); return z && z.up ? (z.up.types || []).map(elOf).find(Boolean) || null : null; };
+  const zoneBreak = u => (u.k === "other" && u.name === "ZONE 파괴") || (u.k === "zone" && !u.name && /^(?:ZONE 파괴|remove any active zone)$/i.test((u.what || "").trim()));
+  const zoneExtUnit = u => u.k === "other" && u.name === "ANOTHER ZONE 턴 수 연장";
+  const zoneExtTurns = u => { const v = u.value ?? 100; return v >= 100 ? Math.round(v / 100) : v; };
+  function extendZone(sim, n) { if (sim.zone && sim.zone.awake && sim.zone.awakeKind === "another" && Number.isFinite(sim.zone.until) && n > 0) sim.zone = { ...sim.zone, until: sim.zone.until + n }; }
+  // ANOTHER ZONE 이 막 전개된 순간 — 파티의 「ANOTHER ZONE 전개 시」 연장 어빌리티(레드 클래드 플람 AS 부스티드 · 2턴)
+  function zoneAwakened(sim) {
+    sim.party.forEach(m => { for (const s of m.actions.skills || []) if (s.kind === "ability" && gateOk(sim, s))
+      for (const x of s.fx || []) if (!x._mute && zoneExtUnit(x) && /ANOTHER ZONE 전개 시/.test(x.cond || "")) extendZone(sim, zoneExtTurns(x)); });
+  }
   function apply(sim, ci, u, skName, sk) {
-    if (u._mute) return;                                                       // 이용자가 끈 효과(11-12 build.muteTeam — 「쌓이는 효과」 패널)
+    if (u._mute) return;                                                      // 이용자가 끈 효과(11-12 build.muteTeam — 「쌓이는 효과」 패널)
     u = normZone(u, sk);
     u = normCrit(sim, ci, u);
     // 위키 「Another Zone」 스킬 — 본문(「Awakens any … Zones」)이 cond 칸 · 설명 첫 줄에 있고 효과 단위는 안내 줄뿐 → 각성 단위로
@@ -438,6 +447,12 @@
       }
       return;
     }
+    // 존 제거 · 연장(L1-7, 11-17) — 제거 = 딩님 「ZONE 파괴」(k other, 19명) · 위키 「Remove any active zone」(k zone, what 「ZONE 파괴」). 각성 존도 지운다
+    //   (위키 Another Zone 문서 「Zone can still be removed/broken by skills that remove zones」). 같은 스킬의 다음 단계가 「극 X 전개」면 그 전개는 이제 막히지 않는다(멜로디 AS (3))
+    if (zoneBreak(u)) { sim.zone = null; return; }
+    //   연장 = 딩님 「ANOTHER ZONE 턴 수 연장」(설명 「ANOTHER ZONE 턴 수 N 연장」 — 빌더 pct 가 N ≤ 3 을 ×100 해 value 100 · 200). 각성 중인 ANOTHER ZONE(극 · 각성)만 늘린다 — 절(Radical)은 문구 밖.
+    //   「ANOTHER ZONE 전개 시」 발동(부스티드)은 각성 순간에 zoneAwakened 가 건다 — 전투 시작 상시 적용에서는 건너뛴다
+    if (zoneExtUnit(u)) { if (!/ANOTHER ZONE 전개 시/.test(u.cond || "")) extendZone(sim, zoneExtTurns(u)); return; }
     // 존 — 「극 X」 = ANOTHER ZONE(증가 효과 ×2, 2턴 뒤 존까지 사라짐) · 「절 X」 = Radical(×2, 5턴) · zoneAwake 단위 = 지금 존 각성(위키 Zones §Awakened, 구조 지도 §4.5). 그라스타 부여 존은 영어 이름
     if (u.k === "zone" || u.k === "zoneAwake") {
       // 위키 원천은 이름 없이 문구만 — 「Deploy X Stance」 = 존 전개, 「awaken Another Zone」 · Another Zone 스킬(조건 「Awakens any … Zones」) = 각성. 그 밖 안내 줄은 버린다(11-05: 전엔 이름만 봐서 위키 존 98개가 한 번도 안 펴졌다)
@@ -451,7 +466,8 @@
       const base = (u.name || "").replace(/^(극|절) /, "");
       const z = u.k === "zoneAwake" ? (sim.zone && (sim.zone.base || sim.zone)) : (sim.opt.zones || []).find(x => x.name === base || x.ko === base);   // zones.json ko = 용어집(terms) 한국어
       if (!z || sim.zone?.awake) return;                         // 각성 중에는 일반 전개·재각성으로 덮거나 수명을 갱신하지 않는다.
-      sim.zone = aw ? { ...z, up: { ...z.up, v: (z.up.v || 0) * 2 }, awake: true, base: z, until: sim.turn + aw } : z;
+      sim.zone = aw ? { ...z, up: { ...z.up, v: (z.up.v || 0) * 2 }, awake: true, awakeKind: aw === 5 ? "radical" : "another", base: z, until: sim.turn + aw } : z;
+      if (aw && aw !== 5) zoneAwakened(sim);
       return;
     }
     if (u.k === "other" && u.name === "구슬 축적") { sim.res[ci] = Math.min(resMaxOf(sim.party[ci]), sim.res[ci] + (u.value ?? 1)); return; }
@@ -861,7 +877,7 @@
       if (z) { apply(sim, 0, { ...z.u, turns: null }, z.sk.name, z.sk); if (awake && sim.zone && !sim.zone.awake) sim.zone = { ...sim.zone, up: { ...sim.zone.up, v: (sim.zone.up.v || 0) * 2 }, awake: true, base: sim.zone, until: Infinity }; }
       party.forEach((m, ci) => {
         for (const { u, sk } of units[ci]) {
-          if (u.k === "zone" || u.k === "zoneAwake") continue;
+          if (u.k === "zone" || u.k === "zoneAwake" || zoneBreak(u) || zoneExtUnit(u)) continue;   // 존은 위에서 고른 하나로 고정 — 제거 · 연장(L1-7)은 고점 장면 밖
           if (sk.kind === "variant" && (!VAR_FX.test(sk.fromCond || "") && zoneCond(sim, sk.fromCond) === null || condOk(sim, m, sk.fromCond) === false)) continue;   // 바뀐 스킬 효과 — 아래 VAR_FX
           for (let k = 0; k < Math.max(1, u.maxStack || 1); k++) apply(sim, ci, { ...u, turns: null, times: null }, sk.name, sk);
         }

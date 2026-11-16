@@ -636,7 +636,8 @@
       const s2 = steps[k];
       if (!condOk(sim, m, s2.cond, via)) continue;
       for (let r = 0; r < reps; r++) {
-        if (s2.t === "fx") { const u = fxUnits[s2.i]; if (u && (!u.timing || u.timing === "use")) apply(sim, ci, { ...u, cond: undefined, ...(linkUnit(u) ? { _cond: u.cond } : {}) }, sk.name, sk); }
+        // timing sb = 「스텔라 버스트 시(SB에서 사용 시)」 — SB 실행 중(sbFire 의 성도 스킬 · 하위 실행)에만 건다(11-17 Codex B: 투바 Clay Grave 크리 확정 · 테오도로스 Dust from a Dream 이 빠졌다)
+        if (s2.t === "fx") { const u = fxUnits[s2.i]; if (u && (!u.timing || u.timing === "use" || (u.timing === "sb" && sim.sb.on))) apply(sim, ci, { ...u, cond: undefined, ...(linkUnit(u) ? { _cond: u.cond } : {}) }, sk.name, sk); }
         else if (s2.t === "atk") {
           const a = sk.attacks[s2.i]; if (!a) continue;
           let xh = 0;

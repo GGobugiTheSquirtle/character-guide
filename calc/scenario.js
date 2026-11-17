@@ -905,11 +905,26 @@
     const zKey = s => (s || "").replace(/ Stance$/, "");
     const zOnly = (o.zoneOnly || []).map(zKey), zAllow = s => !zOnly.length || !s || zOnly.includes(zKey((s.base && s.base.name) || s.name));
     let top = null, topBase = null;
+    // 멤버별 후보 메모(conf.perMemo = Map, 11-17) — 장비 탐색은 한 번에 한 멤버 장비만 바꾸는데 매 평가 전원의 후보 공격을 다시 쳤다(고점 빌드 시간의 49%).
+    //   멤버 ci 의 후보 결과가 남의 장비에서 받는 것 = 공유 그라스타(광석 판 제외 · 무기 종류 조건) · 장면에 거는 「공격 시 부여」 장비뿐(party_calc.sharedItems · equipOnHit —
+    //   prepare/contrib 는 효과(live)만, condMult 는 속성 · 위치만, 버디 속도 조건은 기본 스탯만 본다). 그래서 키 = 모드 · 존 · 전원 스킬칸 · 자기 장비 · 남의 그 둘.
+    //   같은 opt · pin 안에서만 쓴다(부르는 쪽이 장비 단계마다 새 Map)
+    const pm = conf.perMemo || null;
+    const nm = x => (x && x.name) || "";
+    const ownSig = x => [nm(x.weapon), nm(x.armor), ...(x.grasta || []).map(nm), "/", ...(x.badges || []).map(nm), "/", ...(x.special || []).map(nm)].join(",");
+    const hitsOf = it => it && [...(it.fx || []), ...(it.calc || [])].some(f => f.k === "inflict");
+    const projSig = x => [(x.weapon && x.weapon.type) || "", ...(x.grasta || []).filter(g => g && g.share && !g.ore).map(nm), "/", ...[x.weapon, x.armor, ...(x.grasta || []), ...(x.badges || [])].filter(hitsOf).map(nm)].join(",");
+    const pmBase = pm && `${mode}|${party.map(x => (x.slots || []).join(",")).join(";")}`;
+    const pmKey = pm && party.map((x, ci) => `${JSON.stringify(pin[ci] || null)}|${ownSig(x)}|${party.map((y, i) => (i === ci ? "" : projSig(y))).join(";")}`);
+    let zi = -1;
     for (const z of zones) {
+      zi++;
       const base = build(z);
       if (!zAllow(base.zone)) continue;                                   // 허용 밖 존은 멤버 계산 전에 건너뛴다(결과 같음, 속도)
       // 멤버 · 후보마다 장면을 복사해 act 를 돌린다 — 연속 실행 · 반복 · 브레이크 소모가 그대로, 장면끼리 섞이지 않게
       const per = party.map((m, ci) => {
+        const mk = pm && `${pmBase}|${zi}|${ci}|${pmKey[ci]}`;
+        if (pm && pm.has(mk)) return pm.get(mk);
         let best = { d: 0, name: null };
         // 후보 = 켜진 스킬칸 스킬 · 일반 공격 대체(basic) · 조건 맞는 바뀐 스킬 + 일반 공격. 문서(mode · counter · zone) · EOT · 반복 고점의 전투 1회 기술은 뺀다
         const nor = normalOf(m);
@@ -925,7 +940,9 @@
           if (d > best.d) best = { d, name: n, link: f.lk[ci] || 0 };
         }
         const eot = eots[ci].reduce((s, n) => s + act(fork(base), ci, n, true), 0);   // 켜진 턴 종료 공격 1회씩
-        return { d: best.d + eot, name: best.name, eot, link: best.link || 0, names };
+        const r = { d: best.d + eot, name: best.name, eot, link: best.link || 0, names };
+        if (pm) pm.set(mk, r);
+        return r;
       });
       const names = per.map(x => x.name);
       const objective = r => conf.focus == null ? r.score : r.perMember[conf.focus] + 1e-6 * (r.score - r.perMember[conf.focus]);

@@ -299,7 +299,7 @@
     const scoreOf = r => focus == null ? r.score : r.perMember[focus] + 1e-6 * (r.score - r.perMember[focus]);
     const gslots = conf.gear?.conf?.grastaSlots ?? 4;
     let evals = 0;
-    const peakOf = (t, mode, goal = focus) => { evals++; return S.peak(t, opt, { mode, pin: conf.pin, focus: goal }); };   // 메모 없음 — 장면이 평가마다 달라 거의 안 맞고 키만 쌓였다(8분 뒤 메모리 부족)
+    const peakOf = (t, mode, goal = focus, perMemo) => { evals++; return S.peak(t, opt, { mode, pin: conf.pin, focus: goal, perMemo }); };   // 메모 없음 — 장면이 평가마다 달라 거의 안 맞고 키만 쌓였다(8분 뒤 메모리 부족)
     let team = party.map(m => {
       const x = withGrants({ ...m, gslots }, conf), sl = startSlots(x, conf);
       return { ...fitGrasta(x, sl), slots: sl };
@@ -340,7 +340,8 @@
       const pre = AP.prepare(members, gopt), scale = {};
       members.forEach((m, i) => { const st = (AP.memberDamage(m, members, gopt, pre) || {}).perUse || 0; scale[m.c.id] = st > 0 ? pk.perMember[i] / st : 1; });
       const goal = carry ? team.findIndex(m => m.c.id === carry) : focus;
-      const scoreFn = gearScorer(t => { const r = peakOf(t, undefined, goal == null || goal < 0 ? null : goal); return goal == null || goal < 0 ? r.score : r.perMember[goal] + 1e-6 * (r.score - r.perMember[goal]); });
+      const perMemo = conf.perMemo === false ? undefined : new Map();      // 멤버별 후보 메모 — 이 장비 단계 안에서만(scenario.peak 주석)
+      const scoreFn = gearScorer(t => { const r = peakOf(t, undefined, goal == null || goal < 0 ? null : goal, perMemo); return goal == null || goal < 0 ? r.score : r.perMember[goal] + 1e-6 * (r.score - r.perMember[goal]); });
       const gconf = { ...frontGearConf(conf), ...(carry ? { objective: "carry", carry } : {}), scale, scoreFn };
       const g = O.partyGear(members, gopt, conf.gear.poolsOf, gconf);
       const prev = { team, cur };

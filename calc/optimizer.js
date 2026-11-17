@@ -68,6 +68,92 @@
     return [...seen.values()];
   }
 
+  // ── 지배 장비 건너뛰기(2026-11-17) ─────────────────────
+  //   한 칸 후보를 다 넣어 볼 때, 「지금 그 칸에 낄 수 있는」 다른 후보 a 가 b 와 효과가 같고(이 멤버에게 닿을 수 없는 효과는 빼고 비교)
+  //   대미지 쪽 스탯이 모두 b 이상이면 b 는 재지 않는다 — a 의 점수 ≥ b 이므로 그 칸의 최댓값이 바뀌지 않는다.
+  //   스탯은 대미지에 단조 증가하는 것만 ≥ 비교(공격 · 마력 · 힘 · 지능 · 운 · MP · 내구 · 정신 — 내구 · 정신은 루나틱 솔선 힘 · 지능),
+  //   속도는 턴 순서를 바꿔 단조가 아니므로 같아야 하고, HP 는 대미지 식에 안 쓰여 무시한다.
+  //   「닿을 수 없는 효과」= 정적 조건만: 공격들에 없는 속성의 속성 대미지 · 공격 종류(물리/마법)와 다른 크리 · 파티가 펼 수 없는 ZONE ·
+  //   다른 캐릭터 전용(who) · 적 1체일 때 적 수 비례 · 다른 스킬의 배율 강화 · HP 스탯. 나머지 조건(턴 · AF · 각성 · 상태 · 환경)은 닿는다고 본다.
+  //   공유 그라스타(share)는 남에게 가는 효과라 거르지 않은 원래 효과로 비교한다. 칸 검사(fitsPools · 수량)는 원래 후보 그대로.
+  const MONO = ["atk", "matk", "pwr", "int", "lck", "mp", "end", "spr"], IGNORE_STAT = new Set(["hp"]);
+  const SIG_SKIP = new Set(["name", "page", "obtain", "ko", "src", "lv", "limit", "oreLimit", "atk", "matk", "stats", "def", "mdef", "fx", "calc", "calc_ore", "effect", "base", "ore", "ls"]);
+  function domCtx(m, members, opt, conf = {}) {
+    const atks = [m.attack, ...(m.atks || []), ...((m.cc && m.cc.attacks) || [])].filter(Boolean);
+    for (const g of [...(m.lockGrasta || conf.lockGrasta || []), ...(m.grasta || [])]) if (g && g.grant && g.grant.kind === "attack" && g.grant.attack) atks.push(g.grant.attack);
+    const zones = new Set();
+    for (const x of members || [m]) {
+      for (const z of (x.zones || (x.cc && x.cc.zones) || [])) zones.add(P.zkey(typeof z === "string" ? z : z.name));
+      for (const g of [...(x.lockGrasta || []), ...(x.grasta || [])]) if (g && g.grant && g.grant.zone) zones.add(P.zkey(g.grant.zone));
+    }
+    if (opt && opt.zone) zones.add(P.zkey(opt.zone.name));
+    const els = new Set(atks.map(a => a.element || null)), mags = new Set(atks.map(a => a.dep === "magic" || a.dep === "magicpwr"));
+    const skills = new Set(atks.map(a => a.skill).filter(Boolean));
+    const many = ((opt && opt.enemyCount) || 1) > 1;
+    const off = !!(opt && opt.elemEquipToType) || (opt && opt.oreGate === true) || conf.dominance === false;   // 실험 옵션(이름 · 광석 연동)은 가정이 깨져 끈다
+    const latent = !opt || opt.ore !== false;
+    return { off, who: m.c, els, mags, skills, zones, many, latent,
+      key: [m.c && m.c.id, [...els].join(), [...mags].join(), [...zones].sort().join(), [...skills].sort().join(), many, latent].join("|") };
+  }
+  const ELEMENT_FREE = new Set(["type", "all", "maxhp", "lowhp", "normal"]);
+  function reaches(f, x) {
+    if (f.k === "etc") return false;
+    if (f.who && !P.whoOk(f.who, x.who)) return false;
+    if (f.zone && f.zone !== "Another Zone" && ![...x.zones].some(z => z.includes(P.zkey(f.zone)))) return false;
+    if (f.zone === "Another Zone" && !x.zones.size) return false;
+    if (f.k === "dmg" && !ELEMENT_FREE.has(f.when) && !(f.when === "nontype" ? x.els.has(null) : x.els.has(f.when))) return false;
+    if ((f.k === "crit_rate" || f.k === "crit_dmg") && !x.mags.has(!!f.magic)) return false;
+    if (f.k === "stat" && IGNORE_STAT.has(f.stat)) return false;
+    if (f.k === "enemies" && !x.many) return false;
+    if (f.k === "skillmod" && !x.skills.has(f.skill)) return false;
+    return true;
+  }
+  const sigCache = new WeakMap();
+  function domSig(it, x) {
+    let c = sigCache.get(it); if (!c) sigCache.set(it, c = new Map());
+    if (c.has(x.key)) return c.get(x.key);
+    const keep = f => it.share ? f.k !== "etc" : reaches(f, x);
+    const rest = Object.keys(it).filter(k => !SIG_SKIP.has(k)).sort().map(k => [k, it[k]]);
+    const st = it.stats || {}, flat = Object.keys(st).filter(k => !MONO.includes(k) && !IGNORE_STAT.has(k) && st[k]).sort().map(k => [k, st[k]]);
+    const own = it.calc_ore && x.latent ? it.calc_ore : it.calc;          // equipFor 와 같게 — 잠재 연성(calc_ore)이 있으면 그것이 calc 를 대신한다
+    const s = JSON.stringify([rest, (it.fx || []).filter(keep), (own || []).filter(keep), flat]);
+    c.set(x.key, s); return s;
+  }
+  // 특수 광석 판(withOre)의 광석 효과가 이 멤버에게 하나도 안 닿으면 그 판은 기본 글래스터 이하 — 광석 판은 잠재 연성을 잃고(calc_ore 없음)
+  //   광석 수량까지 쓴다. 기본판이 지금 칸에 들어갈 수 있으면 광석 판은 안 잰다(공유 글래스터는 광석 효과가 남에게 갈 수 있어 제외)
+  const uselessOre = (it, x) => it.ore && !it.share && (it.calc || []).filter(f => f.ore).every(f => !reaches(f, x));
+  const monoOf = it => MONO.map(k => (k === "atk" || k === "matk" ? it[k] : (it.stats || {})[k]) || 0);
+  // pool → 항목마다 자기를 지배하는 항목 목록(없으면 키 없음)
+  const domCache = new WeakMap();
+  function dominators(pool, x) {
+    if (x.off || !pool || pool.length < 2) return null;
+    let c = domCache.get(pool); if (!c) domCache.set(pool, c = new Map());
+    if (c.has(x.key)) return c.get(x.key);
+    const groups = new Map();
+    for (const it of pool) { const s = domSig(it, x); if (!groups.has(s)) groups.set(s, []); groups.get(s).push([it, monoOf(it)]); }
+    const out = new Map();
+    for (const xs of groups.values()) {
+      if (xs.length < 2) continue;
+      for (const [b, vb] of xs) {
+        const d = [];
+        for (const [a, va] of xs) {
+          if (a === b) continue;
+          let ge = true, gt = false;
+          for (let i = 0; i < va.length; i++) { if (va[i] < vb[i]) { ge = false; break; } if (va[i] > vb[i]) gt = true; }
+          if (ge && (gt || (a.name || "") < (b.name || ""))) d.push(a);   // 완전히 같으면 이름 순 하나만 남긴다
+        }
+        if (d.length) out.set(b, d);
+      }
+    }
+    const byName = new Map(pool.filter(g => !g.ore).map(g => [g.name, g]));
+    for (const it of pool) {
+      const base = uselessOre(it, x) && byName.get(it.base);
+      if (base) out.set(it, [...(out.get(it) || []), base]);   // 광석 판 스탯 = 기본판 스탯(withOre 가 복사)
+    }
+    c.set(x.key, out);
+    return out;
+  }
+
   // ── 장비 ─────────────────────────────────────────────
   // m = 계산 멤버(c · fx · stats · attack · weapon …), members = m 을 포함한 파티(혼자면 [m])
   // conf = { grastaSlots: 4, badgeSlots: 2, specialSlots: 1(pools.special 이 있을 때), dupGrasta: true, counts: {이름: 보유 수} | null }
@@ -166,7 +252,7 @@
     //   특수 광석 = 광석별 oreLimit. 보유 모드(conf.counts)는 보유 수
     // 파티 공동(2026-10-15): conf.taken = 다른 파티원이 이미 쓴 수({"g:기본 이름" · "o:광석" · "e:무기/방어구" · "b:배지": 수}),
     //   conf.others = [{m, w}] 이 멤버의 그라스타(공유)가 바꾸는 파티원 대미지 × 가중치, conf.selfWeight = 자기 대미지 가중치(기본 1)
-    let evals = 0;
+    let evals = 0, skipped = 0;
     const pre = conf.scoreFn ? null : P.prepare(team, opt);                     // 장비는 파티 버프와 무관 — 한 번만
     const score = s => {
       w.weapon = s.weapon; w.armor = s.armor;
@@ -187,16 +273,36 @@
     const start = score(state);
     let best = start;
     const slots = [...(m.lockWeapon ? [] : ["weapon"]), ...(m.lockArmor ? [] : ["armor"]), ...state.grasta.map((_, i) => ["grasta", i]).filter(([, i]) => i >= lock.length), ...state.badges.map((_, i) => ["badges", i]).filter(([, i]) => i >= lockB.length), ...state.special.map((_, i) => ["special", i])];
+    const dx = domCtx(m, members, opt, conf);
     for (let pass = 0; pass < 10; pass++) {
       let moved = false;
       for (const sl of slots) {
         const [key, i] = Array.isArray(sl) ? sl : [sl, -1];
         const pool = key === "weapon" ? pools.weapons : key === "armor" ? pools.armor : key === "grasta" ? pools.grasta : key === "special" ? pools.special : pools.badges;
+        // 수량 · 획득 제한을 통과한 후보만 → 그중 지금 낄 수 있는 지배 장비가 있는 것은 건너뜀(지배 장비 점수 ≥ 이것)
+        //   (수량 검사는 필요할 때만 — 건너뛸 후보는 지배 장비 쪽만 검사, 지금 칸 상태 기준으로 메모)
+        //   한 칸만 바뀌므로 「그 칸을 비운 상태」를 한 번 세고, 후보는 자기 키(+ 광석) 수만 본다 — quantityError(전체 다시 세기)와 같은 판정
+        const doms = dominators(pool, dx), base = state, memo = new Map();
+        const nul = { ...base, grasta: [...base.grasta], badges: [...base.badges], special: [...base.special] };
+        if (i < 0) nul[key] = null; else nul[key][i] = null;
+        const baseBad = !!quantityError(nul, conf), cnt = countGear({}, nul), tk = conf.taken || {};
+        const kind = key === "grasta" || key === "special" ? "g" : key === "badges" ? "b" : "e";
+        const fit = it => {
+          if (memo.has(it)) return memo.get(it);
+          let r = null;
+          if (!baseBad) {
+            const k = it && gearKey(it, kind);
+            const over = it && ((k ? (cnt[k] || 0) + 1 + (tk[k] || 0) : 1) > gearLimit(it, kind, conf)
+              || (it.ore && (cnt["o:" + it.ore] || 0) + 1 + (tk["o:" + it.ore] || 0) > (it.oreLimit ?? Infinity)));
+            if (!over) { r = { ...base, grasta: [...base.grasta], badges: [...base.badges], special: [...base.special] }; if (i < 0) r[key] = it; else r[key][i] = it; }
+          }
+          memo.set(it, r); return r;
+        };
         for (const it of [null, ...pool]) {
           if (it === null && key === "weapon" && pools.weapons.length) continue;
-          const s2 = { ...state, grasta: [...state.grasta], badges: [...state.badges], special: [...state.special] };
-          if (i < 0) s2[key] = it; else s2[key][i] = it;
-          if (quantityError(s2, conf)) continue;
+          if (doms && it) { const d = doms.get(it); if (d && d.some(fit)) { skipped++; continue; } }
+          const s2 = fit(it);
+          if (!s2) continue;
           const v = score(s2);
           if (v > best * (1 + 1e-9)) { best = v; state = s2; moved = true; }
         }
@@ -205,7 +311,7 @@
     }
     score(state);
     return { gear: { weapon: state.weapon, armor: state.armor, grasta: state.grasta.filter(Boolean), badges: state.badges.filter(Boolean), special: state.special.filter(Boolean) },
-      value: best, start, evals };
+      value: best, start, evals, skipped };
   }
 
   // 파티 공동 장비 최적화(2026-10-15) — 멤버마다 gearOptimize 를 돌리되 ① 다른 멤버가 쓴 장비는 수량에서 빼고(1개뿐인 그라스타 · 무기 · 고유 배지)
@@ -237,7 +343,7 @@
       countGear(allocated, s);
     }
     const total = () => { if (conf.scoreFn) return conf.scoreFn(team); const pre = P.prepare(team, opt); return team.reduce((s, x) => s + wt(x) * ((P.memberDamage(x, team, opt, pre) || {}).perUse || 0), 0); };
-    let evals = 0, best = -Infinity;
+    let evals = 0, skipped = 0, best = -Infinity;
     const hist = [];
     // 그라스타 가지치기(conf.pruneGrasta, 기본 80) — 광석 조합까지 ~5,300개라 멤버마다 「혼자 꼈을 때 1회 사용 대미지」 상위 N 만 남긴다.
     //   공유 그라스타(남에게 주는 몫은 이 값에 안 잡힌다)는 항상 남김. 효과 대부분이 같은 그룹 가산이라 한 개 이득 순위 ≈ 조합 순위
@@ -250,7 +356,9 @@
         const pre = P.prepare(team, opt), solo = { ...x, grasta: [] };
         const t = swapIn(team, solo);
         const val = g => { solo.grasta = [g]; evals++; return (P.memberDamage(solo, t, opt, pre) || {}).perUse || 0; };
-        const ranked = p.grasta.map(g => [g, val(g)]).sort((a, b) => b[1] - a[1]).map(([g]) => g);
+        // 지배당하는 그라스타는 순위에서 뺀다(혼자 값 ≤ 지배자) — 지배자를 못 쓰게 되는 경우는 다듬기(전체 후보 · 수량 반영 건너뛰기)가 잡는다
+        const doms = dominators(p.grasta, domCtx(x, team, opt, conf));
+        const ranked = p.grasta.filter(g => !(doms && doms.has(g))).map(g => [g, val(g)]).sort((a, b) => b[1] - a[1]).map(([g]) => g);
         const keep = new Set(ranked.slice(0, N));
         for (const g of p.grasta) if (g.share && !g.ore) keep.add(g);
         out = { ...p, grasta: p.grasta.filter(g => keep.has(g)) };
@@ -268,7 +376,7 @@
         const pf = full ? fullPools.get(x.c.id) : poolsFor(x), extra = x.gear.grasta.filter(g => g && !pf.grasta.includes(g));
         const r = gearOptimize({ ...x, grasta: x.gear.grasta, special: x.gear.special }, team, opt, extra.length ? { ...pf, grasta: [...pf.grasta, ...extra] } : pf,
           { ...conf, taken: usage(x), others, selfWeight: wt(x), lockGrasta: x.lockGrasta || conf.lockGrasta, lockBadges: x.lockBadges || conf.lockBadges });   // 멤버별 고정(파티 빌드의 부여 스킬 그라스타, 10-17)
-        evals += r.evals;
+        evals += r.evals; skipped += r.skipped || 0;
         Object.assign(x, { weapon: r.gear.weapon, armor: r.gear.armor, badges: r.gear.badges, special: r.gear.special || [], gear: { grasta: r.gear.grasta, special: r.gear.special || [] },
           grasta: [...r.gear.grasta, ...(r.gear.special || [])] });
       }
@@ -300,7 +408,7 @@
       if (stuck || pass === (conf.passes ?? 3) - 1) { if (!polish) break; full = true; }
     }
     const pre = P.prepare(team, opt);
-    return { team, value: best, hist, evals, repaired,
+    return { team, value: best, hist, evals, skipped, repaired,
       per: team.map(x => ({ id: x.c.id, attack: x.attack, expected: (P.memberDamage(x, team, opt, pre) || {}).perUse || 0, gear: { weapon: x.weapon, armor: x.armor, badges: x.badges, ...x.gear } })) };
   }
 
@@ -461,7 +569,8 @@
     return { pools: damagePools(sub, cc, traits, { special: true }), counts: { ...inv.w, ...inv.a, ...inv.g, ...inv.b } };
   }
 
-  const api = { baseId, canGrasta, withOre, specialPool, damagePools, ownedPools, grantAttacks, attackPool, gearOptimize, partyGear, validateTeam, partySearchGeared, bestSetup, bestAttack, scoreParty, partySearch };
+  const api = { baseId, canGrasta, withOre, specialPool, damagePools, ownedPools, grantAttacks, attackPool, gearOptimize, partyGear, validateTeam, partySearchGeared, bestSetup, bestAttack, scoreParty, partySearch,
+    domCtx, dominators };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.AEOpt = api;
 })(typeof window !== "undefined" ? window : globalThis);

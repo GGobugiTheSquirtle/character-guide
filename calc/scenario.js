@@ -895,9 +895,10 @@
       const sim = fork(base), perMember = party.map(() => 0), eotOf = party.map(() => 0);
       if (explain) { sim.memo = null; sim.capture = []; }
       const tiers = names.map((name, ci) => tierOf(sim, ci, name));
-      const ranks = { pre: 0, mid: 1, post: 2 }, sequence = order(sim).sort((a, b) => ranks[tiers[a]] - ranks[tiers[b]]);
+      // 첫 순서 = 복사한 장면이 base 와 같으니 base 마다 한 번만(11-17 — hinaden 파티 프로파일에서 order 가 장면 시간의 24%). 끝 순서는 턴 종료 공격이 있을 때만
+      const ranks = { pre: 0, mid: 1, post: 2 }, sequence = (base._order || (base._order = order(base))).slice().sort((a, b) => ranks[tiers[a]] - ranks[tiers[b]]);
       for (const ci of sequence) if (names[ci]) perMember[ci] += act(sim, ci, names[ci], true);
-      for (const ci of order(sim)) for (const name of eots[ci]) { const d = act(sim, ci, name, true); eotOf[ci] += d; perMember[ci] += d; }
+      if (eots.some(e => e.length)) for (const ci of order(sim)) for (const name of eots[ci]) { const d = act(sim, ci, name, true); eotOf[ci] += d; perMember[ci] += d; }
       return { score: perMember.reduce((a, v) => a + v, 0), perMember, eotOf, linkOf: sim.lk, sequence, capture: sim.capture };
     };
     // o.zoneOnly(11-08) = 허용 존 이름 목록(「Torn Earth (Stance)」) — 실전 장비(격진 · 진의 주문 · 존 광석)가 가리키는 존만 고른다(다른 존은 후보에서 뺀다, 존 없음은 남김).

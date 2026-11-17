@@ -122,6 +122,29 @@
   // 특수 광석 판(withOre)의 광석 효과가 이 멤버에게 하나도 안 닿으면 그 판은 기본 글래스터 이하 — 광석 판은 잠재 연성을 잃고(calc_ore 없음)
   //   광석 수량까지 쓴다. 기본판이 지금 칸에 들어갈 수 있으면 광석 판은 안 잰다(공유 글래스터는 광석 효과가 남에게 갈 수 있어 제외)
   const uselessOre = (it, x) => it.ore && !it.share && (it.calc || []).filter(f => f.ore).every(f => !reaches(f, x));
+  // 중첩 안 되는 효과 키(party_calc.equipFor 의 uniq — 장비 전체에서 최댓값 하나) — 겹침 풀기 이동(gearOptimize)이 쓴다
+  const UNIQ_K = new Set(["aim", "mpatk", "weak", "wins", "seal", "enemies"]);
+  const ukCache = new WeakMap();
+  function ukeys(it, x) {
+    let c = ukCache.get(it); if (!c) ukCache.set(it, c = new Map());
+    const lk = x.latent ? 1 : 0;
+    if (c.has(lk)) return c.get(lk);
+    const own = it.calc_ore && x.latent ? it.calc_ore : it.calc, out = new Set();
+    for (const f of [...(it.fx || []), ...(own || [])]) {
+      if (UNIQ_K.has(f.k)) out.add(f.k);
+      else if (f.k === "skillfx" && f.when === "weak") out.add("weak");
+      else if (f.k === "selfstatus") out.add("self:" + f.when);
+    }
+    const r = out.size ? [...out] : null;
+    c.set(lk, r); return r;
+  }
+  const varCache = new WeakMap();
+  function variantsOf(pool, base) {                                       // 후보 목록 안 같은 그라스타(기본판 + 광석 판)
+    if (!pool) return [];
+    let c = varCache.get(pool);
+    if (!c) { c = new Map(); for (const g of pool) { const b = g.base || g.name; if (!c.has(b)) c.set(b, []); c.get(b).push(g); } varCache.set(pool, c); }
+    return c.get(base) || [];
+  }
   const monoOf = it => MONO.map(k => (k === "atk" || k === "matk" ? it[k] : (it.stats || {})[k]) || 0);
   // pool → 항목마다 자기를 지배하는 항목 목록(없으면 키 없음)
   const domCache = new WeakMap();
@@ -274,11 +297,13 @@
     let best = start;
     const slots = [...(m.lockWeapon ? [] : ["weapon"]), ...(m.lockArmor ? [] : ["armor"]), ...state.grasta.map((_, i) => ["grasta", i]).filter(([, i]) => i >= lock.length), ...state.badges.map((_, i) => ["badges", i]).filter(([, i]) => i >= lockB.length), ...state.special.map((_, i) => ["special", i])];
     const dx = domCtx(m, members, opt, conf);
+    const poolOf = key => key === "weapon" ? pools.weapons : key === "armor" ? pools.armor : key === "grasta" ? pools.grasta : key === "special" ? pools.special : pools.badges;
+    let repairs = 0;
     for (let pass = 0; pass < 10; pass++) {
       let moved = false;
       for (const sl of slots) {
         const [key, i] = Array.isArray(sl) ? sl : [sl, -1];
-        const pool = key === "weapon" ? pools.weapons : key === "armor" ? pools.armor : key === "grasta" ? pools.grasta : key === "special" ? pools.special : pools.badges;
+        const pool = poolOf(key);
         // 수량 · 획득 제한을 통과한 후보만 → 그중 지금 낄 수 있는 지배 장비가 있는 것은 건너뜀(지배 장비 점수 ≥ 이것)
         //   (수량 검사는 필요할 때만 — 건너뛸 후보는 지배 장비 쪽만 검사, 지금 칸 상태 기준으로 메모)
         //   한 칸만 바뀌므로 「그 칸을 비운 상태」를 한 번 세고, 후보는 자기 키(+ 광석) 수만 본다 — quantityError(전체 다시 세기)와 같은 판정
@@ -305,13 +330,35 @@
           if (!s2) continue;
           const v = score(s2);
           if (v > best * (1 + 1e-9)) { best = v; state = s2; moved = true; }
+          // 겹침 풀기(11-17) — 후보의 중첩 안 되는 효과(겨누어 쏘기 · MP 소비 공격 · 약점 …)가 다른 칸 장비와 겹치면 그 칸도 함께 바꿔 본다
+          //   (겹친 칸이 그라스타일 때만 — 같은 그라스타의 다른 광석 판 중 같은 키 없는 것). 한 칸 이동으로는 「무기 A + 광석 B」와
+          //   「무기 B' + 광석 A'」 사이를 못 건넌다 — 메릿: 성천의 권갑 Ⅹ(MP 소비) + Bull's Eye 광석 30.6억 vs Scarlet Glow Fist(겨누어 쏘기) + Rose-with-Thorns 광석 26.5억.
+          //   겹친 칸이 무기 · 방어구 · 배지면 안 한다 — 광석 판 하나마다 무기 전부(~150)를 다시 재 4인 1회가 10분을 넘었다(그쪽은 무기 쪽 후보가 그라스타를 풀어 같은 짝에 닿는다)
+          const ku = conf.repair !== false && it && (conf.repair === "all" || kind !== "g") && ukeys(it, dx);
+          if (ku) for (const sl2 of slots) {
+            if (sl2 === sl || !Array.isArray(sl2) || (sl2[0] !== "grasta" && sl2[0] !== "special")) continue;
+            const [key2, j] = sl2;
+            const cur2 = s2[key2][j], k2 = cur2 && ukeys(cur2, dx);
+            if (!k2 || !ku.some(k => k2.includes(k))) continue;
+            const b2 = cur2.base || cur2.name;
+            for (const alt of variantsOf(poolOf(key2), b2)) {
+              if (alt === cur2) continue;
+              const ka = ukeys(alt, dx);
+              if (ka && ka.some(k => ku.includes(k))) continue;
+              const s3 = { ...s2, grasta: [...s2.grasta], badges: [...s2.badges], special: [...s2.special] };
+              if (j < 0) s3[key2] = alt; else s3[key2][j] = alt;
+              if (quantityError(s3, conf)) continue;
+              const v3 = score(s3); repairs++;
+              if (v3 > best * (1 + 1e-9)) { best = v3; state = s3; moved = true; }
+            }
+          }
         }
       }
       if (!moved) break;
     }
     score(state);
     return { gear: { weapon: state.weapon, armor: state.armor, grasta: state.grasta.filter(Boolean), badges: state.badges.filter(Boolean), special: state.special.filter(Boolean) },
-      value: best, start, evals, skipped };
+      value: best, start, evals, skipped, repairs };
   }
 
   // 파티 공동 장비 최적화(2026-10-15) — 멤버마다 gearOptimize 를 돌리되 ① 다른 멤버가 쓴 장비는 수량에서 빼고(1개뿐인 그라스타 · 무기 · 고유 배지)

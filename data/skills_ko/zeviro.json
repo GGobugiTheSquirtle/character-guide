@@ -1,0 +1,1281 @@
+{
+ "id": "zeviro",
+ "source": "news-ap.another-eden.games notice_v2 (ko)",
+ "blocks": [
+  {
+   "notice": 891,
+   "kind": "sa",
+   "who": "제빌로",
+   "class": "데몬 리퍼",
+   "sections": {
+    "stellar_skills": [
+     {
+      "name": "열빙의 코퀴토스",
+      "tag": "스텔라 버스트 시",
+      "mp": 108,
+      "lines": [
+       "적 전체에 물 속성 베기 공격 4회(극대, 8배)",
+       "자신에게 다음 효과 부여",
+       "속도 80% UP + 도끼 장착자 대미지 80% UP + 물 속성 공격 80% UP(3턴)",
+       "+ 크리티컬율 200% UP(10회 행동) + 오버 크리티컬(3턴) + 최고 효율 상태로 변화(1턴)",
+       "【추가 효과】",
+       "자신을 제외한 아군 전방의 「마수」 「연옥계」 특성 인원수에 따라 위력 증가 + 최고 효율 상태 지속 턴 수 증가(최대 3인/6배/4턴)"
+      ],
+      "notes": [
+       "※스텔라 보드에서 강화된 상태입니다"
+      ],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "물",
+        "atk": "베기",
+        "hits": 4,
+        "power": "극대",
+        "mult": 8.0,
+        "preempt": false,
+        "raw": "적 전체에 물 속성 베기 공격 4회(극대, 8배)",
+        "target": "",
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 80.0,
+        "raw": "속도 80% UP",
+        "target": "자신",
+        "mode": "",
+        "r": "tempo",
+        "tm": "사용 시",
+        "tc": "자신"
+       },
+       {
+        "k": "dmg",
+        "what": "도끼 장착자 대미지",
+        "value": 80.0,
+        "dir": "UP",
+        "raw": "도끼 장착자 대미지 80% UP",
+        "target": "자신",
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "자신"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "물 속성 공격력"
+        ],
+        "group": "elem_atk",
+        "dir": "UP",
+        "value": 80.0,
+        "turns": 3,
+        "raw": "물 속성 공격 80% UP(3턴)",
+        "target": "자신",
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "자신"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "물리 크리티컬율"
+        ],
+        "group": "crit",
+        "dir": "UP",
+        "value": 200.0,
+        "actions": 10,
+        "raw": "크리티컬율 200% UP(10회 행동)",
+        "target": "자신",
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "자신"
+       },
+       {
+        "k": "buff",
+        "name": "물리 오버 크리티컬",
+        "turns": 3,
+        "raw": "오버 크리티컬(3턴)",
+        "target": "자신",
+        "mode": "",
+        "r": "atk_state",
+        "tm": "사용 시",
+        "tc": "자신"
+       },
+       {
+        "k": "action",
+        "what": "최고 효율 상태로 변화",
+        "turns": 1,
+        "raw": "최고 효율 상태로 변화(1턴)",
+        "target": "자신",
+        "mode": "",
+        "r": "mode",
+        "tm": "사용 시",
+        "tc": "자신"
+       },
+       {
+        "k": "power",
+        "what": "위력 증가",
+        "detail": "",
+        "raw": "자신을 제외한 아군 전방의 「마수」 「연옥계」 특성 인원수에 따라 위력 증가",
+        "target": "자신",
+        "mode": "추가 효과",
+        "r": "power",
+        "tm": "사용 시",
+        "tc": "자신"
+       },
+       {
+        "k": "other",
+        "turns": 4,
+        "raw": "최고 효율 상태 지속 턴 수 증가(최대 3인/6배/4턴)",
+        "target": "자신",
+        "mode": "추가 효과",
+        "r": "other",
+        "tm": "사용 시",
+        "tc": "자신"
+       }
+      ],
+      "en": "Frazil Cocytus"
+     }
+    ],
+    "stellar_abilities": [
+     {
+      "lines": [
+       "전방에서 턴 시작 시 전방의 「도끼」 「마수」 「연옥계」 특성 아군 수에 따라 자신에게 화련 축적(최대 4명/4 축적)"
+      ],
+      "effects": [
+       {
+        "k": "other",
+        "raw": "전방에서 턴 시작 시 전방의 「도끼」 「마수」 「연옥계」 특성 아군 수에 따라 자신에게 화련 축적(최대 4명/4 축적)",
+        "target": "",
+        "mode": "",
+        "r": "other",
+        "tm": "턴 시작"
+       }
+      ]
+     },
+     {
+      "lines": [
+       "+ 전투 시작 시 변화하는 최고 효율 상태 지속 턴 수가 3턴으로 증가"
+      ],
+      "effects": [
+       {
+        "k": "other",
+        "raw": "전투 시작 시 변화하는 최고 효율 상태 지속 턴 수가 3턴으로 증가",
+        "target": "",
+        "mode": "",
+        "r": "other",
+        "tm": "전투 시작"
+       }
+      ]
+     }
+    ],
+    "tenmei_ability": [
+     {
+      "lines": [
+       "전방에 「도끼」 「연옥계」 특성의 아군이 2명 이상일 경우 효과 발동"
+      ],
+      "effects": [
+       {
+        "k": "action",
+        "what": "효과 발동",
+        "raw": "전방에 「도끼」 「연옥계」 특성의 아군이 2명 이상일 경우 효과 발동",
+        "target": "",
+        "mode": "",
+        "cond": "전방에 「도끼」 「연옥계」 특성의 아군이 2명 이상일 경우",
+        "r": "mode",
+        "tm": "상시·조건"
+       }
+      ]
+     },
+     {
+      "lines": [
+       "배틀 중 자신의 행동 시 축적하는 명의 힘 증가(중)"
+      ],
+      "effects": [
+       {
+        "k": "af",
+        "what": "축적하는 명의 힘 증가(중)",
+        "raw": "배틀 중 자신의 행동 시 축적하는 명의 힘 증가(중)",
+        "target": "",
+        "mode": "",
+        "cond": "배틀 중 자신의 행동 시",
+        "r": "resource",
+        "tm": "상시·조건"
+       }
+      ]
+     }
+    ],
+    "sb_enhance": [
+     {
+      "lines": [
+       "스텔라 버스트 발동 시 명의 힘이 많을 경우 발동"
+      ],
+      "effects": [
+       {
+        "k": "af",
+        "what": "명의 힘이 많을 경우 발동",
+        "raw": "스텔라 버스트 발동 시 명의 힘이 많을 경우 발동",
+        "target": "",
+        "mode": "",
+        "cond": "스텔라 버스트 발동 시",
+        "r": "resource",
+        "tm": "스텔라 버스트"
+       }
+      ]
+     },
+     {
+      "lines": [
+       "턴 종료 시까지 자신의 크리티컬 대미지 30% UP"
+      ],
+      "effects": [
+       {
+        "k": "dmg",
+        "what": "턴 종료 시까지 자신의 물리 크리티컬 위력",
+        "value": 30.0,
+        "dir": "UP",
+        "raw": "턴 종료 시까지 자신의 크리티컬 대미지 30% UP",
+        "target": "",
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "스텔라 버스트"
+       }
+      ]
+     }
+    ],
+    "skills": [
+     {
+      "name": "피어풀 헤일",
+      "tag": "일반 공격 변화",
+      "mp": null,
+      "lines": [
+       "극 수천진 전개",
+       "이후 적 전체에 물 속성 베기 공격 4회(극)",
+       "【추가 효과】",
+       "자신의 정신과 적 전체의 정신의 평균 차이에 따라 위력 증가(최대 200/40배)",
+       "자신의 화련 축적 수에 따라 재공격 실행(최대 30/2회)",
+       "전투 중 한 번만 발동 가능"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "zone",
+        "what": "극 수천진 전개",
+        "raw": "극 수천진 전개",
+        "target": "",
+        "mode": "",
+        "r": "zone",
+        "tm": "사용 시"
+       },
+       {
+        "k": "attack",
+        "scope": "이후 적 전체",
+        "element": "물",
+        "atk": "베기",
+        "hits": 4,
+        "power": "극",
+        "mult": null,
+        "preempt": false,
+        "raw": "이후 적 전체에 물 속성 베기 공격 4회(극)",
+        "target": "",
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
+       },
+       {
+        "k": "power",
+        "what": "위력 증가",
+        "detail": "최대 200/40배",
+        "raw": "자신의 정신과 적 전체의 정신의 평균 차이에 따라 위력 증가(최대 200/40배)",
+        "target": "",
+        "mode": "추가 효과",
+        "r": "power",
+        "tm": "사용 시"
+       },
+       {
+        "k": "action",
+        "what": "자신의 화련 축적 수에 따라 재공격 실행",
+        "times": 2,
+        "raw": "자신의 화련 축적 수에 따라 재공격 실행(최대 30/2회)",
+        "target": "",
+        "mode": "추가 효과",
+        "r": "tempo",
+        "tm": "사용 시"
+       },
+       {
+        "k": "meta",
+        "what": "전투 중 1회",
+        "raw": "전투 중 한 번만 발동 가능",
+        "mode": "추가 효과",
+        "r": "meta",
+        "tm": "사용 시"
+       }
+      ],
+      "en": "Hailing Dread"
+     },
+     {
+      "name": "아이스 사이드",
+      "tag": "",
+      "mp": 24,
+      "lines": [
+       "랜덤 적에 물 속성 베기 공격 2회(약)",
+       "공격 대상에게 다음 효과 부여",
+       "베기 저항 15% DOWN(3턴) + 페인 + 공포 2 축적"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "랜덤 적",
+        "element": "물",
+        "atk": "베기",
+        "hits": 2,
+        "power": "약",
+        "mult": null,
+        "preempt": false,
+        "raw": "랜덤 적에 물 속성 베기 공격 2회(약)",
+        "target": "",
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "랜덤 적"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "베기 저항"
+        ],
+        "group": "resist",
+        "dir": "DOWN",
+        "value": 15.0,
+        "turns": 3,
+        "raw": "베기 저항 15% DOWN(3턴)",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "ailment",
+        "name": "페인",
+        "raw": "페인",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "stack",
+        "name": "공포",
+        "value": "2",
+        "op": "축적",
+        "raw": "공포 2 축적",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       }
+      ],
+      "en": "Ice Scythe",
+      "wiki": {
+       "mult": "140%",
+       "type": "Slash"
+      }
+     },
+     {
+      "name": "프로스트 사이드",
+      "tag": "",
+      "mp": 42,
+      "lines": [
+       "랜덤 적에 물 속성 베기 공격 3회(강)",
+       "공격 대상에게 다음 효과 부여",
+       "베기 저항 20% DOWN(3턴) + 페인 + 공포 2 축적"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "랜덤 적",
+        "element": "물",
+        "atk": "베기",
+        "hits": 3,
+        "power": "강",
+        "mult": null,
+        "preempt": false,
+        "raw": "랜덤 적에 물 속성 베기 공격 3회(강)",
+        "target": "",
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "랜덤 적"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "베기 저항"
+        ],
+        "group": "resist",
+        "dir": "DOWN",
+        "value": 20.0,
+        "turns": 3,
+        "raw": "베기 저항 20% DOWN(3턴)",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "ailment",
+        "name": "페인",
+        "raw": "페인",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "stack",
+        "name": "공포",
+        "value": "2",
+        "op": "축적",
+        "raw": "공포 2 축적",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       }
+      ],
+      "en": "Frost Scythe",
+      "wiki": {
+       "mult": "180%",
+       "type": "Slash"
+      }
+     },
+     {
+      "name": "그레이셜 사이드",
+      "tag": "",
+      "mp": 54,
+      "lines": [
+       "적 전체에 물 속성 베기 공격 4회(극, 2배)",
+       "자신에게 다음 효과 부여",
+       "힘 100% UP + 호시탐탐(3턴)",
+       "공격 대상에게 다음 효과 부여",
+       "베기 저항 50% DOWN(3턴) + 페인(3턴, 대상의 저항 무시) + 공포 8 축적"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "물",
+        "atk": "베기",
+        "hits": 4,
+        "power": "극",
+        "mult": 2.0,
+        "preempt": false,
+        "raw": "적 전체에 물 속성 베기 공격 4회(극, 2배)",
+        "target": "",
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "힘"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 100.0,
+        "raw": "힘 100% UP",
+        "target": "자신",
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "사용 시",
+        "tc": "자신"
+       },
+       {
+        "k": "buff",
+        "name": "호시탐탐",
+        "guess": true,
+        "turns": 3,
+        "raw": "호시탐탐(3턴)",
+        "target": "자신",
+        "mode": "",
+        "r": "state_unknown",
+        "tm": "사용 시",
+        "tc": "자신"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "베기 저항"
+        ],
+        "group": "resist",
+        "dir": "DOWN",
+        "value": 50.0,
+        "turns": 3,
+        "raw": "베기 저항 50% DOWN(3턴)",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "ailment",
+        "name": "페인",
+        "turns": 3,
+        "ignore_res": true,
+        "raw": "페인(3턴, 대상의 저항 무시)",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "stack",
+        "name": "공포",
+        "value": "8",
+        "op": "축적",
+        "raw": "공포 8 축적",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       }
+      ],
+      "en": "Glacial Scythe",
+      "wiki": {
+       "mult": "200%",
+       "type": "Slash"
+      }
+     },
+     {
+      "name": "블리자드 리퍼",
+      "tag": "",
+      "mp": 29,
+      "lines": [
+       "적 전체에 물 속성 베기 공격(중)",
+       "공격 대상에게 다음 효과 부여",
+       "기절",
+       "【추가 효과】",
+       "자신에게 화련 5 이상 축적 시 화련을(를) 5 소비해 적 전체에 다음 효과 부여",
+       "속도 50% DOWN + 정신 50% DOWN(1턴)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "물",
+        "atk": "베기",
+        "hits": 1,
+        "power": "중",
+        "mult": null,
+        "preempt": false,
+        "raw": "적 전체에 물 속성 베기 공격(중)",
+        "target": "",
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
+       },
+       {
+        "k": "ailment",
+        "name": "기절",
+        "raw": "기절",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 50.0,
+        "raw": "속도 50% DOWN",
+        "target": "화련을(를) 5 소비해 적 전체",
+        "mode": "추가 효과",
+        "cond": "자신에게 화련 5 이상 축적 시",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 전체"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "정신"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 50.0,
+        "turns": 1,
+        "raw": "정신 50% DOWN(1턴)",
+        "target": "화련을(를) 5 소비해 적 전체",
+        "mode": "추가 효과",
+        "cond": "자신에게 화련 5 이상 축적 시",
+        "r": "atk_debuff",
+        "tm": "사용 시",
+        "tc": "적 전체"
+       }
+      ],
+      "en": "Blizzard Ripper",
+      "wiki": {
+       "mult": "120%",
+       "type": "Slash"
+      }
+     },
+     {
+      "name": "텔러 커스",
+      "tag": "",
+      "mp": 20,
+      "lines": [
+       "적 전체에 다음 효과 부여",
+       "힘 30% DOWN + 지능 30% DOWN(3턴) + 축적된 공포 2배로 증가"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "stat_pct",
+        "stats": [
+         "힘"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 30.0,
+        "raw": "힘 30% DOWN",
+        "target": "적 전체",
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 전체"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "지능"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 30.0,
+        "turns": 3,
+        "raw": "지능 30% DOWN(3턴)",
+        "target": "적 전체",
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 전체"
+       },
+       {
+        "k": "other",
+        "raw": "축적된 공포 2배로 증가",
+        "target": "적 전체",
+        "mode": "",
+        "r": "other",
+        "tm": "사용 시",
+        "tc": "적 전체"
+       }
+      ],
+      "en": "Terror Curse",
+      "wiki": {
+       "type": "Debuff"
+      }
+     },
+     {
+      "name": "소울 하베스트",
+      "tag": "",
+      "mp": 37,
+      "lines": [
+       "적 하나에 물 속성 베기 공격(강, 2배)",
+       "자신에게 다음 효과 부여",
+       "화련 1 축적",
+       "아군 전체에 다음 효과 부여",
+       "HP 회복(극)",
+       "【추가 효과】",
+       "자신을 제외한 아군 전방의 「도끼」 「마수」 「연옥계」 특성 인원수에 따라 자신의 화련 축적 수 증가(최대 3인/4 축적)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 하나",
+        "element": "물",
+        "atk": "베기",
+        "hits": 1,
+        "power": "강",
+        "mult": 2.0,
+        "preempt": false,
+        "raw": "적 하나에 물 속성 베기 공격(강, 2배)",
+        "target": "",
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "stack",
+        "name": "화련",
+        "value": "1",
+        "op": "축적",
+        "raw": "화련 1 축적",
+        "target": "자신",
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "자신"
+       },
+       {
+        "k": "heal",
+        "what": "HP 회복",
+        "raw": "HP 회복(극)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "recover",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       },
+       {
+        "k": "other",
+        "raw": "자신을 제외한 아군 전방의 「도끼」 「마수」 「연옥계」 특성 인원수에 따라 자신의 화련 축적 수 증가(최대 3인/4 축적)",
+        "target": "아군 전체",
+        "mode": "추가 효과",
+        "r": "other",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       }
+      ],
+      "en": "Soul Harvest",
+      "wiki": {
+       "mult": "180-270%",
+       "type": "Slash"
+      }
+     },
+     {
+      "name": "드레드 루트",
+      "tag": "",
+      "mp": 50,
+      "lines": [
+       "적 전체에 물 속성 베기 공격으로 후공 공격 2회(극, 10배)",
+       "공격 대상에게 다음 효과 부여",
+       "공포 15 축적",
+       "【추가 효과】",
+       "최고 효율 상태 시 소울 하베스트 연속 실행"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "other",
+        "raw": "적 전체에 물 속성 베기 공격으로 후공 공격 2회(극, 10배)",
+        "target": "",
+        "mode": "",
+        "r": "other",
+        "tm": "사용 시"
+       },
+       {
+        "k": "stack",
+        "name": "공포",
+        "value": "15",
+        "op": "축적",
+        "raw": "공포 15 축적",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "resource",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "action",
+        "what": "소울 하베스트 연속 실행",
+        "raw": "최고 효율 상태 시 소울 하베스트 연속 실행",
+        "target": "공격 대상",
+        "mode": "추가 효과",
+        "cond": "최고 효율 상태 시",
+        "r": "tempo",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       }
+      ],
+      "en": "Dread Root",
+      "wiki": {
+       "mult": "170-1360%",
+       "type": "Slash"
+      }
+     }
+    ],
+    "abilities": [
+     {
+      "lines": [
+       "전방에서 턴 종료 시 전투 불능 아군이 있는 경우 자신의 화련을 30 소비해 아군 전후방 전체에 전투 불능 회복 + 상태 이상 회복 + HP 회복 100% + MP 회복 100% + 디버프 해제"
+      ],
+      "effects": [
+       {
+        "k": "stack",
+        "name": "전투 불능 아군이 있는 경우 자신의 화련",
+        "value": "30",
+        "op": "소비",
+        "raw": "전방에서 턴 종료 시 전투 불능 아군이 있는 경우 자신의 화련을 30 소비해 아군 전후방 전체에 전투 불능 회복",
+        "target": "",
+        "mode": "",
+        "cond": "전방에서 턴 종료 시",
+        "r": "resource",
+        "tm": "턴 종료"
+       },
+       {
+        "k": "heal",
+        "what": "상태 이상 회복",
+        "raw": "상태 이상 회복",
+        "target": "",
+        "mode": "",
+        "cond": "전방에서 턴 종료 시",
+        "r": "recover",
+        "tm": "턴 종료"
+       },
+       {
+        "k": "heal",
+        "what": "HP",
+        "value": 100.0,
+        "flat": false,
+        "raw": "HP 회복 100%",
+        "target": "",
+        "mode": "",
+        "cond": "전방에서 턴 종료 시",
+        "r": "recover",
+        "tm": "턴 종료"
+       },
+       {
+        "k": "heal",
+        "what": "MP",
+        "value": 100.0,
+        "flat": false,
+        "raw": "MP 회복 100%",
+        "target": "",
+        "mode": "",
+        "cond": "전방에서 턴 종료 시",
+        "r": "resource",
+        "tm": "턴 종료"
+       },
+       {
+        "k": "dispel",
+        "what": "디버프 해제",
+        "raw": "디버프 해제",
+        "target": "",
+        "mode": "",
+        "cond": "전방에서 턴 종료 시",
+        "r": "recover",
+        "tm": "턴 종료"
+       }
+      ]
+     },
+     {
+      "lines": [
+       "전방에서 전투 시작 시 적 전체에 공포 1 축적 + 최고 효율 상태로 변화(1턴)"
+      ],
+      "effects": [
+       {
+        "k": "stack",
+        "name": "공포",
+        "value": "1",
+        "op": "축적",
+        "raw": "전방에서 전투 시작 시 적 전체에 공포 1 축적",
+        "target": "",
+        "mode": "",
+        "cond": "전방에서 전투 시작 시",
+        "r": "resource",
+        "tm": "전투 시작"
+       },
+       {
+        "k": "action",
+        "what": "최고 효율 상태로 변화",
+        "turns": 1,
+        "raw": "최고 효율 상태로 변화(1턴)",
+        "target": "",
+        "mode": "",
+        "cond": "전방에서 전투 시작 시",
+        "r": "mode",
+        "tm": "전투 시작"
+       }
+      ]
+     },
+     {
+      "lines": [
+       "전방에서 턴 시작 시 자신의 화련 축적 수가 15 이상일 경우 전투 시 1회만 일반 공격이 「피어풀 헤일」로 변화"
+      ],
+      "effects": [
+       {
+        "k": "action",
+        "what": "자신의 화련 축적 수가 15 이상일 경우 전투 시 1회만 일반 공격이 「피어풀 헤일」로 변화",
+        "raw": "전방에서 턴 시작 시 자신의 화련 축적 수가 15 이상일 경우 전투 시 1회만 일반 공격이 「피어풀 헤일」로 변화",
+        "target": "",
+        "mode": "",
+        "cond": "전방에서 턴 시작 시",
+        "r": "mode",
+        "tm": "턴 시작"
+       }
+      ]
+     }
+    ],
+    "stacks": [
+     {
+      "name": "공포",
+      "tag": "",
+      "mp": null,
+      "lines": [
+       "축적 수에 따라 정신 3 DOWN + 물리 저항 1% DOWN",
+       "최대 축적 수:",
+       "99",
+       "축적 조건:",
+       "공포 축적 시 대미지를 받았을 경우 축적 수 1 증가",
+       "어빌리티에 따른 축적",
+       "스킬 「아이스 사이드」 사용 시 축적",
+       "스킬 「프로스트 사이드」 사용 시 축적",
+       "스킬 「그레이셜 사이드」 사용 시 축적",
+       "스킬 「드레드 루트」 사용 시 축적"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "stat_flat",
+        "stats": [
+         "정신"
+        ],
+        "group": "base",
+        "dir": "DOWN",
+        "value": 3.0,
+        "basis": "축적 수에 따라",
+        "cap": "",
+        "raw": "축적 수에 따라 정신 3 DOWN",
+        "target": "",
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "stat_pct",
+        "stats": [
+         "물리 저항"
+        ],
+        "group": "resist",
+        "dir": "DOWN",
+        "value": 1.0,
+        "raw": "물리 저항 1% DOWN",
+        "target": "",
+        "mode": "",
+        "r": "atk_debuff",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "meta",
+        "what": "최대 축적 수",
+        "detail": "99",
+        "raw": "최대 축적 수: 99",
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "meta",
+        "what": "축적 조건",
+        "detail": "공포 축적 시 대미지를 받았을 경우 축적 수 1 증가",
+        "raw": "축적 조건: 공포 축적 시 대미지를 받았을 경우 축적 수 1 증가",
+        "mode": "",
+        "r": "meta",
+        "tm": "피격"
+       }
+      ],
+      "en": "Dread"
+     },
+     {
+      "name": "화련",
+      "tag": "",
+      "mp": null,
+      "lines": [
+       "축적 수에 따라 힘 2 UP + 지능 2 UP + 속도 2 UP",
+       "일부 스킬과 어빌리티에 추가 효과",
+       "최대 축적 수:",
+       "50",
+       "축적 조건:",
+       "이루루:",
+       "성도 어빌리티에 따른 축적",
+       "스킬 「리인카네이션」 추가 효과에 따라 축적",
+       "스텔라 버스트 중 「리브 크레이들」 사용 시 축적",
+       "제빌로:",
+       "성도 어빌리티에 따른 축적",
+       "스킬 「소울 하베스트」 사용 시 축적",
+       "마츠리카:",
+       "성도 어빌리티에 따른 축적",
+       "체인 어빌리티 전용 스킬 「천륜」 사용 시 축적",
+       "모드 체인지"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "stat_flat",
+        "stats": [
+         "힘"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 2.0,
+        "basis": "축적 수에 따라",
+        "cap": "",
+        "raw": "축적 수에 따라 힘 2 UP",
+        "target": "",
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "stat_flat",
+        "stats": [
+         "지능"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 2.0,
+        "basis": "",
+        "cap": "",
+        "raw": "지능 2 UP",
+        "target": "",
+        "mode": "",
+        "r": "atk_buff",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "stat_flat",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 2.0,
+        "basis": "",
+        "cap": "",
+        "raw": "속도 2 UP",
+        "target": "",
+        "mode": "",
+        "r": "tempo",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "other",
+        "raw": "일부 스킬과 어빌리티에 추가 효과",
+        "target": "",
+        "mode": "",
+        "r": "other",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "meta",
+        "what": "최대 축적 수",
+        "detail": "50",
+        "raw": "최대 축적 수: 50",
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "meta",
+        "what": "축적 조건",
+        "detail": "이루루: 성도 어빌리티에 따른 축적",
+        "raw": "축적 조건: 이루루: 성도 어빌리티에 따른 축적",
+        "mode": "",
+        "r": "meta",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "stack",
+        "name": "스킬 「리인카네이션」 추가 효과에 따라",
+        "value": null,
+        "op": "축적",
+        "raw": "스킬 「리인카네이션」 추가 효과에 따라 축적",
+        "target": "",
+        "mode": "",
+        "r": "resource",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "stack",
+        "name": "제빌로: 성도 어빌리티에 따른",
+        "value": null,
+        "op": "축적",
+        "raw": "제빌로: 성도 어빌리티에 따른 축적",
+        "target": "",
+        "mode": "",
+        "r": "resource",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "stack",
+        "name": "마츠리카: 성도 어빌리티에 따른",
+        "value": null,
+        "op": "축적",
+        "raw": "마츠리카: 성도 어빌리티에 따른 축적",
+        "target": "",
+        "mode": "",
+        "r": "resource",
+        "tm": "상시·조건"
+       },
+       {
+        "k": "action",
+        "what": "모드 체인지",
+        "raw": "모드 체인지",
+        "target": "",
+        "mode": "",
+        "r": "mode",
+        "tm": "상시·조건"
+       }
+      ],
+      "en": "Hell Flower"
+     },
+     {
+      "name": "최고 효율",
+      "tag": "",
+      "mp": null,
+      "lines": [
+       "속도 150 UP",
+       "일부 스킬에 추가 효과"
+      ],
+      "notes": [
+       "스킬 설명의 표기 변경 및 일부 성능을 조정했습니다"
+      ],
+      "effects": [
+       {
+        "k": "stat_flat",
+        "stats": [
+         "속도"
+        ],
+        "group": "base",
+        "dir": "UP",
+        "value": 150.0,
+        "basis": "",
+        "cap": "",
+        "raw": "속도 150 UP",
+        "target": "",
+        "mode": "",
+        "r": "tempo",
+        "tm": "상시·조건"
+       }
+      ],
+      "en": "Peak Efficiency"
+     }
+    ],
+    "adjust_as": [
+     {
+      "name": "블리자드 리퍼",
+      "tag": "",
+      "mp": 29,
+      "lines": [
+       "적 전체에 물 속성 베기 공격(중)",
+       "공격 대상에게 다음 효과 부여",
+       "기절"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 전체",
+        "element": "물",
+        "atk": "베기",
+        "hits": 1,
+        "power": "중",
+        "mult": null,
+        "preempt": false,
+        "raw": "적 전체에 물 속성 베기 공격(중)",
+        "target": "",
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 전체"
+       },
+       {
+        "k": "ailment",
+        "name": "기절",
+        "raw": "기절",
+        "target": "공격 대상",
+        "mode": "",
+        "r": "surv_debuff",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       }
+      ],
+      "en": "Blizzard Ripper",
+      "wiki": {
+       "mult": "120%",
+       "type": "Slash"
+      }
+     },
+     {
+      "name": "소울 하베스트",
+      "tag": "",
+      "mp": 37,
+      "lines": [
+       "적 하나에 물 속성 베기 공격(강, 2배)",
+       "아군 전체에 다음 효과 부여",
+       "HP 회복(극)"
+      ],
+      "notes": [],
+      "effects": [
+       {
+        "k": "attack",
+        "scope": "적 하나",
+        "element": "물",
+        "atk": "베기",
+        "hits": 1,
+        "power": "강",
+        "mult": 2.0,
+        "preempt": false,
+        "raw": "적 하나에 물 속성 베기 공격(강, 2배)",
+        "target": "",
+        "mode": "",
+        "r": "attack",
+        "tm": "사용 시",
+        "tc": "적 하나"
+       },
+       {
+        "k": "heal",
+        "what": "HP 회복",
+        "raw": "HP 회복(극)",
+        "target": "아군 전체",
+        "mode": "",
+        "r": "recover",
+        "tm": "사용 시",
+        "tc": "아군 전체"
+       }
+      ],
+      "en": "Soul Harvest",
+      "wiki": {
+       "mult": "180-270%",
+       "type": "Slash"
+      }
+     }
+    ]
+   },
+   "class_en": "Demon Reaper"
+  }
+ ]
+}

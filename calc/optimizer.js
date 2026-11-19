@@ -352,6 +352,27 @@
               if (v3 > best * (1 + 1e-9)) { best = v3; state = s3; moved = true; }
             }
           }
+          // 넘겨 주기(11-19) — 겹침 풀기의 반대 방향. 후보가 지금 칸 장비의 중첩 안 되는 효과를 잃으면, 그 효과를 그라스타의 다른 광석 판으로 옮겨 본다.
+          //   한 칸 이동으로는 「Azul Cana(겨누어 쏘기) + 광석 B」에서 「Void/Rill Staff + Bull's Eye 광석」으로 못 건넌다 — 가운데(겨누어 쏘기 없는 무기)가 낮아서.
+          //   수동 대조(11-19, 7절 「⚙ 자동」 입력 90명): 두 칸 수동 교체가 자동을 이긴 11명(+0.2 ~ 10.3%)이 전부 이 꼴(지팡이 · Azul Cana ↔ Bull's Eye) —
+          //   고친 뒤 8명 해소 · 3명은 다른 꼴 0.4 ~ 0.6%(무기 속성 대미지와 광석의 겹침). 벤치 4파티 점수 같거나 ↑(세스타 AS 파티 +3.0%), 시간 +12 ~ 28%
+          const cur = conf.repair !== false && it && kind !== "g" && (i < 0 ? base[key] : base[key][i]);
+          const lost = cur && (ukeys(cur, dx) || []).filter(k => !(ukeys(it, dx) || []).includes(k));
+          if (lost && lost.length) for (const sl2 of slots) {
+            if (!Array.isArray(sl2) || (sl2[0] !== "grasta" && sl2[0] !== "special")) continue;
+            const [key2, j] = sl2;
+            const cur2 = s2[key2][j];
+            if (!cur2 || (ukeys(cur2, dx) || []).some(k => lost.includes(k))) continue;
+            for (const alt of variantsOf(poolOf(key2), cur2.base || cur2.name)) {
+              const ka = ukeys(alt, dx);
+              if (alt === cur2 || !ka || !ka.some(k => lost.includes(k)) || (ku && ka.some(k => ku.includes(k)))) continue;
+              const s3 = { ...s2, grasta: [...s2.grasta], badges: [...s2.badges], special: [...s2.special] };
+              s3[key2][j] = alt;
+              if (quantityError(s3, conf)) continue;
+              const v3 = score(s3); repairs++;
+              if (v3 > best * (1 + 1e-9)) { best = v3; state = s3; moved = true; }
+            }
+          }
         }
       }
       if (!moved) break;

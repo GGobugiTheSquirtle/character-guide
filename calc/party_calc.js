@@ -653,10 +653,11 @@
     return res;
   }
 
-  // 기본 장비 — 무기 종류가 같고 공격(마법이면 마법 공격) 최대
-  function bestWeapon(weapons, type, magic) {
+  // 기본 장비 — 무기 종류가 같고 공격(마법이면 마법 공격) 최대. 전용 무기(only, 11-19)는 page(위키 문서 이름)가 그 캐릭터일 때만
+  function bestWeapon(weapons, type, magic, page) {
     let best = null;
-    for (const w of weapons) if (w.type === type && (!best || (magic ? w.matk : w.atk) > (magic ? best.matk : best.atk))) best = w;
+    for (const w of weapons) if (w.type === type && (!w.only || (page && w.only.some(n => whoOk(n, { nameEn: page }))))
+      && (!best || (magic ? w.matk : w.atk) > (magic ? best.matk : best.atk))) best = w;
     return best;
   }
 

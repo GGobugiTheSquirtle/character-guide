@@ -49,9 +49,12 @@
       const ores = db.ores.filter(oreUseful);
       for (const g of [...grasta]) for (const o of ores) grasta.push(withOre(g, o));
     }
+    // 전용 장비(11-19) — 딩님 「[장착 조건: 캐릭터]」 = only(영어 기본 이름 목록, build_ding_fill). 계산 캐릭터의 위키 문서 이름(cc.page)으로 거른다.
+    //   전에는 조건을 버려 갤리어드 전용 「반역의 손 보호대」가 자동 추천 90명 중 19명에게 들어갔다
+    const mine = it => !it.only || it.only.some(n => P.whoOk(n, { nameEn: cc.page }));
     return {
-      weapons: db.weapons.filter(w => w.type === cc.weapon),
-      armor: db.armor.filter(a => touches(a) && (!ACC[cc.weapon] || a.type === ACC[cc.weapon])),
+      weapons: db.weapons.filter(w => w.type === cc.weapon && mine(w)),
+      armor: db.armor.filter(a => touches(a) && (!ACC[cc.weapon] || a.type === ACC[cc.weapon]) && mine(a)),
       grasta,
       badges: db.badges.filter(b => Object.keys(b.stats || {}).length || (b.calc || []).length),
       ...(conf.special ? { special: specialPool(db, cc, traits) } : {}),
